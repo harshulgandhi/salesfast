@@ -406,8 +406,8 @@ C) NATIONAL HEAD:
     <td style="border: solid 1px black;">3. Design a template for presentation and specification document to be presented to physicians during meetings</td>
     <td style="border: solid 1px black;">
       <ul>
-        <li>Design a common template for presentations to be used as a guidline by all SalesReps, one for each medicine.</li>
-        <li>Discuss with District Managers before finalising the template.</li>
+        <li>Design a common template for presentations to be used as a guideline by all SalesReps, one for each medicine.</li>
+        <li>Discuss with District Managers before finalizing the template.</li>
         <li>Distribute these templates to all SalesReps.</li>
       </ul>
     </td>
@@ -567,15 +567,15 @@ _Purpose of using the software_:
     <td style="border: solid 1px black;">
       <ul>
         <li>As soon as SalesRep enters "Prospecting" as status for a physician, and possible date of next meeting, system sets a reminder for that SalesRep with notification to be sent 2 days before the next meeting. Notification will contain all the details from previous meeting.</li>
-        <li>For "Lost" physicians, system notifys the SalesRep as soon as a new medicine is released by R&D. Physician might be interested in this new product and SalesRep will try to convert him/her to a customer.</li>
+        <li>For "Lost" physicians, system notify s the SalesRep as soon as a new medicine is released by R&D. Physician might be interested in this new product and SalesRep will try to convert him/her to a customer.</li>
       </ul>
     </td>    
   </tr>
 
   <tr>
     <td style="border: solid 1px black;">9.</td>
-    <td style="border: solid 1px black;">Automatic emails to "Prescribing" and "Prospecting" customers on specail ocassions</td>
-    <td style="border: solid 1px black;">There will be many email templates for festive ocassions and other special ocassions in SalesFast. SalesRep can use any of these and setup an automatic email disbursing pipeline through which emails will be sent to "Prescribing" and/or "Prospecting" physicians. These emails will be sent on festivals and other ocassions like anniversary of a physician.
+    <td style="border: solid 1px black;">Automatic emails to "Prescribing" and "Prospecting" customers on special occasions</td>
+    <td style="border: solid 1px black;">There will be many email templates for festive occasions and other special occasions in SalesFast. SalesRep can use any of these and setup an automatic email disbursing pipeline through which emails will be sent to "Prescribing" and/or "Prospecting" physicians. These emails will be sent on festivals and other occasions like anniversary of a physician.
     </td>    
   </tr>
 
@@ -926,7 +926,7 @@ When a physician's status is changed to "Lost" by a SalesRep, SalesFast sets up 
 **Implemented:** NA
 
 ### [Merit 8]: Real-time tracking of performance and target update:
-SalesFast will track the performance of SalesRepresentatives on a daily basis, based on the input they provide for each call. Based on this performance metric, their target and incentive values will be updated and notified to respective District Manager.
+SalesFast will track the performance of Sales Representatives on a daily basis, based on the input they provide for each call. Based on this performance metric, their target and incentive values will be updated and notified to respective District Manager.
 
 #### [Function 1]: Dynamically updating sales target: 
 For each SalesRep, SalesFast will calculate the performance based on following metrics:

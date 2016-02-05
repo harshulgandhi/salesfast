@@ -173,38 +173,51 @@ A) SALES REPRESENTATIVE:
     <td style="border: solid 1px black;">9. Depending upon the action, can be performed from any place with internet connectivity or from BioPharma's office</td>
   </tr>
   <tr>
-    <td style="border: solid 1px black;">10. Study the current market trend for particular type of product</td>
+
+  <tr>
+    <td style="border: solid 1px black;">10. For "Lost" physicians, visit them again in case a new medicine is released by B-Pharma</td>
+    <td style="border: solid 1px black;">
+      <ul>
+        <li>Maintain a separate contact list of "Lost" physicians with a small action plan to pursue them.</li>
+        <li>Visit them as soon as new medicine is released</li>
+      </ul>
+    </td>
+    <td style="border: solid 1px black;">10. This should be performed on a as needed basis</td>
+    <td style="border: solid 1px black;">10. Meeting might take place at medical facility</td>
+  </tr>
+  <tr>
+    <td style="border: solid 1px black;">11. Study the current market trend for particular type of product</td>
     <td style="border: solid 1px black;">
       <ul>
         <li>Visit "Prescribing" physicians and gather knowledge about which type of medicine is in demand.</li>
         <li>Analyse open surveys on internet to see which type medicine has highest sales.</li>
       </ul>
     </td>
-    <td style="border: solid 1px black;">10. Should be done on a regular basis</td>
-    <td style="border: solid 1px black;">10. SalesRep can do this at any location with internet connectivity</td>
+    <td style="border: solid 1px black;">11. Should be done on a regular basis</td>
+    <td style="border: solid 1px black;">11. SalesRep can do this at any location with internet connectivity</td>
   </tr>
   <tr>
-    <td style="border: solid 1px black;">11. Formulate a list of probably reasons as to why a physician did/ did not agree to prescribe a medicine</td>
+    <td style="border: solid 1px black;">12. Formulate a list of probably reasons as to why a physician did/ did not agree to prescribe a medicine</td>
     <td style="border: solid 1px black;">
       <ul>
         <li>Sales rep can send his own view about why physician might have agreed or disagreed with the product.</li>
         <li>This information should be sent to District Manager and National Head over email.</li>
       </ul>
     </td>
-    <td style="border: solid 1px black;">11. If physician status is "Prescribing" or "Lost", this update should happen as soon as the meeting ends</td>
-    <td style="border: solid 1px black;">11. SalesRep can do this at any location with internet connectivity</td>
+    <td style="border: solid 1px black;">12. If physician status is "Prescribing" or "Lost", this update should happen as soon as the meeting ends</td>
+    <td style="border: solid 1px black;">12. SalesRep can do this at any location with internet connectivity</td>
   </tr>
 
   <tr>
-    <td style="border: solid 1px black;">12. Organizing small outings for "Prescribing" and "Prospecting" physicians and their staff</td>
+    <td style="border: solid 1px black;">13. Organizing small outings for "Prescribing" and "Prospecting" physicians and their staff</td>
     <td style="border: solid 1px black;">
       <ul>
         <li>Sales Rep is assigned a budget from BioPharma to organise a small outing for physicians and their staff members to hit a positive accord with them.</li>
         <li>He/she can do a corporate booking for a movie or theatrical show.</li>
       </ul>
     </td>
-    <td style="border: solid 1px black;">12. SalesRep can do this once every 6 months</td>
-    <td style="border: solid 1px black;">12. Based on the type of outing, it could be organised at any of the leisure time venue</td>
+    <td style="border: solid 1px black;">13. SalesRep can do this once every 6 months</td>
+    <td style="border: solid 1px black;">13. Based on the type of outing, it could be organised at any of the leisure time venue</td>
   </tr>
 
 </table>
@@ -251,6 +264,7 @@ B) DISTRICT MANAGER:
     <td style="border: solid 1px black;">2. This should take place in the first quarter of the year. </td>
     <td style="border: solid 1px black;">2. To protect the confidentiality of the plan, these activities should be carried inside BioPharma's office</td>
   </tr>
+  
   <tr>
     <td style="border: solid 1px black;">3. Generate estimated cost of operating the sales force in his/her district on a quarterly basis. </td>
     <td style="border: solid 1px black;">
@@ -291,6 +305,7 @@ B) DISTRICT MANAGER:
     <td style="border: solid 1px black;">
       <ul>
         <li>District manager needs to study the sales pattern in each territory of his/her district, number of upcoming physicians, what type of new products in BioPharma planning to release and after comprehending all these parameters, he/she should come up with a call plan for each SalesRep under him/her.</li>
+        <li>Create SalesRep to Physician alignment based on location of SalesRep and Physician and also SalesRep's training and experience.</li>
         <li>Set target number of physicians to be visited by each SalesRep and also the target number of physicians with status "Prescribing" at the end of a quarter.</li>
         <li>Review this call plan and alignment at the end of every cycle and update it as per the activities in current previous cycle plan.</li>
       </ul>
@@ -349,7 +364,7 @@ B) DISTRICT MANAGER:
 
 </table>
 
-C) National Head: 
+C) NATIONAL HEAD: 
 
 <table>
   <tr>
@@ -388,7 +403,20 @@ C) National Head:
     <td style="border: solid 1px black;">2. To protect the confidentiality of the plan, these activities should be carried inside BioPharma's office</td>
   </tr>
   <tr>
-    <td style="border: solid 1px black;">3. Monitor the Research and Development department of BioPharma. Set targets for them in terms of innovative products to be released every quarter</td>
+    <td style="border: solid 1px black;">3. Design a template for presentation and specification document to be presented to physicians during meetings</td>
+    <td style="border: solid 1px black;">
+      <ul>
+        <li>Design a common template for presentations to be used as a guidline by all SalesReps, one for each medicine.</li>
+        <li>Discuss with District Managers before finalising the template.</li>
+        <li>Distribute these templates to all SalesReps.</li>
+      </ul>
+    </td>
+    <td style="border: solid 1px black;">3. This should be done as soon as a medicine is released.</td>
+    <td style="border: solid 1px black;">3. Ideally, this planning should take place in BioPharma's office</td>
+  </tr>
+
+  <tr>
+    <td style="border: solid 1px black;">4. Monitor the Research and Development department of BioPharma. Set targets for them in terms of innovative products to be released every quarter</td>
     <td style="border: solid 1px black;">
       <ul>
         <li>Liaison with R&D head and take regular update on research work</li>
@@ -396,34 +424,34 @@ C) National Head:
         <li>Designate budget for R&D department and monitor its consumption</li>
       </ul>
     </td>
-    <td style="border: solid 1px black;">3. National head needs to do this regularly. He/she should take updates from R&D head every 2 weeks</td>
-    <td style="border: solid 1px black;">3. Can be carried out at BioPharma's office or R&D center</td>
+    <td style="border: solid 1px black;">4. National head needs to do this regularly. He/she should take updates from R&D head every 2 weeks</td>
+    <td style="border: solid 1px black;">4. Can be carried out at BioPharma's office or R&D center</td>
   </tr>
   <tr>
-    <td style="border: solid 1px black;">4. Design BioPharma's Ethical Code of Conduct and communicate same to District Managers</td>
+    <td style="border: solid 1px black;">5. Design BioPharma's Ethical Code of Conduct and communicate same to District Managers</td>
     <td style="border: solid 1px black;">
       <ul>
         <li>Based on BioPharma's policies, design the Code of Conduct to be followed by SalesReps in the field.</li>
         <li>Update the document in case policy change takes place and communicate the same to District Managers.</li>
       </ul>
     </td>
-    <td style="border: solid 1px black;">4. Carried out on as need basis</td>
-    <td style="border: solid 1px black;">4. National Head can carry these out from BioPharma's office</td>
+    <td style="border: solid 1px black;">5. Carried out on as need basis</td>
+    <td style="border: solid 1px black;">5. National Head can carry these out from BioPharma's office</td>
   </tr>
   <tr>
-    <td style="border: solid 1px black;">5. Manage the Incentive Calculation for District Manager for all districts</td>
+    <td style="border: solid 1px black;">6. Manage the Incentive Calculation for District Manager for all districts</td>
     <td style="border: solid 1px black;">
       <ul>
         <li>Calculate the percentage of target achieved by a District in terms of number of physicians with positive response and its impact on Over The Counter sales of medicines.</li>
         <li>Based on these parameters, disburse incentive for District Managers.</li>
       </ul>
     </td>
-    <td style="border: solid 1px black;">5. Incentive calculation takes place at the end of every quarter</td>
-    <td style="border: solid 1px black;">5. For the sake of confidentiality, should be done from BioPharma's office. </td>
+    <td style="border: solid 1px black;">6. Incentive calculation takes place at the end of every quarter</td>
+    <td style="border: solid 1px black;">6. For the sake of confidentiality, should be done from BioPharma's office. </td>
   </tr>
 
   <tr>
-    <td style="border: solid 1px black;">6. Monitor the distribution pipeline for dissemination of medicines to pharmacies in US</td>
+    <td style="border: solid 1px black;">7. Monitor the distribution pipeline for dissemination of medicines to pharmacies in US</td>
     <td style="border: solid 1px black;">
       <ul> 
         <li>Take regular updates from Distribution Manager</li>
@@ -431,11 +459,11 @@ C) National Head:
         <li>Monitor the budget assigned to distribution department and make sure the cost of distribution does not surpass that amount.</li>
       </ul>
     </td>
-    <td style="border: solid 1px black;">6. This should be carried out once every fortnight</td>
-    <td style="border: solid 1px black;">6. Should be executed in  BioPharma's office</td>
+    <td style="border: solid 1px black;">7. This should be carried out once every fortnight</td>
+    <td style="border: solid 1px black;">7. Should be executed in  BioPharma's office</td>
   </tr>
   <tr>
-    <td style="border: solid 1px black;">7. Hire District Managers and Sales Representatives to meet resource demands</td>
+    <td style="border: solid 1px black;">8. Hire District Managers and Sales Representatives to meet resource demands</td>
     <td style="border: solid 1px black;">
       <ul>
         <li>When ever there is a opening for District Manager or Sales Representative, talk to the third party hiring consultant to put out advertisement for the job</li>
@@ -443,20 +471,20 @@ C) National Head:
         <li>Take interviews for both the positions and offer employment to someone you deem fit</li>
       </ul>
     </td>
-    <td style="border: solid 1px black;">7. Executed on as need basis</td>
-    <td style="border: solid 1px black;">7. Should be executed in  BioPharma's office</td>
+    <td style="border: solid 1px black;">8. Executed on as need basis</td>
+    <td style="border: solid 1px black;">8. Should be executed in  BioPharma's office</td>
   </tr>
 
   <tr>
-    <td style="border: solid 1px black;">8. Liaison with National Heads of other countries to share ideas and views on some innovate techniques to run the business </td>
+    <td style="border: solid 1px black;">9. Liaison with National Heads of other countries to share ideas and views on some innovate techniques to run the business </td>
     <td style="border: solid 1px black;">
       <ul>
         <li>Talk to counterparts in UK and Canada to share ideas and views.</li>
         <li>Design and implement any methodology that has proved successful in other countries.</li>
       </ul>
     </td>
-    <td style="border: solid 1px black;">8. This should take place once every quarter</td>
-    <td style="border: solid 1px black;">8. Could take place at the head office of any of the countries. </td>
+    <td style="border: solid 1px black;">9. This should take place once every quarter</td>
+    <td style="border: solid 1px black;">9. Could take place at the head office of any of the countries. </td>
   </tr>
 </table>
 
@@ -483,8 +511,7 @@ _Purpose of using the software_:
 4. Refer to the training material online - in order to remember the material as much as possible
 5. Maintain contact of all physicians and medical facilities that are aligned to himself/herself
 6. Logging of sample medicines distribution
-
-_Situation of using the software_:
+7. To be able to see presentations made and used by other SalesReps promoting medicines that he himself is promoting
 
 
 <table>
@@ -529,6 +556,29 @@ _Situation of using the software_:
     <td style="border: solid 1px black;">No need for manually keeping record of number of samples given or remaining and also relief from sending regular updates to DM</td>
     <td style="border: solid 1px black;">Every SalesRep will be able to see the number of samples assigned to him/her for a cycle. He can submit a request for more samples if needed. This request will directly go to DM. SalesRep can also input how many number of samples he has given to a particular physician. On submitting, that number will be deducted from his account automatically. DM will also be able to see the all these numbers.</td>
   </tr>
+  <tr>
+    <td style="border: solid 1px black;">7.</td>
+    <td style="border: solid 1px black;">Able to see presentations being used by other SalesReps and gain insights from there</td>
+    <td style="border: solid 1px black;">Every SalesRep promoting a particular type of medicine will be able to see presentations of other SalesRep promoting same medicine anywhere in US. He/she will have "Read only" rights to other presentations.</td>
+  </tr>
+  <tr>
+    <td style="border: solid 1px black;">8.</td>
+    <td style="border: solid 1px black;">Automatic reminder setup for "Prospecting" and "Lost" physicians</td>
+    <td style="border: solid 1px black;">
+      <ul>
+        <li>As soon as SalesRep enters "Prospecting" as status for a physician, and possible date of next meeting, system sets a reminder for that SalesRep with notification to be sent 2 days before the next meeting. Notification will contain all the details from previous meeting.</li>
+        <li>For "Lost" physicians, system notifys the SalesRep as soon as a new medicine is released by R&D. Physician might be interested in this new product and SalesRep will try to convert him/her to a customer.</li>
+      </ul>
+    </td>    
+  </tr>
+
+  <tr>
+    <td style="border: solid 1px black;">9.</td>
+    <td style="border: solid 1px black;">Automatic emails to "Prescribing" and "Prospecting" customers on specail ocassions</td>
+    <td style="border: solid 1px black;">There will be many email templates for festive ocassions and other special ocassions in SalesFast. SalesRep can use any of these and setup an automatic email disbursing pipeline through which emails will be sent to "Prescribing" and/or "Prospecting" physicians. These emails will be sent on festivals and other ocassions like anniversary of a physician.
+    </td>    
+  </tr>
+
 </table>
 
 ### [User B]
@@ -546,6 +596,7 @@ _Purpose of using the software_:
 5. Update/add content to the e-detailing portal designed for physician's reference
 6. Update/add content to SalesRep's online training material
 7. Take informed decision to create and manage cycle plan for a SalesRep 
+8. Monitor and update alignment created by SalesFast
 
 _Situation of using the software_:
 
@@ -607,6 +658,28 @@ _Situation of using the software_:
     <td style="border: solid 1px black;">He/she should be able to understand the sales patterns in an intelligent manner and update the cycle plan accordingly</td>
     <td style="border: solid 1px black;">Submission done by SalesRep based on a fixed set of parameters and a similar submission by the physician will help DM understand as to what were the primary reasons due to which physician agreed/disagreed to prescribe BioPharma's medicines. DM can take intelligent decision based on this information.</td>
   </tr>
+  <tr>
+    <td style="border: solid 1px black;">6.</td>
+    <td style="border: solid 1px black;">Relief from creating large number of mappings for SalesRep to Physician, also known as alignment</td>
+    <td style="border: solid 1px black;">SalesFast will read the list of physicians from "Physician Database" and based on certain factors, for example 
+      <ul>
+        <li>location of physician and SalesRep,</li>
+        <li>what medical area the SalesRep is trained in,</li> 
+        <li>what is physician's speciality,</li>
+        <li>physician's reputation and </li>
+        <li>previous relations of the physician with BioPharma</li>    
+      </ul>
+      system will decide which Physician to be aligned to which SalesRep.
+    </td>
+  </tr>
+  <tr>
+    <td style="border: solid 1px black;">7.</td>
+    <td style="border: solid 1px black;">Automatic target update for a SalesRep in case he/she reaches his/her target well before end of cycle</td>
+    <td style="border: solid 1px black;">SalesFast will keep a track on customers converted by a SalesRep on a daily basis. If his/her performance is above a certain level, SalesFast will automatically increase the target and incentive assigned to a SalesRep.</td>
+  </tr>
+
+
+
 </table>
 
 
@@ -622,8 +695,8 @@ _Purpose of using the software_:
 2. Upload and update BioPharma's Code of Conduct policies on SalesFast
 3. To calculate incentive for each District Manager
 4. Update/add content to the e-detailing portal designed for physician's reference 
+5. Uploading the presentation template and sharing it will all SalesFast users 
 
-_Situation of using the software_:
 
 <table>
   <tr>
@@ -667,10 +740,21 @@ _Situation of using the software_:
     <td style="border: solid 1px black;">A unified system to moderate the material for e-detailing program meant for physicians</td>
     <td style="border: solid 1px black;">SalesFast will have a portal where National Heads can add details about a particular drug. This can be referred to by a physician if he/she is willing to enroll for e-detailing</td>
   </tr>
+  <tr>
+    <td style="border: solid 1px black;">5.</td>
+    <td style="border: solid 1px black;">A platform to share common templates of presentation for each type of medicines that SalesRep can download and use</td>
+    <td style="border: solid 1px black;">National Head will create templates for presentations to be used during meetings by SalesReps. They can upload these to SalesFast and all SalesReps will be able to import these to their own account on SalesFast and add content to it</td>
+  </tr>
 </table>
 
 ---
 ## Chapter 3 - Descriptions of each "Merit"
+
+This section describes the benefits of using SalesFast in terms of time saving, getting first hand intelligent information (without manual work) and eventually better profit. Following figure briefly describes all the benefits that SalesFast provides. 
+
+<img src="benefits-brief 2.jpg"/>
+
+Read through following points to understand these merits in depth.
 
 ### [Merit 1] Cost cutting and saving time of Sales Representatives:
 One of biggest concerns for BioPharma and many other pharmaceutical organisation is that a considerable portion of SalesRep's time is consumed in  repeatedly travelling long distance. They also have to spend a lot of time to attend multiple class room training program to get well versed with the company's sales policies and medical products. This precious time can be saved by using SalesFast and can be put to better use, for example, **attending more sales meetings and generating more profit**.This will also help in **cutting the cost incurred on training** of SalesRep by reducing the number of class room training sessions.
@@ -715,7 +799,7 @@ District Manager and National Heads create cycle plans for Sales Representatives
 SalesRep and Physicians will keep on making such submissions through out the cycle. At the end of every cycle, SalesFast will automatically analyse the data received so far and generate output that would help National Head and District Managers in making **informed decisions** to modulate the cycle plan if needed. The output will contain details like - For all the physicians whose status changed from "Prospecting" to "Lost", what was the primary reason for this negative change. Similarly for other combinations of status changes. This is a vital piece of information that would significantly help to increase the conversion rate of sales calls and eventually lead to better profit.
 
 #### [Function 1] 
-When a physician agrees to prescribe a certain product, he/she is given a set user id and password to login to the SalesFast. Upon first login, he/she will have to select one or more than one reasons as to what influenced him/her to agree to prescribe the product. It will be a pre-populated list of plausible reasons. This submission will be accessible by National Head and District managers. They can run some analysis on this to understand various aspects of successful sales calls from physician's perspective, for example, what factor about the sales call influences the physicians most, what are their expectations from the pharmaceutical industry, which area is a good target area. Then they can update the cycle plan based on this understanding. 
+When a physician agrees to prescribe a certain product, he/she is given a set of user id and password to login to the SalesFast. Upon first login, he/she will have to select one or more than one reasons as to what influenced him/her to agree to prescribe the product. It will be a pre-populated list of plausible reasons. This submission will be accessible by National Head and District managers. They can run some analysis on this to understand various aspects of successful sales calls from physician's perspective, for example, what factor about the sales call influences the physicians most, what are their expectations from the pharmaceutical industry, which area is a good target area. Then they can update the cycle plan based on this understanding. 
 
 **Priority:** High
 
@@ -736,7 +820,134 @@ All the information submitted in Function 1 & 2 will be analysed by SalesFast at
 **Implemented:** NA
 
 
-### [Merit 3] Less time consuming and smoother correspondence among SalesRep and Managers:
+### [Merit 3] Saving District Manager's time spent on 'SalesRep to Physician' Alignment creation:
+Creating informed 'SalesRep to Physician' alignments is an important sales activity and a lot of profit depends on it. There are over a 100,000 physicians in US and over 2000 sales representatives. Creating this many to many mapping manually might eat up a considerable amount of time of District Manager. 
+To solve this problem, SalesFast creates these alignments automatically based on some of the pre-defined factors that DM used to consider while doing it manually. These factors are:
+* How far is the physician's office from SalesReps home address
+* Importance of physician based on his/her past relationship with BioPharma
+* Experience of SalesRep
+* Medical area the SalesRep is trained in  and 
+* what all physicians practice in that field
+
+Once alignment is created, DM can verify the alignments and make updates manually.
+
+#### [Function 1]:
+Take physician's data base as input and list of all active SalesReps. Create alignment based on above mentioned factors and update these alignments in SalesReps's account on SalesFast and similarly on District Manager's account.
+
+**Priority:** High
+
+**Implemented:** NA
+
+#### [Function 2]:
+DM will be able to update these alignments, if needed.  
+
+**Priority:** Low
+
+**Implemented:** NA
+
+### [Merit 4] Error and Hassle free incentive calculation:
+Incentive calculation is an important sales activity and should be done with precision. To decouple it from the factor of human error, SalesFast provides a hassle free, automatic incentive calculator that, with minimum manual intervention, calculates incentives for District Managers and Sales Representatives. 
+Incentive calculated is directly proportional to the amount of work done by SalesRep or DM, which quantified by the percentage of different targets achieved by them. One simple example is, percentage of physicians changing from "Prospecting" to "Prescribing" in a territory of SalesRep. 
+
+#### [Function 1]:
+At the end of each quarter, Incentive Calculator fetches the latest data from his account which describes percentage target achieved by that SalesRep. It also fetches the maximum incentive assigned for SalesRep and calculates the actual value of incentive based on these information. Before disbursing the incentive to SalesRep, National Head can cross check the values.
+
+**Priority:** Medium
+
+**Implemented:** NA
+
+#### [Function 2]:
+In case of District Managers, apart from fetching the percentage target achieved (in terms of calls), Incentive Calculator also checks the percentage change in Over The Counter sales of all the medicines in that district. It then calculates the incentive based on these parameters. 
+
+**Priority:** Medium
+
+**Implemented:** NA
+
+### [Merit 5] Firsthand patient feedback system and sample distribution management:
+Primary purpose of sample medicines is to  verify the effectiveness of the medicine. SalesRep issue a fixed number of sample medicines to physicians. They then give it to visiting patients. 
+Two important things that need to be taken care of are - District Manager and National Head should know how many samples were distributed to which physician. Secondly, BioPharma needs feedback from patients to know if the medicine actually worked or no. SalesFast helps in solving these.
+
+#### [Function 1]:
+At the beginning of each quarter, District Manager assigns a fixed number of sample medicines to all SalesReps. If a physician's status changes to "Prescribing" or "Prospecting", SalesRep can offer samples medicines to him/her and enter the number of samples given on SalesFast under his account. These updates will also be visible to District Manager and National Head.
+
+**Priority:** Medium
+
+**Implemented:** NA
+
+#### [Function 2]:
+Each stripe/box of sample medicine will have a QR code pointing to an open page on SalesFast. Patients using that medicine can go to the page and provide their feedback in the form of answers to some very simple questions. These submissions will be visible to District Manager and National Head. 
+
+**Priority:** Medium
+
+**Implemented:** NA
+
+### [Merit 6]: On the spot assistance:
+SalesFast will have features to assist SalesReps during the meeting as well. Following are the two scenarios where it can help:
+1. Sometimes SalesReps are not able to answer some of physicians technical (or other) questions on the spot. To solve this problem, SalesFast provides a universal portal where any user from BioPharma company can post a question under different categories like 'Extremely Urgent' and 'Urgent'. Any user who is on line and knows the answer can submit the response, hence catering to SalesRep's need then and there. This question will then go to a repository under SalesFast where all such questions are compiled for future reference by other SalesReps.
+2. To convince a physician, SalesRep can show results of Sample feedback submission from other regions. It is a good way to influence a physician by showing the performance of medicine.
+
+#### [Function 1]: Universal QnA portal:
+All users, upon login, will have a 'Live Meeting Questions' portal, where they can broadcast questions to the entire organization. They can grade the question either "Extremely Urgent" or "Urgent" based on type of question or how quickly the physician wants the answer. SalesRep can continue talking about other stuff and meanwhile someone on line and knowing the answer might respond to it.
+
+**Priority:** Medium
+
+**Implemented:** NA
+
+#### [Function 2]: Identifying top question by physicians:
+SalesFast will compile all these question under QnA repository. Each question has a score based on its importance. If a new question is posted, SalesFast engine will calculate a similarity index between this question and all the other questions in repository. If similar question is found, its score increases by one and this score decides the rank. Top questions are analyzed by DMs and National Head to improve SalesRep's training.       
+
+**Priority:** High
+
+**Implemented:** NA
+
+#### [Function 3]: Showing sample feedback results
+After patients submit feedback about medicine's performance, SalesFast will aggregate these submissions and generate a report showing performance of the medicine.       
+
+**Priority:** High
+
+**Implemented:** NA
+
+### [Merit 7] Customer Retention and Growth:
+Retaining existing customers is extremely important from a monetary point of view. When a physician becomes a prescribing customer for O_Med_1, i.e., his status becomes "Prescribing_O_Med_1", BioPharma needs to make sure that this particular physician is approached timely for new products. Also physicians with status "Lost" need to be approached with new medicines in future so that they can be made new customers for BioPharma.
+
+
+#### [Function 1]: Customer Retention - 
+When a SalesRep changes the status of a physician from "Prospecting" to "Prescribing_X_Med_Y", physician is given a set of credentials for e-detailing. Any new medicine released by BioPharma is showcased on this detailing portal. Simultaneously, SalesFast sets up an event dependent reminder for SalesRep to contact that physician. Event here refers to releasing of a new medicine. 
+
+**Priority:** High
+
+**Implemented:** NA
+
+#### [Function 2]: Growing Customer Base -
+When a physician's status is changed to "Lost" by a SalesRep, SalesFast sets up an event dependent reminder for that SalesRep and his District Manager. Event here refers to releasing of a medicine which is similar or slightly better than the medicine to which this physician said no.     
+
+**Priority:** Medium
+
+**Implemented:** NA
+
+### [Merit 8]: Real-time tracking of performance and target update:
+SalesFast will track the performance of SalesRepresentatives on a daily basis, based on the input they provide for each call. Based on this performance metric, their target and incentive values will be updated and notified to respective District Manager.
+
+#### [Function 1]: Dynamically updating sales target: 
+For each SalesRep, SalesFast will calculate the performance based on following metrics:
+* number of calls attended
+* number of physicians converted from "Prospecting" to "Prescribing_X_Med_Y"
+* number of physicians converted from "Lost" to "Prescribing"
+Based on this performance calculation, it will update the targets (increase or decrease) for that SalesRep.
+
+
+**Priority:** Medium
+
+**Implemented:** NA
+
+#### [Function 2]: Dynamically updating incentive amount:
+Incentive is the primary source of motivation for many SalesReps. It is set to a fixed value by District Manager at the beginning of the quarter. SalesFast will calculate performance of each SalesRep (as described in Function 1 above), and update the incentive (increase or decrease) based on this performance.      
+
+**Priority:** High
+
+**Implemented:** NA
+
+### [Merit 9] Less time consuming and smoother correspondence among SalesRep and Managers:
 In absence of an integrated tool, sales activities require constant flow of update emails between SalesRep and managers. SalesReps and managers spend a lot of time on such activities. For example:
 
 - SalesRep need to update managers about outcome of a meeting
@@ -766,7 +977,7 @@ SalesRep have a fixed set of material using which they are trained. This materia
 
 **Implemented:** NA
 
-### [Merit 4] Integrated platform for mutual learning:
+### [Merit 10] Integrated platform for mutual learning:
 The area of Sales force management and sales processes of many industries have become so mature that now most of the learning can be derived only from real life experiences of Sales Representatives while carrying out daily sales activities and related anecdotes. Many organizations and industries are adopting different ways to allow SalesReps to share such experiences and it has shown significant improvement in overall functioning of organizations. 
 SalesFast provides a unified platform for all SalesReps of BioPharma to share anecdotes from their experience of representing their company in the field. Some of these stories provide a good learning curve because some SalesReps are not able to handle certain situations on the field that have already been experienced by some other representatives. This builds a **robust peer to peer learning model** among colleagues. 
 
@@ -791,41 +1002,7 @@ All the submissions, grouped as per categories, will be visible to all represent
 
 **Implemented:** NA
 
-### [Merit 5] Hassle free incentive calculation:
-Incentive calculation is an important sales activity and should be done with precision. To decouple it from the factor of human error, SalesFast provides a hassle free, automatic incentive calculator that, with minimum manual intervention, calculates incentives for District Managers and Sales Representatives. 
-Incentive calculated is directly proportional to the amount of work done by SalesRep or DM, which quantified by the percentage of different targets achieved by them. One simple example is, percentage of physicians changing from "Prospecting" to "Prescribing" in a territory of SalesRep. 
 
-#### [Function 1]:
-At the end of each quarter, Incentive Calculator fetches the latest data from his account which describes percentage target achieved by that SalesRep. It also fetches the maximum incentive assigned for SalesRep and calculates the actual value of incentive based on these information. Before disbursing the incentive to SalesRep, National Head can cross check the values.
-
-**Priority:** Medium
-
-**Implemented:** NA
-
-#### [Function 2]:
-In case of District Managers, apart from fetching the percentage target achieved (in terms of calls), Incentive Calculator also checks the percentage change in Over The Counter sales of all the medicines in that district. It then calculates the incentive based on these parameters. 
-
-**Priority:** Medium
-
-**Implemented:** NA
-
-### [Merit 6] Sample Distribution Management and firsthand patient feedback system:
-Primary purpose of sample medicines is to  verify the effectiveness of the medicine. SalesRep issue a fixed number of sample medicines to physicians. They then give it to visiting patients. 
-Two important things that need to be taken care of are - District Manager and National Head should know how many samples were distributed to which physician. Secondly, BioPharma needs feedback from patients to know if the medicine actually worked or no. SalesFast helps in solving these.
-
-#### [Function 1]:
-At the beginning of each quarter, District Manager assigns a fixed number of sample medicines to all SalesReps. If a physician's status changes to "Prescribing" or "Prospecting", SalesRep can offer samples medicines to him/her and enter the number of samples given on SalesFast under his account. These updates will also be visible to District Manager and National Head.
-
-**Priority:** Medium
-
-**Implemented:** NA
-
-#### [Function 2]:
-Each stripe/box of sample medicine will have a QR code pointing to an open page on SalesFast. Patients using that medicine can go to the page and provide their feedback in the form of answers to some very simple questions. These submissions will be visible to District Manager and National Head. 
-
-**Priority:** Medium
-
-**Implemented:** NA
 
 ---
 
@@ -837,15 +1014,15 @@ Each stripe/box of sample medicine will have a QR code pointing to an open page 
 
 ## Chapter 5 - Improvement Content List
 
-#### Correspondence 2
-**Date:** 27/01/2016
+#### Correspondence 3
+**Date:** 03/02/2016
 
 **Feedback:** 
-- Describe the business model of your client in more detail   
-- Add more sales process specific activities
-- Add more merits that show significant benefit of using this system
+- Write about sales activities on a granular level   
+- More features so that application can help
+- Describe more about activities carried around a meeting
 
 **Result:**
-- Added an exhaustive list of roles and responsibilities for all levels assumed
-- Added a sales process flow diagram to briefly explain the entire process
-- Added 3 more merits that work towards betterment of profit of BioPharma
+- Considered more granular problems and their solutions
+- Added features to provide more assistance around meeting time
+- Added a diagram to brief about all merits

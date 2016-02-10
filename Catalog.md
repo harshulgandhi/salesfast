@@ -677,7 +677,11 @@ _Situation of using the software_:
     <td style="border: solid 1px black;">Automatic target update for a SalesRep in case he/she reaches his/her target well before end of cycle</td>
     <td style="border: solid 1px black;">SalesFast will keep a track on customers converted by a SalesRep on a daily basis. If his/her performance is above a certain level, SalesFast will automatically increase the target and incentive assigned to a SalesRep.</td>
   </tr>
-
+  <tr>
+    <td style="border: solid 1px black;">8.</td>
+    <td style="border: solid 1px black;">Automatic addition of new physicians to the system under relevant category of medical field</td>
+    <td style="border: solid 1px black;">SalesFast will check for new physicians in the master database provided by third party vendor, add it to BioPharma's database based on his/her speciality and make it available for automatic alignment.</td>
+  </tr>
 
 
 </table>
@@ -750,7 +754,8 @@ _Purpose of using the software_:
 ---
 ## Chapter 3 - Descriptions of each "Merit"
 
-This section describes the benefits of using SalesFast in terms of time saving, getting first hand intelligent information (without manual work) and eventually better profit. Following figure briefly describes all the benefits that SalesFast provides. 
+SalesFast can provide assistance to all roles at BioPharma in activities related to planning done before the sales meeting, during the meeting and after the meeting. Apart from these, it comes with certain features that can help BioPharma employees in terms of time saving, getting first hand intelligent information (without manual work) and eventually better profit. Following figure briefly describes all the benefits that SalesFast has. 
+
 
 <img src="benefits-brief 2.jpg"/>
 
@@ -769,14 +774,14 @@ The material used during first class room training for SalesRep will be availabl
 #### [Function 2] :
 District Manager and National Heads will be able to update the training material on SalesFast so that SalesRep can refer to the updated material.
 
-**Priority:** Medium
+**Priority:** Low
 
 **Implemented:** NA
 
 #### [Function 3] e-Detailing: 
 If a physician agrees to prescribe a particular medicine, he/she will be given a user id & password to login to a portal on SalesFast, provided the physician is willing to use it. This portal will contain details about the product SalesRep presented in the last meeting and also upcoming products will be introduced on the same portal. This way, SalesRep doesn't have to visit the physician very frequently, saving his time, and also the physician comes in direct contact with the organisation through the portal. 
 
-**Priority:** Medium
+**Priority:** High
 
 **Implemented:** NA
 
@@ -790,16 +795,16 @@ National Head will be able to add a product to e-detailing portal, in case a new
 #### [Function 5]
 To add more intelligence to the system, e-detailing portal will track the duration of time spent by a physician on each page. This data will be compiled by SalesFast and National Head and DMs will have access to it. They can sort it based on time duration and understand which section of e-detailing is most famous among physicians. This key insight  will help them alter their policies, research plans and call plans to cater more profits.
 
-**Priority:** Medium
+**Priority:** Low
 
 **Implemented:** NA
 
 ### [Merit 2] Power to create intelligent cycle plans to drive better profit:
-District Manager and National Heads create cycle plans for Sales Representatives where each cycle could be of 2 or 3 weeks. SalesRep execute calls based on this plan. Needless to say, company's profit depends on this plan significantly. It is inevitable to design it in such a fashion that its execution generates more profit in less time. SalesFast can help notably in this direction. SalesRep and Physicians, from their respective portals, can select the possible reasons for the outcome of the meeting. For example, if physician agrees to prescribe the medicine, what are the reasons that influenced him, such as - he genuinely liked the product or price is less as compared to other similar medicines in market, less side effects, liked the presentation, impressed by company's reputation. Similar options will be given to SalesRep. 
+District Manager and National Heads create cycle plans for Sales Representatives. SalesRep execute calls based on this plan. Needless to say, company's profit depends on this plan significantly. It is inevitable to design it in such a fashion that its execution generates more profit in less time. SalesFast can help notably in this direction. SalesRep and Physicians, from their respective portals, can select the possible reasons for the outcome of the meeting. For example, if physician agrees to prescribe the medicine, what are the reasons that influenced him, such as - he genuinely liked the product or price is less as compared to other similar medicines in market, less side effects, liked the presentation, impressed by company's reputation. Similar options will be given to SalesRep. 
 SalesRep and Physicians will keep on making such submissions through out the cycle. At the end of every cycle, SalesFast will automatically analyse the data received so far and generate output that would help National Head and District Managers in making **informed decisions** to modulate the cycle plan if needed. The output will contain details like - For all the physicians whose status changed from "Prospecting" to "Lost", what was the primary reason for this negative change. Similarly for other combinations of status changes. This is a vital piece of information that would significantly help to increase the conversion rate of sales calls and eventually lead to better profit.
 
 #### [Function 1] 
-When a physician agrees to prescribe a certain product, he/she is given a set of user id and password to login to the SalesFast. Upon first login, he/she will have to select one or more than one reasons as to what influenced him/her to agree to prescribe the product. It will be a pre-populated list of plausible reasons. This submission will be accessible by National Head and District managers. They can run some analysis on this to understand various aspects of successful sales calls from physician's perspective, for example, what factor about the sales call influences the physicians most, what are their expectations from the pharmaceutical industry, which area is a good target area. Then they can update the cycle plan based on this understanding. 
+When a physician agrees to prescribe a certain product, he/she is given a set of user id and password to login to the SalesFast. Upon first login, he/she will have to select one or more than one reasons as to what influenced him/her to agree to prescribe the product. It will be a pre-populated list of plausible reasons. 
 
 **Priority:** High
 
@@ -815,7 +820,7 @@ After a sales call, SalesRep, from his own portal, can select reasons for the ou
 #### [Function 3] 
 All the information submitted in Function 1 & 2 will be analysed by SalesFast at the end of every cycle. It will automatically generate a report for National Head's and DM's perusal that could contain details about primary reasons for physicians being "Lost" or becoming "Prescribing". This can serve as a very **good building block** for a robust and profitable cycle plan.  
 
-**Priority:** High
+**Priority:** Medium
 
 **Implemented:** NA
 
@@ -832,20 +837,51 @@ To solve this problem, SalesFast creates these alignments automatically based on
 Once alignment is created, DM can verify the alignments and make updates manually.
 
 #### [Function 1]:
-Take physician's data base as input and list of all active SalesReps. Create alignment based on above mentioned factors and update these alignments in SalesReps's account on SalesFast and similarly on District Manager's account.
+Take physician's data base as input and list of all active SalesReps. Create alignment based on above mentioned factors and update these alignments in SalesReps's account on SalesFast and similarly on District Manager's account. 
 
 **Priority:** High
 
 **Implemented:** NA
 
 #### [Function 2]:
+Alignments will be arranged in the order of 'Importance' of a physician. If a physician is renowned or there are high chances that he/she will become a 'Prescribing_X_Med_Y' physician, his/her alignment to the SalesRep is bound to come near the top of the alignment list.  
+
+**Priority:** High
+
+**Implemented:** NA
+
+#### [Function 3]:
 DM will be able to update these alignments, if needed.  
 
 **Priority:** Low
 
 **Implemented:** NA
 
-### [Merit 4] Error and Hassle free incentive calculation:
+### [Merit 4] Appointment tracker & physician in vicinity:
+Everyday SalesRep calls some physicians from his/her alignment list and fixes certain apointments. SalesFast provides a way for DM to keep track of SalesRep's daily activities and automatic notification to SalesRep in case a physician cancels a meeting.
+
+#### [Function 1]: Appointment Tracking
+If a physician agrees to meet on a particular day, SalesRep can enter this appointment's detail in SalesFast with approximate time of the meeting. DM will be able to see this information and get realtime update on SalesRep's activities.  
+
+**Priority:** High
+
+**Implemented:** NA
+
+#### [Function 2]: Cancellation notifications:
+As soon as SalesRep confirms an appointment with a physician, a confirmation email will be sent to the physician with a link showing details of the appointment. This will be a information page on SalesFast itself. Physician can 'Cancel' the appointment in case something urgent comes up. Automatic notification will be sent to the SalesRep and he can fix another appointment from his pool of aligned physicians.  
+
+**Priority:** High
+
+**Implemented:** NA
+
+#### [Function 3]: Physicians in vicinity:
+A SalesRep visits physicians based on appointments that he/she has fixed in the morning. After confirming all appointments, SalesFast will identify other physicians in the vicinity (same ZIP code) of these confirmed appointments so that SalesRep can try to visit them and save a significant portion of time, which he might have spent in visiting the same area again.  
+
+**Priority:** High
+
+**Implemented:** NA
+
+### [Merit 5] Error and Hassle free incentive calculation:
 Incentive calculation is an important sales activity and should be done with precision. To decouple it from the factor of human error, SalesFast provides a hassle free, automatic incentive calculator that, with minimum manual intervention, calculates incentives for District Managers and Sales Representatives. 
 Incentive calculated is directly proportional to the amount of work done by SalesRep or DM, which quantified by the percentage of different targets achieved by them. One simple example is, percentage of physicians changing from "Prospecting" to "Prescribing" in a territory of SalesRep. 
 
@@ -859,29 +895,29 @@ At the end of each quarter, Incentive Calculator fetches the latest data from hi
 #### [Function 2]:
 In case of District Managers, apart from fetching the percentage target achieved (in terms of calls), Incentive Calculator also checks the percentage change in Over The Counter sales of all the medicines in that district. It then calculates the incentive based on these parameters. 
 
-**Priority:** Medium
+**Priority:** Low
 
 **Implemented:** NA
 
-### [Merit 5] Firsthand patient feedback system and sample distribution management:
+### [Merit 6] Firsthand patient feedback system and sample distribution management:
 Primary purpose of sample medicines is to  verify the effectiveness of the medicine. SalesRep issue a fixed number of sample medicines to physicians. They then give it to visiting patients. 
 Two important things that need to be taken care of are - District Manager and National Head should know how many samples were distributed to which physician. Secondly, BioPharma needs feedback from patients to know if the medicine actually worked or no. SalesFast helps in solving these.
 
 #### [Function 1]:
 At the beginning of each quarter, District Manager assigns a fixed number of sample medicines to all SalesReps. If a physician's status changes to "Prescribing" or "Prospecting", SalesRep can offer samples medicines to him/her and enter the number of samples given on SalesFast under his account. These updates will also be visible to District Manager and National Head.
 
-**Priority:** Medium
+**Priority:** Low
 
 **Implemented:** NA
 
 #### [Function 2]:
 Each stripe/box of sample medicine will have a QR code pointing to an open page on SalesFast. Patients using that medicine can go to the page and provide their feedback in the form of answers to some very simple questions. These submissions will be visible to District Manager and National Head. 
 
-**Priority:** Medium
+**Priority:** High
 
 **Implemented:** NA
 
-### [Merit 6]: On the spot assistance:
+### [Merit 7]: On the spot assistance SalesRep:
 SalesFast will have features to assist SalesReps during the meeting as well. Following are the two scenarios where it can help:
 1. Sometimes SalesReps are not able to answer some of physicians technical (or other) questions on the spot. To solve this problem, SalesFast provides a universal portal where any user from BioPharma company can post a question under different categories like 'Extremely Urgent' and 'Urgent'. Any user who is on line and knows the answer can submit the response, hence catering to SalesRep's need then and there. This question will then go to a repository under SalesFast where all such questions are compiled for future reference by other SalesReps.
 2. To convince a physician, SalesRep can show results of Sample feedback submission from other regions. It is a good way to influence a physician by showing the performance of medicine.
@@ -889,7 +925,7 @@ SalesFast will have features to assist SalesReps during the meeting as well. Fol
 #### [Function 1]: Universal QnA portal:
 All users, upon login, will have a 'Live Meeting Questions' portal, where they can broadcast questions to the entire organization. They can grade the question either "Extremely Urgent" or "Urgent" based on type of question or how quickly the physician wants the answer. SalesRep can continue talking about other stuff and meanwhile someone on line and knowing the answer might respond to it.
 
-**Priority:** Medium
+**Priority:** Low
 
 **Implemented:** NA
 
@@ -900,21 +936,21 @@ SalesFast will compile all these question under QnA repository. Each question ha
 
 **Implemented:** NA
 
-#### [Function 3]: Showing sample feedback results
-After patients submit feedback about medicine's performance, SalesFast will aggregate these submissions and generate a report showing performance of the medicine.       
+#### [Function 3]: Showing sample feedback results:
+After patients submit feedback about medicine's performance, SalesFast will aggregate these submissions and generate a report showing performance of the medicine.
 
 **Priority:** High
 
 **Implemented:** NA
 
-### [Merit 7] Customer Retention and Growth:
+### [Merit 8] Customer Retention and Growth:
 Retaining existing customers is extremely important from a monetary point of view. When a physician becomes a prescribing customer for O_Med_1, i.e., his status becomes "Prescribing_O_Med_1", BioPharma needs to make sure that this particular physician is approached timely for new products. Also physicians with status "Lost" need to be approached with new medicines in future so that they can be made new customers for BioPharma.
 
 
 #### [Function 1]: Customer Retention - 
 When a SalesRep changes the status of a physician from "Prospecting" to "Prescribing_X_Med_Y", physician is given a set of credentials for e-detailing. Any new medicine released by BioPharma is showcased on this detailing portal. Simultaneously, SalesFast sets up an event dependent reminder for SalesRep to contact that physician. Event here refers to releasing of a new medicine. 
 
-**Priority:** High
+**Priority:** Medium
 
 **Implemented:** NA
 
@@ -925,7 +961,7 @@ When a physician's status is changed to "Lost" by a SalesRep, SalesFast sets up 
 
 **Implemented:** NA
 
-### [Merit 8]: Real-time tracking of performance and target update:
+### [Merit 9]: Real-time tracking of performance and target update:
 SalesFast will track the performance of Sales Representatives on a daily basis, based on the input they provide for each call. Based on this performance metric, their target and incentive values will be updated and notified to respective District Manager.
 
 #### [Function 1]: Dynamically updating sales target: 
@@ -942,36 +978,6 @@ Based on this performance calculation, it will update the targets (increase or d
 
 #### [Function 2]: Dynamically updating incentive amount:
 Incentive is the primary source of motivation for many SalesReps. It is set to a fixed value by District Manager at the beginning of the quarter. SalesFast will calculate performance of each SalesRep (as described in Function 1 above), and update the incentive (increase or decrease) based on this performance.      
-
-**Priority:** High
-
-**Implemented:** NA
-
-### [Merit 9] Less time consuming and smoother correspondence among SalesRep and Managers:
-In absence of an integrated tool, sales activities require constant flow of update emails between SalesRep and managers. SalesReps and managers spend a lot of time on such activities. For example:
-
-- SalesRep need to update managers about outcome of a meeting
-- Manager having to communicate to the Rep any change in his/her alignment with a particular physician
-- Any update in the training material or sales policies need to be communicated to SalesRep explicitly
-
-SalesFast provides an **integrated platform** to perform these updates and the respective communication is taken care of by the software application itself. 
-
-#### [Function 1]:
-After a sales call, SalesRep, from his own portal, can submit update about the call based on a fixed set of parameters, for example which physician was visited and which medicine was discussed, what is the status of this physician - _Specified_,_Prospecting_,_Lost_. This submission will be visible to the respective District Manager.
-
-**Priority:** High
-
-**Implemented:** NA
-
-#### [Function 2]:
-District Manager and National Heads can change the alignment of a SalesRep from one physician to another. This **information immediately gets percolated down** to other users who are using the system, including SalesReps. Thus there is no need to explicitly inform SalesRep about this change.
-
-**Priority:** Medium
-
-**Implemented:** NA
- 
-#### [Function 3]:
-SalesRep have a fixed set of material using which they are trained. This material will be available on SalesFast and can be updated by National Head or District Manager. These updates need not be explicitly communicated to the SalesRep as they will have 'read-only' access to the same (updated) material.
 
 **Priority:** Medium
 
@@ -998,9 +1004,33 @@ Before filling out anecdotes, each SalesRep will have to select the type of anec
 #### [Function 3]:
 All the submissions, grouped as per categories, will be visible to all representatives. They can read it anytime they want and gain insights about experiences of other SalesReps and learn.
 
-**Priority:** Medium
+**Priority:** Low
 
 **Implemented:** NA
+
+### [Merit 11] Less time consuming and smoother correspondence among SalesRep and Managers:
+In absence of an integrated tool, sales activities require constant flow of update emails between SalesRep and managers. SalesReps and managers spend a lot of time on such activities. For example:
+
+- SalesRep need to update managers about outcome of a meeting
+- Manager having to communicate to the Rep any change in his/her alignment with a particular physician
+- Any update in the training material or sales policies need to be communicated to SalesRep explicitly
+
+SalesFast provides an **integrated platform** to perform these updates and the respective communication is taken care of by the software application itself. 
+
+#### [Function 1]:
+After a sales call, SalesRep, from his own portal, can submit update about the call based on a fixed set of parameters, for example which physician was visited and which medicine was discussed, what is the status of this physician - _Specified_,_Prospecting_,_Lost_. This submission will be visible to the respective District Manager.
+
+**Priority:** Low
+
+**Implemented:** NA
+
+#### [Function 2]:
+SalesRep have a fixed set of material using which they are trained. This material will be available on SalesFast and can be updated by National Head or District Manager. These updates need not be explicitly communicated to the SalesRep as they will have 'read-only' access to the same (updated) material.
+
+**Priority:** Low
+
+**Implemented:** NA
+
 
 
 

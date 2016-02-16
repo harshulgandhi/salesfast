@@ -556,13 +556,13 @@ CREATE TABLE IF NOT EXISTS `salesfast`.`User_Account` (
   `userAccountId` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(45) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
-  `User_userId` INT NOT NULL,
+  `userId` INT NOT NULL,
   PRIMARY KEY (`userAccountId`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC),
   UNIQUE INDEX `password_UNIQUE` (`password` ASC),
-  INDEX `fk_User_Account_User1_idx` (`User_userId` ASC),
+  INDEX `fk_User_Account_User1_idx` (`userId` ASC),
   CONSTRAINT `fk_User_Account_User1`
-    FOREIGN KEY (`User_userId`)
+    FOREIGN KEY (`userId`)
     REFERENCES `salesfast`.`User` (`userId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)

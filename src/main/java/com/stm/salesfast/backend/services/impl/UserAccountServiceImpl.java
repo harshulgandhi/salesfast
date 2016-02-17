@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stm.salesfast.backend.dao.impl.UserAccountDaoImpl;
+import com.stm.salesfast.backend.dao.specs.UserAccountDao;
 import com.stm.salesfast.backend.dto.UserAccountDto;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
 
@@ -11,7 +12,7 @@ import com.stm.salesfast.backend.services.specs.UserAccountService;
 public class UserAccountServiceImpl implements UserAccountService {
 
 	@Autowired
-	private UserAccountDaoImpl userAccountDao;
+	private UserAccountDao userAccountDao;
 	
 	@Override
 	public UserAccountDto getUserAccountByUserName(String username) {

@@ -1,3 +1,4 @@
 *notes.txt*
 *.class
 *.lst
+/target/

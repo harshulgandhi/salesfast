@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.stm.salesfast.backend.services.impl.AlignmentFetchServiceImpl;
 import com.stm.salesfast.backend.services.impl.UserAccountServiceImpl;
+import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
+import com.stm.salesfast.backend.services.specs.UserAccountService;
 import com.stm.salesfast.frontend.LoginUI;
 
 import org.slf4j.Logger;
@@ -20,10 +22,10 @@ public class LoginController {
 	private Logger log = LoggerFactory.getLogger(LoginController.class.getName());
 	
 	@Autowired
-	private UserAccountServiceImpl userAccountService;
+	private UserAccountService userAccountService;
 	
 	@Autowired
-	private AlignmentFetchServiceImpl alignmentFetch;
+	private AlignmentFetchService alignmentFetch;
 	
 	@RequestMapping(value="/login", method=RequestMethod.GET)
 	public String loginPage(Model model){

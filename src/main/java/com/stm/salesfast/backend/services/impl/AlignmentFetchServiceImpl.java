@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import com.stm.salesfast.backend.dao.impl.AlignmentsDaoImpl;
+import com.stm.salesfast.backend.dao.specs.AlignmentsDao;
 import com.stm.salesfast.backend.dao.specs.PhysicianStgDao;
 import com.stm.salesfast.backend.dto.AlignmentsDto;
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
@@ -23,10 +24,7 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 	private JdbcTemplate jdbcTemplate;
 	
 	@Autowired
-	private AlignmentsDaoImpl alignmentDao;
-	
-	@Autowired
-	private PhysicianStgDto physicianDto;
+	private AlignmentsDao alignmentDao;
 	
 	@Autowired
 	private PhysicianStgDao physicianDao;
@@ -65,7 +63,7 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 		List<AlignmentsDto> alignmentsByUserId = getAlignmentByUserId(userId);
 		
 		for(AlignmentsDto eachAlignment : alignmentsByUserId){
-			physicianDto = physicianDao.getBy(eachAlignment.getPhysicianId());
+			PhysicianStgDto physicianDto = physicianDao.getBy(eachAlignment.getPhysicianId());
 			System.out.println(physicianDto);
 		}
 		

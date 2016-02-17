@@ -21,7 +21,7 @@ public class PhysicianStgDaoImpl implements PhysicianStgDao {
 	@Autowired
 	public JdbcTemplate jdbcTemplate;
 	
-	private static final String FETCH_BY_ID = "SELECT * FROM Physicians_Staging WHERE userId = ?";
+	private static final String FETCH_BY_ID = "SELECT * FROM physicians_staging WHERE physicianId = ?";
 	private static final String INSERT_USER = "INSERT INTO Physicians_Staging "+
 	" (firstName, lastName, email, contactNumber, addressLineOne, addressLineTwo, city, state, zip, medicalField, isNew, status) " +
 	" VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";

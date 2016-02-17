@@ -377,13 +377,13 @@ CREATE TABLE IF NOT EXISTS `salesfast`.`Alignments` (
   `alignmentId` INT NOT NULL AUTO_INCREMENT,
   `physicianId` INT NOT NULL,
   `userId` INT NOT NULL,
-  `Territories_territoryID` INT NOT NULL,
+  `territoryID` INT NOT NULL,
   `districtId` INT NOT NULL,
   `zip` VARCHAR(10) NOT NULL,
   PRIMARY KEY (`alignmentId`),
   INDEX `fk_Alignments_Physicians_Staging1_idx` (`physicianId` ASC),
   INDEX `fk_Alignments_User1_idx` (`userId` ASC),
-  INDEX `fk_Alignments_Territories1_idx` (`Territories_territoryID` ASC),
+  INDEX `fk_Alignments_Territories1_idx` (`territoryID` ASC),
   INDEX `fk_Alignments_Districts1_idx` (`districtId` ASC),
   CONSTRAINT `fk_Alignments_Physicians_Staging1`
     FOREIGN KEY (`physicianId`)
@@ -396,7 +396,7 @@ CREATE TABLE IF NOT EXISTS `salesfast`.`Alignments` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_Alignments_Territories1`
-    FOREIGN KEY (`Territories_territoryID`)
+    FOREIGN KEY (`territoryID`)
     REFERENCES `salesfast`.`Territories` (`territoryID`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,

@@ -1,11 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-<!-- <link rel="stylesheet" type="text/css" href="../static/css/lib/bootstrap.min.css" th:href="@{/css/lib/bootstrap.min.css}" /> -->
+<!-- Header to include css -->
+<div th:replace="fragments/header :: commonhead"></div>
+<link rel="stylesheet" type="text/css" href="../static/css/common.css" th:href="@{/css/common.css}"/>/>
 <meta charset="ISO-8859-1" />
 <title>SalesFast Login</title>
 </head>
 <body>
+	<div class="container">
+		<div class="page-heading"><h1>Log in to SalesFast</h1></div>
+		<div class="form-login-div">
+			<form class="form-login" action="#" th:action="@{/verifycredentials}"  th:object="${loginUiObj}" method="post">
+				<div class="form-field-div" id="login-form-fields">
+					<label for="loginUsername" id="username-lbl">User name: </label>
+					<input type="text" id="loginUsername" th:field="*{username}" name="username" autofocus="autofocus" required="required" placeholder="User Name" />
+					<label for="loginPassword" id="password-lbl">Password: </label>
+					<input type="password" id="loginPassword" th:field="*{password}" name="password" required="required" placeholder="Password" />
+				</div>
+				<div class="form-btn-div" id="login-form-btn"><button type="submit" value="Login">Login</button></div>
+			</form>	
+		</div>
+	</div>
 
+<!-- Common footer -->
+<div th:replace="fragments/footer :: footer"></div>
 </body>
 </html>

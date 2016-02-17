@@ -1,15 +1,14 @@
-package com.stm.salesfast.backend.dto;
+package com.stm.salesfast.frontend;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserAccountDto {
-	
-	private int userAccountId;
+public class LoginUI {
 	private String username;
 	private String password;
-	private int userId;
 }

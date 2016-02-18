@@ -22,11 +22,13 @@ public class PhysicianStgDto {
 	private String state;
 	private String zip;
 	private String medicalField;
-	private boolean isNew;
+	public boolean isNew;
 	private String status;
 	
 	@Override
 	public String toString(){
 		return " Physician Name : "+(firstName + " " +lastName)+"\n Email : "+email+"\n Contact : "+contactNumber+"\n Address : "+(addressLineOne+", "+addressLineTwo)+"\n City : "+city+"\n State : "+state+"\n Zip : "+zip+"\n Medical Field: "+medicalField+"\n Is New?: "+isNew;
 	}
+	
+	
 }

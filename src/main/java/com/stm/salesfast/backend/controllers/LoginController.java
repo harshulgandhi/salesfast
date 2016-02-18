@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.stm.salesfast.backend.services.impl.AlignmentFetchServiceImpl;
-import com.stm.salesfast.backend.services.impl.UserAccountServiceImpl;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
 import com.stm.salesfast.frontend.LoginUI;
@@ -36,12 +34,8 @@ public class LoginController {
 	@RequestMapping(value="/verifycredentials", method=RequestMethod.POST)
 	public String verifyCredentials(@ModelAttribute LoginUI loginUiObj, Model model){
 		model.addAttribute("loginUiObj", loginUiObj);
-		log.info("Username :"+loginUiObj.getUsername()+"\nPassword :"+loginUiObj.getPassword());
+		log.info("\nUsername :"+loginUiObj.getUsername()+"\nPassword :"+loginUiObj.getPassword());
 		
-		/* THIS IS A TEST PRINT */
-		alignmentFetch.getAlignmentByUserId((userAccountService.getUserAccountByUserName(loginUiObj.getUsername())).getUserId());
-		alignmentFetch.getAlignmentByUserIdToShow((userAccountService.getUserAccountByUserName(loginUiObj.getUsername())).getUserId());
-		
-		return userAccountService.verifyUserCredentials(loginUiObj.getUsername(), loginUiObj.getPassword()) ?  "testpage" :  "login"; 
+		return userAccountService.verifyUserCredentials(loginUiObj.getUsername(), loginUiObj.getPassword()) ?  "home" :  "login"; 
 	}
 }

@@ -1,5 +1,6 @@
 package com.stm.salesfast.backend.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -61,14 +62,13 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 	public List<PhysicianStgDto> getAlignmentByUserIdToShow(int userId) {
 		// TODO Auto-generated method stub
 		List<AlignmentsDto> alignmentsByUserId = getAlignmentByUserId(userId);
-		
+		List<PhysicianStgDto> alignedPhysicians = new ArrayList<>();
 		for(AlignmentsDto eachAlignment : alignmentsByUserId){
 			PhysicianStgDto physicianDto = physicianDao.getBy(eachAlignment.getPhysicianId());
-			System.out.println(physicianDto);
+			alignedPhysicians.add(physicianDto);
+			log.info(""+physicianDto);
 		}
-		
-		
-		return null;
+		return alignedPhysicians;
 	}
 	
 	/**

@@ -1,1 +1,10 @@
 @CHARSET "ISO-8859-1";
+
+.submit-for-appointments{
+	padding-left: 15px;
+    padding-right: 15px;
+}
+
+.appointment-time{
+	color: black;
+}

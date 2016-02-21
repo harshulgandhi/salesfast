@@ -37,9 +37,9 @@ public class AlignmentController {
 	public String showAlignments(Model model){
 		
 		/* THIS IS A TEST PRINT */
-		/*User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	    String name = user.getUsername(); //get logged in username
-	    log.info("\nLogged in user is : "+name);*/
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	    String name = user.getUsername(); //get logged in user name
+	    log.info("\nLogged in user is : "+name);
 		
 		List<PhysicianStgDto> alignedPhysician = alignmentFetch.getAlignmentByUserIdToShow((userAccountService.getUserAccountByUserName(CURRENTUSERNAME)).getUserId());
 		model.addAttribute("listOfAlignedPhysician", alignedPhysician);

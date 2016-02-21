@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import com.stm.salesfast.backend.dao.impl.UserAccountDaoImpl;
 import com.stm.salesfast.backend.dao.specs.UserAccountDao;
 import com.stm.salesfast.backend.dto.UserAccountDto;
+import com.stm.salesfast.backend.entity.UserAccountEntity;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
 
 @Service
@@ -36,6 +37,13 @@ public class UserAccountServiceImpl implements UserAccountService {
 	public boolean verifyUserCredentials(String username, String password) {
 		// TODO Auto-generated method stub
 		return getPassword(username).equals(password);
+	}
+
+	@Override
+	public UserAccountEntity getUserAccountEntityByUserName(String username) {
+		// TODO Auto-generated method stub
+		UserAccountDto userAccountDto = userAccountDao.getLoginCredentials(username);
+		return new UserAccountEntity(userAccountDto.getUsername(), userAccountDto.getPassword());
 	}
 
 	

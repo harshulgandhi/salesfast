@@ -2,15 +2,16 @@
  * handles UI interactivity for page 
  * showalignments.html
  */
-var d = null;
-//var cell = null;
 var selectedAlignments = [];
+
+/**
+ * Toggles between selected and de-selected rows of the table
+ * Takes care of clicks done on the 'time' element 
+ */
 $(document).ready(function() {
    var table = $('#aligned-physician-table').DataTable();
     $('#aligned-physician-table tbody').on( 'click', 'tr', function (e) {
     	var cell = $(e.target).get(0);
-    	if( e.target == $(this).find('#appointment-time')) alert("this is it!");
-    	d = table.row( this ).data();
     	if(cell.childElementCount < 1 && cell.nodeName != 'INPUT'){
 	    	$(this).toggleClass('selected');
 	    	if ( $(this).hasClass('selected') ) {
@@ -18,32 +19,47 @@ $(document).ready(function() {
 	        }else{
 	        	 $(this).find('.appointment-time').prop("disabled",true);
 	        }
-	    	console.log("This data == "+ d);
-	    	selectedAlignments.push(d.slice());
     	}
     } );
-    $('.appointment-time').change(function(){
-        alert(this.value);         //Date in full format alert(new Date(this.value));
-        var inputDate = new Date(this.value);
-    });
-});
+});	
 
+
+/**
+ * On click of submit button, DOM is traversed 
+ * and TDs of all selected TRs are listed.
+ * First (physId) and last (appointTime) are
+ * selected as two lists which are then converted to JSON for AJAX call
+ * @TODO : Add validation in case of user clicking on submit button
+ * without entering time for all selected physicians.
+ */
 $('.submit-selected-alignments').click(function(){
-	var physIds = selectedAlignments;
-	var appointTime = ["13:20", "16:50"];
-	var fixedAppointmentDetails = createJson(physIds, appointTime);
-	console.log("Json : "+JSON.stringify(fixedAppointmentDetails));
-	selectedAlignments.forEach(function(alignment){
-		console.log("Alignments   : "+alignment)
-		physIds.push(alignment[0]);
-		appointTime.push("13:20");
-	});
+	var physIds = [];
+	var appointTimeList = [];
 	
-	var idList = {physIdList : physIds}
+	$('.selected').each(function(i, val){
+		console.log($(this)[0]);
+		$(this).find('td').each(function(idx, val){
+			
+			if ($(val).find('.appointment-time').length != 0) {
+				var appointTime = $(val).find('.appointment-time').val();
+				if(appointTime == ''){		//Check if user entered time for all selected physicians
+					alert("Please mention time for all selected physicians");
+					return;
+				}
+				else{
+					console.log("TIME" + $(val).find('.appointment-time').val());
+					appointTimeList.push(appointTime);
+				}
+			}
+			if(idx == 0) physIds.push($(val).html());
+		});
+	});
+	var fixedAppointmentDetails = createJson(physIds, appointTimeList);
+	console.log("Json : "+JSON.stringify(fixedAppointmentDetails));
 	$.ajax({
 		type : 'POST',
 		url : "/fixappointments",
-		data : idList,
+		data : JSON.stringify(fixedAppointmentDetails),
 		contentType : "application/json; charset=utf-8",
 	    dataType : 'json',
 	    error : function() {
@@ -53,19 +69,21 @@ $('.submit-selected-alignments').click(function(){
 	        console.log("SUCCESS!!");
 	    }
 	});
+	
 });
 
 //Function to create JSON to store physician Ids and corresponding 
 //appointment time
 var createJson = function(physIds, appointTime){
 	var appointmentJson = {"appointments":[]};
+	var appointJsonList = [];
 	for( var i = 0; i<physIds.length;i++){
-		appointmentJson["appointments"].push(
+		appointJsonList.push(
 				{
-					"physicianId":physIds[i][0], 
+					"physicianId":parseInt(physIds[i][0]), 
 					"appointmentTime":appointTime[i]
 				});
 	}
-	return appointmentJson;
+	
+	return appointJsonList;
 }
-

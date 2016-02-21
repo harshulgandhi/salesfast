@@ -47,11 +47,12 @@ public class AlignmentController {
 	}
 	
 	
-//	public void fixAppointment(@RequestParam String param){
-//	public void fixAppointment(@RequestParam(value="physIdList[]") int[] physIds){
-	@RequestMapping(value="/fixappointments", method=RequestMethod.POST)
+	@RequestMapping(value="/fixappointments", method=RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	@ResponseBody
-	public void fixAppointment(@RequestBody AjaxRequestListMapper ajaxListMapper, HttpServletRequest request){
-			log.info("** First AJAX request received with param  = "+ajaxListMapper.getPhysicianIds());
+	public void fixAppointment(@RequestBody AjaxRequestListMapper[] appointments){
+		for (AjaxRequestListMapper appointmentList : appointments){
+			log.info("** Appointment fixed for physician = "+appointmentList.getPhysicianId()+" @ "+appointmentList.getAppointmentTime());
+		}
+		
 	} 
 }

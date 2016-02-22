@@ -62,7 +62,7 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 	public List<PhysicianStgDto> getAlignmentByUserIdToShow(int userId) {
 		// TODO Auto-generated method stub
 		List<AlignmentsDto> alignmentsByUserId = getAlignmentByUserId(userId);
-		List<PhysicianStgDto> alignedPhysicians = new ArrayList<>();
+		List<PhysicianStgDto> alignedPhysicians = new ArrayList<PhysicianStgDto>();
 		for(AlignmentsDto eachAlignment : alignmentsByUserId){
 			PhysicianStgDto physicianDto = physicianDao.getBy(eachAlignment.getPhysicianId());
 			alignedPhysicians.add(physicianDto);
@@ -90,6 +90,12 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 			String zip) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int getAlignedProduct(int userId, int physicianId) {
+		// TODO Auto-generated method stub
+		return alignmentDao.getAlignmentByUserIdPhysId(userId, physicianId).getProductId();
 	}
 
 }

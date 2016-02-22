@@ -1,7 +1,7 @@
 package com.stm.salesfast.backend.dto;
 
-import java.sql.Date;
 import java.sql.Time;
+import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,5 +22,16 @@ public class AppointmentDto {
 	@Override
 	public String toString(){
 		return "Appointment Id : "+appointmnetId+" | Physician Id : "+physicianId+" | User Id : "+userId+" | Time : "+time+" | Date : "+date+" | Product Id : "+productId+" | Confirmation Status: "+confirmationStatus;
+	}
+
+	public AppointmentDto(Time time2, Date currentDate, int physId,
+			int userId2, int productId2, String confirmationStatus2) {
+		// TODO Auto-generated constructor stub
+		this.time = time2;
+		this.date = currentDate;
+		this.physicianId = physId;
+		this.userId = userId2;
+		this.productId = productId2;
+		this.confirmationStatus = confirmationStatus2;
 	}
 }

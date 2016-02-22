@@ -35,11 +35,11 @@ public class AccessControlInterceptor extends HandlerInterceptorAdapter {
 				request.getSession().setAttribute("roles", auth.getAuthorities().stream()
 						.map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
 			}
-			if (request.getRequestURI().toString().endsWith("login")) {
+			/*if (request.getRequestURI().toString().endsWith("login")) {
 				response.sendRedirect(request.getContextPath() + "/");
 				return false;
 			}
-			/*String language = userService.getLanguage(request
+			String language = userService.getLanguage(request
 					.getUserPrincipal().getName());
 			if (language != null) {
 				locale = new Locale(language);

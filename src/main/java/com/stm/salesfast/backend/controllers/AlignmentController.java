@@ -1,6 +1,8 @@
 package com.stm.salesfast.backend.controllers;
 
+import java.text.ParseException;
 import java.util.List;
+import java.sql.Time;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,8 +21,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
+import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
 import com.stm.salesfast.backend.utils.AjaxRequestListMapper;
+import com.stm.salesfast.backend.utils.SalesFastUtilities;
 
 @Controller
 public class AlignmentController {
@@ -33,13 +37,16 @@ public class AlignmentController {
 	@Autowired
 	private AlignmentFetchService alignmentFetch;
 	
+	@Autowired
+	private AppointmentService appointmentService;
+	
 	@RequestMapping(value="/showalignments", method=RequestMethod.GET)
 	public String showAlignments(Model model){
 		
 		/* THIS IS A TEST PRINT */
-		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		/*User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    String name = user.getUsername(); //get logged in user name
-	    log.info("\nLogged in user is : "+name);
+	    log.info("\nLogged in user is : "+name);*/
 		
 		List<PhysicianStgDto> alignedPhysician = alignmentFetch.getAlignmentByUserIdToShow((userAccountService.getUserAccountByUserName(CURRENTUSERNAME)).getUserId());
 		model.addAttribute("listOfAlignedPhysician", alignedPhysician);
@@ -49,10 +56,13 @@ public class AlignmentController {
 	
 	@RequestMapping(value="/fixappointments", method=RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	@ResponseBody
-	public void fixAppointment(@RequestBody AjaxRequestListMapper[] appointments){
+	public void fixAppointment(@RequestBody AjaxRequestListMapper[] appointments) throws ParseException{
 		for (AjaxRequestListMapper appointmentList : appointments){
 			log.info("** Appointment fixed for physician = "+appointmentList.getPhysicianId()+" @ "+appointmentList.getAppointmentTime());
+			Time selectedTime = SalesFastUtilities.getTimeForStringTime(appointmentList.getAppointmentTime(), "HH:mm");
+			appointmentService.addAppointment(appointmentList.getPhysicianId(), selectedTime, new String("CONFIRMED"));
 		}
+		
 		
 	} 
 }

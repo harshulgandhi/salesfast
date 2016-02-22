@@ -15,9 +15,10 @@ public class AlignmentsDto {
 	private int territoryId;
 	private int districtId;
 	private String zip;
+	private int productId;
 	
 	@Override
 	public String toString(){
-		return "Alignment Id : "+alignmentId+" | Physician Id : "+physicianId+" | User Id : "+userId+" | Zip : "+zip+" | Territory Id : "+territoryId+" | District Id : "+districtId;
+		return "Alignment Id : "+alignmentId+" | Physician Id : "+physicianId+" | User Id : "+userId+" | Zip : "+zip+" | Territory Id : "+territoryId+" | District Id : "+districtId+" | Product Id : "+productId;
 	}
 }

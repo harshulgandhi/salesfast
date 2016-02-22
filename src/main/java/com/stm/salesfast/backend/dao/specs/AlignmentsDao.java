@@ -14,4 +14,7 @@ public interface AlignmentsDao {
 	
 	public List<AlignmentsDto> getAlignmentByUserIdZip(int userId, String zip);
 	
+	public void insertAlignment(AlignmentsDto alignmentDto);
+	
+	public  AlignmentsDto getAlignmentByUserIdPhysId(int userId, int physicianId);
 }

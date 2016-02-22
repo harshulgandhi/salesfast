@@ -1,14 +1,17 @@
 package com.stm.salesfast.backend.dao.impl;
 
+import java.sql.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.stm.salesfast.backend.dao.specs.AppointmentDao;
 import com.stm.salesfast.backend.dto.AppointmentDto;
 
+@Repository
 public class AppointmentDaoImpl implements AppointmentDao {
 
 	@Autowired

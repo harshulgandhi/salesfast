@@ -380,11 +380,14 @@ CREATE TABLE IF NOT EXISTS `salesfast`.`Alignments` (
   `territoryID` INT NOT NULL,
   `districtId` INT NOT NULL,
   `zip` VARCHAR(10) NOT NULL,
+  `Alignmentscol` VARCHAR(45) NULL,
+  `productId` INT NOT NULL,
   PRIMARY KEY (`alignmentId`),
   INDEX `fk_Alignments_Physicians_Staging1_idx` (`physicianId` ASC),
   INDEX `fk_Alignments_User1_idx` (`userId` ASC),
   INDEX `fk_Alignments_Territories1_idx` (`territoryID` ASC),
   INDEX `fk_Alignments_Districts1_idx` (`districtId` ASC),
+  INDEX `fk_Alignments_Products1_idx` (`productId` ASC),
   CONSTRAINT `fk_Alignments_Physicians_Staging1`
     FOREIGN KEY (`physicianId`)
     REFERENCES `salesfast`.`Physicians_Staging` (`physicianId`)
@@ -403,6 +406,11 @@ CREATE TABLE IF NOT EXISTS `salesfast`.`Alignments` (
   CONSTRAINT `fk_Alignments_Districts1`
     FOREIGN KEY (`districtId`)
     REFERENCES `salesfast`.`Districts` (`districtId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Alignments_Products1`
+    FOREIGN KEY (`productId`)
+    REFERENCES `salesfast`.`Products` (`productId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

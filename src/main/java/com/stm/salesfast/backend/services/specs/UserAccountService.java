@@ -8,6 +8,7 @@ public interface UserAccountService {
 	public UserAccountDto getUserAccountByUserId(int userId);
 	public boolean verifyUserCredentials(String username, String password);
 	public String getPassword(String username);
+	public int getUserIdByUserName(String username);
 	
 	/*TO IMPLEMENT SPRING SECURITY*/
 	public UserAccountEntity getUserAccountEntityByUserName(String username);

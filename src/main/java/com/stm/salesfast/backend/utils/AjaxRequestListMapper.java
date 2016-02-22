@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AjaxRequestListMapper implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 	private int physicianId;
 	private String appointmentTime;
 	

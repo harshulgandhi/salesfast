@@ -40,7 +40,13 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	@Override
 	public List<AppointmentDto> getAppointmentByUserId(int userId) {
 		// TODO Auto-generated method stub
-		
+		try{
+			return jdbcTemplate.query(FETCH_BY_USERID, (rs, rownnum)->{
+				return new AppointmentDto(rs.getInt("appointmentId"), rs.getTime("time"), rs.getDate("date"), rs.getInt("physicianId"), userId, rs.getInt("productId"), rs.getString("confirmationStatus"));
+			}, userId);
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
 		return null;
 	}
 

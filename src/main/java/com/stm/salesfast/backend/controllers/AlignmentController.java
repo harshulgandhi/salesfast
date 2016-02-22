@@ -56,13 +56,12 @@ public class AlignmentController {
 	
 	@RequestMapping(value="/fixappointments", method=RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	@ResponseBody
-	public void fixAppointment(@RequestBody AjaxRequestListMapper[] appointments) throws ParseException{
+	public String fixAppointment(@RequestBody AjaxRequestListMapper[] appointments) throws ParseException{
 		for (AjaxRequestListMapper appointmentList : appointments){
-			log.info("** Appointment fixed for physician = "+appointmentList.getPhysicianId()+" @ "+appointmentList.getAppointmentTime());
+			log.info("Appointment fixed for physician = "+appointmentList.getPhysicianId()+" @ "+appointmentList.getAppointmentTime());
 			Time selectedTime = SalesFastUtilities.getTimeForStringTime(appointmentList.getAppointmentTime(), "HH:mm");
 			appointmentService.addAppointment(appointmentList.getPhysicianId(), selectedTime, new String("CONFIRMED"));
 		}
-		
-		
+		return "forward:/showappointments";
 	} 
 }

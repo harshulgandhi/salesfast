@@ -23,25 +23,20 @@
 							<th>Email Id</th>
 							<th>Contact</th>
 							<th>Address</th>
-							<th>City</th>
-							<th>ZIP</th>
+							<th>Confirmation Status</th>
 							<th>Time of appointment</th>
+							<th>Product</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="eachAlignment : ${listOfAlignedPhysician}">
-							<td th:text="${eachAlignment.physicianId}"></td>
-							<td th:text="${eachAlignment.firstName} + ' '+${eachAlignment.lastName}"></td>
-							<td th:text="${eachAlignment.email}"></td>
-							<td th:text="${eachAlignment.contactNumber}"></td>
-							<td th:text="${eachAlignment.addressLineOne} +' '+ ${eachAlignment.addressLineTwo}"></td>
-							<td th:text="${eachAlignment.city}"></td>
-							<td th:text="${eachAlignment.state}"></td>
-							<td th:text="${eachAlignment.zip}"></td>
-							<td th:text="${eachAlignment.medicalField}"></td>
-							<td th:unless="${eachAlignment.isNew}" th:text="NO"></td>
-							<td th:if="${eachAlignment.isNew}" th:text="YES"></td>
-							<td><input class="appointment-time" type="time" disabled="disabled"/></td>
+						<tr th:each="eachAppointment : ${listOfAppointments}">
+							<td th:text="${eachAppointment.physicianName}"></td>
+							<td th:text="${eachAppointment.address}"></td>
+							<td th:text="${eachAppointment.contact}"></td>
+							<td th:text="${eachAppointment.emailId}"></td>
+							<td th:text="${eachAppointment.confirmationStatus}"></td>
+							<td th:text="${eachAppointment.time}"></td>
+							<td th:text="${eachAppointment.product}"></td>
 						</tr>
 					</tbody>
 				</table>

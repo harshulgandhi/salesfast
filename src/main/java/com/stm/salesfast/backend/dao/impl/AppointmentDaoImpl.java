@@ -23,13 +23,14 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	private static final String INSERT = "INSERT INTO appointment"+
 	"(time, date, physicianId, userId, productId, confirmationStatus)"+
 	"VALUES (?,?,?,?,?,?)";
+	private static final String FETCH_APPOINTMENTZIPS = "SELECT zip FROM appointment WHERE userId = ?";
 	
 	@Override
 	public AppointmentDto getAppointmentById(int appointmentId) {
 		// TODO Auto-generated method stub
 		try{
 			return jdbcTemplate.queryForObject(FETCH_BY_ID, (rs, rownnum)->{
-				return new AppointmentDto(appointmentId, rs.getTime("time"), rs.getDate("date"), rs.getInt("physicianId"), rs.getInt("userId"), rs.getInt("productId"), rs.getString("confirmationStatus"));
+				return new AppointmentDto(appointmentId, rs.getTime("time"), rs.getDate("date"), rs.getInt("physicianId"), rs.getInt("userId"), rs.getInt("productId"), rs.getString("confirmationStatus"), rs.getString("zip"));
 			}, appointmentId);
 		}catch(DataAccessException e){
 			e.printStackTrace();
@@ -42,7 +43,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
 		// TODO Auto-generated method stub
 		try{
 			return jdbcTemplate.query(FETCH_BY_USERID, (rs, rownnum)->{
-				return new AppointmentDto(rs.getInt("appointmentId"), rs.getTime("time"), rs.getDate("date"), rs.getInt("physicianId"), userId, rs.getInt("productId"), rs.getString("confirmationStatus"));
+				return new AppointmentDto(rs.getInt("appointmentId"), rs.getTime("time"), rs.getDate("date"), rs.getInt("physicianId"), userId, rs.getInt("productId"), rs.getString("confirmationStatus"), rs.getString("zip"));
 			}, userId);
 		}catch(DataAccessException e){
 			e.printStackTrace();

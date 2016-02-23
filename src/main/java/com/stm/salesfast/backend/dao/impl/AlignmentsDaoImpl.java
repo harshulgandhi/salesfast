@@ -26,11 +26,25 @@ public class AlignmentsDaoImpl implements AlignmentsDao {
 	private static final String FETCH_BY_PHYSICIANID = "SELECT * FROM alignments WHERE physicianId = ?";
 	private static final String FETCH_BY_USERID_ZIP = "SELECT * FROM alignments WHERE userId = ? and zip = ?";
 	private static final String FETCH_BY_USERIDPHYSICIANID = "SELECT * FROM alignments WHERE userId = ? and physicianId = ?";
+	private static final String DELETE_BY_USER_PHYSICIAN_PRODUCT = "DELETE FROM alignments WHERE userId = ? AND physicianId = ? AND productId = ?";
 	
+	/*This query fetches only those alignments for user that  are not in appointments table*/
+	private static final String FETCH_BY_USERID_NOTIN_APPOINTMENTS = "SELECT * FROM alignments WHERE alignments.userId = ? AND "
+																	+ "NOT EXISTS (SELECT 1 from appointment WHERE "
+																	+ "appointment.physicianId = alignments.physicianId AND "
+																	+ "appointment.userId = alignments.userId AND "
+																	+ "appointment.productId = alignments.productId)";
+	
+	/*This query fetches alignments to physicians available in close vicinity to physicians who have confirmed appointments*/
+	private static final String FETCH_VICINITY = "SELECT * FROM alignments WHERE userId = ? AND zip IN "
+												+ "(SELECT zip FROM appointment WHERE userId = ? GROUP BY zip) "
+												+ "AND NOT EXISTS (SELECT 1 from appointment WHERE "
+												+ "physicianId = physicianId AND "
+												+ "userId = userId AND "
+												+ "productId = productId)";
 	
 	@Override
 	public AlignmentsDto getAlignmentById(int alignmentId) {
-		// TODO Auto-generated method stub
 		try{
 			return jdbcTemplate.queryForObject(FETCH_BY_ID, (rs, rownum) -> {
 				return new AlignmentsDto(alignmentId, rs.getInt("physicianId"), rs.getInt("userId"),rs.getInt("territoryId"),rs.getInt("districtId"),rs.getString("zip"), rs.getInt("productId"));
@@ -114,19 +128,67 @@ public class AlignmentsDaoImpl implements AlignmentsDao {
 					FETCH_BY_USERIDPHYSICIANID, (rs, rownum) -> {
 						return new AlignmentsDto(rs.getInt("alignmentId"), physicianId, userId,rs.getInt("territoryId"),rs.getInt("districtId"),rs.getString("zip"), rs.getInt("productId"));}
 					, userId, physicianId);
-			/*return (AlignmentsDto) jdbcTemplate.query(
-					FETCH_BY_USERIDPHYSICIANID,
-					ps -> {
-						ps.setInt(1, userId);
-						ps.setInt(2, physicianId);
-						},(rs, rownum) -> {
-							return new AlignmentsDto(rs.getInt("alignmentId"), physicianId, userId,rs.getInt("territoryId"),rs.getInt("districtId"),rs.getString("zip"), rs.getInt("productId"));
-						});*/
 			
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}
 		return null;
 	}
+
+	@Override
+	public void deleteByUserPhysicianProduct(int userId, int physicianId, int productId) {
+		// TODO Auto-generated method stub
+		try{
+			jdbcTemplate.update(DELETE_BY_USER_PHYSICIAN_PRODUCT, (ps)->{
+				ps.setInt(1, userId);
+				ps.setInt(2, physicianId);
+				ps.setInt(3, productId);
+			});
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		
+	}
+
+	/**
+	 * To fetch alignments for a user that are not in 
+	 * appointments table. This helps in removing those physicians
+	 * from alignments table on the UI with whom user has fixed an
+	 * appointment 
+	 * @param userId: User id for which non-appointed alignments are to be fetched	
+	 * */
+	@Override
+	public List<AlignmentsDto> getAlignmentByUserIdNotInAppointments(int userId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_BY_USERID_NOTIN_APPOINTMENTS, (rs, rownum) -> {
+				return new AlignmentsDto(rs.getInt("alignmentId"), rs.getInt("physicianId"), userId,rs.getInt("territoryId"),rs.getInt("districtId"),rs.getString("zip"), rs.getInt("productId"));
+				}, userId);
+			
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	/**
+	 * To fetch alignments for a user in the vicinity
+	 * of appointments fixed for a particular day
+	 * @param userId: User id for which non-appointed alignments are to be fetched
+	 * @param zip: ZIP code in which alignment is to be looked up	
+	 * */
+	@Override
+	public List<AlignmentsDto> getAlignmentByUserIdInVicinity(int userId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_VICINITY, (rs, rownum) -> {
+				return new AlignmentsDto(rs.getInt("alignmentId"), rs.getInt("physicianId"), userId,rs.getInt("territoryId"),rs.getInt("districtId"),rs.getString("zip"), rs.getInt("productId"));
+				}, userId, userId);
+			
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}	
 
 }

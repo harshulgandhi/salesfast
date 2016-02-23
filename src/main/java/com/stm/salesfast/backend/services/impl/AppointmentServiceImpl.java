@@ -51,10 +51,13 @@ public class AppointmentServiceImpl implements AppointmentService {
 		// TODO Auto-generated method stub
 		int userId = userAccountService.getUserIdByUserName(CURRENTUSERNAME);
 		int productId = alignmentFetchService.getAlignedProduct(userId, physId);
-		appointmentDao.insertAppointment(new AppointmentDto(time, SalesFastUtilities.getCurrentDate(), physId, userId, productId,confirmationStatus));
+		String zip = physicianService.getPhysicianZipById(physId);
+		appointmentDao.insertAppointment(new AppointmentDto(time, SalesFastUtilities.getCurrentDate(), physId, userId, productId,confirmationStatus, zip));
 	}
 
 
+	
+	
 	@Override
 	public List<AppointmentEntity> getAppointmentToShow(int userId) {
 		// TODO Auto-generated method stub
@@ -77,6 +80,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 		for (AppointmentEntity eachAppointment : appointmentEntitiesList) log.info(""+eachAppointment);
 		return appointmentEntitiesList;
 	}
+
 	
 	
 }

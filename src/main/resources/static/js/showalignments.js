@@ -70,6 +70,10 @@ $('.submit-selected-alignments').click(function(){
 	    }
 	});
 	
+	$.ajax({
+		type :'GET',
+		url : "/showappointments"
+	});
 });
 
 //Function to create JSON to store physician Ids and corresponding 

@@ -10,5 +10,6 @@ public interface AppointmentService {
 
 	public void addAppointment(int physId, Time time, String confirmationStatus) throws ParseException;
 	
-	public List<AppointmentEntity> getAppointmentToShow(int userId); 
+	public List<AppointmentEntity> getAppointmentToShow(int userId);
+	
 }

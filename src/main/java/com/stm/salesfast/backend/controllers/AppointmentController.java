@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.entity.AppointmentEntity;
+import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
 
@@ -17,6 +18,10 @@ import com.stm.salesfast.backend.services.specs.UserAccountService;
 public class AppointmentController {
 	
 	String CURRENTUSERNAME = "johny";
+	
+	
+	@Autowired
+	private AlignmentFetchService alignmentFetchService;
 	
 	@Autowired
 	AppointmentService appointmentFetchService;
@@ -26,21 +31,16 @@ public class AppointmentController {
 	
 	@RequestMapping(value="/showappointments", method=RequestMethod.GET)
 	public String showAppointments(Model model){
+		
+		/*Fetching fixed appointments
+		 */
 		List<AppointmentEntity> appointmentsList = appointmentFetchService.getAppointmentToShow(userAccountService.getUserIdByUserName(CURRENTUSERNAME));
+		
+		List<PhysicianStgDto> alignedPhysicianInVicinity = alignmentFetchService.getAlignmentByUserIdInVicinityOfAppointments(
+				(userAccountService.getUserAccountByUserName(CURRENTUSERNAME)).getUserId());
+		
 		model.addAttribute("listOfAppointments", appointmentsList);
-		return "showappointments";
+		model.addAttribute("listOfPhysInVicinity", alignedPhysicianInVicinity);
+		return "showappointment";
 	}
-	
-	/*@RequestMapping(value="/showalignments", method=RequestMethod.GET)
-	public String showAlignments(Model model){
-		
-		 THIS IS A TEST PRINT 
-		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	    String name = user.getUsername(); //get logged in user name
-	    log.info("\nLogged in user is : "+name);
-		
-		List<PhysicianStgDto> alignedPhysician = alignmentFetch.getAlignmentByUserIdToShow((userAccountService.getUserAccountByUserName(CURRENTUSERNAME)).getUserId());
-		model.addAttribute("listOfAlignedPhysician", alignedPhysician);
-		return "showalignments";
-	}*/
 }

@@ -25,6 +25,7 @@ public class PhysicianStgDaoImpl implements PhysicianStgDao {
 	private static final String INSERT_USER = "INSERT INTO Physicians_Staging "+
 	" (firstName, lastName, email, contactNumber, addressLineOne, addressLineTwo, city, state, zip, medicalField, isNew, status) " +
 	" VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
+	private static final String FETCH_ZIP_BYID = "SELECT zip FROM physicians_staging WHERE physicianId = ?";
 	
 	@Override
 	public PhysicianStgDto getBy(int physicianId) {
@@ -63,6 +64,20 @@ public class PhysicianStgDaoImpl implements PhysicianStgDao {
 	public void deleteBy(int physicianId) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public String getZipById(int physicianId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.queryForObject(FETCH_ZIP_BYID, (rs, rownum) -> {
+				return new String(rs.getString("zip"));
+				}, physicianId);
+			
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

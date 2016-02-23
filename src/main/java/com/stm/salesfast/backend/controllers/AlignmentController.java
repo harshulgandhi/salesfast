@@ -35,7 +35,7 @@ public class AlignmentController {
 	private UserAccountService userAccountService;
 	
 	@Autowired
-	private AlignmentFetchService alignmentFetch;
+	private AlignmentFetchService alignmentFetchService;
 	
 	@Autowired
 	private AppointmentService appointmentService;
@@ -48,11 +48,21 @@ public class AlignmentController {
 	    String name = user.getUsername(); //get logged in user name
 	    log.info("\nLogged in user is : "+name);*/
 		
-		List<PhysicianStgDto> alignedPhysician = alignmentFetch.getAlignmentByUserIdToShow((userAccountService.getUserAccountByUserName(CURRENTUSERNAME)).getUserId());
+		/* These alignments are the ones that haven't been converted to an appointment
+		 * yet.
+		 * */
+		List<PhysicianStgDto> alignedPhysician = alignmentFetchService.getAlignmentByUserIdToShow(
+				(userAccountService.getUserAccountByUserName(CURRENTUSERNAME)).getUserId());
+		
 		model.addAttribute("listOfAlignedPhysician", alignedPhysician);
 		return "showalignments";
 	}
-	
+		
+	@RequestMapping(value="/toRedirect", method=RequestMethod.GET)
+	public String forRedirecting(){	
+		log.info("Redirecting!!");
+		return "redirect:/showappointments";
+	}
 	
 	@RequestMapping(value="/fixappointments", method=RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	@ResponseBody
@@ -62,6 +72,8 @@ public class AlignmentController {
 			Time selectedTime = SalesFastUtilities.getTimeForStringTime(appointmentList.getAppointmentTime(), "HH:mm");
 			appointmentService.addAppointment(appointmentList.getPhysicianId(), selectedTime, new String("CONFIRMED"));
 		}
-		return "forward:/showappointments";
+		return "redirect:/toRedirect";
 	} 
+	
+	
 }

@@ -19,4 +19,10 @@ public class PhysicianFetchServiceImpl implements PhysicianFetchService {
 		return physicianDao.getBy(physicianId);
 	}
 
+	@Override
+	public String getPhysicianZipById(int physId) {
+		// TODO Auto-generated method stub
+		return physicianDao.getZipById(physId);
+	}
+
 }

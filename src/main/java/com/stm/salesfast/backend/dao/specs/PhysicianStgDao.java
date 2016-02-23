@@ -8,4 +8,6 @@ public interface PhysicianStgDao {
 	public void insert(PhysicianStgDto physician);
 	
 	public void deleteBy(int physicianId);
+	
+	public String getZipById(int physicianId);
 }

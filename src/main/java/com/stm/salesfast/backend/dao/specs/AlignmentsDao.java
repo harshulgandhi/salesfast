@@ -17,4 +17,11 @@ public interface AlignmentsDao {
 	public void insertAlignment(AlignmentsDto alignmentDto);
 	
 	public  AlignmentsDto getAlignmentByUserIdPhysId(int userId, int physicianId);
+	
+	public void deleteByUserPhysicianProduct(int userId, int physicianId, int productId);
+
+	public List<AlignmentsDto> getAlignmentByUserIdNotInAppointments(int userId);
+	
+
+	List<AlignmentsDto> getAlignmentByUserIdInVicinity(int userId);
 }

@@ -68,7 +68,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 			log.info("Fetching ==> "+(++i));
 			PhysicianStgDto physicianDto = physicianService.getPhysicianById(eachAppointment.getPhysicianId());
 			ProductDto productDto = productFetchService.getProductById(eachAppointment.getProductId());
-			appointmentEntitiesList.add(new AppointmentEntity(physicianDto.getFirstName()+" "+physicianDto.getLastName(), 
+			appointmentEntitiesList.add(new AppointmentEntity(physicianDto.getPhysicianId(),
+					physicianDto.getFirstName()+" "+physicianDto.getLastName(), 
 					physicianDto.getAddressLineOne()+" "+physicianDto.getAddressLineTwo()+" "+physicianDto.getCity()+"-"+physicianDto.getZip(),
 					physicianDto.getContactNumber(), 
 					physicianDto.getEmail(), 

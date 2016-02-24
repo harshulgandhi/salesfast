@@ -12,6 +12,7 @@ import com.stm.salesfast.backend.dto.AlignmentsDto;
 @NoArgsConstructor
 @Data
 public class AppointmentEntity {
+	private int physicianId;
 	private String physicianName;
 	private String address;
 	private String contact;

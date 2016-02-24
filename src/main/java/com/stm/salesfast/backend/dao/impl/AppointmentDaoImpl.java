@@ -21,8 +21,8 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	private static final String FETCH_BY_USERID = "SELECT * FROM appointment WHERE userId = ?";
 	private static final String FETCH_BY_PHYSICIANID = "SELECT * FROM appointment WHERE physicianId = ?";
 	private static final String INSERT = "INSERT INTO appointment"+
-	"(time, date, physicianId, userId, productId, confirmationStatus)"+
-	"VALUES (?,?,?,?,?,?)";
+	"(time, date, physicianId, userId, productId, confirmationStatus, zip)"+
+	"VALUES (?,?,?,?,?,?,?)";
 	private static final String FETCH_APPOINTMENTZIPS = "SELECT zip FROM appointment WHERE userId = ?";
 	
 	@Override
@@ -68,6 +68,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
 				ps.setInt(4, appointment.getUserId());
 				ps.setInt(5, appointment.getProductId());
 				ps.setString(6, appointment.getConfirmationStatus());
+				ps.setString(7, appointment.getZip());
 			});
 		}catch(DataAccessException e){
 			e.printStackTrace();

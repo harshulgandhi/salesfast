@@ -2,11 +2,14 @@ package com.stm.salesfast.backend.dao.impl;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.stm.salesfast.backend.controllers.LoginController;
 import com.stm.salesfast.backend.dao.specs.AlignmentsDao;
 import com.stm.salesfast.backend.dto.AlignmentsDto;
 import com.stm.salesfast.backend.dto.UserAccountDto;
@@ -14,6 +17,8 @@ import com.stm.salesfast.backend.dto.UserDto;
 
 @Repository
 public class AlignmentsDaoImpl implements AlignmentsDao {
+	
+	private Logger log = LoggerFactory.getLogger(AlignmentsDaoImpl.class.getName());
 	
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
@@ -36,12 +41,12 @@ public class AlignmentsDaoImpl implements AlignmentsDao {
 																	+ "appointment.productId = alignments.productId)";
 	
 	/*This query fetches alignments to physicians available in close vicinity to physicians who have confirmed appointments*/
-	private static final String FETCH_VICINITY = "SELECT * FROM alignments WHERE userId = ? AND zip IN "
-												+ "(SELECT zip FROM appointment WHERE userId = ? GROUP BY zip) "
+	private static final String FETCH_VICINITY = "SELECT * FROM alignments WHERE alignments.userId = ? AND alignments.zip IN "
+												+ "(SELECT appointment.zip FROM appointment WHERE appointment.userId = ? GROUP BY zip) "
 												+ "AND NOT EXISTS (SELECT 1 from appointment WHERE "
-												+ "physicianId = physicianId AND "
-												+ "userId = userId AND "
-												+ "productId = productId)";
+												+ "appointment.physicianId = alignments.physicianId AND "
+												+ "appointment.userId = alignments.userId AND "
+												+ "appointment.productId = alignments.productId)";
 	
 	@Override
 	public AlignmentsDto getAlignmentById(int alignmentId) {
@@ -179,16 +184,15 @@ public class AlignmentsDaoImpl implements AlignmentsDao {
 	 * */
 	@Override
 	public List<AlignmentsDto> getAlignmentByUserIdInVicinity(int userId) {
-		// TODO Auto-generated method stub
 		try{
-			return jdbcTemplate.query(FETCH_VICINITY, (rs, rownum) -> {
+			List<AlignmentsDto> resultList = jdbcTemplate.query(FETCH_VICINITY, (rs, rownum) -> {
 				return new AlignmentsDto(rs.getInt("alignmentId"), rs.getInt("physicianId"), userId,rs.getInt("territoryId"),rs.getInt("districtId"),rs.getString("zip"), rs.getInt("productId"));
 				}, userId, userId);
 			
+			return resultList;
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}
 		return null;
 	}	
-
 }

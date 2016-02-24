@@ -61,7 +61,7 @@ public class AlignmentController {
 	@RequestMapping(value="/toRedirect", method=RequestMethod.GET)
 	public String forRedirecting(){	
 		log.info("Redirecting!!");
-		return "redirect:/showappointments";
+		return "showappointment";
 	}
 	
 	@RequestMapping(value="/fixappointments", method=RequestMethod.POST, consumes = "application/json", produces = "application/json")

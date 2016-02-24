@@ -4,6 +4,7 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.util.List;
 
+import com.stm.salesfast.backend.dto.AppointmentDto;
 import com.stm.salesfast.backend.entity.AppointmentEntity;
 
 public interface AppointmentService {
@@ -12,4 +13,7 @@ public interface AppointmentService {
 	
 	public List<AppointmentEntity> getAppointmentToShow(int userId);
 	
+	public int getAppointmentId (String username, int physicianId);
+	
+	public AppointmentDto getById(int appointmentId);
 }

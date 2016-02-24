@@ -81,6 +81,22 @@ public class AppointmentServiceImpl implements AppointmentService {
 		return appointmentEntitiesList;
 	}
 
-	
-	
+
+
+
+	@Override
+	public int getAppointmentId(String username, int physicianId) {
+		// TODO Auto-generated method stub
+		int userId = userAccountService.getUserAccountByUserName(username).getUserId();
+		return appointmentDao.getIdByPhysIdUserId(userId, physicianId);
+	}
+
+
+
+
+	@Override
+	public AppointmentDto getById(int appointmentId) {
+		// TODO Auto-generated method stub
+		return appointmentDao.getAppointmentById(appointmentId);
+	}
 }

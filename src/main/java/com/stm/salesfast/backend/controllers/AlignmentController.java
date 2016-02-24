@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
+import com.stm.salesfast.backend.services.specs.PhysicianFetchService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
 import com.stm.salesfast.backend.utils.AjaxRequestListMapper;
 import com.stm.salesfast.backend.utils.SalesFastUtilities;
@@ -39,6 +40,9 @@ public class AlignmentController {
 	
 	@Autowired
 	private AppointmentService appointmentService;
+	
+	@Autowired
+	private PhysicianFetchService physicianService; 
 	
 	@RequestMapping(value="/showalignments", method=RequestMethod.GET)
 	public String showAlignments(Model model){
@@ -71,9 +75,17 @@ public class AlignmentController {
 			log.info("Appointment fixed for physician = "+appointmentList.getPhysicianId()+" @ "+appointmentList.getAppointmentTime());
 			Time selectedTime = SalesFastUtilities.getTimeForStringTime(appointmentList.getAppointmentTime(), "HH:mm");
 			appointmentService.addAppointment(appointmentList.getPhysicianId(), selectedTime, new String("CONFIRMED"));
+			
+			
+			/*Send email with appointmentId as get parameter*/
+			int appointmentId = appointmentService.getAppointmentId(CURRENTUSERNAME, appointmentList.getPhysicianId());
+			String physicianEmail = physicianService.getPhysicianById(appointmentList.getPhysicianId()).getEmail();
+			/*  Send email to physicianEmail id with URL as 
+			 *  '127.0.0.1/yourappointment?id=appointmentId' 
+			 **/
+			
+			
 		}
 		return "redirect:/toRedirect";
 	} 
-	
-	
 }

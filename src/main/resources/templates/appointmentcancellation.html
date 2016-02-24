@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Header to include css -->
+<div th:replace="fragments/header :: commonhead"></div>
+<link rel="stylesheet" type="text/css" href="../static/css/common.css" th:href="@{/css/common.css}"/>
+<link rel="stylesheet" type="text/css" href="../static/css/alignments.css" th:href="@{/css/appointcancellation.css}"/>
+<meta charset="ISO-8859-1" />
+<title>SalesFast Login</title>
+</head>
+<body>
+	<div class="container">
+		<div class="page-heading"><h1>Your appointment for today</h1></div>
+		
+		<div class="row">
+			<div class="col-lg-12 col-sm-12">
+				<table id="appointment-fixed-physician-table" class="table">
+					<thead>
+						<!-- <tr>
+							<th>Physician Name</th>
+							<th>Address</th>
+							<th>Contact</th>
+							<th>Email Id</th>
+							<th>Confirmation Status</th>
+							<th>Time of appointment</th>
+							<th>Product</th>
+						</tr> -->
+					</thead>
+					<tbody>
+						<tr>
+							<td id="caption">Sales Representative : </td>
+							<td id="value" th:text="${appointmentDetail.salesRepName}"></td>
+						</tr>
+						<tr>
+							<td id="caption">Organization : </td>
+							<td id="value" th:text="${appointmentDetail.organisationName}"></td>
+						</tr>
+						<tr>
+							<td id="caption">Product : </td>
+							<td id="value" th:text="${appointmentDetail.product}"></td>
+						</tr>
+						<tr>
+							<td id="caption">Time : </td>
+							<td id="value" th:text="${appointmentDetail.time}"></td>
+						</tr>
+						<tr>
+							<td id="caption">Status : </td>
+							<td id="value" th:text="${appointmentDetail.status}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<!-- <div class="form-appointment-div">
+			<form class="form-appointment" action="#" th:action="@{/verifycredentials}"   method="post">
+				<div class="form-field-div" id="login-form-fields">
+					<label for="loginUsername" id="username-lbl">Sales Representative: </label>
+					<input type="text" id="loginUsername" name="username" autofocus="autofocus" required="required" placeholder="User Name" />
+					<label for="loginPassword" id="password-lbl">Password: </label>
+					<input type="password" id="loginPassword" name="password" required="required" placeholder="Password" />
+				</div>
+				<div class="form-btn-div" id="login-form-btn"><button type="submit" value="Login">Login</button></div>
+			</form>	
+		</div> -->
+	</div>
+
+<!-- Common footer -->
+<div th:replace="fragments/footer :: footer"></div>
+</body>
+</html>

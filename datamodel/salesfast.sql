@@ -380,7 +380,6 @@ CREATE TABLE IF NOT EXISTS `salesfast`.`Alignments` (
   `territoryID` INT NOT NULL,
   `districtId` INT NOT NULL,
   `zip` VARCHAR(10) NOT NULL,
-  `Alignmentscol` VARCHAR(45) NULL,
   `productId` INT NOT NULL,
   PRIMARY KEY (`alignmentId`),
   INDEX `fk_Alignments_Physicians_Staging1_idx` (`physicianId` ASC),
@@ -469,11 +468,11 @@ CREATE TABLE IF NOT EXISTS `salesfast`.`Meeting_Experience` (
   `salesRepNotConfident` BINARY NOT NULL,
   `companyReputationImpressive` BINARY NOT NULL,
   `companyReputationNotImpressive` BINARY NOT NULL,
-  `Meeting_Update_meetingUpdateId` INT NOT NULL,
+  `meetingUpdateId` INT NOT NULL,
   PRIMARY KEY (`meetingExperienceId`),
-  INDEX `fk_Meeting_Experience_Meeting_Update1_idx` (`Meeting_Update_meetingUpdateId` ASC),
+  INDEX `fk_Meeting_Experience_Meeting_Update1_idx` (`meetingUpdateId` ASC),
   CONSTRAINT `fk_Meeting_Experience_Meeting_Update1`
-    FOREIGN KEY (`Meeting_Update_meetingUpdateId`)
+    FOREIGN KEY (`meetingUpdateId`)
     REFERENCES `salesfast`.`Meeting_Update` (`meetingUpdateId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
@@ -535,6 +534,7 @@ CREATE TABLE IF NOT EXISTS `salesfast`.`Appointment` (
   `userId` INT NOT NULL,
   `productId` INT NOT NULL,
   `confirmationStatus` VARCHAR(45) NULL,
+  `cancellationReason` VARCHAR(150) NULL,
   PRIMARY KEY (`appointmentId`),
   INDEX `fk_Appointment_Physicians_Staging1_idx` (`physicianId` ASC),
   INDEX `fk_Appointment_User1_idx` (`userId` ASC),

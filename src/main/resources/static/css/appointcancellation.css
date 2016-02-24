@@ -1,0 +1,17 @@
+@CHARSET "ISO-8859-1";
+
+#appointment-fixed-physician-table{
+    width: 50%;
+    margin-left: 25%;
+    margin-right: 25%;
+}
+
+td#caption{
+	font-style: oblique;	
+}
+
+td#value{
+	font-size: large;
+    font-family: initial;
+    font-weight: 600;
+}

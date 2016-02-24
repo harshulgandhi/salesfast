@@ -24,6 +24,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	"(time, date, physicianId, userId, productId, confirmationStatus, zip)"+
 	"VALUES (?,?,?,?,?,?,?)";
 	private static final String FETCH_APPOINTMENTZIPS = "SELECT zip FROM appointment WHERE userId = ?";
+	private static final String FETCHID_BY_PHYS_USER = "SELECT appointmentId FROM appointment WHERE userId = ? AND physicianId = ?";
 	
 	@Override
 	public AppointmentDto getAppointmentById(int appointmentId) {
@@ -73,6 +74,20 @@ public class AppointmentDaoImpl implements AppointmentDao {
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public int getIdByPhysIdUserId(int physicianId, int userId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.queryForObject(FETCHID_BY_PHYS_USER, (rs, rownum) -> {
+				return rs.getInt("appointmentId");
+				}, userId, physicianId);
+			
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 }

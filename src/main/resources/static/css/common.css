@@ -10,10 +10,11 @@ h1{
 	text-align: right;
 }
 
-.form-field-div{
-	width: 148%;
+.form-field-div, .form-btn-div{
+	width: 82%;
 }
 
 .form-login{
 	display: table-caption;
+	width: 400px
 }

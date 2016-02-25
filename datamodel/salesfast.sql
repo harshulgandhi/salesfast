@@ -416,6 +416,42 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
+-- Table `salesfast`.`Appointment`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `salesfast`.`Appointment` (
+  `appointmentId` INT NOT NULL,
+  `time` TIME NOT NULL,
+  `date` DATE NOT NULL,
+  `physicianId` INT NOT NULL,
+  `userId` INT NOT NULL,
+  `productId` INT NOT NULL,
+  `confirmationStatus` VARCHAR(45) NULL,
+  `cancellationReason` VARCHAR(150) NULL,
+  `hasMeetingUpdate` TINYINT(1) NOT NULL DEFAULT 0,
+  `hasMeetingExperience` TINYINT(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`appointmentId`),
+  INDEX `fk_Appointment_Physicians_Staging1_idx` (`physicianId` ASC),
+  INDEX `fk_Appointment_User1_idx` (`userId` ASC),
+  INDEX `fk_Appointment_Products1_idx` (`productId` ASC),
+  CONSTRAINT `fk_Appointment_Physicians_Staging1`
+    FOREIGN KEY (`physicianId`)
+    REFERENCES `salesfast`.`Physicians_Staging` (`physicianId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Appointment_User1`
+    FOREIGN KEY (`userId`)
+    REFERENCES `salesfast`.`User` (`userId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Appointment_Products1`
+    FOREIGN KEY (`productId`)
+    REFERENCES `salesfast`.`Products` (`productId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
 -- Table `salesfast`.`Meeting_Update`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `salesfast`.`Meeting_Update` (
@@ -426,10 +462,12 @@ CREATE TABLE IF NOT EXISTS `salesfast`.`Meeting_Update` (
   `physicianId` INT NOT NULL,
   `productId` INT NOT NULL,
   `medicalFieldId` VARCHAR(5) NOT NULL,
+  `appointmentId` INT NOT NULL,
   PRIMARY KEY (`meetingUpdateId`),
   INDEX `fk_Meeting_Update_Physicians_Staging1_idx` (`physicianId` ASC),
   INDEX `fk_Meeting_Update_Products1_idx` (`productId` ASC),
   INDEX `fk_Meeting_Update_Medical_Fields1_idx` (`medicalFieldId` ASC),
+  INDEX `fk_Meeting_Update_Appointment1_idx` (`appointmentId` ASC),
   CONSTRAINT `fk_Meeting_Update_Physicians_Staging1`
     FOREIGN KEY (`physicianId`)
     REFERENCES `salesfast`.`Physicians_Staging` (`physicianId`)
@@ -443,6 +481,11 @@ CREATE TABLE IF NOT EXISTS `salesfast`.`Meeting_Update` (
   CONSTRAINT `fk_Meeting_Update_Medical_Fields1`
     FOREIGN KEY (`medicalFieldId`)
     REFERENCES `salesfast`.`Medical_Fields` (`medicalFieldId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Meeting_Update_Appointment1`
+    FOREIGN KEY (`appointmentId`)
+    REFERENCES `salesfast`.`Appointment` (`appointmentId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -469,11 +512,18 @@ CREATE TABLE IF NOT EXISTS `salesfast`.`Meeting_Experience` (
   `companyReputationImpressive` BINARY NOT NULL,
   `companyReputationNotImpressive` BINARY NOT NULL,
   `meetingUpdateId` INT NOT NULL,
+  `appointmentId` INT NOT NULL,
   PRIMARY KEY (`meetingExperienceId`),
   INDEX `fk_Meeting_Experience_Meeting_Update1_idx` (`meetingUpdateId` ASC),
+  INDEX `fk_Meeting_Experience_Appointment1_idx` (`appointmentId` ASC),
   CONSTRAINT `fk_Meeting_Experience_Meeting_Update1`
     FOREIGN KEY (`meetingUpdateId`)
     REFERENCES `salesfast`.`Meeting_Update` (`meetingUpdateId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_Meeting_Experience_Appointment1`
+    FOREIGN KEY (`appointmentId`)
+    REFERENCES `salesfast`.`Appointment` (`appointmentId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
@@ -516,40 +566,6 @@ CREATE TABLE IF NOT EXISTS `salesfast`.`Patient_Sample_Feedback` (
   PRIMARY KEY (`patientSampleFeedbackId`),
   INDEX `fk_Patient_Sample_Feedback_Products1_idx` (`productId` ASC),
   CONSTRAINT `fk_Patient_Sample_Feedback_Products1`
-    FOREIGN KEY (`productId`)
-    REFERENCES `salesfast`.`Products` (`productId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `salesfast`.`Appointment`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `salesfast`.`Appointment` (
-  `appointmentId` INT NOT NULL AUTO_INCREMENT,
-  `time` TIME NOT NULL,
-  `date` DATE NOT NULL,
-  `physicianId` INT NOT NULL,
-  `userId` INT NOT NULL,
-  `productId` INT NOT NULL,
-  `confirmationStatus` VARCHAR(45) NULL,
-  `cancellationReason` VARCHAR(150) NULL,
-  PRIMARY KEY (`appointmentId`),
-  INDEX `fk_Appointment_Physicians_Staging1_idx` (`physicianId` ASC),
-  INDEX `fk_Appointment_User1_idx` (`userId` ASC),
-  INDEX `fk_Appointment_Products1_idx` (`productId` ASC),
-  CONSTRAINT `fk_Appointment_Physicians_Staging1`
-    FOREIGN KEY (`physicianId`)
-    REFERENCES `salesfast`.`Physicians_Staging` (`physicianId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Appointment_User1`
-    FOREIGN KEY (`userId`)
-    REFERENCES `salesfast`.`User` (`userId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Appointment_Products1`
     FOREIGN KEY (`productId`)
     REFERENCES `salesfast`.`Products` (`productId`)
     ON DELETE NO ACTION

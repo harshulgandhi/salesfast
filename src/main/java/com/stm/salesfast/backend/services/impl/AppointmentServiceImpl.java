@@ -23,6 +23,7 @@ import com.stm.salesfast.backend.services.specs.PhysicianFetchService;
 import com.stm.salesfast.backend.services.specs.ProductFetchService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
 import com.stm.salesfast.backend.utils.SalesFastUtilities;
+import com.stm.salesfast.constant.ConstantValues;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
@@ -52,12 +53,15 @@ public class AppointmentServiceImpl implements AppointmentService {
 		int userId = userAccountService.getUserIdByUserName(CURRENTUSERNAME);
 		int productId = alignmentFetchService.getAlignedProduct(userId, physId);
 		String zip = physicianService.getPhysicianZipById(physId);
-		appointmentDao.insertAppointment(new AppointmentDto(time, SalesFastUtilities.getCurrentDate(), physId, userId, productId,confirmationStatus, zip));
+		appointmentDao.insertAppointment(new AppointmentDto(time, SalesFastUtilities.getCurrentDate(), physId, userId, productId,confirmationStatus, zip, false, false));
 	}
 
 
 	
-	
+	/**
+	 * This method returns appointments of a user based on whether
+	 * he/she has entered meeting update or meeting experience details 
+	 * */
 	@Override
 	public List<AppointmentEntity> getAppointmentToShow(int userId) {
 		// TODO Auto-generated method stub
@@ -65,17 +69,19 @@ public class AppointmentServiceImpl implements AppointmentService {
 		List<AppointmentEntity> appointmentEntitiesList = new ArrayList<>();
 		int i = 0;
 		for(AppointmentDto eachAppointment : appointmentDtos){
-			log.info("Fetching ==> "+(++i));
 			PhysicianStgDto physicianDto = physicianService.getPhysicianById(eachAppointment.getPhysicianId());
 			ProductDto productDto = productFetchService.getProductById(eachAppointment.getProductId());
-			appointmentEntitiesList.add(new AppointmentEntity(physicianDto.getPhysicianId(),
+			appointmentEntitiesList.add(new AppointmentEntity(eachAppointment.getAppointmnetId(),
+					physicianDto.getPhysicianId(),
 					physicianDto.getFirstName()+" "+physicianDto.getLastName(), 
 					physicianDto.getAddressLineOne()+" "+physicianDto.getAddressLineTwo()+" "+physicianDto.getCity()+"-"+physicianDto.getZip(),
 					physicianDto.getContactNumber(), 
 					physicianDto.getEmail(), 
 					eachAppointment.getConfirmationStatus(),
 					eachAppointment.getTime(), 
-					productDto.getProductName()));
+					productDto.getProductName(),
+					eachAppointment.isHasMeetingUpdate(),
+					eachAppointment.isHasMeetingExperience()));
 		}
 		log.info("Appointment fetched are : \n");
 		for (AppointmentEntity eachAppointment : appointmentEntitiesList) log.info(""+eachAppointment);

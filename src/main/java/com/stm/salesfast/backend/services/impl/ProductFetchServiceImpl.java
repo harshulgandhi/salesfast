@@ -16,7 +16,13 @@ public class ProductFetchServiceImpl implements ProductFetchService {
 	@Override
 	public ProductDto getProductById(int productId) {
 		// TODO Auto-generated method stub
-		return productDao.getProductById(productId);
+		return productDao.getProduct(productId);
+	}
+
+	@Override
+	public ProductDto getProductByName(String productName) {
+		// TODO Auto-generated method stub
+		return productDao.getProduct(productName);
 	}
 
 }

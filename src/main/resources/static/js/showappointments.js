@@ -1,19 +1,19 @@
 /**
  * 
  */
-
-
 var selectedAlignments = [];
+var tableAppointment = null;
 
-/**
- * Toggles between selected and de-selected rows of the table
- * Takes care of clicks done on the 'time' element 
- */
 $(document).ready(function() {
 	$('.slidedown-alignments').click(function(){
 		    $('.slidedown-alignments-show').slideToggle('fast');
 	});
    var table = $('#aligned-vicinity-physician-table').DataTable();
+   
+   /**
+    * Toggles between selected and de-selected rows of the table
+    * Takes care of clicks done on the 'time' element 
+    */
     $('#aligned-vicinity-physician-table tbody').on( 'click', 'tr', function (e) {
     	var cell = $(e.target).get(0);
     	if(cell.childElementCount < 1 && cell.nodeName != 'INPUT'){
@@ -24,7 +24,38 @@ $(document).ready(function() {
 	        	 $(this).find('.appointment-time').prop("disabled",true);
 	        }
     	}
-    } );
+    });
+    
+    tableAppointment = $('#appointment-fixed-physician-table').DataTable();
+    $('#appointment-fixed-physician-table tbody').on( 'click', 'tr', function (e) {
+    	var cell = $(e.target).get(0);	
+    	if ( $(this).hasClass('selected') ) {
+    		$(this).removeClass('selected');
+    		$('.add-meeting-update-btn').prop("disabled",true);
+    		$('.add-meeting-experience-btn').prop("disabled",true)
+        }else{
+        	tableAppointment.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+            var len = tableAppointment.row('.selected').data().length;					
+            
+            //To toggle meeting update and experience buttons based on database flag for that appointment
+            var hasMeetingUpdate = tableAppointment.row('.selected').data()[len-2];		
+            var hasMeetingExperience = tableAppointment.row('.selected').data()[len-1];
+            console.log("Row length : "+len+"\nHas meeting update : "+hasMeetingUpdate+"\nHas meeting experience entry : "+hasMeetingExperience)
+            toggleMeetingUpdateButtons(hasMeetingUpdate, hasMeetingExperience);
+//            $('.add-meeting-update-btn').prop("disabled",false);
+        }
+    	
+    	/*
+    	 * TO REMOVE A SELECTED ROW ON BUTTON CLICK
+    	$('#button').click( function () {
+            table.row('.selected').remove().draw( false );
+        });*/
+    	$(".book-publisher-selector").select2();
+    	$(".phys-status-selector").select2();
+    	
+    	$('#meetingupdate-add-button').click(addMeetingUpdate);
+    });
 });	
 
 
@@ -73,13 +104,43 @@ $('.submit-selected-alignments').click(function(){
 	        console.log("SUCCESS!!");
 	    }
 	});
-	
-	$.ajax({
-		type :'GET',
-		url : "/showappointments"
-	});
+	location.reload(true);
 });
 
+
+var addMeetingUpdate = function(event){
+	
+	var appointmentId = tableAppointment.row('.selected').data()[0];													//Getting Appointment id
+	var physicianId = tableAppointment.row('.selected').data()[1];													//Getting Physician id
+	var productName = tableAppointment.row('.selected').data()[tableAppointment.row('.selected').data().length-3];	//Getting product name
+	
+	var formData = {};
+	
+	formData['appointmentId'] = appointmentId;
+	formData['physicianId'] = physicianId;
+	formData['productName'] = productName;
+	formData['meetingStatus'] = $('.phys-status-selector').val();
+	formData['isEDetailing'] = $('.edetailing-flag-selector').val();
+	
+	console.log("Form data : "+JSON.stringify(formData));
+	
+	$.ajax({
+		type : 'POST',
+        url : "/addmeetingupdate",
+        data : JSON.stringify(formData),
+        contentType : 'application/json'
+    }).done(function() {
+        $('#meetingupdate-add-modal').modal('hide');
+        location.reload(true);
+    });
+}
+
+var toggleMeetingUpdateButtons = function(hasMeetingUpdate, hasMeetingExperience){
+	if(hasMeetingUpdate === 'true') $('.add-meeting-update-btn').prop("disabled",true);
+	else $('.add-meeting-update-btn').prop("disabled",false);
+	if(hasMeetingExperience === 'true') $('.add-meeting-experience-btn').prop("disabled",true);
+	else $('.add-meeting-experience-btn').prop("disabled",false);
+}
 //Function to create JSON to store physician Ids and corresponding 
 //appointment time
 var createJson = function(physIds, appointTime){
@@ -92,6 +153,5 @@ var createJson = function(physIds, appointTime){
 					"appointmentTime":appointTime[i]
 				});
 	}
-	
 	return appointJsonList;
 }

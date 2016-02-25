@@ -12,6 +12,7 @@ import com.stm.salesfast.backend.dto.AlignmentsDto;
 @NoArgsConstructor
 @Data
 public class AppointmentEntity {
+	private int appointmentId;
 	private int physicianId;
 	private String physicianName;
 	private String address;
@@ -20,9 +21,11 @@ public class AppointmentEntity {
 	private String confirmationStatus;
 	private Time time;
 	private String product;
+	private boolean hasMeetingUpdate;
+	private boolean hasMeetingExperience;
 	
 	@Override
 	public String toString(){
-		return " Physician Name : "+(physicianName)+"\n Email : "+emailId+"\n Contact : "+contact+"\n Address : "+(address)+"\n Confirmation Status: "+confirmationStatus+"\n Time : "+time+"\n Product : "+product;
+		return "Physician Name : "+(physicianName)+"\n Email : "+emailId+"\n Contact : "+contact+"\n Address : "+(address)+"\n Confirmation Status: "+confirmationStatus+"\n Time : "+time+"\n Product : "+product+" Meeting update : "+hasMeetingUpdate+" Meeting Experience : "+hasMeetingExperience;
 	}
 }

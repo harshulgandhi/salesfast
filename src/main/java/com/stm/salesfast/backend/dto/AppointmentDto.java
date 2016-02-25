@@ -19,14 +19,16 @@ public class AppointmentDto {
 	private int productId;
 	private String confirmationStatus;
 	private String zip;
+	private boolean hasMeetingUpdate;
+	private boolean hasMeetingExperience;
 	
 	@Override
 	public String toString(){
-		return "Appointment Id : "+appointmnetId+" | Physician Id : "+physicianId+" | User Id : "+userId+" | Time : "+time+" | Date : "+date+" | Product Id : "+productId+" | Confirmation Status: "+confirmationStatus+" | ZIP: "+zip;
+		return "Appointment Id : "+appointmnetId+" | Physician Id : "+physicianId+" | User Id : "+userId+" | Time : "+time+" | Date : "+date+" | Product Id : "+productId+" | Confirmation Status: "+confirmationStatus+" | ZIP: "+zip+" Meeting update : "+hasMeetingUpdate+" Meeting Experience : "+hasMeetingExperience;
 	}
 
 	public AppointmentDto(Time time2, Date currentDate, int physId,
-			int userId2, int productId2, String confirmationStatus2, String zip) {
+			int userId2, int productId2, String confirmationStatus2, String zip, boolean hasMeetingExperience, boolean hasMeetingUpdate) {
 		// TODO Auto-generated constructor stub
 		this.time = time2;
 		this.date = currentDate;
@@ -35,5 +37,7 @@ public class AppointmentDto {
 		this.productId = productId2;
 		this.confirmationStatus = confirmationStatus2;
 		this.zip = zip;
+		this.hasMeetingExperience = false;
+		this.hasMeetingUpdate = false;
 	}
 }

@@ -4,5 +4,6 @@ import com.stm.salesfast.backend.dto.ProductDto;
 
 public interface ProductsDao {
 
-	public ProductDto getProductById(int productId);
+	public ProductDto getProduct(int productId);
+	public ProductDto getProduct(String productName);
 }

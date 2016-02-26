@@ -106,4 +106,10 @@ public class AppointmentServiceImpl implements AppointmentService {
 	public void setHasMeetingUpdateFlag(int appointmentId, int flag) {
 		appointmentDao.setMeetinUpdateFlag(appointmentId, flag);
 	}
+
+	@Override
+	public void setHasMeetingExperienceFlag(int appointmentId, int flag) {
+		appointmentDao.setMeetinExperienceFlag(appointmentId, flag);
+		
+	}
 }

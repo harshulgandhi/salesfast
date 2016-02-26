@@ -51,16 +51,10 @@ $(document).ready(function() {
     	$('#button').click( function () {
             table.row('.selected').remove().draw( false );
         });*/
-    	// $(".edetailing-flag-selector").select2();
     	$(".phys-status-selector").select2();
-    	/*$(".likedproduct-flag-selector").select2();
-    	$(".priceaffordable-flag-selector").select2();
-    	$(".less-sideeffects-flag-selector").select2();
-    	$(".likedpresentation-flag-selector").select2();
-    	$(".confidence-flag-selector").select2();
-    	$(".companyreputation-flag-selector").select2();*/
-    	
-    	$('#meetingupdate-add-button').click(addMeetingUpdate);
+     	$('#meetingupdate-add-button').click(addMeetingUpdate);
+     	$('#meetingexperience-add-button').click(addMeetingExperience);
+     	
     });
 });	
 
@@ -141,11 +135,39 @@ var addMeetingUpdate = function(event){
     });
 }
 
+
+var addMeetingExperience = function(event){
+	var appointmentId = tableAppointment.row('.selected').data()[0];													//Getting Appointment id
+	var formData_ = {};
+
+	formData_['appointmentId'] = appointmentId;
+	formData_['likedTheProduct'] = $('.likedproduct-flag-selector').val() === "1" ? 'true':'false';
+	formData_['likedPriceAffordability'] = $('.priceaffordable-flag-selector').val() === "1" ? 'true':'false';
+	formData_['impressiveLessSideEffects'] = $('.less-sideeffects-flag-selector').val() === "1" ? 'true':'false';
+	formData_['likedPresentation'] = $('.likedpresentation-flag-selector').val() === "1" ? 'true':'false';
+	formData_['salesRepConfidence'] = $('.confidence-flag-selector').val() === "1" ? 'true':'false';
+	formData_['impressiveCompanyReputation'] = $('.companyreputation-flag-selector').val() === "1" ? 'true':'false';
+	
+
+	console.log("Meeting Experience Form data : "+JSON.stringify(formData_));
+
+	$.ajax({
+		type : 'POST',
+        url : "/addmeetingexperience",
+        data : JSON.stringify(formData_),
+        contentType : 'application/json'
+    }).done(function() {
+        $('#meetingexperience-add-modal').modal('hide');
+        location.reload(true);
+    });
+}
+
+
 var toggleMeetingUpdateButtons = function(hasMeetingUpdate, hasMeetingExperience){
 	if(hasMeetingUpdate === 'true') $('.add-meeting-update-btn').prop("disabled",true);
 	else $('.add-meeting-update-btn').prop("disabled",false);
 	if(hasMeetingExperience === 'true') $('.add-meeting-experience-btn').prop("disabled",true);
-	else $('.add-meeting-experience-btn').prop("disabled",false);
+	else if (hasMeetingUpdate === 'true' && hasMeetingExperience === 'false') $('.add-meeting-experience-btn').prop("disabled",false);
 }
 //Function to create JSON to store physician Ids and corresponding 
 //appointment time

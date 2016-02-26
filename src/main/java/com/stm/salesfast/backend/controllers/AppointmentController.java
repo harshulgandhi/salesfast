@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.entity.AppointmentEntity;
+import com.stm.salesfast.backend.entity.MeetingExperienceEntity;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
+import com.stm.salesfast.backend.services.specs.MeetingExperienceService;
 import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
 import com.stm.salesfast.constant.ConstantValues;
@@ -39,6 +41,9 @@ public class AppointmentController {
 	@Autowired
 	MeetingUpdateService meetingUpdateService;
 	
+	@Autowired
+	MeetingExperienceService meetingExperienceService;
+	
 	@RequestMapping(value="/showappointments", method=RequestMethod.GET)
 	public String showAppointments(Model model){
 		
@@ -60,6 +65,13 @@ public class AppointmentController {
 	public void meetingUpdate(@RequestBody MeetingUpdateEntity meetingUpdate) throws ParseException{
 		log.info("Meeting update received  : "+meetingUpdate);
 		meetingUpdateService.insertMeetinUpdate(meetingUpdate);
+	}
+	
+	@RequestMapping(value="/addmeetingexperience", method=RequestMethod.POST, consumes = "application/json")
+	@ResponseBody
+	public void meetingExperience(@RequestBody MeetingExperienceEntity meetingExperience) {
+		log.info("Meeting experience details received  : "+meetingExperience);
+		meetingExperienceService.insert(meetingExperience);
 	}
 }
 

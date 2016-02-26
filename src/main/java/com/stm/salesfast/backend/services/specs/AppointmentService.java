@@ -17,5 +17,7 @@ public interface AppointmentService {
 	
 	public AppointmentDto getById(int appointmentId);
 	
-	public void setHasMeetingUpdateFlag(int appointmentId, int flag); 
+	public void setHasMeetingUpdateFlag(int appointmentId, int flag);
+	
+	public void setHasMeetingExperienceFlag(int appointmentId, int flag);
 }

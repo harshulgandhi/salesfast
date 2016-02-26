@@ -14,5 +14,6 @@ public interface AppointmentDao {
 	public int getIdByPhysIdUserId(int userId, int physicianId);
 
 	public void setMeetinUpdateFlag(int appointmentId, int meetingUpdateFlag);
+	void setMeetinExperienceFlag(int appointmentId, int meetingUpdateFlag);
 	
 }

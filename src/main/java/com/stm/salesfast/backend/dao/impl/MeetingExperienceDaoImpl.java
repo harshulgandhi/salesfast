@@ -9,10 +9,12 @@ import com.stm.salesfast.backend.dto.MeetingExperienceDto;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.stm.salesfast.backend.dao.specs.MeetingExperienceDao;
 import com.stm.salesfast.constant.PhysicianStatus;
 
+@Repository
 public class MeetingExperienceDaoImpl implements MeetingExperienceDao {
 
 	@Autowired

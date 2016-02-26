@@ -42,4 +42,10 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 		appointmentService.setHasMeetingUpdateFlag(meetingUpdateEntity.getAppointmentId(), 1);
 	}
 
+	@Override
+	public MeetingUpdateDto getMeetingUpdateByAppointmentId(int appointmentId) {
+		// TODO Auto-generated method stub
+		return meetingUpdateDao.getByAppointmentId(appointmentId);
+	}
+
 }

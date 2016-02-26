@@ -31,6 +31,10 @@ public class AppointmentDaoImpl implements AppointmentDao {
 														+"SET `hasMeetingUpdate` = ? "
 														+"WHERE `appointmentId` = ?;";
 	
+	private static final String UPDATE_HASMEETINGEXPERIENCE = "UPDATE `salesfast`.`appointment` "
+														+"SET `hasMeetingExperience` = ? "
+														+"WHERE `appointmentId` = ?;";
+	
 	@Override
 	public AppointmentDto getAppointmentById(int appointmentId) {
 		// TODO Auto-generated method stub
@@ -108,6 +112,19 @@ public class AppointmentDaoImpl implements AppointmentDao {
 		// TODO Auto-generated method stub
 		try{
 			jdbcTemplate.update(UPDATE_HASMEETINGUPDATE, (ps)->{
+				ps.setInt(1, meetingUpdateFlag);
+				ps.setInt(2, appointmentId);
+			});
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void setMeetinExperienceFlag(int appointmentId, int meetingUpdateFlag) {
+		// TODO Auto-generated method stub
+		try{
+			jdbcTemplate.update(UPDATE_HASMEETINGEXPERIENCE, (ps)->{
 				ps.setInt(1, meetingUpdateFlag);
 				ps.setInt(2, appointmentId);
 			});

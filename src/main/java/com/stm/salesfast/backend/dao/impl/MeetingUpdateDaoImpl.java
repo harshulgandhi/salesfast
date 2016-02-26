@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.stm.salesfast.backend.dao.specs.MeetingUpdateDao;
+import com.stm.salesfast.backend.dto.MeetingExperienceDto;
 import com.stm.salesfast.backend.dto.MeetingUpdateDto;
 import com.stm.salesfast.constant.PhysicianStatus;
 
@@ -15,7 +16,9 @@ import com.stm.salesfast.constant.PhysicianStatus;
 public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
 
 	private Logger log = LoggerFactory.getLogger(MeetingUpdateDaoImpl.class.getName());
-
+	private static final String FETCH_BY_APPOINTMENTID = "SELECT * FROM meeting_update WHERE appointmentId = ?";
+	
+	
 	private static String INSERT = "INSERT INTO `salesfast`.`meeting_update` "
 			+ "(`date`,`status`,`isEDetailed`,`physicianId`,`productId`,`medicalFieldId`,`appointmentId`) "
 			+ "VALUES (?,?,?,?,?,?,?);";
@@ -40,5 +43,20 @@ public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public MeetingUpdateDto getByAppointmentId(int appointmentId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.queryForObject(FETCH_BY_APPOINTMENTID, (rs, rownum) -> {
+					return new MeetingUpdateDto(rs.getInt("meetingUpdateId"), rs.getDate("date"), rs.getString("status"), rs.getBoolean("isEDetailed"), rs.getInt("physicianId"), rs.getInt("productId"),rs.getString("medicalFieldId"),appointmentId);
+				}, appointmentId);
+			
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+		
 	}
 }

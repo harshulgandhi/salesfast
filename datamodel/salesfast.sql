@@ -468,6 +468,7 @@ CREATE TABLE IF NOT EXISTS `salesfast`.`Meeting_Update` (
   INDEX `fk_Meeting_Update_Products1_idx` (`productId` ASC),
   INDEX `fk_Meeting_Update_Medical_Fields1_idx` (`medicalFieldId` ASC),
   INDEX `fk_Meeting_Update_Appointment1_idx` (`appointmentId` ASC),
+  UNIQUE INDEX `appointmentId_UNIQUE` (`appointmentId` ASC),
   CONSTRAINT `fk_Meeting_Update_Physicians_Staging1`
     FOREIGN KEY (`physicianId`)
     REFERENCES `salesfast`.`Physicians_Staging` (`physicianId`)

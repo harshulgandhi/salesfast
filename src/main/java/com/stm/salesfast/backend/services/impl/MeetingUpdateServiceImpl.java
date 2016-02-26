@@ -9,6 +9,7 @@ import com.stm.salesfast.backend.dao.specs.MeetingUpdateDao;
 import com.stm.salesfast.backend.dto.MeetingUpdateDto;
 import com.stm.salesfast.backend.dto.ProductDto;
 import com.stm.salesfast.backend.entity.MeetingUpdateEntity;
+import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
 import com.stm.salesfast.backend.services.specs.ProductFetchService;
 import com.stm.salesfast.backend.utils.SalesFastUtilities;
@@ -22,6 +23,9 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 	@Autowired
 	MeetingUpdateDao meetingUpdateDao;
 	
+	@Autowired
+	AppointmentService appointmentService;
+	
 	@Override
 	public void insertMeetinUpdate(MeetingUpdateEntity meetingUpdateEntity) throws ParseException {
 		// TODO Auto-generated method stub
@@ -34,6 +38,8 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 				product.getProductId(),
 				product.getMedicalFieldId(),
 				meetingUpdateEntity.getAppointmentId()));
+		
+		appointmentService.setHasMeetingUpdateFlag(meetingUpdateEntity.getAppointmentId(), 1);
 	}
 
 }

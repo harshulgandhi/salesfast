@@ -32,4 +32,9 @@ public class MeetingUpdateDto {
 		this.medicalFieldId = medicalFieldId2;
 		this.appointmentId = appointmentId2;
 	}
+	
+	@Override
+	public String toString(){
+		return " Date : "+(date)+"\n Status : "+status+"\n isEDetailed : "+isEDetailed+"\n Physician Id : "+(physicianId)+"\n Product Id: "+productId+"\n Medical Field Id : "+medicalFieldId+"\n Appointment Id : "+appointmentId;
+	}
 }

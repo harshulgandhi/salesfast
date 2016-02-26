@@ -16,5 +16,6 @@ public interface AlignmentFetchService {
 	public List<PhysicianStgDto> getAlignmentByUserIdToShow(int userId, String zip);
 	
 	public int getAlignedProduct(int userId, int physicianId);
-	List<PhysicianStgDto> getAlignmentByUserIdInVicinityOfAppointments(int userId);
+	public List<PhysicianStgDto> getAlignmentByUserIdInVicinityOfAppointments(int userId);
+	
 }

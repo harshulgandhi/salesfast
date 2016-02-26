@@ -12,5 +12,7 @@ public interface AppointmentDao {
 	public void insertAppointment(AppointmentDto appointment);
 	
 	public int getIdByPhysIdUserId(int userId, int physicianId);
+
+	public void setMeetinUpdateFlag(int appointmentId, int meetingUpdateFlag);
 	
 }

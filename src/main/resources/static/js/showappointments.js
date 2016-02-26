@@ -51,8 +51,14 @@ $(document).ready(function() {
     	$('#button').click( function () {
             table.row('.selected').remove().draw( false );
         });*/
-    	$(".book-publisher-selector").select2();
+    	// $(".edetailing-flag-selector").select2();
     	$(".phys-status-selector").select2();
+    	/*$(".likedproduct-flag-selector").select2();
+    	$(".priceaffordable-flag-selector").select2();
+    	$(".less-sideeffects-flag-selector").select2();
+    	$(".likedpresentation-flag-selector").select2();
+    	$(".confidence-flag-selector").select2();
+    	$(".companyreputation-flag-selector").select2();*/
     	
     	$('#meetingupdate-add-button').click(addMeetingUpdate);
     });

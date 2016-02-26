@@ -18,3 +18,7 @@ h1{
 	display: table-caption;
 	width: 400px
 }
+
+.select-bool-flag{
+	width : 40%;
+}

@@ -21,9 +21,9 @@
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 					<span>Add Meeting Update</span>
 				</button>
-				<button id="book-edit-modal-btn" type="button" class="btn btn-default btn-md add-meeting-experience-btn" 
-					data-toggle="modal" data-target="#book-add-modal" disabled="disabled">
-					<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+				<button id="meeting-experience-modal-btn" type="button" class="btn btn-default btn-md add-meeting-experience-btn" 
+					data-toggle="modal" data-target="#meetingexperience-add-modal" disabled="disabled">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 					<span>Add Meeting Experience</span>
 				</button>
 				<!-- <button id="book-open-delete-modal-btn" type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#book-delete-modal" disabled="disabled">
@@ -114,6 +114,8 @@
 		</div>
 	</div>
 	
+	
+							<!-- Modal for adding meeting updates -->
 	<div class="modal fade" id="meetingupdate-add-modal" role="dialog" data-edit-mode="false">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -125,7 +127,7 @@
 					<h4 class="modal-title" id="addMeetingUpdateLabel">Meeting update</h4>
 				</div>
 				<div class="modal-body">
-					<form id="book-form" class="form-horizontal">
+					<form id="meeting-update-form" class="form-horizontal">
 						<div class="form-group" id="physician-id" style="display:none">
 							<label class="col-xs-3 control-label" id="id-label">ID</label>
 							<div class="col-xs-7">
@@ -143,7 +145,7 @@
 						<div class="form-group">
 							<label class="col-xs-5 control-label" id="edetailing-label">Opting for e-Detailing</label>
 							<div class="col-xs-5">
-								<select class="edetailing-flag-selector validate-ele" name="edetailing">
+								<select class="edetailing-flag-selector validate-ele form-control select-bool-flag" name="edetailing">
 									<option value="1">YES</option>
 									<option value="0">NO</option>
 								</select>
@@ -151,7 +153,7 @@
 						</div>
 						
 						<div class="form-group">
-							<label class="col-xs-5 control-label" id="status-label">Status</label>
+							<label class="col-xs-5 control-label" id="status-label">Physician Status</label>
 							<div class="col-xs-5">
 								<select class="phys-status-selector validate-ele" name="physicianstatus"> <!-- multiple="multiple"> -->
 									<option value="prescribing">Prescribing</option>
@@ -165,6 +167,99 @@
 				<div class="modal-footer">
 					<button id="meetingupdate-cancel-button" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 					<button id="meetingupdate-add-button" type="button" class="btn btn-primary">Save</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+							<!-- Modal for adding meeting experience updates -->
+	<div class="modal fade" id="meetingexperience-add-modal" role="dialog" data-edit-mode="false">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="addMeetingExperienceLabel">Meeting experience</h4>
+				</div>
+				<div class="modal-body">
+					<form id="meeting-experience-form" class="form-horizontal">
+						<div class="form-group" id="physicianStatus" style="display:none">
+							<label class="col-xs-3 control-label" id="status-label">Status</label>
+							<div class="col-xs-7">
+								<input name="status" type="text" class="form-control validate-ele" id="status-id" disabled="disabled"/> 
+							</div>
+						</div>
+												
+						<div class="form-group">
+							<label class="col-xs-7 control-label" id="liked-product-id">Did physician genuinely liked the product?</label>
+							<div class="col-xs-5">
+								<select class="likedproduct-flag-selector validate-ele form-control select-bool-flag" name="liked-product">
+									<option value="1">YES</option>
+									<option value="0">NO</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-xs-7 control-label" id="price-affordable-id">Does physician think the price is affordable?</label>
+							<div class="col-xs-5">
+								<select class="priceaffordable-flag-selector validate-ele form-control select-bool-flag" name="price-affordable">
+									<option value="1">YES</option>
+									<option value="0">NO</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-xs-7 control-label" id="less-sideeffects-id">Does physician think medicine has less side effects?</label>
+							<div class="col-xs-5">
+								<select class="less-sideeffects-flag-selector validate-ele form-control select-bool-flag" name="less-side-effects">
+									<option value="1">YES</option>
+									<option value="0">NO</option>
+								</select>
+							</div>
+						</div>
+						
+						<div class="form-group">
+							<label class="col-xs-7 control-label" id="liked-presentation-id">Did physician like the presentations?</label>
+							<div class="col-xs-5">
+								<select class="likedpresentation-flag-selector validate-ele form-control select-bool-flag" name="liked-presentation">
+									<option value="1">YES</option>
+									<option value="0">NO</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-xs-7 control-label" id="confidence-factor-id">Was physician influenced by your confidence during presentation?</label>
+							<div class="col-xs-5">
+								<select class="confidence-flag-selector validate-ele form-control select-bool-flag" name="confidence-factor">
+									<option value="1">YES</option>
+									<option value="0">NO</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-xs-7 control-label" id="company-reputation-id">Was physician impressed with BioPharma's reputation?</label>
+							<div class="col-xs-5">
+								<select class="companyreputation-flag-selector validate-ele form-control select-bool-flag" name="company-reputation">
+									<option value="1">YES</option>
+									<option value="0">NO</option>
+								</select>
+							</div>
+						</div>
+						
+						<div class="form-group" id="appointment-id" style="display:none">
+							<label class="col-xs-3 control-label" id="appointment-id-label">Appointment Id</label>
+							<div class="col-xs-7">
+								<input name="status" type="text" class="form-control validate-ele" id="appointment-id" disabled="disabled"/> 
+							</div>
+						</div>
+						
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button id="meetingexperience-cancel-button" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button id="meetingexperience-add-button" type="button" class="btn btn-primary">Save</button>
 				</div>
 			</div>
 		</div>

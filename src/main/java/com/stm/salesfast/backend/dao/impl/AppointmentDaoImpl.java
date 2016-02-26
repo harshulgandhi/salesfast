@@ -27,7 +27,9 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	"VALUES (?,?,?,?,?,?,?)";
 	private static final String FETCH_APPOINTMENTZIPS = "SELECT zip FROM appointment WHERE userId = ?";
 	private static final String FETCHID_BY_PHYS_USER = "SELECT appointmentId FROM appointment WHERE userId = ? AND physicianId = ?";
-	
+	private static final String UPDATE_HASMEETINGUPDATE = "UPDATE `salesfast`.`appointment` "
+														+"SET `hasMeetingUpdate` = ? "
+														+"WHERE `appointmentId` = ?;";
 	
 	@Override
 	public AppointmentDto getAppointmentById(int appointmentId) {
@@ -100,4 +102,17 @@ public class AppointmentDaoImpl implements AppointmentDao {
 		return 0;
 	}
 
+
+	@Override
+	public void setMeetinUpdateFlag(int appointmentId, int meetingUpdateFlag) {
+		// TODO Auto-generated method stub
+		try{
+			jdbcTemplate.update(UPDATE_HASMEETINGUPDATE, (ps)->{
+				ps.setInt(1, meetingUpdateFlag);
+				ps.setInt(2, appointmentId);
+			});
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+	}
 }

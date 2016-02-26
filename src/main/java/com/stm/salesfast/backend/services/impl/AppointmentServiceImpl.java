@@ -55,8 +55,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 		String zip = physicianService.getPhysicianZipById(physId);
 		appointmentDao.insertAppointment(new AppointmentDto(time, SalesFastUtilities.getCurrentDate(), physId, userId, productId,confirmationStatus, zip, false, false));
 	}
-
-
 	
 	/**
 	 * This method returns appointments of a user based on whether
@@ -89,8 +87,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 	}
 
 
-
-
 	@Override
 	public int getAppointmentId(String username, int physicianId) {
 		// TODO Auto-generated method stub
@@ -99,11 +95,15 @@ public class AppointmentServiceImpl implements AppointmentService {
 	}
 
 
-
-
 	@Override
 	public AppointmentDto getById(int appointmentId) {
 		// TODO Auto-generated method stub
 		return appointmentDao.getAppointmentById(appointmentId);
+	}
+
+
+	@Override
+	public void setHasMeetingUpdateFlag(int appointmentId, int flag) {
+		appointmentDao.setMeetinUpdateFlag(appointmentId, flag);
 	}
 }

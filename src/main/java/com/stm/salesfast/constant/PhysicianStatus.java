@@ -1,9 +1,9 @@
 package com.stm.salesfast.constant;
 
 public enum PhysicianStatus {
-	PRESCRIBING("prescribing"),
-	PROSPECTING("prospecting"),
-	LOST("lost");
+	prescribing("PRESCRIBING"),
+	prospecting("PROSPECTING"),
+	lost("LOST");
 	
 	private final String stringValue;
 	

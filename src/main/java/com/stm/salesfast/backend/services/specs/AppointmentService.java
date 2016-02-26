@@ -16,4 +16,6 @@ public interface AppointmentService {
 	public int getAppointmentId (String username, int physicianId);
 	
 	public AppointmentDto getById(int appointmentId);
+	
+	public void setHasMeetingUpdateFlag(int appointmentId, int flag); 
 }

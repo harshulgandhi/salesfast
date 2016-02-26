@@ -499,28 +499,15 @@ CREATE TABLE IF NOT EXISTS `salesfast`.`Meeting_Experience` (
   `isPhysicianEntry` BINARY NOT NULL,
   `isSalesRepEntry` BINARY NOT NULL,
   `status` VARCHAR(45) NOT NULL,
-  `genuinelyLikedTheProduct` BINARY NOT NULL,
-  `genuinelyDidnotLikedTheProduct` BINARY NOT NULL,
-  `affordablePrice` BINARY NOT NULL,
-  `notAffordablePrice` BINARY NOT NULL,
-  `lessSideEffects` BINARY NOT NULL,
-  `moreSideEffects` BINARY NOT NULL,
+  `likedTheProduct` BINARY NOT NULL,
+  `likedPriceAffordability` BINARY NOT NULL,
+  `impressiveLessSideEffects` BINARY NOT NULL,
   `likedPresentation` BINARY NOT NULL,
-  `didnotLikedPresentation` BINARY NOT NULL,
-  `salesRepConfident` BINARY NOT NULL,
-  `salesRepNotConfident` BINARY NOT NULL,
-  `companyReputationImpressive` BINARY NOT NULL,
-  `companyReputationNotImpressive` BINARY NOT NULL,
-  `meetingUpdateId` INT NOT NULL,
+  `salesRepConfidence` BINARY NOT NULL,
+  `impressiveCompanyReputation` BINARY NOT NULL,
   `appointmentId` INT NOT NULL,
   PRIMARY KEY (`meetingExperienceId`),
-  INDEX `fk_Meeting_Experience_Meeting_Update1_idx` (`meetingUpdateId` ASC),
   INDEX `fk_Meeting_Experience_Appointment1_idx` (`appointmentId` ASC),
-  CONSTRAINT `fk_Meeting_Experience_Meeting_Update1`
-    FOREIGN KEY (`meetingUpdateId`)
-    REFERENCES `salesfast`.`Meeting_Update` (`meetingUpdateId`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_Meeting_Experience_Appointment1`
     FOREIGN KEY (`appointmentId`)
     REFERENCES `salesfast`.`Appointment` (`appointmentId`)

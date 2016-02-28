@@ -48,9 +48,9 @@ public class AlignmentController {
 	public String showAlignments(Model model){
 		
 		/* THIS IS A TEST PRINT */
-		/*User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    String name = user.getUsername(); //get logged in user name
-	    log.info("\nLogged in user is : "+name);*/
+	    log.info("\nLogged in user is : "+name);
 		
 		/* These alignments are the ones that haven't been converted to an appointment
 		 * yet.

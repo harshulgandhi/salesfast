@@ -29,7 +29,6 @@ public class AccessControlInterceptor extends HandlerInterceptorAdapter {
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
 		Locale locale = Locale.ENGLISH;
-		
 		if (request.getUserPrincipal() != null) {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			if (request.getSession().getAttribute("roles") == null) {

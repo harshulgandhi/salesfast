@@ -25,11 +25,16 @@ public class LoginController {
 	@Autowired
 	private AlignmentFetchService alignmentFetch;
 	
-	@RequestMapping(value="/login")//, method=RequestMethod.GET)
+	@RequestMapping(value = "/login")
+	public String login() {
+		return "login";
+	}
+	
+	/*@RequestMapping(value="/login")//, method=RequestMethod.GET)
 	public String loginPage(Model model){
 		model.addAttribute("loginUiObj", new LoginUI());
 		return "login";
-	}
+	}*/
 	
 	
 	/*@RequestMapping(value="/verifycredentials", method=RequestMethod.POST)

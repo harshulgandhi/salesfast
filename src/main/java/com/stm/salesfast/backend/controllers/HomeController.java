@@ -11,11 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
 	
 	private static final String APP_NAME = "SalesFast Application";
-	
-	/*@RequestMapping(value={"/", "/home"}, method=RequestMethod.GET)
-	public String homePage(HttpSession session){
-		return "home";
-	}*/
+
 	@RequestMapping(value={"/", "/home"})
 	public String index(Model model, HttpSession session) {
 		model.addAttribute("appName", APP_NAME);

@@ -4,10 +4,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.SecurityProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -32,7 +30,13 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 		private AntPathRequestMatcher[] requestMatchers = {
 				new AntPathRequestMatcher("/login"),
 				new AntPathRequestMatcher("/home"),
-				new AntPathRequestMatcher("/showalignments")
+				new AntPathRequestMatcher("/showalignments"),
+				new AntPathRequestMatcher("/showappointments"),
+				new AntPathRequestMatcher("/fixappointments"),
+				new AntPathRequestMatcher("/addmeetingupdate"),
+				new AntPathRequestMatcher("/addmeetingexperience"),
+				new AntPathRequestMatcher("/yourappointment"),
+				new AntPathRequestMatcher("/testpage")
 				};
 
 		@Override
@@ -60,11 +64,6 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.logoutUrl("/logout").logoutSuccessUrl("/login").permitAll();
 	}
 	
-	/*@Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }*/
 	
 	@Override
 	public void configure(AuthenticationManagerBuilder auth) throws Exception {

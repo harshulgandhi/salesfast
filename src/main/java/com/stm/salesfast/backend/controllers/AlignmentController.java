@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -30,7 +31,7 @@ import com.stm.salesfast.backend.utils.SalesFastUtilities;
 @Controller
 public class AlignmentController {
 	private Logger log = LoggerFactory.getLogger(LoginController.class.getName());
-	String CURRENTUSERNAME = "johny";
+	String CURRENTUSERNAME = "";
 	
 	@Autowired
 	private UserAccountService userAccountService;
@@ -49,22 +50,20 @@ public class AlignmentController {
 		
 		/* THIS IS A TEST PRINT */
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	    String name = user.getUsername(); //get logged in user name
-	    log.info("\nLogged in user is : "+name);
+		CURRENTUSERNAME = user.getUsername(); //get logged in user name
+	    log.info("\nLogged in user is : "+CURRENTUSERNAME);
 		
-		/* These alignments are the ones that haven't been converted to an appointment
-		 * yet.
+		/* These alignments are the ones that haven't been 
+		 * converted to an appointment yet.
 		 * */
 		List<PhysicianStgDto> alignedPhysician = alignmentFetchService.getAlignmentByUserIdToShow(
 				(userAccountService.getUserAccountByUserName(CURRENTUSERNAME)).getUserId());
-		
 		model.addAttribute("listOfAlignedPhysician", alignedPhysician);
 		return "showalignments";
 	}
 		
 	@RequestMapping(value="/toRedirect", method=RequestMethod.GET)
 	public String forRedirecting(){	
-		log.info("Redirecting!!");
 		return "showappointment";
 	}
 	

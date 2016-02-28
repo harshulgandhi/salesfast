@@ -19,9 +19,6 @@ import com.stm.salesfast.backend.services.specs.UserAccountService;
 @Component
 public class AccessControlInterceptor extends HandlerInterceptorAdapter {
 
-//	@Autowired
-//	private LocaleResolver localeResolver;
-
 	@Autowired
 	private UserAccountService userService;
 
@@ -39,14 +36,7 @@ public class AccessControlInterceptor extends HandlerInterceptorAdapter {
 				response.sendRedirect(request.getContextPath() + "/");
 				return false;
 			}
-/*			String language = userService.getLanguage(request
-					.getUserPrincipal().getName());
-			if (language != null) {
-				locale = new Locale(language);
-			}*/
 		}
-
-//		localeResolver.setLocale(request, response, locale);
 		return true;
 	}
 }

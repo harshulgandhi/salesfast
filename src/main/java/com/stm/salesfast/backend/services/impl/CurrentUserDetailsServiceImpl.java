@@ -22,7 +22,6 @@ public class CurrentUserDetailsServiceImpl implements CurrentUserDetailsService 
 	
 	@Override
 	public CurrentUser loadUserByUsername(String username) {
-		// TODO Auto-generated method stub
 		UserAccountEntity user = userService.getUserAccountEntityByUserName(username);
         if (user == null) {
         	throw new UsernameNotFoundException(String.format("User with id=%s was not found", username));

@@ -6,6 +6,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,13 +23,12 @@ import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.MeetingExperienceService;
 import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
-import com.stm.salesfast.constant.ConstantValues;
 import com.stm.salesfast.backend.entity.MeetingUpdateEntity;
 
 @Controller
 public class AppointmentController {
 	private Logger log = LoggerFactory.getLogger(AppointmentController.class.getName());
-	
+	String CURRENTUSERNAME="";
 	
 	@Autowired
 	private AlignmentFetchService alignmentFetchService;
@@ -46,13 +47,15 @@ public class AppointmentController {
 	
 	@RequestMapping(value="/showappointments", method=RequestMethod.GET)
 	public String showAppointments(Model model){
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		CURRENTUSERNAME = user.getUsername(); //get logged in user name
 		
 		/*Fetching fixed appointments
 		 */
-		List<AppointmentEntity> appointmentsList = appointmentFetchService.getAppointmentToShow(userAccountService.getUserIdByUserName(ConstantValues.currentusername_temp));
+		List<AppointmentEntity> appointmentsList = appointmentFetchService.getAppointmentToShow(userAccountService.getUserIdByUserName(CURRENTUSERNAME));
 		
 		List<PhysicianStgDto> alignedPhysicianInVicinity = alignmentFetchService.getAlignmentByUserIdInVicinityOfAppointments(
-				(userAccountService.getUserAccountByUserName(ConstantValues.currentusername_temp)).getUserId());
+				(userAccountService.getUserAccountByUserName(CURRENTUSERNAME)).getUserId());
 		
 		model.addAttribute("listOfAppointments", appointmentsList);
 		model.addAttribute("listOfPhysInVicinity", alignedPhysicianInVicinity);

@@ -23,13 +23,9 @@ public class CurrentUser extends User{
 		super(userAccountEntity.getUsername(), userAccountEntity.getPassword(), AuthorityUtils.
 				createAuthorityList(rolesList.toArray(new String[rolesList.size()]))
 				);
-		System.out.println("---------------Naman----------------");
 
 		this.userAccountEntity = userAccountEntity;
 	}
-	
-	
-
 
 	public UserAccountEntity getUser() {
 		return userAccountEntity;

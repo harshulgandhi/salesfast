@@ -1,0 +1,19 @@
+@CHARSET "ISO-8859-1";
+
+.slidedown-alignments{
+    margin-left: 14px;
+}
+
+.submit-for-appointments {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.appointment-time{
+	color: black;
+}
+
+.update-buttons-row{
+	margin-bottom: 15px;
+    margin-top: 10px;
+}

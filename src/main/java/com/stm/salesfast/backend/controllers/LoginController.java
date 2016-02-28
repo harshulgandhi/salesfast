@@ -29,21 +29,4 @@ public class LoginController {
 	public String login() {
 		return "login";
 	}
-	
-	/*@RequestMapping(value="/login")//, method=RequestMethod.GET)
-	public String loginPage(Model model){
-		model.addAttribute("loginUiObj", new LoginUI());
-		return "login";
-	}*/
-	
-	
-	/*@RequestMapping(value="/verifycredentials", method=RequestMethod.POST)
-	public String verifyCredentials(@ModelAttribute LoginUI loginUiObj, Model model){
-		model.addAttribute("loginUiObj", loginUiObj);
-		log.info("\nUsername :"+loginUiObj.getUsername()+"\nPassword :"+loginUiObj.getPassword());
-		
-		return userAccountService.verifyUserCredentials(loginUiObj.getUsername(), loginUiObj.getPassword()) ?  "home" :  "login"; 
-	}*/
-	
-	
 }

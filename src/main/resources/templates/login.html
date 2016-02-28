@@ -4,6 +4,7 @@
 <!-- Header to include css -->
 <div th:replace="fragments/header :: commonhead"></div>
 <link rel="stylesheet" type="text/css" href="../static/css/common.css" th:href="@{/css/common.css}"/>
+<link rel="stylesheet" type="text/css" href="../static/css/login.css" th:href="@{/css/login.css}"/>
 <meta charset="ISO-8859-1" />
 <title>SalesFast Login</title>
 </head>
@@ -11,14 +12,14 @@
 	<div class="container">
 		<div class="page-heading"><h1>Log in to SalesFast</h1></div>
 		<div class="form-login-div">
-			<form class="form-login" action="#" th:action="@{/verifycredentials}"  th:object="${loginUiObj}" method="post">
+			<form class="form-login" method="post" > <!--    th:action="@{/verifycredentials}"  -->
 				<div class="form-field-div" id="login-form-fields">
-					<label for="loginUsername" id="username-lbl">User name: </label>
-					<input type="text" id="loginUsername" th:field="*{username}" name="username" autofocus="autofocus" required="required" placeholder="User Name" />
-					<label for="loginPassword" id="password-lbl">Password: </label>
-					<input type="password" id="loginPassword" th:field="*{password}" name="password" required="required" placeholder="Password" />
+					<label for="loginUsername" id="username-lbl" class="sr-only">User name: </label>
+					<input type="text" id="loginUsername" class="form-control" name="username" autofocus="autofocus" required="required" placeholder="User Name" />
+					<label for="loginPassword" id="password-lbl" class="sr-only">Password: </label>
+					<input type="password" id="loginPassword" class="form-control" name="password" required="required" placeholder="Password" />
 				</div>
-				<div class="form-btn-div" id="login-form-btn"><button type="submit" value="Login">Login</button></div>
+				<div class="form-btn-div" id="login-form-btn"><button class="btn btn-lg btn-primary btn-block" type="submit" value="Login">Login</button></div>
 			</form>	
 		</div>
 	</div>

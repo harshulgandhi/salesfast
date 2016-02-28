@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.User;
 
 
 public class CurrentUser extends User{
+	
+	private static final long serialVersionUID = -4568931000872570880L;
 
 	private UserAccountEntity userAccountEntity;
 	
@@ -37,5 +39,5 @@ public class CurrentUser extends User{
 		return userAccountEntity.getUsername();
 	}
 	
-	private static final long serialVersionUID = -4568931000872570880L;
+	
 }

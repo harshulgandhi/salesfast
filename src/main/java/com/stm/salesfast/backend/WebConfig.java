@@ -1,4 +1,4 @@
-/*package com.stm.salesfast.backend;
+package com.stm.salesfast.backend;
 
 import java.util.Locale;
 
@@ -29,7 +29,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Autowired
 	AccessControlInterceptor accessControlInterceptor;
 
-	@Override
+	/*@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations(
 				"/resources/");
@@ -47,19 +47,18 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		localeResolver.setDefaultLocale(new Locale("en"));
 
 		return localeResolver;
-	}
+	}*/
 
 	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(localeChangeInterceptor());
+//		registry.addInterceptor(localeChangeInterceptor());
 		registry.addInterceptor(accessControlInterceptor);
 	}
 
-	@Bean
+	/*@Bean
 	public MessageSource messageSource() {
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 		messageSource.setBasename("classpath:/messages/messages");
 		return messageSource;
-	}
+	}*/
 
 }
-*/

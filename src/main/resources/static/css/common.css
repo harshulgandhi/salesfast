@@ -1,12 +1,13 @@
 @CHARSET "ISO-8859-1";
 
+
 h1{
  	text-align: center; 
 	margin-bottom: 30px;
 	margin-top: 10%;
 }
 
-.form-login-div {
+/* .form-login-div {
 	text-align: right;
 }
 
@@ -17,7 +18,7 @@ h1{
 .form-login{
 	display: table-caption;
 	width: 400px
-}
+} */
 
 .select-bool-flag{
 	width : 40%;

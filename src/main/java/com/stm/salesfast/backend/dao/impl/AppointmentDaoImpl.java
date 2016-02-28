@@ -22,8 +22,8 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	private static final String FETCH_BY_USERID_wMeetingUpdateExperienceCheck = "SELECT * FROM appointment WHERE userId = ? "
 			+ "AND (hasMeetingUpdate = 0 OR hasMeetingExperience = 0)";
 	private static final String FETCH_BY_PHYSICIANID = "SELECT * FROM appointment WHERE physicianId = ?";
-	private static final String INSERT = "INSERT INTO appointment"+
-	"(time, date, physicianId, userId, productId, confirmationStatus, zip)"+
+	private static final String INSERT = "INSERT INTO appointment "+
+	"(time, date, physicianId, userId, productId, confirmationStatus, zip) "+
 	"VALUES (?,?,?,?,?,?,?)";
 	private static final String FETCH_APPOINTMENTZIPS = "SELECT zip FROM appointment WHERE userId = ?";
 	private static final String FETCHID_BY_PHYS_USER = "SELECT appointmentId FROM appointment WHERE userId = ? AND physicianId = ?";
@@ -84,8 +84,6 @@ public class AppointmentDaoImpl implements AppointmentDao {
 				ps.setInt(5, appointment.getProductId());
 				ps.setString(6, appointment.getConfirmationStatus());
 				ps.setString(7, appointment.getZip());
-				ps.setBoolean(8, appointment.isHasMeetingUpdate());
-				ps.setBoolean(9, appointment.isHasMeetingExperience());
 			});
 		}catch(DataAccessException e){
 			e.printStackTrace();

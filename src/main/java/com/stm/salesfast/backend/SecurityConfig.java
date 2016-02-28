@@ -31,6 +31,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		private AntPathRequestMatcher[] requestMatchers = {
 				new AntPathRequestMatcher("/login"),
+				new AntPathRequestMatcher("/home"),
 				new AntPathRequestMatcher("/showalignments")
 				};
 
@@ -51,11 +52,10 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().and()
-				.authorizeRequests().antMatchers("/resources/**", "/login/**")
+		http.authorizeRequests().antMatchers("/resources/**")
 				.permitAll().anyRequest().authenticated().and().formLogin()
 				.loginPage("/login").failureUrl("/login")
-				.usernameParameter("username").permitAll().and().logout()
+				.usernameParameter("username").passwordParameter("password").permitAll().and().logout()
 				.logoutUrl("/logout").logoutSuccessUrl("/login").permitAll();
 	}
 	

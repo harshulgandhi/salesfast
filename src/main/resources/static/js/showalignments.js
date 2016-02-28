@@ -61,16 +61,11 @@ $('.submit-selected-alignments').click(function(){
 		url : "/fixappointments",
 		data : JSON.stringify(fixedAppointmentDetails),
 		contentType : "application/json; charset=utf-8",
-	    dataType : 'json',
-	    error : function() {
-	        console.log("error");
-	    },
-	    success : function() {
-	        console.log("SUCCESS!!");
-	    }
+	    dataType : 'json'
 	});
-	
-	location.reload(true);
+	setTimeout(function(){
+		location.reload(true);
+	}, 500);
 });
 
 //Function to create JSON to store physician Ids and corresponding 

@@ -70,22 +70,19 @@ public class AlignmentController {
 	
 	@RequestMapping(value="/fixappointments", method=RequestMethod.POST, consumes = "application/json", produces = "application/json")
 	@ResponseBody
-	public String fixAppointment(@RequestBody AjaxRequestListMapper[] appointments) throws ParseException{
+	public void fixAppointment(@RequestBody AjaxRequestListMapper[] appointments) throws ParseException{
 		for (AjaxRequestListMapper appointmentList : appointments){
 			log.info("Appointment fixed for physician = "+appointmentList.getPhysicianId()+" @ "+appointmentList.getAppointmentTime());
 			Time selectedTime = SalesFastUtilities.getTimeForStringTime(appointmentList.getAppointmentTime(), "HH:mm");
 			appointmentService.addAppointment(appointmentList.getPhysicianId(), selectedTime, new String("CONFIRMED"));
 			
 			
-			/*Send email with appointmentId as get parameter*/
 			int appointmentId = appointmentService.getAppointmentId(CURRENTUSERNAME, appointmentList.getPhysicianId());
 			String physicianEmail = physicianService.getPhysicianById(appointmentList.getPhysicianId()).getEmail();
 			/*  Send email to physicianEmail id with URL as 
 			 *  '127.0.0.1/yourappointment?id=appointmentId' 
 			 **/
-			
-			
 		}
-		return "redirect:/toRedirect";
+//		return "forward:/toRedirect";
 	} 
 }

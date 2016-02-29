@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.stm.salesfast.backend.services.specs.AlignmentCreationService;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
 import com.stm.salesfast.frontend.LoginUI;
@@ -25,6 +26,8 @@ public class LoginController {
 	@Autowired
 	private AlignmentFetchService alignmentFetch;
 	
+	
+
 	@RequestMapping(value = "/login")
 	public String login() {
 		return "login";

@@ -5,11 +5,13 @@ import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@ToString
 public class PhysicianStgDto {
 	private int physicianId;
 	private String firstName;
@@ -25,10 +27,10 @@ public class PhysicianStgDto {
 	public boolean isNew;
 	private String status;
 	
-	@Override
+/*	@Override
 	public String toString(){
 		return " Physician Name : "+(firstName + " " +lastName)+"\n Email : "+email+"\n Contact : "+contactNumber+"\n Address : "+(addressLineOne+", "+addressLineTwo)+"\n City : "+city+"\n State : "+state+"\n Zip : "+zip+"\n Medical Field: "+medicalField+"\n Is New?: "+isNew;
-	}
+	}*/
 	
 	
 }

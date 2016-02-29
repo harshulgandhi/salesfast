@@ -13,6 +13,7 @@ public class CurrentUser extends User{
 
 	private UserAccountEntity userAccountEntity;
 	
+	
 	/**This has been hard coded for now, will be
 	 * fetched from database once roles table is
 	 * populated
@@ -34,6 +35,4 @@ public class CurrentUser extends User{
 	public String getId() {
 		return userAccountEntity.getUsername();
 	}
-	
-	
 }

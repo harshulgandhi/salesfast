@@ -1,5 +1,7 @@
 package com.stm.salesfast.backend.dao.specs;
 
+import java.util.List;
+
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
 
 public interface PhysicianStgDao {
@@ -10,4 +12,6 @@ public interface PhysicianStgDao {
 	public void deleteBy(int physicianId);
 	
 	public String getZipById(int physicianId);
+	
+	public List<PhysicianStgDto> getAll();
 }

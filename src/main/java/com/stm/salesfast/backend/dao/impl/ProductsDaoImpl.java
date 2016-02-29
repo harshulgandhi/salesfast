@@ -1,5 +1,7 @@
 package com.stm.salesfast.backend.dao.impl;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ public class ProductsDaoImpl implements ProductsDao{
 	
 	private static final String  FETCH_BY_ID = "SELECT * FROM products WHERE productId = ?";
 	private static final String  FETCH_BY_NAME = "SELECT * FROM products WHERE productName = ?";
+	private static final String  FETCH_BY_MEDICALFIELD = "SELECT * FROM products WHERE medicalFieldId= ?";
 	
 	@Override
 	public ProductDto getProduct(int productId) {
@@ -49,6 +52,21 @@ public class ProductsDaoImpl implements ProductsDao{
 			e.printStackTrace();
 		}
 		return null;	
+	}
+
+	@Override
+	public List<ProductDto> getProductForMedicalField(String medicalFieldId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(
+					FETCH_BY_NAME, (rs, rownum) -> {
+						return new ProductDto(rs.getInt("productId"), rs.getString("productName"), rs.getString("releaseDate"),medicalFieldId)
+						;}
+					, medicalFieldId);
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

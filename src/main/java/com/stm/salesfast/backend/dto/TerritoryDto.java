@@ -1,4 +1,5 @@
 package com.stm.salesfast.backend.dto;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,10 +9,10 @@ import lombok.ToString;
 @NoArgsConstructor
 @Data
 @ToString
-public class UserAccountDto {
-	
-	private int userAccountId;
-	private String username;
-	private String password;
+public class TerritoryDto {
+	private int territoryId;
+	private String territoryName;
+	private String zip;
 	private int userId;
+	private int districtId;
 }

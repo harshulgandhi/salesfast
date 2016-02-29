@@ -8,6 +8,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import com.stm.salesfast.backend.controllers.LoginController;
@@ -30,7 +32,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 	private Logger log = LoggerFactory.getLogger(AppointmentServiceImpl.class.getName());
 
-	String CURRENTUSERNAME = "johny";
+	String CURRENTUSERNAME = "";
 	
 	@Autowired
 	AppointmentDao appointmentDao;
@@ -50,6 +52,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 	@Override
 	public void addAppointment(int physId, Time time, String confirmationStatus) throws ParseException {
 		// TODO Auto-generated method stub
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		CURRENTUSERNAME = user.getUsername(); //get logged in user name
 		int userId = userAccountService.getUserIdByUserName(CURRENTUSERNAME);
 		int productId = alignmentFetchService.getAlignedProduct(userId, physId);
 		String zip = physicianService.getPhysicianZipById(physId);

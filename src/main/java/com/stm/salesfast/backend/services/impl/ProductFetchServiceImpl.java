@@ -1,5 +1,7 @@
 package com.stm.salesfast.backend.services.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,12 @@ public class ProductFetchServiceImpl implements ProductFetchService {
 	public ProductDto getProductByName(String productName) {
 		// TODO Auto-generated method stub
 		return productDao.getProduct(productName);
+	}
+
+	@Override
+	public List<ProductDto> getProductByMedicalField(String medicalFieldId) {
+		// TODO Auto-generated method stub
+		return productDao.getProductForMedicalField(medicalFieldId);
 	}
 
 }

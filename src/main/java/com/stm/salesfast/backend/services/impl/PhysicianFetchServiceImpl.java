@@ -1,5 +1,7 @@
 package com.stm.salesfast.backend.services.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +52,12 @@ public class PhysicianFetchServiceImpl implements PhysicianFetchService {
 		ProductDto product = productService.getProductById(appointmentDto.getProductId());
 		return new PhysicianAppointmentEntity(salesRepName, ConstantValues.organisation, product.getProductName(), appointmentDto.getTime().toString(), appointmentDto.getConfirmationStatus());
 		
+	}
+
+	@Override
+	public List<PhysicianStgDto> getAllPhysicians() {
+		// TODO Auto-generated method stub
+		return physicianDao.getAll();
 	}
 
 }

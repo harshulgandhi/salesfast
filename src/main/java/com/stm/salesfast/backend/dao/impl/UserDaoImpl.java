@@ -1,6 +1,7 @@
 package com.stm.salesfast.backend.dao.impl;
 
 import java.sql.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -21,6 +22,7 @@ public class UserDaoImpl implements UserDao {
 	public JdbcTemplate jdbcTemplate;
 	
 	private static final String FETCH_BY_ID = "SELECT * FROM User WHERE userId = ?";
+	private static final String FETCH_ALL = "SELECT * FROM User";
 	private static final String INSERT_USER = "INSERT INTO USER "+
 	" (firstName, lastName, email, contactNumber, addressLineOne, addressLineTwo, city, state, zip, startDate, endDate) " +
 	" VALUES (?,?,?,?,?,?,?,?,?,?,?)";
@@ -62,6 +64,20 @@ public class UserDaoImpl implements UserDao {
 	public void deleteBy(int userId) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<UserDto> getAll() {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_ALL, (rs, rownum) -> {
+				return new UserDto(rs.getInt("userId"), rs.getString("firstName"), rs.getString("lastName"),rs.getString("email"),rs.getString("contactNumber"),rs.getString("addressLineOne"),rs.getString("addressLineTwo"),rs.getString("city"),rs.getString("state"),rs.getString("zip"), rs.getDate("startDate"), rs.getDate("endDate"));
+				});
+			
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

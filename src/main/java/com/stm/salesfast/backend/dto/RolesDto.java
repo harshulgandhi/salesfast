@@ -1,4 +1,5 @@
 package com.stm.salesfast.backend.dto;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,10 +9,9 @@ import lombok.ToString;
 @NoArgsConstructor
 @Data
 @ToString
-public class UserAccountDto {
-	
-	private int userAccountId;
-	private String username;
-	private String password;
-	private int userId;
+public class RolesDto {
+
+	private int roleId;
+	private String roleName;
+	private String shortName;
 }

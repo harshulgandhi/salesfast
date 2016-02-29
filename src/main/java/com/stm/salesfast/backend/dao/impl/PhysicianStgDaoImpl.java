@@ -1,6 +1,7 @@
 package com.stm.salesfast.backend.dao.impl;
 
 import java.sql.Date;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,7 @@ public class PhysicianStgDaoImpl implements PhysicianStgDao {
 	" (firstName, lastName, email, contactNumber, addressLineOne, addressLineTwo, city, state, zip, medicalField, isNew, status) " +
 	" VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 	private static final String FETCH_ZIP_BYID = "SELECT zip FROM physicians_staging WHERE physicianId = ?";
+	private static final String FETCH_ALL = "SELECT * FROM physicians_staging";
 	
 	@Override
 	public PhysicianStgDto getBy(int physicianId) {
@@ -73,6 +75,20 @@ public class PhysicianStgDaoImpl implements PhysicianStgDao {
 			return jdbcTemplate.queryForObject(FETCH_ZIP_BYID, (rs, rownum) -> {
 				return new String(rs.getString("zip"));
 				}, physicianId);
+			
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public List<PhysicianStgDto> getAll() {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_ALL, (rs, rownum) -> {
+				return new PhysicianStgDto(rs.getInt("physicianId"), rs.getString("firstName"), rs.getString("lastName"),rs.getString("email"),rs.getString("contactNumber"),rs.getString("addressLineOne"),rs.getString("addressLineTwo"),rs.getString("city"),rs.getString("state"),rs.getString("zip"), rs.getString("medicalField"), rs.getBoolean("isNew"), rs.getString("status"));
+				});
 			
 		}catch(DataAccessException e){
 			e.printStackTrace();

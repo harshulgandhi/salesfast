@@ -1,4 +1,4 @@
-/*package com.stm.salesfast.backend.controllers;
+package com.stm.salesfast.backend.controllers;
 
 import java.io.IOException;
 
@@ -20,4 +20,3 @@ public class LogoutController {
 		response.sendRedirect("");
 	}
 }
-*/

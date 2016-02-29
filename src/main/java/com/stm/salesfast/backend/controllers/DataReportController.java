@@ -17,15 +17,20 @@ import com.stm.salesfast.frontend.LoginUI;
 @Controller
 public class DataReportController {
 	
-	private List<DataReportMapper> dataReport;
+//	private List<DataReportMapper> dataReport;
+	DataReportMapper[] dataReport ={ new DataReportMapper("Microsoft Internet Explorer", (float) 56.33), 
+			new DataReportMapper("Chrome", (float) 24.03), 
+			new DataReportMapper("Firefox", (float) 10.38), 
+			new DataReportMapper("Safari", (float) 4.77),
+			new DataReportMapper("Proprietary or Undetectable", (float) 0.2)};
 	private Logger log = LoggerFactory.getLogger(DataReportController.class.getName());
 
 	public void helper(){
-		dataReport.add(new DataReportMapper("Microsoft Internet Explorer", (float) 56.33));
+		/*dataReport.add(new DataReportMapper("Microsoft Internet Explorer", (float) 56.33));
 		dataReport.add(new DataReportMapper("Chrome", (float) 24.03));
 		dataReport.add(new DataReportMapper("Firefox", (float) 10.38));
 		dataReport.add(new DataReportMapper("Safari", (float) 4.77));
-		dataReport.add(new DataReportMapper("Proprietary or Undetectable", (float) 0.2));
+		dataReport.add(new DataReportMapper("Proprietary or Undetectable", (float) 0.2));*/
 	}
 	
 	@RequestMapping(value="/datareport", method=RequestMethod.GET)
@@ -33,9 +38,9 @@ public class DataReportController {
 		return "allmeetingsdata";
 	}
 	
-	@RequestMapping(value="/getdata", method=RequestMethod.GET)
+	@RequestMapping(value="/getdata", method=RequestMethod.GET, produces="application/json")
 	@ResponseBody
-	public List<DataReportMapper> getData(){
+	public DataReportMapper[] getData(){
 		log.info("Fetching data for the report");
 		return dataReport;
 	}

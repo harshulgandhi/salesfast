@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DataReportMapper {
-	private String browser;
-	private float marketShare; 
+	private String name;
+	private float y; //market share percentage 
 }

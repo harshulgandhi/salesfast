@@ -59,7 +59,7 @@ public class ProductsDaoImpl implements ProductsDao{
 		// TODO Auto-generated method stub
 		try{
 			return jdbcTemplate.query(
-					FETCH_BY_NAME, (rs, rownum) -> {
+					FETCH_BY_MEDICALFIELD, (rs, rownum) -> {
 						return new ProductDto(rs.getInt("productId"), rs.getString("productName"), rs.getString("releaseDate"),medicalFieldId)
 						;}
 					, medicalFieldId);

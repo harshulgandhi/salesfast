@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
+import com.stm.salesfast.backend.entity.AlignedPhysicianEntity;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.PhysicianFetchService;
@@ -45,22 +46,26 @@ public class AlignmentController {
 	@Autowired
 	private PhysicianFetchService physicianService; 
 	
+	
+	
 	@RequestMapping(value="/showalignments", method=RequestMethod.GET)
 	public String showAlignments(Model model){
 		
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		CURRENTUSERNAME = user.getUsername(); //get logged in user name
-	    log.info("\nLogged in user is : "+CURRENTUSERNAME);
+		
+	    log.info("\nLogged in user is : "+CURRENTUSERNAME+" and his role is "+user.getAuthorities());
 		
 		/* These alignments are the ones that haven't been 
 		 * converted to an appointment yet.
 		 * */
-		List<PhysicianStgDto> alignedPhysician = alignmentFetchService.getAlignmentByUserIdToShow(
+		List<AlignedPhysicianEntity> alignedPhysician = alignmentFetchService.getAlignmentByUserIdToShow(
 				(userAccountService.getUserAccountByUserName(CURRENTUSERNAME)).getUserId());
 		model.addAttribute("listOfAlignedPhysician", alignedPhysician);
 		return "showalignments";
 	}
 		
+	
 	@RequestMapping(value="/toRedirect", method=RequestMethod.GET)
 	public String forRedirecting(){	
 		return "showappointment";
@@ -72,8 +77,11 @@ public class AlignmentController {
 		for (AjaxRequestListMapper appointmentList : appointments){
 			log.info("Appointment fixed for physician = "+appointmentList.getPhysicianId()+" @ "+appointmentList.getAppointmentTime());
 			Time selectedTime = SalesFastUtilities.getTimeForStringTime(appointmentList.getAppointmentTime(), "HH:mm");
-			appointmentService.addAppointment(appointmentList.getPhysicianId(), selectedTime, new String("CONFIRMED"));
+			appointmentService.addAppointment(appointmentList.getPhysicianId(), selectedTime, new String("CONFIRMED"), appointmentList.getProductId());
 			
+			User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			CURRENTUSERNAME = user.getUsername(); //get logged in user name
+		    log.info("\nLogged in user is : "+CURRENTUSERNAME);
 			
 			int appointmentId = appointmentService.getAppointmentId(CURRENTUSERNAME, appointmentList.getPhysicianId());
 			String physicianEmail = physicianService.getPhysicianById(appointmentList.getPhysicianId()).getEmail();

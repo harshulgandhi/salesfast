@@ -1,5 +1,8 @@
 package com.stm.salesfast.backend.services.impl;
 
+
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +14,7 @@ import com.stm.salesfast.backend.dao.specs.UserAccountDao;
 import com.stm.salesfast.backend.dto.UserAccountDto;
 import com.stm.salesfast.backend.entity.UserAccountEntity;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
+import com.stm.salesfast.backend.services.specs.UserToRoleService;
 
 @Service
 public class UserAccountServiceImpl implements UserAccountService {
@@ -19,6 +23,10 @@ public class UserAccountServiceImpl implements UserAccountService {
 	
 	@Autowired
 	private UserAccountDao userAccountDao;
+	
+	@Autowired
+	private UserToRoleService userRoleService;
+	
 	
 	@Override
 	public UserAccountDto getUserAccountByUserName(String username) {
@@ -48,14 +56,14 @@ public class UserAccountServiceImpl implements UserAccountService {
 	public UserAccountEntity getUserAccountEntityByUserName(String username) {
 		// TODO Auto-generated method stub
 		UserAccountDto userAccountDto = userAccountDao.getLoginCredentials(username);
-		return new UserAccountEntity(userAccountDto.getUsername(), userAccountDto.getPassword());
+		List<String> currUserRoles = userRoleService.getAllRolesForUser(getUserIdByUserName(username));
+		return new UserAccountEntity(userAccountDto.getUsername(), userAccountDto.getPassword(), currUserRoles);
 	}
 
 	@Override
 	public int getUserIdByUserName(String username) {
 		// TODO Auto-generated method stub
 		int userId = userAccountDao.getLoginCredentials(username).getUserId();
-		log.info("User id for username : "+username+" is : "+userId);
 		return userId;
 	}
 

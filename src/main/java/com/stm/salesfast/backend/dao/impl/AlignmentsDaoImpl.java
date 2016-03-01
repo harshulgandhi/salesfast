@@ -24,8 +24,8 @@ public class AlignmentsDaoImpl implements AlignmentsDao {
 	private JdbcTemplate jdbcTemplate;
 	
 	private static final String INSERT = "INSERT INTO alignments "
-			+ "(physicianId, userId, territoryId, districtId, zip, productId)"
-			+ "VALUES = (?,?,?,?,?,?)";
+			+ "(physicianId, userId, territoryId, districtId, zip, productId) "
+			+ "VALUES (?,?,?,?,?,?)";
 	private static final String FETCH_BY_ID = "SELECT * FROM alignments WHERE alignmentId = ?";
 	private static final String FETCH_BY_USERID = "SELECT * FROM alignments WHERE userId = ?";
 	private static final String FETCH_BY_PHYSICIANID = "SELECT * FROM alignments WHERE physicianId = ?";
@@ -126,10 +126,10 @@ public class AlignmentsDaoImpl implements AlignmentsDao {
 	}
 
 	@Override
-	public AlignmentsDto getAlignmentByUserIdPhysId(int userId, int physicianId) {
+	public List<AlignmentsDto> getAlignmentByUserIdPhysId(int userId, int physicianId) {
 		// TODO Auto-generated method stub
 		try{
-			return jdbcTemplate.queryForObject(
+			return jdbcTemplate.query(
 					FETCH_BY_USERIDPHYSICIANID, (rs, rownum) -> {
 						return new AlignmentsDto(rs.getInt("alignmentId"), physicianId, userId,rs.getInt("territoryId"),rs.getInt("districtId"),rs.getString("zip"), rs.getInt("productId"));}
 					, userId, physicianId);

@@ -86,6 +86,8 @@
 								<th>State</th>
 								<th>ZIP</th>
 								<th>Medical Field</th>
+								<th>Product</th>
+								<th style="display:none">Product Id</th>
 								<th>Is a new Physician?</th>
 								<th>Time of appointment</th>
 							</tr>
@@ -101,6 +103,8 @@
 								<td th:text="${eachVicinityAlignment.state}"></td>
 								<td th:text="${eachVicinityAlignment.zip}"></td>
 								<td th:text="${eachVicinityAlignment.medicalField}"></td>
+								<td th:text="${eachVicinityAlignment.productName}"></td>
+								<td style="display:none" th:text="${eachVicinityAlignment.productId}"></td>								
 								<td th:unless="${eachVicinityAlignment.isNew}" th:text="NO"></td>
 								<td th:if="${eachVicinityAlignment.isNew}" th:text="YES"></td>
 								<td><input class="appointment-time" type="time" disabled="disabled"/></td>

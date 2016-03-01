@@ -54,10 +54,8 @@ public class UserDetailServiceImpl implements UserDetailService{
 		List<UserDto> allSalesReps = new ArrayList<>();
 		
 		for(UserDto eachUser : allUsers){
-			List<RolesDto> thisUsersRole = userRoleService.getAllRolesForUser(eachUser.getUserId());
-			for(RolesDto eachRole : thisUsersRole){
-				if(eachRole.getShortName().equals("SalesRep")) allSalesReps.add(eachUser);
-			}
+			List<String> thisUsersRoles = userRoleService.getAllRolesForUser(eachUser.getUserId());
+			if(thisUsersRoles.contains("SalesRep")) allSalesReps.add(eachUser);
 		}
 		return allSalesReps;
 	}

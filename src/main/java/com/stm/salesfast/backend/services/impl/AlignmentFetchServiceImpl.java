@@ -14,7 +14,9 @@ import com.stm.salesfast.backend.dao.specs.AlignmentsDao;
 import com.stm.salesfast.backend.dao.specs.PhysicianStgDao;
 import com.stm.salesfast.backend.dto.AlignmentsDto;
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
+import com.stm.salesfast.backend.entity.AlignedPhysicianEntity;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
+import com.stm.salesfast.backend.services.specs.ProductFetchService;
 
 @Service
 public class AlignmentFetchServiceImpl implements AlignmentFetchService {
@@ -29,6 +31,9 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 	
 	@Autowired
 	private PhysicianStgDao physicianDao;
+	
+	@Autowired
+	private ProductFetchService productService;
 	
 	@Override
 	public List<AlignmentsDto> getAlignmentByUserId(int userId) {
@@ -59,14 +64,16 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 	 * shown on the UI
 	 * */
 	@Override
-	public List<PhysicianStgDto> getAlignmentByUserIdToShow(int userId) {
+	public List<AlignedPhysicianEntity> getAlignmentByUserIdToShow(int userId) {
 		// TODO Auto-generated method stub
 		List<AlignmentsDto> alignmentsByUserId = alignmentDao.getAlignmentByUserIdNotInAppointments(userId);
-		List<PhysicianStgDto> alignedPhysicians = new ArrayList<PhysicianStgDto>();
+		List<AlignedPhysicianEntity> alignedPhysicians = new ArrayList<AlignedPhysicianEntity>();
 		for(AlignmentsDto eachAlignment : alignmentsByUserId){
 			PhysicianStgDto physicianDto = physicianDao.getBy(eachAlignment.getPhysicianId());
-			alignedPhysicians.add(physicianDto);
-			log.info(""+physicianDto);
+			alignedPhysicians.add(new AlignedPhysicianEntity(physicianDto,
+					productService.getProductById(eachAlignment.getProductId()).getProductName(),
+					productService.getProductById(eachAlignment.getProductId()).getProductId()
+					));
 		}
 		return alignedPhysicians;
 	}
@@ -87,23 +94,31 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 	 * physicians who have fixed appointments with users
 	 * */
 	@Override
-	public List<PhysicianStgDto> getAlignmentByUserIdInVicinityOfAppointments(int userId) {
+	public List<AlignedPhysicianEntity> getAlignmentByUserIdInVicinityOfAppointments(int userId) {
 		// TODO Auto-generated method stub
 		List<AlignmentsDto> alignmentsByUserId = alignmentDao.getAlignmentByUserIdInVicinity(userId);
-		List<PhysicianStgDto> alignedPhysicians = new ArrayList<PhysicianStgDto>();
+		List<AlignedPhysicianEntity> alignedPhysicians = new ArrayList<AlignedPhysicianEntity>();
 		log.info("Alignments in vicinity\n");
 		for(AlignmentsDto eachAlignment : alignmentsByUserId){
 			PhysicianStgDto physicianDto = physicianDao.getBy(eachAlignment.getPhysicianId());
-			alignedPhysicians.add(physicianDto);
+			alignedPhysicians.add(new AlignedPhysicianEntity(physicianDto, 
+					productService.getProductById(eachAlignment.getProductId()).getProductName(),
+					productService.getProductById(eachAlignment.getProductId()).getProductId()
+					));
 			log.info(""+physicianDto);
 		}
 		return alignedPhysicians;
 	}
 
 	@Override
-	public int getAlignedProduct(int userId, int physicianId) {
+	public List<Integer> getAlignedProduct(int userId, int physicianId) {
 		// TODO Auto-generated method stub
-		return alignmentDao.getAlignmentByUserIdPhysId(userId, physicianId).getProductId();
+		log.info("Fetching products for user "+userId+" and physician : "+physicianId);
+		List<Integer> alignedProducts = new ArrayList<>();
+		for(AlignmentsDto eachAlignment : alignmentDao.getAlignmentByUserIdPhysId(userId, physicianId) ){
+			alignedProducts.add(eachAlignment.getProductId());
+		}
+		return alignedProducts;
 	}
 
 	@Override
@@ -111,6 +126,11 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 			String zip) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void insert(AlignmentsDto alignment) {
+		alignmentDao.insertAlignment(alignment);
 	}
 
 

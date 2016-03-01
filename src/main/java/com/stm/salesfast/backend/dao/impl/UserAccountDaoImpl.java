@@ -1,5 +1,7 @@
 package com.stm.salesfast.backend.dao.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -7,10 +9,11 @@ import org.springframework.stereotype.Repository;
 
 import com.stm.salesfast.backend.dao.specs.UserAccountDao;
 import com.stm.salesfast.backend.dto.UserAccountDto;
+import com.stm.salesfast.backend.services.impl.AlignmentCreationServiceImpl;
 
 @Repository
 public class UserAccountDaoImpl implements UserAccountDao {
-	
+	private Logger log = LoggerFactory.getLogger(UserAccountDaoImpl.class.getName());
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	
@@ -28,7 +31,7 @@ public class UserAccountDaoImpl implements UserAccountDao {
 	public UserAccountDto getLoginCredentials(String userName) {
 		// TODO Auto-generated method stub
 		try{
-			return jdbcTemplate.queryForObject(
+				return jdbcTemplate.queryForObject(
 					FETCH, (rs, rownum) -> {
 						return new UserAccountDto(rs.getInt("userAccountId"), userName, rs.getString("password"), rs.getInt("userId"));}
 					, userName);

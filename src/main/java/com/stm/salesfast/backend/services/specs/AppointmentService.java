@@ -9,7 +9,7 @@ import com.stm.salesfast.backend.entity.AppointmentEntity;
 
 public interface AppointmentService {
 
-	public void addAppointment(int physId, Time time, String confirmationStatus) throws ParseException;
+	public void addAppointment(int physId, Time time, String confirmationStatus, int productId) throws ParseException;
 	
 	public List<AppointmentEntity> getAppointmentToShow(int userId);
 	

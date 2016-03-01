@@ -50,14 +50,16 @@ public class AppointmentServiceImpl implements AppointmentService {
 	ProductFetchService productFetchService;
 	
 	@Override
-	public void addAppointment(int physId, Time time, String confirmationStatus) throws ParseException {
+	public void addAppointment(int physId, Time time, String confirmationStatus, int productId) throws ParseException {
 		// TODO Auto-generated method stub
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		CURRENTUSERNAME = user.getUsername(); //get logged in user name
 		int userId = userAccountService.getUserIdByUserName(CURRENTUSERNAME);
-		int productId = alignmentFetchService.getAlignedProduct(userId, physId);
 		String zip = physicianService.getPhysicianZipById(physId);
+//		List<Integer> products = alignmentFetchService.getAlignedProduct(userId, physId);
+//		for(Integer eachProduct : products){
 		appointmentDao.insertAppointment(new AppointmentDto(time, SalesFastUtilities.getCurrentDate(), physId, userId, productId,confirmationStatus, zip, false, false));
+//		}
 	}
 	
 	/**
@@ -94,6 +96,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 	@Override
 	public int getAppointmentId(String username, int physicianId) {
 		// TODO Auto-generated method stub
+		log.info("");
 		int userId = userAccountService.getUserAccountByUserName(username).getUserId();
 		return appointmentDao.getIdByPhysIdUserId(userId, physicianId);
 	}

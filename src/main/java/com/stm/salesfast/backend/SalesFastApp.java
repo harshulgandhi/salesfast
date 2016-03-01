@@ -15,6 +15,6 @@ public class SalesFastApp {
 	@Scheduled(fixedRate=86400000)
 	public void printWelcomeMessage(){
 		System.out.println(" **** SALES FAST APPLICATION UP AND RUNNING **** ");
-		createAlignments.createAlignments();
+//		createAlignments.createAlignments();
 	}
 }

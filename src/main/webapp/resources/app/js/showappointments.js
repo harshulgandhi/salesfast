@@ -70,6 +70,7 @@ $(document).ready(function() {
 $('.submit-selected-alignments').click(function(){
 	var physIds = [];
 	var appointTimeList = [];
+	var productIds = [];
 	
 	$('.selected').each(function(i, val){
 		console.log($(this)[0]);
@@ -87,9 +88,10 @@ $('.submit-selected-alignments').click(function(){
 				}
 			}
 			if(idx == 0) physIds.push($(val).html());
+			if(idx == 10) productIds.push($(val).html());		//Picking product for selected alignments
 		});
 	});
-	var fixedAppointmentDetails = createJson(physIds, appointTimeList);
+	var fixedAppointmentDetails = createJson(physIds, appointTimeList, productIds);
 	console.log("Json : "+JSON.stringify(fixedAppointmentDetails));
 	$.ajax({
 		type : 'POST',
@@ -104,7 +106,9 @@ $('.submit-selected-alignments').click(function(){
 	        console.log("SUCCESS!!");
 	    }
 	});
-	location.reload(true);
+	setTimeout(function(){
+		location.reload(true);
+	}, 500);
 });
 
 
@@ -171,13 +175,14 @@ var toggleMeetingUpdateButtons = function(hasMeetingUpdate, hasMeetingExperience
 }
 //Function to create JSON to store physician Ids and corresponding 
 //appointment time
-var createJson = function(physIds, appointTime){
+var createJson = function(physIds, appointTime, productIds){
 	var appointmentJson = {"appointments":[]};
 	var appointJsonList = [];
 	for( var i = 0; i<physIds.length;i++){
 		appointJsonList.push(
 				{
 					"physicianId":parseInt(physIds[i][0]), 
+					"productId":parseInt(productIds[i][0]),
 					"appointmentTime":appointTime[i]
 				});
 	}

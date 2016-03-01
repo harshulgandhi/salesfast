@@ -18,5 +18,6 @@ public class AjaxRequestListMapper implements Serializable{
 	private int physicianId;
 	private int productId;
 	private String appointmentTime;
+	private String appointmentDate;
 	
 }

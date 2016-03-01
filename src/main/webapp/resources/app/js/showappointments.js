@@ -20,8 +20,10 @@ $(document).ready(function() {
 	    	$(this).toggleClass('selected');
 	    	if ( $(this).hasClass('selected') ) {
 	            $(this).find('.appointment-time').prop("disabled",false);
+	            $(this).find('.appointment-date').prop("disabled",false);
 	        }else{
 	        	 $(this).find('.appointment-time').prop("disabled",true);
+	        	 $(this).find('.appointment-date').prop("disabled",true);
 	        }
     	}
     });
@@ -70,21 +72,24 @@ $(document).ready(function() {
 $('.submit-selected-alignments').click(function(){
 	var physIds = [];
 	var appointTimeList = [];
+	var appointDateList = [];
 	var productIds = [];
 	
 	$('.selected').each(function(i, val){
 		console.log($(this)[0]);
 		$(this).find('td').each(function(idx, val){
 			
-			if ($(val).find('.appointment-time').length != 0) {
+			if ($(val).find('.appointment-time').length != 0 && $(val).find('.appointment-date').length != 0) {
 				var appointTime = $(val).find('.appointment-time').val();
+				var appointDate = $(val).find('.appointment-date').val();
 				if(appointTime == ''){		//Check if user entered time for all selected physicians
-					alert("Please mention time for all selected physicians");
+					alert("Please mention time and date both for all selected physicians");
 					return;
 				}
 				else{
-					console.log("TIME" + $(val).find('.appointment-time').val());
+					console.log("TIME " + $(val).find('.appointment-time').val()+"; DATE "+$(val).find('.appointment-date').val());
 					appointTimeList.push(appointTime);
+					appointDateList.push(appointDate);
 				}
 			}
 			if(idx == 0) physIds.push($(val).html());
@@ -175,7 +180,7 @@ var toggleMeetingUpdateButtons = function(hasMeetingUpdate, hasMeetingExperience
 }
 //Function to create JSON to store physician Ids and corresponding 
 //appointment time
-var createJson = function(physIds, appointTime, productIds){
+var createJson = function(physIds, appointTime, productIds,appointDate){
 	var appointmentJson = {"appointments":[]};
 	var appointJsonList = [];
 	for( var i = 0; i<physIds.length;i++){
@@ -183,7 +188,9 @@ var createJson = function(physIds, appointTime, productIds){
 				{
 					"physicianId":parseInt(physIds[i][0]), 
 					"productId":parseInt(productIds[i][0]),
-					"appointmentTime":appointTime[i]
+					"appointmentTime":appointTime[i],
+					"appointmentDate":appointDate[i]
+
 				});
 	}
 	return appointJsonList;

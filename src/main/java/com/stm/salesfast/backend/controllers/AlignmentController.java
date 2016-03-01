@@ -2,6 +2,7 @@ package com.stm.salesfast.backend.controllers;
 
 import java.text.ParseException;
 import java.util.List;
+import java.sql.Date;
 import java.sql.Time;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,7 +54,6 @@ public class AlignmentController {
 		
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		CURRENTUSERNAME = user.getUsername(); //get logged in user name
-		
 	    log.info("\nLogged in user is : "+CURRENTUSERNAME+" and his role is "+user.getAuthorities());
 		
 		/* These alignments are the ones that haven't been 
@@ -77,7 +77,8 @@ public class AlignmentController {
 		for (AjaxRequestListMapper appointmentList : appointments){
 			log.info("Appointment fixed for physician = "+appointmentList.getPhysicianId()+" @ "+appointmentList.getAppointmentTime());
 			Time selectedTime = SalesFastUtilities.getTimeForStringTime(appointmentList.getAppointmentTime(), "HH:mm");
-			appointmentService.addAppointment(appointmentList.getPhysicianId(), selectedTime, new String("CONFIRMED"), appointmentList.getProductId());
+			Date selectedDate = SalesFastUtilities.getDateForStringTime(appointmentList.getAppointmentDate(), "yyyy-MM-dd"); 
+			appointmentService.addAppointment(appointmentList.getPhysicianId(), selectedTime, selectedDate, new String("CONFIRMED"), appointmentList.getProductId());
 			
 			User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			CURRENTUSERNAME = user.getUsername(); //get logged in user name

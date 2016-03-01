@@ -16,8 +16,10 @@ $(document).ready(function() {
 	    	$(this).toggleClass('selected');
 	    	if ( $(this).hasClass('selected') ) {
 	            $(this).find('.appointment-time').prop("disabled",false);
+	            $(this).find('.appointment-date').prop("disabled",false);
 	        }else{
 	        	 $(this).find('.appointment-time').prop("disabled",true);
+	        	 $(this).find('.appointment-date').prop("disabled",true);
 	        }
     	}
     } );
@@ -35,28 +37,31 @@ $(document).ready(function() {
 $('.submit-selected-alignments').click(function(){
 	var physIds = [];
 	var appointTimeList = [];
+	var appointDateList = [];
 	var productIds = [];
 	
 	$('.selected').each(function(i, val){
 		console.log($(this)[0]);
-		$(this).find('td').each(function(idx, val){
-			
-			if ($(val).find('.appointment-time').length != 0) {
-				var appointTime = $(val).find('.appointment-time').val();
-				if(appointTime == ''){		//Check if user entered time for all selected physicians
-					alert("Please mention time for all selected physicians");
+		$(this).find('td').each(function(idx, valTD){
+			if ($(valTD).find('.appointment-time').length != 0 ) {
+				var appointDate = $(valTD).find('.appointment-date').val();
+				var appointTime = $(valTD).find('.appointment-time').val();
+				console.log("TIME " + appointTime+"; DATE "+appointDate);
+				if(appointTime == '' || appointDate == ''){		//Check if user entered time for all selected physicians
+					alert("Please mention time and date both for all selected physicians");
 					return;
 				}
 				else{
-					console.log("TIME " + $(val).find('.appointment-time').val());
+					console.log("TIME " + appointTime+"; DATE "+appointDate);
 					appointTimeList.push(appointTime);
+					appointDateList.push(appointDate);
 				}
 			}
-			if(idx == 0) physIds.push($(val).html());
-			if(idx == 10) productIds.push($(val).html());		//Picking product for selected alignments
+			if(idx == 0) physIds.push($(valTD).html());
+			if(idx == 10) productIds.push($(valTD).html());		//Picking product for selected alignments
 		});
 	});
-	var fixedAppointmentDetails = createJson(physIds, appointTimeList, productIds);
+	var fixedAppointmentDetails = createJson(physIds, appointTimeList, productIds, appointDateList);
 	console.log("Json : "+JSON.stringify(fixedAppointmentDetails));
 	$.ajax({
 		type : 'POST',
@@ -64,14 +69,14 @@ $('.submit-selected-alignments').click(function(){
 		data : JSON.stringify(fixedAppointmentDetails),
 		contentType : "application/json; charset=utf-8",
 	});
-	setTimeout(function(){
+/*	setTimeout(function(){
 		location.reload(true);
-	}, 500);
+	}, 500);*/
 });
 
 //Function to create JSON to store physician Ids and corresponding 
 //appointment time
-var createJson = function(physIds, appointTime, productIds){
+var createJson = function(physIds, appointTime, productIds, appointDate){
 	var appointmentJson = {"appointments":[]};
 	var appointJsonList = [];
 	for( var i = 0; i<physIds.length;i++){
@@ -79,9 +84,9 @@ var createJson = function(physIds, appointTime, productIds){
 				{
 					"physicianId":parseInt(physIds[i][0]),
 					"productId":parseInt(productIds[i][0]),
-					"appointmentTime":appointTime[i]
+					"appointmentTime":appointTime[i],
+					"appointmentDate":appointDate[i]
 				});
 	}
-	
 	return appointJsonList;
 }

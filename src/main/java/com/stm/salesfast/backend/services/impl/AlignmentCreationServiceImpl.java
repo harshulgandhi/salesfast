@@ -1,5 +1,6 @@
 package com.stm.salesfast.backend.services.impl;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import com.stm.salesfast.backend.services.specs.ProductFetchService;
 import com.stm.salesfast.backend.services.specs.TerritoryService;
 import com.stm.salesfast.backend.services.specs.TrainingMaterialService;
 import com.stm.salesfast.backend.services.specs.UserDetailService;
+import com.stm.salesfast.backend.utils.SalesFastUtilities;
 
 @Service
 public class AlignmentCreationServiceImpl implements AlignmentCreationService {
@@ -75,7 +77,6 @@ public class AlignmentCreationServiceImpl implements AlignmentCreationService {
 						log.info("Alignment number : "+(++i)+" is : \n"+alignments.get(i-1));
 					}
 				}
-				
 			}
 		}
 		return alignments;
@@ -87,6 +88,18 @@ public class AlignmentCreationServiceImpl implements AlignmentCreationService {
 		// TODO Auto-generated method stub
 		List<AlignmentsDto> alignments = calculateAlignments();
 		for(AlignmentsDto alignment : alignments) alignmentService.insert(alignment);
+	}
+
+	@Override
+	public void calculatePhysicianImportance() throws ParseException {
+		// TODO Auto-generated method stub
+		for(PhysicianStgDto eachPhysician : physicians){
+			if(!eachPhysician.isNew){
+				SalesFastUtilities.numberOfMonth(eachPhysician.getPracticeStartDate());
+			}else{
+				
+			}
+		}
 	}
 	
 	

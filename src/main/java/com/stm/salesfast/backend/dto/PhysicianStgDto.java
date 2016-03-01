@@ -1,6 +1,6 @@
 package com.stm.salesfast.backend.dto;
 
-import java.util.Date;
+import java.sql.Date;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,6 +26,7 @@ public class PhysicianStgDto {
 	private String medicalField;
 	public boolean isNew;
 	private String status;
+	private Date practiceStartDate;
 	
 /*	@Override
 	public String toString(){

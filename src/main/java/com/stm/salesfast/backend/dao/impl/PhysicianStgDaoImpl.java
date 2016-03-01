@@ -34,7 +34,7 @@ public class PhysicianStgDaoImpl implements PhysicianStgDao {
 		// TODO Auto-generated method stub
 		try{
 			return jdbcTemplate.queryForObject(FETCH_BY_ID, (rs, rownum) -> {
-				return new PhysicianStgDto(physicianId, rs.getString("firstName"), rs.getString("lastName"),rs.getString("email"),rs.getString("contactNumber"),rs.getString("addressLineOne"),rs.getString("addressLineTwo"),rs.getString("city"),rs.getString("state"),rs.getString("zip"), rs.getString("medicalField"), rs.getBoolean("isNew"), rs.getString("status"));
+				return new PhysicianStgDto(physicianId, rs.getString("firstName"), rs.getString("lastName"),rs.getString("email"),rs.getString("contactNumber"),rs.getString("addressLineOne"),rs.getString("addressLineTwo"),rs.getString("city"),rs.getString("state"),rs.getString("zip"), rs.getString("medicalField"), rs.getBoolean("isNew"), rs.getString("status"),rs.getDate("practiceStartDate"));
 				}, physicianId);
 			
 		}catch(DataAccessException e){
@@ -87,7 +87,7 @@ public class PhysicianStgDaoImpl implements PhysicianStgDao {
 		// TODO Auto-generated method stub
 		try{
 			return jdbcTemplate.query(FETCH_ALL, (rs, rownum) -> {
-				return new PhysicianStgDto(rs.getInt("physicianId"), rs.getString("firstName"), rs.getString("lastName"),rs.getString("email"),rs.getString("contactNumber"),rs.getString("addressLineOne"),rs.getString("addressLineTwo"),rs.getString("city"),rs.getString("state"),rs.getString("zip"), rs.getString("medicalField"), rs.getBoolean("isNew"), rs.getString("status"));
+				return new PhysicianStgDto(rs.getInt("physicianId"), rs.getString("firstName"), rs.getString("lastName"),rs.getString("email"),rs.getString("contactNumber"),rs.getString("addressLineOne"),rs.getString("addressLineTwo"),rs.getString("city"),rs.getString("state"),rs.getString("zip"), rs.getString("medicalField"), rs.getBoolean("isNew"), rs.getString("status"),rs.getDate("practiceStartDate"));
 				});
 			
 		}catch(DataAccessException e){

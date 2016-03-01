@@ -18,7 +18,7 @@
 				<table id="aligned-physician-table" class="table table-striped table-bordered">
 					<thead>
 						<tr>
-							<th>Id</th>
+							<th>Physician Id</th>
 							<th>Physician Name</th>
 							<th>Email Id</th>
 							<th>Contact</th>
@@ -30,7 +30,8 @@
 							<th>Product</th>
 							<th style="display:none">Product Id</th>
 							<th>Is a new Physician?</th>
-							<th>Time of appointment</th>
+							<th>Date</th>
+							<th>Time</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -48,6 +49,7 @@
 							<td style="display:none" th:text="${eachAlignment.productId}"></td>
 							<td th:unless="${eachAlignment.isNew}" th:text="NO"></td>
 							<td th:if="${eachAlignment.isNew}" th:text="YES"></td>
+							<td><input class="appointment-date" type="date" disabled="disabled"/></td>
 							<td><input class="appointment-time" type="time" disabled="disabled"/></td>
 						</tr>
 					</tbody>

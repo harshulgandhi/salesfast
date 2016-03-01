@@ -1,5 +1,6 @@
 package com.stm.salesfast.backend.services.impl;
 
+import java.sql.Date;
 import java.sql.Time;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -50,16 +51,13 @@ public class AppointmentServiceImpl implements AppointmentService {
 	ProductFetchService productFetchService;
 	
 	@Override
-	public void addAppointment(int physId, Time time, String confirmationStatus, int productId) throws ParseException {
+	public void addAppointment(int physId, Time time, Date date,  String confirmationStatus, int productId) throws ParseException {
 		// TODO Auto-generated method stub
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		CURRENTUSERNAME = user.getUsername(); //get logged in user name
 		int userId = userAccountService.getUserIdByUserName(CURRENTUSERNAME);
 		String zip = physicianService.getPhysicianZipById(physId);
-//		List<Integer> products = alignmentFetchService.getAlignedProduct(userId, physId);
-//		for(Integer eachProduct : products){
-		appointmentDao.insertAppointment(new AppointmentDto(time, SalesFastUtilities.getCurrentDate(), physId, userId, productId,confirmationStatus, zip, false, false));
-//		}
+		appointmentDao.insertAppointment(new AppointmentDto(time, date, physId, userId, productId,confirmationStatus, zip, false, false));
 	}
 	
 	/**

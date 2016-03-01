@@ -9,7 +9,7 @@
     padding-right: 15px;
 }
 
-.appointment-time{
+.appointment-time, .appointment-date{
 	color: black;
 }
 

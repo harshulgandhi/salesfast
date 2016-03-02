@@ -17,3 +17,11 @@
 	margin-bottom: 15px;
     margin-top: 10px;
 }
+
+.future-appoint-modal-content{
+	width: 170%;	
+}
+
+#futureappointment-close-button{
+    margin: 0% 50% 0% 0%;
+}

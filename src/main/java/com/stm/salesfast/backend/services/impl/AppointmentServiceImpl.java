@@ -61,36 +61,68 @@ public class AppointmentServiceImpl implements AppointmentService {
 	}
 	
 	/**
-	 * This method returns appointments of a user based on whether
+	 * This method returns CURRENT DAY's appointments of a user based on whether
 	 * he/she has entered meeting update or meeting experience details 
+	 * @throws ParseException 
 	 * */
 	@Override
-	public List<AppointmentEntity> getAppointmentToShow(int userId) {
+	public List<AppointmentEntity> getTodaysAppointmentToShow(int userId) throws ParseException {
 		// TODO Auto-generated method stub
 		List<AppointmentDto> appointmentDtos = appointmentDao.getAppointmentByUserId(userId);
-		List<AppointmentEntity> appointmentEntitiesList = new ArrayList<>();
-		int i = 0;
+		List<AppointmentEntity> todaysAppointmentEntitiesList = new ArrayList<>();
 		for(AppointmentDto eachAppointment : appointmentDtos){
 			PhysicianStgDto physicianDto = physicianService.getPhysicianById(eachAppointment.getPhysicianId());
 			ProductDto productDto = productFetchService.getProductById(eachAppointment.getProductId());
-			appointmentEntitiesList.add(new AppointmentEntity(eachAppointment.getAppointmnetId(),
-					physicianDto.getPhysicianId(),
-					physicianDto.getFirstName()+" "+physicianDto.getLastName(), 
-					physicianDto.getAddressLineOne()+" "+physicianDto.getAddressLineTwo()+" "+physicianDto.getCity()+"-"+physicianDto.getZip(),
-					physicianDto.getContactNumber(), 
-					physicianDto.getEmail(), 
-					eachAppointment.getConfirmationStatus(),
-					eachAppointment.getTime(), 
-					productDto.getProductName(),
-					eachAppointment.isHasMeetingUpdate(),
-					eachAppointment.isHasMeetingExperience()));
+			if(eachAppointment.getDate().getTime() <= SalesFastUtilities.getCurrentDate().getTime()){
+				todaysAppointmentEntitiesList.add(new AppointmentEntity(eachAppointment.getAppointmnetId(),
+						physicianDto.getPhysicianId(),
+						physicianDto.getFirstName()+" "+physicianDto.getLastName(), 
+						physicianDto.getAddressLineOne()+" "+physicianDto.getAddressLineTwo()+" "+physicianDto.getCity()+"-"+physicianDto.getZip(),
+						physicianDto.getContactNumber(), 
+						physicianDto.getEmail(), 
+						eachAppointment.getConfirmationStatus(),
+						eachAppointment.getTime(),
+						eachAppointment.getDate(),
+						productDto.getProductName(),
+						eachAppointment.isHasMeetingUpdate(),
+						eachAppointment.isHasMeetingExperience()));
+			}
 		}
 		log.info("Appointment fetched are : \n");
-		for (AppointmentEntity eachAppointment : appointmentEntitiesList) log.info(""+eachAppointment);
-		return appointmentEntitiesList;
+		return todaysAppointmentEntitiesList;
 	}
 
-
+	/**
+	 * This method returns FUTURE DATE's appointments of a user based on whether
+	 * he/she has entered meeting update or meeting experience details 
+	 * @throws ParseException 
+	 * */
+	@Override
+	public List<AppointmentEntity> getFutureAppointmentToShow(int userId) throws ParseException {
+		// TODO Auto-generated method stub
+		List<AppointmentDto> appointmentDtos = appointmentDao.getAppointmentByUserId(userId);
+		List<AppointmentEntity> futureAppointmentEntitiesList = new ArrayList<>();
+		for(AppointmentDto eachAppointment : appointmentDtos){
+			PhysicianStgDto physicianDto = physicianService.getPhysicianById(eachAppointment.getPhysicianId());
+			ProductDto productDto = productFetchService.getProductById(eachAppointment.getProductId());
+			if(eachAppointment.getDate().getTime() > SalesFastUtilities.getCurrentDate().getTime()){
+				futureAppointmentEntitiesList.add(new AppointmentEntity(eachAppointment.getAppointmnetId(),
+						physicianDto.getPhysicianId(),
+						physicianDto.getFirstName()+" "+physicianDto.getLastName(), 
+						physicianDto.getAddressLineOne()+" "+physicianDto.getAddressLineTwo()+" "+physicianDto.getCity()+"-"+physicianDto.getZip(),
+						physicianDto.getContactNumber(), 
+						physicianDto.getEmail(), 
+						eachAppointment.getConfirmationStatus(),
+						eachAppointment.getTime(),
+						eachAppointment.getDate(),
+						productDto.getProductName(),
+						eachAppointment.isHasMeetingUpdate(),
+						eachAppointment.isHasMeetingExperience()));
+			}
+		}
+		return futureAppointmentEntitiesList;
+	}
+	
 	@Override
 	public int getAppointmentId(String username, int physicianId) {
 		// TODO Auto-generated method stub

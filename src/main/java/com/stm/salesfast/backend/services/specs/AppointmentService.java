@@ -11,7 +11,9 @@ import com.stm.salesfast.backend.entity.AppointmentEntity;
 public interface AppointmentService {
 
 	
-	public List<AppointmentEntity> getAppointmentToShow(int userId);
+	public List<AppointmentEntity> getTodaysAppointmentToShow(int userId) throws ParseException;
+	
+	public List<AppointmentEntity> getFutureAppointmentToShow(int userId) throws ParseException;
 	
 	public int getAppointmentId (String username, int physicianId);
 	

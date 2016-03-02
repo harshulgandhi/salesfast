@@ -116,7 +116,7 @@ $('.submit-selected-alignments').click(function(){
 				if(idx == 10) productIds.push($(valTD).html());		//Picking product for selected alignments
 			});
 	});
-	var fixedAppointmentDetails = createJson(physIds, appointTimeList, productIds);
+	var fixedAppointmentDetails = createJson(physIds, appointTimeList, productIds, appointDateList);
 	console.log("Json : "+JSON.stringify(fixedAppointmentDetails));
 	$.ajax({
 		type : 'POST',

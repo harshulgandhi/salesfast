@@ -47,18 +47,18 @@ public class AppointmentController {
 	MeetingExperienceService meetingExperienceService;
 	
 	@RequestMapping(value="/showappointments", method=RequestMethod.GET)
-	public String showAppointments(Model model){
+	public String showAppointments(Model model) throws ParseException{
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		CURRENTUSERNAME = user.getUsername(); //get logged in user name
 		
-		/*Fetching fixed appointments
-		 */
-		List<AppointmentEntity> appointmentsList = appointmentFetchService.getAppointmentToShow(userAccountService.getUserIdByUserName(CURRENTUSERNAME));
+		List<AppointmentEntity> todaysAppointmentsList = appointmentFetchService.getTodaysAppointmentToShow(userAccountService.getUserIdByUserName(CURRENTUSERNAME));
+		List<AppointmentEntity> futureAppointmentsList = appointmentFetchService.getFutureAppointmentToShow(userAccountService.getUserIdByUserName(CURRENTUSERNAME));
 		
 		List<AlignedPhysicianEntity> alignedPhysicianInVicinity = alignmentFetchService.getAlignmentByUserIdInVicinityOfAppointments(
 				(userAccountService.getUserAccountByUserName(CURRENTUSERNAME)).getUserId());
 		
-		model.addAttribute("listOfAppointments", appointmentsList);
+		model.addAttribute("listOfTodaysAppointments", todaysAppointmentsList);
+		model.addAttribute("listOfFutureAppointments", futureAppointmentsList);
 		model.addAttribute("listOfPhysInVicinity", alignedPhysicianInVicinity);
 		return "showappointment";
 	}

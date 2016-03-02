@@ -1,5 +1,6 @@
 package com.stm.salesfast.backend.entity;
 
+import java.sql.Date;
 import java.sql.Time;
 
 import lombok.AllArgsConstructor;
@@ -20,6 +21,7 @@ public class AppointmentEntity {
 	private String emailId;
 	private String confirmationStatus;
 	private Time time;
+	private Date date;
 	private String product;
 	private boolean hasMeetingUpdate;
 	private boolean hasMeetingExperience;

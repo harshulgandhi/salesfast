@@ -9,22 +9,43 @@ var selectedAlignments = [];
  * Takes care of clicks done on the 'time' element 
  */
 $(document).ready(function() {
-   var table = $('#aligned-physician-table').DataTable();
+   var table = $('#aligned-physician-table').DataTable({
+	   order: [[14, "desc"]]
+   });
     $('#aligned-physician-table tbody').on( 'click', 'tr', function (e) {
     	var cell = $(e.target).get(0);
     	if(cell.childElementCount < 1 && cell.nodeName != 'INPUT'){
 	    	$(this).toggleClass('selected');
 	    	if ( $(this).hasClass('selected') ) {
+	    		$(this).css('background-color','#08C')
 	            $(this).find('.appointment-time').prop("disabled",false);
 	            $(this).find('.appointment-date').prop("disabled",false);
 	        }else{
-	        	 $(this).find('.appointment-time').prop("disabled",true);
-	        	 $(this).find('.appointment-date').prop("disabled",true);
+	        	setRowColor($(this));
+				 $(this).find('.appointment-time').prop("disabled",true);
+				 $(this).find('.appointment-date').prop("disabled",true);
 	        }
     	}
-    } );
+    });
+    
+    /*Initialize table with row colors*/
+    var myTable = $('#aligned-physician-table').dataTable();
+    var tableRows = myTable.fnGetNodes();
+    for(var i = 0; i<tableRows.length ; i++){
+    	setRowColor($(tableRows[i]));
+    }
 });	
 
+/**
+ * Set color of the row based on the 
+ * importance factor of corresponding physician
+ * */
+var setRowColor = function(row){
+	var importanceFactor =  $(row).find(".importance-factor").html();
+	if(importanceFactor > 1.2) $(row).css('background-color','#93CA94');
+	else if(importanceFactor > 0.5) $(row).css('background-color','#D2F9D3');
+	else $(row).css('background-color','#ECFBEC');
+}
 
 /**
  * On click of submit button, DOM is traversed 
@@ -54,12 +75,13 @@ $('.submit-selected-alignments').click(function(){
 				else{
 					console.log("TIME " + appointTime+"; DATE "+appointDate);
 					appointTimeList.push(appointTime);
-					appointDateList.push(appointDate);
+//					appointDateList.push(appointDate);
 				}
 			}
 			if(idx == 0) physIds.push($(valTD).html());
 			if(idx == 10) productIds.push($(valTD).html());		//Picking product for selected alignments
 		});
+		appointDateList.push("2016-03-04");
 	});
 	var fixedAppointmentDetails = createJson(physIds, appointTimeList, productIds, appointDateList);
 	console.log("Json : "+JSON.stringify(fixedAppointmentDetails));
@@ -69,7 +91,7 @@ $('.submit-selected-alignments').click(function(){
 		data : JSON.stringify(fixedAppointmentDetails),
 		contentType : "application/json; charset=utf-8",
 	});
-/*	setTimeout(function(){
+	/*setTimeout(function(){
 		location.reload(true);
 	}, 500);*/
 });

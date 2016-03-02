@@ -20,7 +20,8 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	private static final String FETCH_BY_ID = "SELECT * FROM appointment WHERE appointmentId = ?";
 	private static final String FETCH_BY_USERID = "SELECT * FROM appointment WHERE userId = ?";
 	private static final String FETCH_BY_USERID_wMeetingUpdateExperienceCheck = "SELECT * FROM appointment WHERE userId = ? "
-			+ "AND (hasMeetingUpdate = 0 OR hasMeetingExperience = 0)";
+																		+ "AND (hasMeetingUpdate = 0 OR hasMeetingExperience = 0) "
+																		+ "ORDER BY time";
 	private static final String FETCH_BY_PHYSICIANID = "SELECT * FROM appointment WHERE physicianId = ?";
 	private static final String INSERT = "INSERT INTO appointment "+
 	"(time, date, physicianId, userId, productId, confirmationStatus, zip) "+

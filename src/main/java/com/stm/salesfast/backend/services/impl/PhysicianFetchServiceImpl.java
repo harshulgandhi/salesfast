@@ -59,5 +59,10 @@ public class PhysicianFetchServiceImpl implements PhysicianFetchService {
 		// TODO Auto-generated method stub
 		return physicianDao.getAll();
 	}
-
+	
+	@Override
+	public void updateImportanceFactor(double importanceFactor, int physicianId) {
+		// TODO Auto-generated method stub
+		physicianDao.updateImportance(importanceFactor, physicianId);;
+	}
 }

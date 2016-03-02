@@ -27,6 +27,7 @@ public class PhysicianStgDto {
 	public boolean isNew;
 	private String status;
 	private Date practiceStartDate;
+	private double importanceFactor;
 	
 /*	@Override
 	public String toString(){

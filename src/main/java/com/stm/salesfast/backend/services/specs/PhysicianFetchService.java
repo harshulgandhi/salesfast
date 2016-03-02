@@ -14,4 +14,6 @@ public interface PhysicianFetchService {
 	public PhysicianAppointmentEntity getAppointmentDetailForPhysician(String username, int appointmentId);
 	
 	public List<PhysicianStgDto> getAllPhysicians();
+
+	public void updateImportanceFactor(double importanceFactor, int physicianId);
 }

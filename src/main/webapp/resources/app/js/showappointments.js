@@ -8,7 +8,9 @@ $(document).ready(function() {
 	$('.slidedown-alignments').click(function(){
 		    $('.slidedown-alignments-show').slideToggle('fast');
 	});
-   var table = $('#aligned-vicinity-physician-table').DataTable();
+   var table = $('#aligned-vicinity-physician-table').DataTable({
+	   order: [[14, "desc"]]
+   });
    
    /**
     * Toggles between selected and de-selected rows of the table
@@ -19,15 +21,22 @@ $(document).ready(function() {
     	if(cell.childElementCount < 1 && cell.nodeName != 'INPUT'){
 	    	$(this).toggleClass('selected');
 	    	if ( $(this).hasClass('selected') ) {
+	    		$(this).css('background-color','#08C')
 	            $(this).find('.appointment-time').prop("disabled",false);
 	            $(this).find('.appointment-date').prop("disabled",false);
 	        }else{
-	        	 $(this).find('.appointment-time').prop("disabled",true);
-	        	 $(this).find('.appointment-date').prop("disabled",true);
+	        	setRowColor($(this));
+				$(this).find('.appointment-time').prop("disabled",true);
+				$(this).find('.appointment-date').prop("disabled",true);
 	        }
     	}
     });
-    
+     /*Initialize table with row colors*/
+    var myTable = $('#aligned-vicinity-physician-table').dataTable();
+    var tableRows = myTable.fnGetNodes();
+    for(var i = 0; i<tableRows.length ; i++){
+    	setRowColor($(tableRows[i]));
+    }
     tableAppointment = $('#appointment-fixed-physician-table').DataTable();
     $('#appointment-fixed-physician-table tbody').on( 'click', 'tr', function (e) {
     	var cell = $(e.target).get(0);	
@@ -60,6 +69,17 @@ $(document).ready(function() {
     });
 });	
 
+
+/**
+ * Set color of the row based on the 
+ * importance factor of corresponding physician
+ * */
+var setRowColor = function(row){
+	var importanceFactor =  $(row).find(".importance-factor").html();
+	if(importanceFactor > 1.2) $(row).css('background-color','#93CA94');
+	else if(importanceFactor > 0.5) $(row).css('background-color','#D2F9D3');
+	else $(row).css('background-color','#ECFBEC');
+}
 
 /**
  * On click of submit button, DOM is traversed 

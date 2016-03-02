@@ -11,7 +11,7 @@ import com.stm.salesfast.backend.dto.PhysicianStgDto;
 @NoArgsConstructor
 @Data
 @ToString
-public class AlignedPhysicianEntity {
+public class AlignedPhysicianEntity implements Comparable<AlignedPhysicianEntity>{
 
 	private int physicianId;
 	private String firstName;
@@ -28,6 +28,7 @@ public class AlignedPhysicianEntity {
 	private String status;
 	private int productId;
 	private String productName;
+	private double importanceFactor;
 	
 	public AlignedPhysicianEntity(PhysicianStgDto physicianDto,
 			String productName2, int productId) {
@@ -45,7 +46,16 @@ public class AlignedPhysicianEntity {
 		this.medicalField = physicianDto.getMedicalField();
 		this.isNew = physicianDto.isNew();
 		this.status = physicianDto.getStatus();
+		this.importanceFactor = physicianDto.getImportanceFactor();
 		this.productName = productName2;
 		this.productId = productId;
+		
+	}
+
+	@Override
+	public int compareTo(AlignedPhysicianEntity o) {
+		// TODO Auto-generated method stub
+		if(importanceFactor > o.importanceFactor) return -1;
+		else return 1;
 	}
 }

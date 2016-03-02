@@ -15,6 +15,7 @@ import com.stm.salesfast.backend.dto.ProductDto;
 import com.stm.salesfast.backend.dto.UserDto;
 import com.stm.salesfast.backend.services.specs.AlignmentCreationService;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
+import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
 import com.stm.salesfast.backend.services.specs.PhysicianFetchService;
 import com.stm.salesfast.backend.services.specs.ProductFetchService;
 import com.stm.salesfast.backend.services.specs.TerritoryService;
@@ -44,6 +45,9 @@ public class AlignmentCreationServiceImpl implements AlignmentCreationService {
 	@Autowired
 	AlignmentFetchService alignmentService;
 	
+	@Autowired
+	MeetingUpdateService meetingUpdates;
+	
 	private List<UserDto> salesReps = new ArrayList<>();
 	private List<PhysicianStgDto> physicians = new ArrayList<>();
 	
@@ -53,10 +57,15 @@ public class AlignmentCreationServiceImpl implements AlignmentCreationService {
 	}
 	
 	@Override
-	public List<AlignmentsDto> calculateAlignments() {
-		// TODO Auto-generated method stub
+	public void getDataForProcessing(){
 		salesReps = userDetailService.getAllSalesReps();
 		physicians = physicianFetchService.getAllPhysicians();
+	}
+	
+	@Override
+	public List<AlignmentsDto> calculateAlignments() {
+		// TODO Auto-generated method stub
+		
 		List<AlignmentsDto> alignments = new ArrayList<>();
 		int i = 0;
 		for(PhysicianStgDto eachPhysician : physicians){
@@ -90,19 +99,28 @@ public class AlignmentCreationServiceImpl implements AlignmentCreationService {
 		for(AlignmentsDto alignment : alignments) alignmentService.insert(alignment);
 	}
 
+	/**
+	 * Calculate importance metric for each physician based on
+	 * certain business rules.
+	 * */
 	@Override
 	public void calculatePhysicianImportance() throws ParseException {
-		// TODO Auto-generated method stub
+		double importanceMetric = 0.0;
+		log.info("Calculating importance metric for physicians");
 		for(PhysicianStgDto eachPhysician : physicians){
 			if(!eachPhysician.isNew){
-				SalesFastUtilities.numberOfMonth(eachPhysician.getPracticeStartDate());
+				int noOfMonths = (int) Math.ceil(SalesFastUtilities.numberOfMonth(eachPhysician.getPracticeStartDate()));
+				int noOfPrescribingProducts = meetingUpdates.getPrescribingProduct(eachPhysician.getPhysicianId()).size();
+				importanceMetric = (noOfMonths + noOfPrescribingProducts)/100.0;
 			}else{
-				
+				int noOfMonths = (int) Math.ceil(SalesFastUtilities.numberOfMonth(eachPhysician.getPracticeStartDate()));
+				int noOfPrescribingProducts = meetingUpdates.getPrescribingProduct(eachPhysician.getPhysicianId()).size();
+				importanceMetric = (noOfMonths + (noOfPrescribingProducts*2))/100.0;
 			}
+			log.info("Updating imortance metric for physician : "+ eachPhysician.getPhysicianId());
+			physicianFetchService.updateImportanceFactor(importanceMetric, eachPhysician.getPhysicianId());
 		}
 	}
-	
-	
 	
 
 }

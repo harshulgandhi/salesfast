@@ -28,15 +28,18 @@ public class PhysicianStgDaoImpl implements PhysicianStgDao {
 	" VALUES (?,?,?,?,?,?,?,?,?,?,?,?)";
 	private static final String FETCH_ZIP_BYID = "SELECT zip FROM physicians_staging WHERE physicianId = ?";
 	private static final String FETCH_ALL = "SELECT * FROM physicians_staging";
+	private static final String UPDATE_IMPORTANCE = "UPDATE physicians_staging SET "
+													+ " importanceFactor = ? "
+													+ " WHERE physicianId = ?";
+	
 	
 	@Override
 	public PhysicianStgDto getBy(int physicianId) {
 		// TODO Auto-generated method stub
 		try{
 			return jdbcTemplate.queryForObject(FETCH_BY_ID, (rs, rownum) -> {
-				return new PhysicianStgDto(physicianId, rs.getString("firstName"), rs.getString("lastName"),rs.getString("email"),rs.getString("contactNumber"),rs.getString("addressLineOne"),rs.getString("addressLineTwo"),rs.getString("city"),rs.getString("state"),rs.getString("zip"), rs.getString("medicalField"), rs.getBoolean("isNew"), rs.getString("status"),rs.getDate("practiceStartDate"));
+				return new PhysicianStgDto(physicianId, rs.getString("firstName"), rs.getString("lastName"),rs.getString("email"),rs.getString("contactNumber"),rs.getString("addressLineOne"),rs.getString("addressLineTwo"),rs.getString("city"),rs.getString("state"),rs.getString("zip"), rs.getString("medicalField"), rs.getBoolean("isNew"), rs.getString("status"),rs.getDate("practiceStartDate"), rs.getDouble("importanceFactor"));
 				}, physicianId);
-			
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}
@@ -61,6 +64,16 @@ public class PhysicianStgDaoImpl implements PhysicianStgDao {
 			ps.setString(12, physician.getStatus());
 		});
 	}
+	
+	@Override
+	public void updateImportance(double importanceFactor, int physicianId) {
+		// TODO Auto-generated method stub
+		jdbcTemplate.update(UPDATE_IMPORTANCE, (ps) -> {
+			ps.setDouble(1, importanceFactor);
+			ps.setInt(2, physicianId);
+		});
+	}
+
 
 	@Override
 	public void deleteBy(int physicianId) {
@@ -87,7 +100,7 @@ public class PhysicianStgDaoImpl implements PhysicianStgDao {
 		// TODO Auto-generated method stub
 		try{
 			return jdbcTemplate.query(FETCH_ALL, (rs, rownum) -> {
-				return new PhysicianStgDto(rs.getInt("physicianId"), rs.getString("firstName"), rs.getString("lastName"),rs.getString("email"),rs.getString("contactNumber"),rs.getString("addressLineOne"),rs.getString("addressLineTwo"),rs.getString("city"),rs.getString("state"),rs.getString("zip"), rs.getString("medicalField"), rs.getBoolean("isNew"), rs.getString("status"),rs.getDate("practiceStartDate"));
+				return new PhysicianStgDto(rs.getInt("physicianId"), rs.getString("firstName"), rs.getString("lastName"),rs.getString("email"),rs.getString("contactNumber"),rs.getString("addressLineOne"),rs.getString("addressLineTwo"),rs.getString("city"),rs.getString("state"),rs.getString("zip"), rs.getString("medicalField"), rs.getBoolean("isNew"), rs.getString("status"),rs.getDate("practiceStartDate"),rs.getDouble("importanceFactor"));
 				});
 			
 		}catch(DataAccessException e){

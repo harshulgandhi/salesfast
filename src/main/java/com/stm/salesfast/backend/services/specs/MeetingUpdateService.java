@@ -1,6 +1,7 @@
 package com.stm.salesfast.backend.services.specs;
 
 import java.text.ParseException;
+import java.util.List;
 
 import com.stm.salesfast.backend.dto.MeetingUpdateDto;
 import com.stm.salesfast.backend.dto.ProductDto;
@@ -11,4 +12,6 @@ public interface MeetingUpdateService {
 	public void insertMeetinUpdate(MeetingUpdateEntity meetingUpdateEntity) throws ParseException;
 	
 	public MeetingUpdateDto getMeetingUpdateByAppointmentId(int appointmentId);
+	
+	public List<Integer> getPrescribingProduct(int physicianId);
 }

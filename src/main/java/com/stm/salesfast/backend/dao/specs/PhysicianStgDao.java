@@ -14,4 +14,6 @@ public interface PhysicianStgDao {
 	public String getZipById(int physicianId);
 	
 	public List<PhysicianStgDto> getAll();
+
+	public void updateImportance(double importanceFactor, int physicianId);
 }

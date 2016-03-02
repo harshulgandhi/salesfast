@@ -91,6 +91,7 @@
 								<th>Is a new Physician?</th>
 								<th>Date</th>
 								<th>Time</th>
+								<th style="display:none">Importance Factor</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -110,6 +111,7 @@
 								<td th:if="${eachVicinityAlignment.isNew}" th:text="YES"></td>
 								<td><input class="appointment-date" type="date" disabled="disabled"/></td>
 								<td><input class="appointment-time" type="time" disabled="disabled"/></td>
+								<td class="importance-factor" style="display:none" th:text="${eachVicinityAlignment.importanceFactor}"></td>
 							</tr>
 						</tbody>
 					</table>

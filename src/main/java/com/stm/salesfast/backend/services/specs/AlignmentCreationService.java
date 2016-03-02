@@ -9,4 +9,5 @@ public interface AlignmentCreationService {
 	public List<AlignmentsDto> calculateAlignments();
 	public void createAlignments();
 	public void calculatePhysicianImportance() throws ParseException;
+	void getDataForProcessing();
 }

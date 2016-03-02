@@ -1,6 +1,8 @@
 package com.stm.salesfast.backend.services.impl;
 
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +48,17 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 	public MeetingUpdateDto getMeetingUpdateByAppointmentId(int appointmentId) {
 		// TODO Auto-generated method stub
 		return meetingUpdateDao.getByAppointmentId(appointmentId);
+	}
+
+	@Override
+	public List<Integer> getPrescribingProduct(int physicianId) {
+		// TODO Auto-generated method stub
+		List<MeetingUpdateDto> prescribingRecords = meetingUpdateDao.getByPrescribingPhysicians(physicianId);
+		List<Integer> prescribingProducts = new ArrayList<>();
+		for(MeetingUpdateDto eachRecord : prescribingRecords){
+			prescribingProducts.add(eachRecord.getProductId());
+		}
+		return prescribingProducts;
 	}
 
 }

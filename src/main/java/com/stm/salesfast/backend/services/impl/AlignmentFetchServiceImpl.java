@@ -1,6 +1,7 @@
 package com.stm.salesfast.backend.services.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -75,6 +76,7 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 					productService.getProductById(eachAlignment.getProductId()).getProductId()
 					));
 		}
+		Collections.sort(alignedPhysicians);		//Ordering physicians in reverse order of importance metric
 		return alignedPhysicians;
 	}
 	

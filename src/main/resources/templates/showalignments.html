@@ -4,6 +4,7 @@
 <!-- Header to include css -->
 <div th:replace="fragments/header :: commonhead"></div>
 <link rel="stylesheet" type="text/css" href="resources/app/css/alignments.css"/>
+<link rel="stylesheet" type="text/css" href="resources/app/css/common.css"/>
 <meta charset="ISO-8859-1" />
 <title>SalesFast Home</title>
 </head>
@@ -32,6 +33,7 @@
 							<th>Is a new Physician?</th>
 							<th>Date</th>
 							<th>Time</th>
+							<th style="display:none">Importance Factor</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -51,6 +53,7 @@
 							<td th:if="${eachAlignment.isNew}" th:text="YES"></td>
 							<td><input class="appointment-date" type="date" disabled="disabled"/></td>
 							<td><input class="appointment-time" type="time" disabled="disabled"/></td>
+							<td class="importance-factor" style="display:none" th:text="${eachAlignment.importanceFactor}"></td>
 						</tr>
 					</tbody>
 				</table>

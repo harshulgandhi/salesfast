@@ -37,7 +37,9 @@ $(document).ready(function() {
     for(var i = 0; i<tableRows.length ; i++){
     	setRowColor($(tableRows[i]));
     }
-    tableAppointment = $('#appointment-fixed-physician-table').DataTable();
+    tableAppointment = $('#appointment-fixed-physician-table').DataTable({
+ 	   order: [[7, "asc"]]
+    });
     $('#appointment-fixed-physician-table tbody').on( 'click', 'tr', function (e) {
     	var cell = $(e.target).get(0);	
     	if ( $(this).hasClass('selected') ) {
@@ -96,25 +98,23 @@ $('.submit-selected-alignments').click(function(){
 	var productIds = [];
 	
 	$('.selected').each(function(i, val){
-		console.log($(this)[0]);
-		$(this).find('td').each(function(idx, val){
-			
-			if ($(val).find('.appointment-time').length != 0 && $(val).find('.appointment-date').length != 0) {
-				var appointTime = $(val).find('.appointment-time').val();
-				var appointDate = $(val).find('.appointment-date').val();
-				if(appointTime == ''){		//Check if user entered time for all selected physicians
-					alert("Please mention time and date both for all selected physicians");
-					return;
-				}
-				else{
-					console.log("TIME " + $(val).find('.appointment-time').val()+"; DATE "+$(val).find('.appointment-date').val());
-					appointTimeList.push(appointTime);
-					appointDateList.push(appointDate);
-				}
+		if ($(val).find('.appointment-time').length != 0 ) {
+			var appointDate = $(val).find('.appointment-date').val();
+			var appointTime = $(val).find('.appointment-time').val();
+			if(appointTime == '' || appointDate == ''){		//Check if user entered time for all selected physicians
+				alert("Please mention time and date both for all selected physicians");
+				return;
 			}
-			if(idx == 0) physIds.push($(val).html());
-			if(idx == 10) productIds.push($(val).html());		//Picking product for selected alignments
-		});
+			else{
+				console.log("TIME " + appointTime+"; DATE "+appointDate);
+				appointTimeList.push(appointTime);
+				appointDateList.push(appointDate);
+			}
+		}
+			$(this).find('td').each(function(idx, valTD){
+				if(idx == 0) physIds.push($(valTD).html());
+				if(idx == 10) productIds.push($(valTD).html());		//Picking product for selected alignments
+			});
 	});
 	var fixedAppointmentDetails = createJson(physIds, appointTimeList, productIds);
 	console.log("Json : "+JSON.stringify(fixedAppointmentDetails));

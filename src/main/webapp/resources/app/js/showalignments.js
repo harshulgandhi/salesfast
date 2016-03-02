@@ -62,26 +62,23 @@ $('.submit-selected-alignments').click(function(){
 	var productIds = [];
 	
 	$('.selected').each(function(i, val){
-		console.log($(this)[0]);
-		$(this).find('td').each(function(idx, valTD){
-			if ($(valTD).find('.appointment-time').length != 0 ) {
-				var appointDate = $(valTD).find('.appointment-date').val();
-				var appointTime = $(valTD).find('.appointment-time').val();
-				console.log("TIME " + appointTime+"; DATE "+appointDate);
-				if(appointTime == '' || appointDate == ''){		//Check if user entered time for all selected physicians
-					alert("Please mention time and date both for all selected physicians");
-					return;
-				}
-				else{
-					console.log("TIME " + appointTime+"; DATE "+appointDate);
-					appointTimeList.push(appointTime);
-//					appointDateList.push(appointDate);
-				}
+		if ($(val).find('.appointment-time').length != 0 ) {
+			var appointDate = $(val).find('.appointment-date').val();
+			var appointTime = $(val).find('.appointment-time').val();
+			if(appointTime == '' || appointDate == ''){		//Check if user entered time for all selected physicians
+				alert("Please mention time and date both for all selected physicians");
+				return;
 			}
+			else{
+				console.log("TIME " + appointTime+"; DATE "+appointDate);
+				appointTimeList.push(appointTime);
+				appointDateList.push(appointDate);
+			}
+		}
+		$(this).find('td').each(function(idx, valTD){
 			if(idx == 0) physIds.push($(valTD).html());
 			if(idx == 10) productIds.push($(valTD).html());		//Picking product for selected alignments
 		});
-		appointDateList.push("2016-03-04");
 	});
 	var fixedAppointmentDetails = createJson(physIds, appointTimeList, productIds, appointDateList);
 	console.log("Json : "+JSON.stringify(fixedAppointmentDetails));
@@ -91,9 +88,9 @@ $('.submit-selected-alignments').click(function(){
 		data : JSON.stringify(fixedAppointmentDetails),
 		contentType : "application/json; charset=utf-8",
 	});
-	/*setTimeout(function(){
+	setTimeout(function(){
 		location.reload(true);
-	}, 500);*/
+	}, 500);
 });
 
 //Function to create JSON to store physician Ids and corresponding 

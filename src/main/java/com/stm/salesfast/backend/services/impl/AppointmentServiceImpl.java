@@ -94,7 +94,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 	@Override
 	public int getAppointmentId(String username, int physicianId) {
 		// TODO Auto-generated method stub
-		log.info("");
 		int userId = userAccountService.getUserAccountByUserName(username).getUserId();
 		return appointmentDao.getIdByPhysIdUserId(userId, physicianId);
 	}

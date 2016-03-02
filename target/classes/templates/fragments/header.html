@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="resources/app/css/common.css"/>
 </head>
 <body>
-	<nav th:fragment="header" class="navbar navbar-default navbar-fixed-top">
+	<nav th:fragment="header" class="navbar navbar-default navbar-fixed-top navbar-style-override">
 		<div class="container">
 			<div class="navbar-header">
 	          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="navbar-collapse">
@@ -17,22 +17,25 @@
 	            <span class="icon-bar"></span>
 	            <span class="icon-bar"></span>
 	          </button>
-          	  <a class="navbar-brand" href="./home" >SalesFast</a>
+          	  <a class="navbar-brand navbar-menu-items" href="./home" >SalesFast</a>
         	</div>
         	<nav class="navbar-collapse collapse">
 	          <ul id="book-store-navbar" class="nav navbar-nav">
-	            <li id="nav-home"><a href="./home">Home</a></li>
-	            <li id="nav-alignment"><a href="./showalignments">Alignments</a></li>
-	            <li id="nav-target-incentive"><a href="./targetandincentive" >Target And Incentive</a></li>
-	            <li id="nav-appointment"><a href="./showappointments" >Appointment</a></li>
-	            <li class="dropdown">
-		          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Language<span class="caret"></span></a>
-		          <ul class="dropdown-menu">
-		            <li><a>English</a></li>
-		            <li><a>Japanese</a></li>
-		          </ul>
-		        </li>
-	            <li id="nav-logout"><a href="/logout" >Logout</a></li>
+	            <li id="nav-home"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('SalesRep')} or ${session.roles.contains('DM')} or ${session.roles.contains('PH')}">Home</a></li>
+	            <li id="nav-alignment"><a class="navbar-menu-items" href="./showalignments" th:if="${session.roles.contains('SalesRep')}">Alignments</a></li>
+	            <li id="nav-target-incentive"><a class="navbar-menu-items" href="./targetandincentive" th:if="${session.roles.contains('SalesRep')}">Target And Incentive</a></li>
+	            <li id="nav-appointment"><a class="navbar-menu-items" href="./showappointments" th:if="${session.roles.contains('SalesRep')}">Appointment</a></li>
+	            <li id="nav-appointment"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('SalesRep')}">Notifications</a></li>
+	            <li id="nav-appointment"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('SalesRep')}">Virtual Learning</a></li>
+	            <li id="nav-appointment"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('SalesRep')}">Quick Assistance</a></li>
+	            <li id="nav-appointment"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('SalesRep')}">Reminders</a></li>
+	            
+	            <li id="nav-appointment"><a class="navbar-menu-items" href="./datareport" th:if="${session.roles.contains('DM')}">Data Report</a></li>
+	            <li id="nav-appointment"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('DM')}">View Alignments</a></li>
+	            
+	            <li id="nav-appointment"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('PH')}">e-Detailing</a></li>
+	            
+	            <li id="nav-logout"><a class="navbar-menu-items" href="/logout" >Logout</a></li>
 	          </ul>
 	        </nav>
 		</div>

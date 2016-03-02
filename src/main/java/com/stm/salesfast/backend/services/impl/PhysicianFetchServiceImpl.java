@@ -44,13 +44,14 @@ public class PhysicianFetchServiceImpl implements PhysicianFetchService {
 	}
 
 	@Override
-	public PhysicianAppointmentEntity getAppointmentDetailForPhysician(
-			String username, int appointmentId) {
+	public PhysicianAppointmentEntity getAppointmentDetailForPhysician(int appointmentId) {
 		// TODO Auto-generated method stub
-		String salesRepName = userDetailService.getUserDetails(username).getFirstName() + " " +userDetailService.getUserDetails(username).getLastName();
+		
 		AppointmentDto appointmentDto = appointmentService.getById(appointmentId);
+		int userId = appointmentDto.getUserId();
+		String salesRepName = userDetailService.getUserDetails(userId).getFirstName() + " " +userDetailService.getUserDetails(userId).getLastName();
 		ProductDto product = productService.getProductById(appointmentDto.getProductId());
-		return new PhysicianAppointmentEntity(salesRepName, ConstantValues.organisation, product.getProductName(), appointmentDto.getTime().toString(), appointmentDto.getConfirmationStatus());
+		return new PhysicianAppointmentEntity(appointmentId, salesRepName, ConstantValues.organisation, product.getProductName(), appointmentDto.getTime().toString(), appointmentDto.getConfirmationStatus());
 		
 	}
 

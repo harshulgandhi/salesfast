@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -77,6 +78,12 @@ public class AppointmentController {
 		log.info("Meeting experience details received  : "+meetingExperience);
 		meetingExperienceService.insert(meetingExperience);
 	}
+	
+	@RequestMapping(value="cancelappointment", method=RequestMethod.GET)
+	public void cancelAppointment(@RequestParam int id, String cancellationReason){
+		log.info("Cancellation request received for appointment "+id+" due to "+cancellationReason);
+	}
+	
 }
 
 

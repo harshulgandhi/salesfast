@@ -15,3 +15,6 @@ td#value{
     font-family: initial;
     font-weight: 600;
 }
+.cancel-btn-row{
+    margin: 3% 0% 0% 40%;
+}

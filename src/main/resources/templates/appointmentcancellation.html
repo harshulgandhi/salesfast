@@ -15,17 +15,12 @@
 			<div class="col-lg-12 col-sm-12">
 				<table id="appointment-fixed-physician-table" class="table">
 					<thead>
-						<!-- <tr>
-							<th>Physician Name</th>
-							<th>Address</th>
-							<th>Contact</th>
-							<th>Email Id</th>
-							<th>Confirmation Status</th>
-							<th>Time of appointment</th>
-							<th>Product</th>
-						</tr> -->
 					</thead>
 					<tbody>
+						<tr style="display: none">
+							<td id="caption">Appointment Id : </td>
+							<td class="appointment-id" id="value" th:text="${appointmentDetail.appointmentId}"></td>
+						</tr>
 						<tr>
 							<td id="caption">Sales Representative : </td>
 							<td id="value" th:text="${appointmentDetail.salesRepName}"></td>
@@ -49,6 +44,35 @@
 					</tbody>
 				</table>
 			</div>
+		</div>
+		<div class="row cancel-btn-row">
+			<button type="button" class="btn btn-danger cancel-appointment">Cancel Appointment</button>
+		</div>
+		
+		<div class="modal fade" id="cancellation-reason" role="dialog" data-edit-mode="false">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content appointment-cancellation-reason">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h4 class="modal-title" id="appointmentcancellation">Please provide reason for cancellation!</h4>
+					</div>
+					<div class="modal-body">
+						<div class="cancellation-reason-text">
+							<div class="form-group">
+								<label for="cancellation-reason-id">Cancellation Reason: </label> 
+								<textarea name="id" class="form-control cancellation-reason-class" id="cancellation-reason-id" placeholder="Cancellation Reason" rows="3">
+								</textarea>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button id="appointment-cancellation-button" type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+					</div>
+				</div>
+			</div>	
 		</div>
 		<!-- <div class="form-appointment-div">
 			<form class="form-appointment" action="#" th:action="@{/verifycredentials}"   method="post">

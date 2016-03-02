@@ -11,9 +11,10 @@ public interface PhysicianFetchService {
 	
 	public String getPhysicianZipById(int physId);
 	
-	public PhysicianAppointmentEntity getAppointmentDetailForPhysician(String username, int appointmentId);
 	
 	public List<PhysicianStgDto> getAllPhysicians();
 
 	public void updateImportanceFactor(double importanceFactor, int physicianId);
+
+	PhysicianAppointmentEntity getAppointmentDetailForPhysician(int appointmentId);
 }

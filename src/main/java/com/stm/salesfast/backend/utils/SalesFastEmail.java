@@ -8,8 +8,8 @@ import com.stm.salesfast.backend.dto.UserDto;
 
 public interface SalesFastEmail {
 	
-	public void addTo(UserDto user);
-	public void addTo(List<UserDto> users);
+//	public void addTo(UserDto user);
+//	public void addTo(List<UserDto> users);
 	public void addSubject(String subject);
 	public void addTextBody(String body);
 	public void addHTMLBody(String body);

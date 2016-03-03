@@ -95,9 +95,9 @@ $('.submit-selected-alignments').click(function(){
 		data : JSON.stringify(fixedAppointmentDetails),
 		contentType : "application/json; charset=utf-8",
 	});
-	/*setTimeout(function(){
+	setTimeout(function(){
 		location.reload(true);
-	}, 500);*/
+	}, 500);
 });
 
 //Function to create JSON to store physician Ids and corresponding 

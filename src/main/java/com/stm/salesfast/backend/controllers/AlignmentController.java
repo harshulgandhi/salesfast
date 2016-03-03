@@ -80,15 +80,6 @@ public class AlignmentController {
 			Time selectedTime = SalesFastUtilities.getTimeForStringTime(appointmentList.getAppointmentTime(), "HH:mm");
 			Date selectedDate = SalesFastUtilities.getDateForStringTime(appointmentList.getAppointmentDate(), "yyyy-MM-dd"); 
 			appointmentService.addAppointment(appointmentList.getPhysicianId(), selectedTime, selectedDate, appointmentList.getAppointmentStatus(), appointmentList.getProductId(), appointmentList.getAdditionalNotes());
-			
-			User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			CURRENTUSERNAME = user.getUsername(); //get logged in user name
-			
-			int appointmentId = appointmentService.getAppointmentId(CURRENTUSERNAME, appointmentList.getPhysicianId());
-			String physicianEmail = physicianService.getPhysicianById(appointmentList.getPhysicianId()).getEmail();
-			/*  Send email to physicianEmail id with URL as 
-			 *  '127.0.0.1/yourappointment?id=appointmentId' 
-			 **/
 		}
 //		return "forward:/toRedirect";
 	} 

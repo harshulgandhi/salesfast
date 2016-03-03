@@ -19,12 +19,16 @@ import com.stm.salesfast.backend.dao.specs.AppointmentDao;
 import com.stm.salesfast.backend.dto.AppointmentDto;
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.dto.ProductDto;
+import com.stm.salesfast.backend.dto.UserDto;
 import com.stm.salesfast.backend.entity.AppointmentEntity;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.PhysicianFetchService;
 import com.stm.salesfast.backend.services.specs.ProductFetchService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
+import com.stm.salesfast.backend.services.specs.UserDetailService;
+import com.stm.salesfast.backend.utils.SalesFastEmail;
+import com.stm.salesfast.backend.utils.SalesFastEmailSendGridImpl;
 import com.stm.salesfast.backend.utils.SalesFastUtilities;
 import com.stm.salesfast.constant.ConstantValues;
 
@@ -50,6 +54,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 	@Autowired
 	ProductFetchService productFetchService;
 	
+	@Autowired
+	UserDetailService userDetails;
+	
 	@Override
 	public void addAppointment(int physId, Time time, Date date,  String confirmationStatus, int productId, String additionalNotes) throws ParseException {
 		// TODO Auto-generated method stub
@@ -58,7 +65,19 @@ public class AppointmentServiceImpl implements AppointmentService {
 		int userId = userAccountService.getUserIdByUserName(CURRENTUSERNAME);
 		String zip = physicianService.getPhysicianZipById(physId);
 		appointmentDao.insertAppointment(new AppointmentDto(time, date, physId, userId, productId,confirmationStatus, zip, new String(""), additionalNotes, false, false));
+		
+		/* Send confirmation email to physician */
+		int appointmentId = appointmentDao.getIdByPhysIdUserIdProductId(physId, userId, productId);
+		if(confirmationStatus.equals("CONFIRMED")){ 
+			String emailText = "Your appointment has been fixed with "+(userDetails.getUserDetails(userId).getFirstName() + " " +userDetails.getUserDetails(userId).getFirstName())+" at "
+					+time+" on "+ date + ". If you wish to cancel, please visit following link: \n "
+					+ "https://127.0.0.1:8080/yourappointment?id="+appointmentId;
+			String emailSub = "Your appointment has been confirmed";
+			sendMailToPhysician( emailSub, emailText);
+		}
+		
 	}
+	
 	
 	/**
 	 * This method returns CURRENT DAY's appointments of a user based on whether
@@ -134,7 +153,13 @@ public class AppointmentServiceImpl implements AppointmentService {
 		int userId = userAccountService.getUserAccountByUserName(username).getUserId();
 		return appointmentDao.getIdByPhysIdUserId(userId, physicianId);
 	}
-
+	
+	@Override
+	public int getAppointmentId(String username, int physicianId, int productId) {
+		// TODO Auto-generated method stub
+		int userId = userAccountService.getUserAccountByUserName(username).getUserId();
+		return appointmentDao.getIdByPhysIdUserIdProductId(userId, physicianId,productId);
+	}
 
 	@Override
 	public AppointmentDto getById(int appointmentId) {
@@ -157,6 +182,40 @@ public class AppointmentServiceImpl implements AppointmentService {
 	@Override
 	public void cancelAppointment(int appointmentId, String reason){
 		appointmentDao.updateStatus(appointmentId,"CANCELLED", reason);
+		
+		/*Send notification email to SalesRep*/
+		int physicianId = appointmentDao.getAppointmentById(appointmentId).getPhysicianId();
+		PhysicianStgDto physician = physicianService.getPhysicianById(physicianId); 
+		String physicianName = physician.getFirstName() + " "+ physician.getLastName();
+		AppointmentDto appointment = appointmentDao.getAppointmentById(appointmentId);
+		String emailText = "Physician "+ physicianName +" cancelled the appointment at "+appointment.getTime()+" on "
+						+ appointment.getDate()+". The reason for cancellation is - "+reason+". Call him at "+physician.getContactNumber()
+						+ " to confirm.";
+		String emailSub = "Appointment cancelled by Dr."+physicianName;
+		sendMailToPhysician( emailSub, emailText);
+		
+		/*Send cancellation confirmation to physician*/
+		UserDto salesrep = userDetails.getUserDetails(appointment.getUserId());
+		String emailText2 = "You have cancelled the appointment with "+salesrep.getFirstName()+" "+salesrep.getLastName()
+				+ ". To fix again, you can call him at "+salesrep.getContactNumber();
+		String emailSub2 = "Appointment cancelled";
+		sendMailToPhysician( emailSub2, emailText2);
 	}
 	
+	/**
+	 * Method to send email using send grid api
+	 * */
+	@Override
+	public void sendMailToPhysician(String subject, String body){
+		SalesFastEmail email = new SalesFastEmailSendGridImpl();
+		email.setFromEmail("no-reply@biopharma.com");
+		email.setFromName("BioPharma SalesForce");
+		email.addSubject(subject);
+		
+		email.addTextBody(body);
+		log.info("Sending confirmation email with content as :\n"+body);
+//		email.sendMail();
+	}
 }
+
+

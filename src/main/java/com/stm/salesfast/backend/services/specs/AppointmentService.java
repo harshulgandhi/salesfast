@@ -16,6 +16,7 @@ public interface AppointmentService {
 	public List<AppointmentEntity> getFutureAppointmentToShow(int userId) throws ParseException;
 	
 	public int getAppointmentId (String username, int physicianId);
+	int getAppointmentId(String username, int physicianId, int productId);
 	
 	public AppointmentDto getById(int appointmentId);
 	
@@ -24,9 +25,13 @@ public interface AppointmentService {
 	public void setHasMeetingExperienceFlag(int appointmentId, int flag);
 
 
-	void cancelAppointment(int appointmentId, String reason);
+	public void cancelAppointment(int appointmentId, String reason);
 
-	void addAppointment(int physId, Time time, Date date,
+	public void addAppointment(int physId, Time time, Date date,
 			String confirmationStatus, int productId, String additionalNotes)
 			throws ParseException;
+
+	public void sendMailToPhysician(String subject, String body);
+
+	
 }

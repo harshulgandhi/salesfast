@@ -26,6 +26,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
 										"(time, date, physicianId, userId, productId, confirmationStatus, zip, cancellationReason, additionalNotes) "+
 										"VALUES (?,?,?,?,?,?,?,?,?)";
 	private static final String FETCHID_BY_PHYS_USER = "SELECT appointmentId FROM appointment WHERE userId = ? AND physicianId = ?";
+	private static final String FETCHID_BY_PHYS_USER_PROD = "SELECT appointmentId FROM appointment WHERE userId = ? AND physicianId = ? AND productId = ?";
 	private static final String UPDATE_HASMEETINGUPDATE = "UPDATE `salesfast`.`appointment` "
 														+"SET `hasMeetingUpdate` = ? "
 														+"WHERE `appointmentId` = ?;";
@@ -123,6 +124,20 @@ public class AppointmentDaoImpl implements AppointmentDao {
 		return 0;
 	}
 
+	@Override
+	public int getIdByPhysIdUserIdProductId(int physicianId, int userId, int productId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.queryForObject(FETCHID_BY_PHYS_USER_PROD, (rs, rownum) -> {
+				return rs.getInt("appointmentId");
+				}, userId, physicianId, productId);
+			
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
 
 	@Override
 	public void setMeetinUpdateFlag(int appointmentId, int meetingUpdateFlag) {

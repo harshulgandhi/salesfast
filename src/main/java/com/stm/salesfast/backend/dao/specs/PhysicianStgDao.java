@@ -16,4 +16,6 @@ public interface PhysicianStgDao {
 	public List<PhysicianStgDto> getAll();
 
 	public void updateImportance(double importanceFactor, int physicianId);
+
+	void updateStatus(int physicianId, String status);
 }

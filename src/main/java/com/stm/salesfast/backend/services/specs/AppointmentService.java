@@ -25,4 +25,6 @@ public interface AppointmentService {
 
 	void addAppointment(int physId, Time time, Date date,
 			String confirmationStatus, int productId) throws ParseException;
+
+	void cancelAppointment(int appointmentId, String reason);
 }

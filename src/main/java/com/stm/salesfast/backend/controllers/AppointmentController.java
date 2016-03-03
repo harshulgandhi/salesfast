@@ -6,6 +6,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
@@ -69,7 +70,7 @@ public class AppointmentController {
 	@ResponseBody
 	public void meetingUpdate(@RequestBody MeetingUpdateEntity meetingUpdate) throws ParseException{
 		log.info("Meeting update received  : "+meetingUpdate);
-		meetingUpdateService.insertMeetinUpdate(meetingUpdate);
+		meetingUpdateService.insertMeetingUpdate(meetingUpdate);
 	}
 	
 	@RequestMapping(value="/addmeetingexperience", method=RequestMethod.POST, consumes = "application/json")
@@ -79,11 +80,12 @@ public class AppointmentController {
 		meetingExperienceService.insert(meetingExperience);
 	}
 	
-	@RequestMapping(value="cancelappointment", method=RequestMethod.GET)
-	public void cancelAppointment(@RequestParam int id, String cancellationReason){
-		log.info("Cancellation request received for appointment "+id+" due to "+cancellationReason);
+	@RequestMapping(value="/cancelappointment", method=RequestMethod.POST)
+	@ResponseBody
+	public void cancelAppointment( @RequestParam(value="appointmentId") int appointmentId, @RequestParam(value="cancellationReason") String cancellationReason){
+		log.info("Cancellation request received for appointment "+appointmentId+" due to "+cancellationReason);
+		appointmentFetchService.cancelAppointment(appointmentId, cancellationReason);
 	}
-	
 }
 
 

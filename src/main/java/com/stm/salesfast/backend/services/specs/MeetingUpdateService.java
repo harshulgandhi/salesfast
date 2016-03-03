@@ -9,7 +9,7 @@ import com.stm.salesfast.backend.entity.MeetingUpdateEntity;
 
 public interface MeetingUpdateService {
 
-	public void insertMeetinUpdate(MeetingUpdateEntity meetingUpdateEntity) throws ParseException;
+	public void insertMeetingUpdate(MeetingUpdateEntity meetingUpdateEntity) throws ParseException;
 	
 	public MeetingUpdateDto getMeetingUpdateByAppointmentId(int appointmentId);
 	

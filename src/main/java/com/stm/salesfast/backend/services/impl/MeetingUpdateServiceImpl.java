@@ -13,6 +13,7 @@ import com.stm.salesfast.backend.dto.ProductDto;
 import com.stm.salesfast.backend.entity.MeetingUpdateEntity;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
+import com.stm.salesfast.backend.services.specs.PhysicianFetchService;
 import com.stm.salesfast.backend.services.specs.ProductFetchService;
 import com.stm.salesfast.backend.utils.SalesFastUtilities;
 
@@ -28,8 +29,15 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 	@Autowired
 	AppointmentService appointmentService;
 	
+	@Autowired
+	PhysicianFetchService physicianService;
+	
+	/**
+	 * Method to add meeting update to db, also updates
+	 * has hasMeetingUpdate flag and physician status
+	 * */
 	@Override
-	public void insertMeetinUpdate(MeetingUpdateEntity meetingUpdateEntity) throws ParseException {
+	public void insertMeetingUpdate(MeetingUpdateEntity meetingUpdateEntity) throws ParseException {
 		// TODO Auto-generated method stub
 		ProductDto product = productService.getProductByName(meetingUpdateEntity.getProductName());
 		meetingUpdateDao.insert(new MeetingUpdateDto(
@@ -42,6 +50,7 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 				meetingUpdateEntity.getAppointmentId()));
 		
 		appointmentService.setHasMeetingUpdateFlag(meetingUpdateEntity.getAppointmentId(), 1);
+		physicianService.updatePhysicianStatus(meetingUpdateEntity.getPhysicianId(), meetingUpdateEntity.getMeetingStatus());
 	}
 
 	@Override

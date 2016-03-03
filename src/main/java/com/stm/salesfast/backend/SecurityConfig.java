@@ -37,6 +37,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 				new AntPathRequestMatcher("/addmeetingupdate"),
 				new AntPathRequestMatcher("/addmeetingexperience"),
 				new AntPathRequestMatcher("/yourappointment"),
+				new AntPathRequestMatcher("/cancelappointment"),
 				new AntPathRequestMatcher("/testpage"),
 				new AntPathRequestMatcher("/datareport"),
 				new AntPathRequestMatcher("/getdata")
@@ -76,5 +77,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 	    web.ignoring().antMatchers("/yourappointment");
+	    web.ignoring().antMatchers("/cancelappointment");
+	    
 	}
 }

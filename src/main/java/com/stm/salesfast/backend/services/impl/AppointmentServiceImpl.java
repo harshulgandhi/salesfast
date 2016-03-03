@@ -148,4 +148,10 @@ public class AppointmentServiceImpl implements AppointmentService {
 		appointmentDao.setMeetinExperienceFlag(appointmentId, flag);
 		
 	}
+	
+	@Override
+	public void cancelAppointment(int appointmentId, String reason){
+		appointmentDao.updateStatus(appointmentId,"CANCELLED", reason);
+	}
+	
 }

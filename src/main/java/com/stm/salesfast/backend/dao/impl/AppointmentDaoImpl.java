@@ -18,15 +18,12 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	JdbcTemplate jdbcTemplate;
 	
 	private static final String FETCH_BY_ID = "SELECT * FROM appointment WHERE appointmentId = ?";
-	private static final String FETCH_BY_USERID = "SELECT * FROM appointment WHERE userId = ?";
 	private static final String FETCH_BY_USERID_wMeetingUpdateExperienceCheck = "SELECT * FROM appointment WHERE userId = ? "
 																		+ "AND (hasMeetingUpdate = 0 OR hasMeetingExperience = 0) "
 																		+ "ORDER BY time";
-	private static final String FETCH_BY_PHYSICIANID = "SELECT * FROM appointment WHERE physicianId = ?";
 	private static final String INSERT = "INSERT INTO appointment "+
-	"(time, date, physicianId, userId, productId, confirmationStatus, zip) "+
-	"VALUES (?,?,?,?,?,?,?)";
-	private static final String FETCH_APPOINTMENTZIPS = "SELECT zip FROM appointment WHERE userId = ?";
+										"(time, date, physicianId, userId, productId, confirmationStatus, zip) "+
+										"VALUES (?,?,?,?,?,?,?)";
 	private static final String FETCHID_BY_PHYS_USER = "SELECT appointmentId FROM appointment WHERE userId = ? AND physicianId = ?";
 	private static final String UPDATE_HASMEETINGUPDATE = "UPDATE `salesfast`.`appointment` "
 														+"SET `hasMeetingUpdate` = ? "
@@ -35,6 +32,10 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	private static final String UPDATE_HASMEETINGEXPERIENCE = "UPDATE `salesfast`.`appointment` "
 														+"SET `hasMeetingExperience` = ? "
 														+"WHERE `appointmentId` = ?;";
+	private static final String UPDATE_STATUS = "UPDATE appointment SET confirmationStatus = ?,"
+												+ "cancellationReason = ?"
+												+ "WHERE appointmentId = ?";
+	
 	
 	@Override
 	public AppointmentDto getAppointmentById(int appointmentId) {
@@ -91,6 +92,20 @@ public class AppointmentDaoImpl implements AppointmentDao {
 		}
 	}
 
+	@Override
+	public void updateStatus(int appointmentId, String status, String reason) {
+		// TODO Auto-generated method stub
+		try{
+			jdbcTemplate.update(UPDATE_STATUS, (ps)->{
+				ps.setString(1, status);
+				ps.setString(2, reason);
+				ps.setInt(3, appointmentId);
+			});
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public int getIdByPhysIdUserId(int physicianId, int userId) {
 		// TODO Auto-generated method stub

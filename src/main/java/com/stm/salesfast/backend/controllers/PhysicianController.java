@@ -29,6 +29,6 @@ public class PhysicianController {
 		log.info("Appointment for this physicians is : \n"+appointmentDetail);
 		model.addAttribute("appointmentDetail", appointmentDetail);
 		
-		return "appointmentcancellation";
+		return appointmentDetail.getStatus().equals("CANCELLED") ? "appointmentcancelled":"appointmentcancellation";
 	}
 }

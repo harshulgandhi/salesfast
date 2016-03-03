@@ -9,7 +9,7 @@
 </head>
 <body>
 	<div class="container">
-		<div class="page-heading"><h1>Your appointment for today</h1></div>
+		<div class="page-heading"><h1>Your appointment with BioPharma</h1></div>
 		
 		<div class="row">
 			<div class="col-lg-12 col-sm-12">
@@ -46,7 +46,7 @@
 			</div>
 		</div>
 		<div class="row cancel-btn-row">
-			<button type="button" class="btn btn-danger cancel-appointment">Cancel Appointment</button>
+			<button type="button" class="btn btn-danger cancel-appointment" data-dismiss="modal" data-toggle="modal" data-target="#cancellation-reason">Cancel Appointment</button>
 		</div>
 		
 		<div class="modal fade" id="cancellation-reason" role="dialog" data-edit-mode="false">
@@ -63,31 +63,20 @@
 						<div class="cancellation-reason-text">
 							<div class="form-group">
 								<label for="cancellation-reason-id">Cancellation Reason: </label> 
-								<textarea name="id" class="form-control cancellation-reason-class" id="cancellation-reason-id" placeholder="Cancellation Reason" rows="3">
-								</textarea>
+								<textarea name="id" class="form-control cancellation-reason-class" id="cancellation-reason-id" placeholder="Cancellation Reason" rows="3" required="required"></textarea>
 							</div>
 						</div>
 					</div>
 					<div class="modal-footer">
-						<button id="appointment-cancellation-button" type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+						<button id="appointment-cancellation-button" type="button" class="btn btn-danger">Cancel!</button>
 					</div>
 				</div>
 			</div>	
 		</div>
-		<!-- <div class="form-appointment-div">
-			<form class="form-appointment" action="#" th:action="@{/verifycredentials}"   method="post">
-				<div class="form-field-div" id="login-form-fields">
-					<label for="loginUsername" id="username-lbl">Sales Representative: </label>
-					<input type="text" id="loginUsername" name="username" autofocus="autofocus" required="required" placeholder="User Name" />
-					<label for="loginPassword" id="password-lbl">Password: </label>
-					<input type="password" id="loginPassword" name="password" required="required" placeholder="Password" />
-				</div>
-				<div class="form-btn-div" id="login-form-btn"><button type="submit" value="Login">Login</button></div>
-			</form>	
-		</div> -->
 	</div>
 
 <!-- Common footer -->
 <div th:replace="fragments/footer :: footer"></div>
+<script  type="text/javascript" src="resources/app/js/appointmentcancellation.js"></script>
 </body>
 </html>

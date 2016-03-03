@@ -31,7 +31,9 @@ public class PhysicianStgDaoImpl implements PhysicianStgDao {
 	private static final String UPDATE_IMPORTANCE = "UPDATE physicians_staging SET "
 													+ " importanceFactor = ? "
 													+ " WHERE physicianId = ?";
-	
+	private static final String UPDATE_STATUS = "UPDATE physicians_staging SET "
+												+ " status = ? "
+												+ " WHERE physicianId = ?";
 	
 	@Override
 	public PhysicianStgDto getBy(int physicianId) {
@@ -74,7 +76,15 @@ public class PhysicianStgDaoImpl implements PhysicianStgDao {
 		});
 	}
 
-
+	@Override
+	public void updateStatus(int physicianId, String status) {
+		// TODO Auto-generated method stub
+		jdbcTemplate.update(UPDATE_STATUS, (ps) -> {
+			ps.setString(1, status);
+			ps.setInt(2, physicianId);
+		});
+	}
+	
 	@Override
 	public void deleteBy(int physicianId) {
 		// TODO Auto-generated method stub

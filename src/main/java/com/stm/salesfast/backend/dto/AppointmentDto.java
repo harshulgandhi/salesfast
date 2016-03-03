@@ -6,10 +6,12 @@ import java.sql.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@ToString
 public class AppointmentDto {
 	private int appointmnetId;
 	private Time time;
@@ -19,16 +21,14 @@ public class AppointmentDto {
 	private int productId;
 	private String confirmationStatus;
 	private String zip;
+	private String cancellationReason;
+	private String additionalNotes;
 	private boolean hasMeetingUpdate;
 	private boolean hasMeetingExperience;
 	
-	@Override
-	public String toString(){
-		return "Appointment Id : "+appointmnetId+" | Physician Id : "+physicianId+" | User Id : "+userId+" | Time : "+time+" | Date : "+date+" | Product Id : "+productId+" | Confirmation Status: "+confirmationStatus+" | ZIP: "+zip+" Meeting update : "+hasMeetingUpdate+" Meeting Experience : "+hasMeetingExperience;
-	}
 
 	public AppointmentDto(Time time2, Date currentDate, int physId,
-			int userId2, int productId2, String confirmationStatus2, String zip, boolean hasMeetingExperience, boolean hasMeetingUpdate) {
+			int userId2, int productId2, String confirmationStatus2, String zip, String cancellationReason, String additionalNotes, boolean hasMeetingExperience, boolean hasMeetingUpdate) {
 		// TODO Auto-generated constructor stub
 		this.time = time2;
 		this.date = currentDate;
@@ -37,6 +37,8 @@ public class AppointmentDto {
 		this.productId = productId2;
 		this.confirmationStatus = confirmationStatus2;
 		this.zip = zip;
+		this.cancellationReason = cancellationReason;
+		this.additionalNotes = additionalNotes;
 		this.hasMeetingExperience = false;
 		this.hasMeetingUpdate = false;
 	}

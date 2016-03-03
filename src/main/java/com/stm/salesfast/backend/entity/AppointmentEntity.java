@@ -6,12 +6,14 @@ import java.sql.Time;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import com.stm.salesfast.backend.dto.AlignmentsDto;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
+@ToString
 public class AppointmentEntity {
 	private int appointmentId;
 	private int physicianId;
@@ -25,9 +27,7 @@ public class AppointmentEntity {
 	private String product;
 	private boolean hasMeetingUpdate;
 	private boolean hasMeetingExperience;
+	private String cancellationReason;
+	private String additionalUpdate;
 	
-	@Override
-	public String toString(){
-		return "Physician Name : "+(physicianName)+"\n Email : "+emailId+"\n Contact : "+contact+"\n Address : "+(address)+"\n Confirmation Status: "+confirmationStatus+"\n Time : "+time+"\n Product : "+product+" Meeting update : "+hasMeetingUpdate+" Meeting Experience : "+hasMeetingExperience;
-	}
 }

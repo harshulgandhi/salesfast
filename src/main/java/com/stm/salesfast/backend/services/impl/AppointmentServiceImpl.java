@@ -51,18 +51,19 @@ public class AppointmentServiceImpl implements AppointmentService {
 	ProductFetchService productFetchService;
 	
 	@Override
-	public void addAppointment(int physId, Time time, Date date,  String confirmationStatus, int productId) throws ParseException {
+	public void addAppointment(int physId, Time time, Date date,  String confirmationStatus, int productId, String additionalNotes) throws ParseException {
 		// TODO Auto-generated method stub
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		CURRENTUSERNAME = user.getUsername(); //get logged in user name
 		int userId = userAccountService.getUserIdByUserName(CURRENTUSERNAME);
 		String zip = physicianService.getPhysicianZipById(physId);
-		appointmentDao.insertAppointment(new AppointmentDto(time, date, physId, userId, productId,confirmationStatus, zip, false, false));
+		appointmentDao.insertAppointment(new AppointmentDto(time, date, physId, userId, productId,confirmationStatus, zip, new String(""), additionalNotes, false, false));
 	}
 	
 	/**
 	 * This method returns CURRENT DAY's appointments of a user based on whether
-	 * he/she has entered meeting update or meeting experience details 
+	 * he/she has entered meeting update or meeting experience details. Also confirms
+	 * if the appointment status is confirmed 
 	 * @throws ParseException 
 	 * */
 	@Override
@@ -85,7 +86,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 						eachAppointment.getDate(),
 						productDto.getProductName(),
 						eachAppointment.isHasMeetingUpdate(),
-						eachAppointment.isHasMeetingExperience()));
+						eachAppointment.isHasMeetingExperience(),
+						eachAppointment.getCancellationReason(),
+						eachAppointment.getAdditionalNotes()));
 			}
 		}
 		log.info("Appointment fetched are : \n");
@@ -117,7 +120,9 @@ public class AppointmentServiceImpl implements AppointmentService {
 						eachAppointment.getDate(),
 						productDto.getProductName(),
 						eachAppointment.isHasMeetingUpdate(),
-						eachAppointment.isHasMeetingExperience()));
+						eachAppointment.isHasMeetingExperience(),
+						eachAppointment.getCancellationReason(),
+						eachAppointment.getAdditionalNotes()));
 			}
 		}
 		return futureAppointmentEntitiesList;

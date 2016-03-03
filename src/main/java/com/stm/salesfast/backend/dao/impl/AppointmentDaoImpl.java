@@ -20,10 +20,11 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	private static final String FETCH_BY_ID = "SELECT * FROM appointment WHERE appointmentId = ?";
 	private static final String FETCH_BY_USERID_wMeetingUpdateExperienceCheck = "SELECT * FROM appointment WHERE userId = ? "
 																		+ "AND (hasMeetingUpdate = 0 OR hasMeetingExperience = 0) "
+																		+ "AND confirmationStatus = 'CONFIRMED'"
 																		+ "ORDER BY time";
 	private static final String INSERT = "INSERT INTO appointment "+
-										"(time, date, physicianId, userId, productId, confirmationStatus, zip) "+
-										"VALUES (?,?,?,?,?,?,?)";
+										"(time, date, physicianId, userId, productId, confirmationStatus, zip, cancellationReason, additionalNotes) "+
+										"VALUES (?,?,?,?,?,?,?,?,?)";
 	private static final String FETCHID_BY_PHYS_USER = "SELECT appointmentId FROM appointment WHERE userId = ? AND physicianId = ?";
 	private static final String UPDATE_HASMEETINGUPDATE = "UPDATE `salesfast`.`appointment` "
 														+"SET `hasMeetingUpdate` = ? "
@@ -42,7 +43,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
 		// TODO Auto-generated method stub
 		try{
 			return jdbcTemplate.queryForObject(FETCH_BY_ID, (rs, rownnum)->{
-				return new AppointmentDto(appointmentId, rs.getTime("time"), rs.getDate("date"), rs.getInt("physicianId"), rs.getInt("userId"), rs.getInt("productId"), rs.getString("confirmationStatus"), rs.getString("zip"), rs.getBoolean("hasMeetingUpdate"),rs.getBoolean("hasMeetingExperience"));
+				return new AppointmentDto(appointmentId, rs.getTime("time"), rs.getDate("date"), rs.getInt("physicianId"), rs.getInt("userId"), rs.getInt("productId"), rs.getString("confirmationStatus"), rs.getString("zip"), rs.getString("cancellationReason"), rs.getString("additionalNotes"), rs.getBoolean("hasMeetingUpdate"),rs.getBoolean("hasMeetingExperience"));
 			}, appointmentId);
 		}catch(DataAccessException e){
 			e.printStackTrace();
@@ -60,7 +61,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
 		// TODO Auto-generated method stub
 		try{
 			return jdbcTemplate.query(FETCH_BY_USERID_wMeetingUpdateExperienceCheck, (rs, rownnum)->{
-				return new AppointmentDto(rs.getInt("appointmentId"), rs.getTime("time"), rs.getDate("date"), rs.getInt("physicianId"), userId, rs.getInt("productId"), rs.getString("confirmationStatus"), rs.getString("zip"),rs.getBoolean("hasMeetingUpdate"),rs.getBoolean("hasMeetingExperience"));
+				return new AppointmentDto(rs.getInt("appointmentId"), rs.getTime("time"), rs.getDate("date"), rs.getInt("physicianId"), userId, rs.getInt("productId"), rs.getString("confirmationStatus"), rs.getString("zip"),rs.getString("cancellationReason"), rs.getString("additionalNotes"), rs.getBoolean("hasMeetingUpdate"),rs.getBoolean("hasMeetingExperience"));
 			}, userId);
 		}catch(DataAccessException e){
 			e.printStackTrace();
@@ -86,6 +87,8 @@ public class AppointmentDaoImpl implements AppointmentDao {
 				ps.setInt(5, appointment.getProductId());
 				ps.setString(6, appointment.getConfirmationStatus());
 				ps.setString(7, appointment.getZip());
+				ps.setString(8, appointment.getCancellationReason());
+				ps.setString(9, appointment.getAdditionalNotes());
 			});
 		}catch(DataAccessException e){
 			e.printStackTrace();

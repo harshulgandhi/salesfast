@@ -10,23 +10,24 @@ var selectedAlignments = [];
  */
 $(document).ready(function() {
    var table = $('#aligned-physician-table').DataTable({
-	   order: [[14, "desc"]]
+	   order: [[16, "desc"]]
    });
     $('#aligned-physician-table tbody').on( 'click', 'tr', function (e) {
     	var cell = $(e.target).get(0);
-    	if(cell.childElementCount < 1 && cell.nodeName != 'INPUT'){
+    	console.log(cell.nodeName);
+    	if(cell.childElementCount < 1 && cell.nodeName != 'INPUT' && cell.nodeName != 'SPAN' && cell.nodeName != 'TEXTAREA' ){
 	    	$(this).toggleClass('selected');
 	    	if ( $(this).hasClass('selected') ) {
 	    		$(this).css('background-color','#08C')
-	            $(this).find('.appointment-time').prop("disabled",false);
-	            $(this).find('.appointment-date').prop("disabled",false);
+	            $(this).find('.appointment-paramaters').prop("disabled",false);
 	        }else{
 	        	setRowColor($(this));
-				 $(this).find('.appointment-time').prop("disabled",true);
-				 $(this).find('.appointment-date').prop("disabled",true);
+				$(this).find('.appointment-paramaters').prop("disabled",true);
 	        }
     	}
     });
+    
+    $(".appointment-status-selector").select2();
     
     /*Initialize table with row colors*/
     var myTable = $('#aligned-physician-table').dataTable();
@@ -60,12 +61,16 @@ $('.submit-selected-alignments').click(function(){
 	var appointTimeList = [];
 	var appointDateList = [];
 	var productIds = [];
+	var appointStatusList = [];
+	var additionalNotesList = [];
 	
 	$('.selected').each(function(i, val){
 		if ($(val).find('.appointment-time').length != 0 ) {
 			var appointDate = $(val).find('.appointment-date').val();
 			var appointTime = $(val).find('.appointment-time').val();
-			if(appointTime == '' || appointDate == ''){		//Check if user entered time for all selected physicians
+			var appointStatus = $(val).find('.appointment-status-selector').val();
+			var additionalNotes = $(val).find('.appointment-notes-class').val();
+			if((appointTime == '' || appointDate == '') && appointStatus != "NOT INTERESTED"){		//Check if user entered time for all selected physicians
 				alert("Please mention time and date both for all selected physicians");
 				return;
 			}
@@ -73,6 +78,8 @@ $('.submit-selected-alignments').click(function(){
 				console.log("TIME " + appointTime+"; DATE "+appointDate);
 				appointTimeList.push(appointTime);
 				appointDateList.push(appointDate);
+				appointStatusList.push(appointStatus);
+				additionalNotesList.push(additionalNotes);
 			}
 		}
 		$(this).find('td').each(function(idx, valTD){
@@ -80,7 +87,7 @@ $('.submit-selected-alignments').click(function(){
 			if(idx == 10) productIds.push($(valTD).html());		//Picking product for selected alignments
 		});
 	});
-	var fixedAppointmentDetails = createJson(physIds, appointTimeList, productIds, appointDateList);
+	var fixedAppointmentDetails = createJson(physIds, appointTimeList, productIds, appointDateList, appointStatusList, additionalNotesList);
 	console.log("Json : "+JSON.stringify(fixedAppointmentDetails));
 	$.ajax({
 		type : 'POST',
@@ -88,14 +95,14 @@ $('.submit-selected-alignments').click(function(){
 		data : JSON.stringify(fixedAppointmentDetails),
 		contentType : "application/json; charset=utf-8",
 	});
-	setTimeout(function(){
+	/*setTimeout(function(){
 		location.reload(true);
-	}, 500);
+	}, 500);*/
 });
 
 //Function to create JSON to store physician Ids and corresponding 
 //appointment time
-var createJson = function(physIds, appointTime, productIds, appointDate){
+var createJson = function(physIds, appointTime, productIds, appointDate, appointStatusList, additionalNotesList){
 	var appointmentJson = {"appointments":[]};
 	var appointJsonList = [];
 	for( var i = 0; i<physIds.length;i++){
@@ -104,7 +111,9 @@ var createJson = function(physIds, appointTime, productIds, appointDate){
 					"physicianId":parseInt(physIds[i][0]),
 					"productId":parseInt(productIds[i][0]),
 					"appointmentTime":appointTime[i],
-					"appointmentDate":appointDate[i]
+					"appointmentDate":appointDate[i],
+					"appointmentStatus":appointStatusList[i],	
+					"additionalNotes":additionalNotesList[i]
 				});
 	}
 	return appointJsonList;

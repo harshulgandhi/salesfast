@@ -23,8 +23,10 @@ public interface AppointmentService {
 	
 	public void setHasMeetingExperienceFlag(int appointmentId, int flag);
 
-	void addAppointment(int physId, Time time, Date date,
-			String confirmationStatus, int productId) throws ParseException;
 
 	void cancelAppointment(int appointmentId, String reason);
+
+	void addAppointment(int physId, Time time, Date date,
+			String confirmationStatus, int productId, String additionalNotes)
+			throws ParseException;
 }

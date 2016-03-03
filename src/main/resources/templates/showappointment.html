@@ -87,15 +87,17 @@
 								<th>Email Id</th>
 								<th>Contact</th>
 								<th>Address</th>
-								<th>City</th>
-								<th>State</th>
-								<th>ZIP</th>
-								<th>Medical Field</th>
+								<th style="display:none">City</th>
+								<th style="display:none">State</th>
+								<th style="display:none">ZIP</th>
+								<th style="display:none">Medical Field</th>
 								<th>Product</th>
 								<th style="display:none">Product Id</th>
 								<th>Is a new Physician?</th>
 								<th>Date</th>
 								<th>Time</th>
+								<th>Appointment Status</th>
+								<th>Notes</th>
 								<th style="display:none">Importance Factor</th>
 							</tr>
 						</thead>
@@ -105,17 +107,28 @@
 								<td th:text="${eachVicinityAlignment.firstName} + ' '+${eachVicinityAlignment.lastName}"></td>
 								<td th:text="${eachVicinityAlignment.email}"></td>
 								<td th:text="${eachVicinityAlignment.contactNumber}"></td>
-								<td th:text="${eachVicinityAlignment.addressLineOne} +' '+ ${eachVicinityAlignment.addressLineTwo}"></td>
-								<td th:text="${eachVicinityAlignment.city}"></td>
-								<td th:text="${eachVicinityAlignment.state}"></td>
-								<td th:text="${eachVicinityAlignment.zip}"></td>
-								<td th:text="${eachVicinityAlignment.medicalField}"></td>
+								<td th:text="${eachVicinityAlignment.addressLineOne} +' '+ ${eachVicinityAlignment.addressLineTwo}+' '+${eachVicinityAlignment.city}+' '+${eachVicinityAlignment.zip}"></td>
+								<td style="display:none" th:text="${eachVicinityAlignment.city}"></td>
+								<td style="display:none" th:text="${eachVicinityAlignment.state}"></td>
+								<td style="display:none" th:text="${eachVicinityAlignment.zip}"></td>
+								<td style="display:none" th:text="${eachVicinityAlignment.medicalField}"></td>
 								<td th:text="${eachVicinityAlignment.productName}"></td>
 								<td style="display:none" th:text="${eachVicinityAlignment.productId}"></td>								
 								<td th:unless="${eachVicinityAlignment.isNew}" th:text="NO"></td>
 								<td th:if="${eachVicinityAlignment.isNew}" th:text="YES"></td>
-								<td><input class="appointment-date" type="date" disabled="disabled"/></td>
-								<td><input class="appointment-time" type="time" disabled="disabled"/></td>
+								<td><input class="appointment-date appointment-paramaters" type="date" disabled="disabled"/></td>
+								<td><input class="appointment-time appointment-paramaters" type="time" disabled="disabled"/></td>
+								<td>
+									<div class="col-xs-5">
+										<select class="appointment-status-selector validate-ele appointment-paramaters" name="appointmentstatus" disabled="disabled"> <!-- multiple="multiple"> -->
+											<option value="CONFIRMED">Confirmed</option>
+											<option value="FOLLOW UP">Follow Up</option>
+											<option value="NOT INTERESTED">Not Interested</option>
+										</select>
+									</div>
+								</td>
+								<td><textarea name="id" class="form-control appointment-notes-class appointment-paramaters" 
+								id="appointment-notes-id" placeholder="Additional notes" rows="2" required="required" disabled="disabled"></textarea></td>
 								<td class="importance-factor" style="display:none" th:text="${eachVicinityAlignment.importanceFactor}"></td>
 							</tr>
 						</tbody>

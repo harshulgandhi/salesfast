@@ -55,7 +55,6 @@ public class AppointmentController {
 		
 		List<AppointmentEntity> todaysAppointmentsList = appointmentFetchService.getTodaysAppointmentToShow(userAccountService.getUserIdByUserName(CURRENTUSERNAME));
 		List<AppointmentEntity> futureAppointmentsList = appointmentFetchService.getFutureAppointmentToShow(userAccountService.getUserIdByUserName(CURRENTUSERNAME));
-		
 		List<AlignedPhysicianEntity> alignedPhysicianInVicinity = alignmentFetchService.getAlignmentByUserIdInVicinityOfAppointments(
 				(userAccountService.getUserAccountByUserName(CURRENTUSERNAME)).getUserId());
 		

@@ -76,14 +76,13 @@ public class AlignmentController {
 	@ResponseBody
 	public void fixAppointment(@RequestBody AjaxRequestListMapper[] appointments) throws ParseException{
 		for (AjaxRequestListMapper appointmentList : appointments){
-			log.info("Appointment fixed for physician = "+appointmentList.getPhysicianId()+" @ "+appointmentList.getAppointmentTime());
+			log.info("Appointment fixed for physician = "+appointmentList);
 			Time selectedTime = SalesFastUtilities.getTimeForStringTime(appointmentList.getAppointmentTime(), "HH:mm");
 			Date selectedDate = SalesFastUtilities.getDateForStringTime(appointmentList.getAppointmentDate(), "yyyy-MM-dd"); 
-			appointmentService.addAppointment(appointmentList.getPhysicianId(), selectedTime, selectedDate, new String("CONFIRMED"), appointmentList.getProductId());
+			appointmentService.addAppointment(appointmentList.getPhysicianId(), selectedTime, selectedDate, appointmentList.getAppointmentStatus(), appointmentList.getProductId(), appointmentList.getAdditionalNotes());
 			
 			User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			CURRENTUSERNAME = user.getUsername(); //get logged in user name
-		    log.info("\nLogged in user is : "+CURRENTUSERNAME);
 			
 			int appointmentId = appointmentService.getAppointmentId(CURRENTUSERNAME, appointmentList.getPhysicianId());
 			String physicianEmail = physicianService.getPhysicianById(appointmentList.getPhysicianId()).getEmail();

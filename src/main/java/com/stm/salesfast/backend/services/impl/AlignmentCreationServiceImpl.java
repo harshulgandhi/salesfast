@@ -83,7 +83,6 @@ public class AlignmentCreationServiceImpl implements AlignmentCreationService {
 								eachProduct.getProductId()
 								));
 						
-						log.info("Alignment number : "+(++i)+" is : \n"+alignments.get(i-1));
 					}
 				}
 			}
@@ -117,7 +116,6 @@ public class AlignmentCreationServiceImpl implements AlignmentCreationService {
 				int noOfPrescribingProducts = meetingUpdates.getPrescribingProduct(eachPhysician.getPhysicianId()).size();
 				importanceMetric = (noOfMonths + (noOfPrescribingProducts*2))/100.0;
 			}
-			log.info("Updating imortance metric for physician : "+ eachPhysician.getPhysicianId());
 			physicianFetchService.updateImportanceFactor(importanceMetric, eachPhysician.getPhysicianId());
 		}
 	}

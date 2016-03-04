@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1" />
+<!-- Header to include css -->
+<div th:replace="fragments/header :: commonhead"></div>
+<link rel="stylesheet" type="text/css" href="resources/app/css/notifications.css"/>
+<title>SalesFast Login</title>
+</head>
+<body>
+	<!-- Common header -->
+	<div th:replace="fragments/header :: header"></div>
+	
+	<div class="container">
+		<div class="page-heading"><h1>Notifications!</h1></div>
+		
+		<div class="row">
+			<div class="col-lg-12 col-sm-12">
+				<table id="notifications-table" class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th style="display: none">Notification Id</th>
+							<th style="display: none">User Id</th>
+							<th style="display: none">Notification Category</th>
+							<th>Notification</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="eachNotification : ${listOfNotifications}">
+							<td class="notification-id" style="display: none" th:text="${eachNotification.notificationId}"></td>
+							<td class="user-id" style="display: none" th:text="${eachNotification.userId}"></td>
+							<td class="notification-category" style="display: none" th:text="${eachNotification.notificationCategory}"></td>
+							<td th:text="${eachNotification.notification}"></td>
+							<td><button type="button" class="btn btn-default btn-sm btn-warning remove-notification">
+						          <span class="glyphicon glyphicon-trash"></span> Remove 
+						        </button>
+						        <button type="button" class="btn btn-default btn-sm btn-info detail-notification">
+						          <span class="glyphicon glyphicon-info-sign"></span> Details
+						        </button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+<!-- Common footer -->
+<div th:replace="fragments/footer :: footer"></div>
+<script  type="text/javascript" src="resources/app/js/notifications.js"></script>
+</body>
+</html>

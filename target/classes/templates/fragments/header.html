@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
-<head th:remove="tag" th:fragment="commonhead">
 <meta charset="ISO-8859-1" />
+<head th:remove="tag" th:fragment="commonhead">
 <link rel="stylesheet" href="resources/lib/css/bootstrap.min.css"/>
 <link rel="stylesheet" href="resources/lib/css/datatables.min.css"/>
 <link rel="stylesheet" href="resources/lib/css/select2.min.css"/>
@@ -25,7 +25,7 @@
 	            <li id="nav-alignment"><a class="navbar-menu-items" href="./showalignments" th:if="${session.roles.contains('SalesRep')}">Alignments</a></li>
 	            <li id="nav-target-incentive"><a class="navbar-menu-items" href="./targetandincentive" th:if="${session.roles.contains('SalesRep')}">Target And Incentive</a></li>
 	            <li id="nav-appointment"><a class="navbar-menu-items" href="./showappointments" th:if="${session.roles.contains('SalesRep')}">Appointment</a></li>
-	            <li id="nav-appointment"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('SalesRep')}">Notifications</a></li>
+	            <li id="nav-appointment"><a class="navbar-menu-items" href="./shownotifications" th:if="${session.roles.contains('SalesRep')} or ${session.roles.contains('DM')} or ${session.roles.contains('PH')}">Notifications</a></li>
 	            <li id="nav-appointment"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('SalesRep')}">Virtual Learning</a></li>
 	            <li id="nav-appointment"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('SalesRep')}">Quick Assistance</a></li>
 	            <li id="nav-appointment"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('SalesRep')}">Reminders</a></li>

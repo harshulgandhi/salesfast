@@ -72,4 +72,11 @@ public class PhysicianFetchServiceImpl implements PhysicianFetchService {
 		// TODO Auto-generated method stub
 		physicianDao.updateStatus(physicianId, status);
 	}
+
+	@Override
+	public String getPhysicianName(int physicianId) {
+		// TODO Auto-generated method stub
+		PhysicianStgDto physician = physicianDao.getBy(physicianId);
+		return physician.getFirstName() + " " + physician.getLastName();
+	}
 }

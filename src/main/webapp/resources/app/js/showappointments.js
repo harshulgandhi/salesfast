@@ -12,6 +12,17 @@ $(document).ready(function() {
 	   order: [[16, "desc"]]
    });
    
+   $('#appointment-fixed-physician-table').find('tr').each(function(i, val){
+	   if($(val).find('.confirmation-status').html() == 'CANCELLED'){
+		   $(val).css('background-color','mistyrose');
+	   }
+   })
+   $('#future-appointment-fixed-physician-table').find('tr').each(function(i, val){
+	   if($(val).find('.confirmation-status').html() == 'CANCELLED'){
+		   $(val).css('background-color','mistyrose');
+	   }
+   })
+	   
    /**
     * Toggles between selected and de-selected rows of the table
     * Takes care of clicks done on the 'time' element 
@@ -22,7 +33,7 @@ $(document).ready(function() {
     	if(cell.childElementCount < 1 && cell.nodeName != 'INPUT' && cell.nodeName != 'SPAN' && cell.nodeName != 'TEXTAREA' ){
 	    	$(this).toggleClass('selected');
 	    	if ( $(this).hasClass('selected') ) {
-	    		$(this).css('background-color','#08C')
+	    		$(this).css('background-color','#08C');
 	            $(this).find('.appointment-paramaters').prop("disabled",false);
 	        }else{
 	        	setRowColor($(this));
@@ -40,15 +51,20 @@ $(document).ready(function() {
     tableAppointment = $('#appointment-fixed-physician-table').DataTable({
  	   order: [[7, "asc"]]
     });
+    var defaultColor;
     $('#appointment-fixed-physician-table tbody').on( 'click', 'tr', function (e) {
     	var cell = $(e.target).get(0);	
     	if ( $(this).hasClass('selected') ) {
     		$(this).removeClass('selected');
     		$('.add-meeting-update-btn').prop("disabled",true);
     		$('.add-meeting-experience-btn').prop("disabled",true)
+    		$(this).css('background-color', defaultColor);
+    		
         }else{
         	tableAppointment.$('tr.selected').removeClass('selected');
             $(this).addClass('selected');
+            defaultColor = $(this).css('background-color');
+            $(this).css('background-color','#08C');
             var len = tableAppointment.row('.selected').data().length;					
             
             //To toggle meeting update and experience buttons based on database flag for that appointment
@@ -58,7 +74,7 @@ $(document).ready(function() {
             toggleMeetingUpdateButtons(hasMeetingUpdate, hasMeetingExperience);
 //            $('.add-meeting-update-btn').prop("disabled",false);
         }
-    	
+    		
     	/*
     	 * TO REMOVE A SELECTED ROW ON BUTTON CLICK
     	$('#button').click( function () {
@@ -67,7 +83,6 @@ $(document).ready(function() {
     	$(".phys-status-selector").select2();
      	$('#meetingupdate-add-button').click(addMeetingUpdate);
      	$('#meetingexperience-add-button').click(addMeetingExperience);
-     	
     });
 });	
 

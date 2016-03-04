@@ -25,8 +25,10 @@ import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.MeetingExperienceService;
 import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
+import com.stm.salesfast.backend.services.specs.NotificationService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
 import com.stm.salesfast.backend.entity.MeetingUpdateEntity;
+import com.stm.salesfast.constant.ConstantValues;
 
 @Controller
 public class AppointmentController {
@@ -47,6 +49,9 @@ public class AppointmentController {
 	
 	@Autowired
 	MeetingExperienceService meetingExperienceService;
+	
+	@Autowired
+	NotificationService notificationService;
 	
 	@RequestMapping(value="/showappointments", method=RequestMethod.GET)
 	public String showAppointments(Model model) throws ParseException{
@@ -84,6 +89,7 @@ public class AppointmentController {
 	public void cancelAppointment( @RequestParam(value="appointmentId") int appointmentId, @RequestParam(value="cancellationReason") String cancellationReason){
 		log.info("Cancellation request received for appointment "+appointmentId+" due to "+cancellationReason);
 		appointmentFetchService.cancelAppointment(appointmentId, cancellationReason);
+		
 	}
 }
 

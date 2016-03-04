@@ -40,7 +40,7 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 	public List<AlignmentsDto> getAlignmentByUserId(int userId) {
 		// TODO Auto-generated method stub
 		List<AlignmentsDto> alignmentsByUserId= alignmentDao.getAlignmentByUserId(userId);
-		for (AlignmentsDto eachAlignment : alignmentsByUserId) log.info("Alignment : \n"+eachAlignment);
+		log.info("Alignment by user Id fetched");
 		return alignmentsByUserId;
 	}
 
@@ -48,7 +48,7 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 	public AlignmentsDto getAlignmentByPhysicianId(int physicianId) {
 		// TODO Auto-generated method stub
 		AlignmentsDto alignmentsByPhysicianId= alignmentDao.getAlignmentByPhysicianId(physicianId);
-		log.info("Alignment : \n"+alignmentsByPhysicianId);
+		log.info("Alignment by physician id fetched");
 		return alignmentsByPhysicianId;
 	}
 
@@ -56,7 +56,6 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 	public List<AlignmentsDto> getAlignmentByUserIdZip(int userId, String zip) {
 		// TODO Auto-generated method stub
 		List<AlignmentsDto> alignmentsByUserIdZip= alignmentDao.getAlignmentByUserIdZip(userId, zip);
-		for (AlignmentsDto eachAlignment : alignmentsByUserIdZip) log.info("Alignment : \n"+eachAlignment);
 		return alignmentsByUserIdZip;
 	}
 
@@ -100,14 +99,12 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 		// TODO Auto-generated method stub
 		List<AlignmentsDto> alignmentsByUserId = alignmentDao.getAlignmentByUserIdInVicinity(userId);
 		List<AlignedPhysicianEntity> alignedPhysicians = new ArrayList<AlignedPhysicianEntity>();
-		log.info("Alignments in vicinity\n");
 		for(AlignmentsDto eachAlignment : alignmentsByUserId){
 			PhysicianStgDto physicianDto = physicianDao.getBy(eachAlignment.getPhysicianId());
 			alignedPhysicians.add(new AlignedPhysicianEntity(physicianDto, 
 					productService.getProductById(eachAlignment.getProductId()).getProductName(),
 					productService.getProductById(eachAlignment.getProductId()).getProductId()
 					));
-			log.info(""+physicianDto);
 		}
 		return alignedPhysicians;
 	}
@@ -115,7 +112,6 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 	@Override
 	public List<Integer> getAlignedProduct(int userId, int physicianId) {
 		// TODO Auto-generated method stub
-		log.info("Fetching products for user "+userId+" and physician : "+physicianId);
 		List<Integer> alignedProducts = new ArrayList<>();
 		for(AlignmentsDto eachAlignment : alignmentDao.getAlignmentByUserIdPhysId(userId, physicianId) ){
 			alignedProducts.add(eachAlignment.getProductId());

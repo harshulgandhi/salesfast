@@ -9,6 +9,7 @@ import java.text.SimpleDateFormat;
 public class SalesFastUtilities {
 	
 	private final static double AVERAGE_MILLIS_PER_MONTH = 365.24 * 24 * 60 * 60 * 1000 / 12;
+	private final static double AVERAGE_MILLIS_PER_DAY = 24 * 60 * 60 * 1000;
 	
 	public static Date getCurrentDate() throws ParseException{
 		SimpleDateFormat currDateFormat = new SimpleDateFormat("MM/dd/yyyy");
@@ -32,6 +33,16 @@ public class SalesFastUtilities {
 	public static double numberOfMonth(Date fromDate) throws ParseException{
 		Date currDate = getCurrentDate();
 		return (currDate.getTime() - fromDate.getTime())/AVERAGE_MILLIS_PER_MONTH;
+	}
+	
+	public static double numberOfDays(Date fromDate) throws ParseException{
+		Date currDate = getCurrentDate();
+		return (currDate.getTime() - fromDate.getTime())/AVERAGE_MILLIS_PER_DAY;
+	}
+	
+	public static double numberOfDaysToDate(Date toDate) throws ParseException{
+		Date currDate = getCurrentDate();
+		return (toDate.getTime() - currDate.getTime())/AVERAGE_MILLIS_PER_DAY;
 	}
 	
 }

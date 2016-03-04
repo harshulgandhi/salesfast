@@ -20,6 +20,7 @@ public class SalesFastEmailSendGridImpl implements SalesFastEmail {
 	private String htmlBody = "";
 	private String fromEmail = "no-reply@xrates.io";
 	private String fromName = "Exchange Rates";
+	private String toEmailId = "";
 
 /*	@Override
 	public void addTo(UserDto user) {
@@ -61,12 +62,17 @@ public class SalesFastEmailSendGridImpl implements SalesFastEmail {
 	@Override
 	public void setFromName(String name) {
 		this.fromName = name;
-	};
+	}
+	
+	@Override
+	public void setToEmailId(String email){
+		this.toEmailId = email;
+	}
 
 	@Override
 	public void sendMail() {
 		Email email = new Email();
-		email.addTo("salesfast.stm@gmail.com");
+		email.addTo(toEmailId);
 		email.setFrom(fromEmail);
 		email.setFromName(fromName);
 		if (subject != null && !subject.equals("")) {
@@ -84,6 +90,7 @@ public class SalesFastEmailSendGridImpl implements SalesFastEmail {
 			log.error("SendGridException in sending email : " + e);
 		}
 	}
+	
 	/*public static void main(String[] args) {
 		SalesFastEmailSendGridImpl o = new SalesFastEmailSendGridImpl();
 		o.setFromEmail("noreply@biopharma.com");

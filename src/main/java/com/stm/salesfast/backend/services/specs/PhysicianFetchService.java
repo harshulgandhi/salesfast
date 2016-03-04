@@ -19,4 +19,6 @@ public interface PhysicianFetchService {
 	PhysicianAppointmentEntity getAppointmentDetailForPhysician(int appointmentId);
 
 	void updatePhysicianStatus(int physicianId, String status);
+	
+	public String getPhysicianName(int physicianId);
 }

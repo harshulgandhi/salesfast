@@ -2,6 +2,8 @@
 
 .slidedown-alignments{
     margin-left: 14px;
+	text-align: -webkit-auto;
+    width: 100%;
 }
 
 .submit-for-appointments {
@@ -24,4 +26,14 @@
 
 #futureappointment-close-button{
     margin: 0% 50% 0% 0%;
+}
+
+.confirmation-status{
+	font-style: italic;
+    font-weight: 600;
+}
+
+.show-vicinity-alignments-btn{
+	margin-bottom: 1%;
+    margin-top: 2.5%;
 }

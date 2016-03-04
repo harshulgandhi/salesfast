@@ -20,7 +20,8 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	private static final String FETCH_BY_ID = "SELECT * FROM appointment WHERE appointmentId = ?";
 	private static final String FETCH_BY_USERID_wMeetingUpdateExperienceCheck = "SELECT * FROM appointment WHERE userId = ? "
 																		+ "AND (hasMeetingUpdate = 0 OR hasMeetingExperience = 0) "
-																		+ "AND confirmationStatus = 'CONFIRMED'"
+																		+ "AND (confirmationStatus = 'CONFIRMED' OR "
+																		+ "confirmationStatus = 'CANCELLED') "
 																		+ "ORDER BY time";
 	private static final String INSERT = "INSERT INTO appointment "+
 										"(time, date, physicianId, userId, productId, confirmationStatus, zip, cancellationReason, additionalNotes) "+
@@ -37,7 +38,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	private static final String UPDATE_STATUS = "UPDATE appointment SET confirmationStatus = ?,"
 												+ "cancellationReason = ?"
 												+ "WHERE appointmentId = ?";
-	
+	private static final String FETCH_APPOINTMENT_BY_STATUS = "SELECT * FROM appointment WHERE confirmationStatus = ?";
 	
 	@Override
 	public AppointmentDto getAppointmentById(int appointmentId) {
@@ -163,5 +164,22 @@ public class AppointmentDaoImpl implements AppointmentDao {
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Returns the list of all appointments that are in
+	 * follow up state
+	 * */
+	@Override
+	public List<AppointmentDto> getAppointmentByStatus(String confirmationStatus) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_APPOINTMENT_BY_STATUS, (rs, rownnum)->{
+				return new AppointmentDto(rs.getInt("appointmentId"), rs.getTime("time"), rs.getDate("date"), rs.getInt("physicianId"), rs.getInt("userId"), rs.getInt("productId"),confirmationStatus, rs.getString("zip"),rs.getString("cancellationReason"), rs.getString("additionalNotes"), rs.getBoolean("hasMeetingUpdate"),rs.getBoolean("hasMeetingExperience"));
+			}, confirmationStatus);
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
 	}
 }

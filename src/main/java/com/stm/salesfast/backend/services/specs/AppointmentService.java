@@ -31,7 +31,10 @@ public interface AppointmentService {
 			String confirmationStatus, int productId, String additionalNotes)
 			throws ParseException;
 
-	public void sendMailToPhysician(String subject, String body);
+
+	public List<AppointmentDto> getFollowUpAppointments();
+
+	public void sendMail(String subject, String body, String toEmailId);
 
 	
 }

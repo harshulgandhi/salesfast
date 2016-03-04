@@ -27,7 +27,7 @@
 				</button>
 				<button id="future-appointment-modal-btn" type="button" class="btn btn-default btn-md future-appointment-btn" 
 					data-toggle="modal" data-target="#future-appointment-modal">
-					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+					<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
 					<span>Show Future Appointments</span>
 				</button>
 				<!-- <button id="book-open-delete-modal-btn" type="button" class="btn btn-default btn-md" data-toggle="modal" data-target="#book-delete-modal" disabled="disabled">
@@ -48,7 +48,7 @@
 							<th>Address</th>
 							<th>Contact</th>
 							<th>Email Id</th>
-							<th>Confirmation Status</th>
+							<th class="confirmation-status-head">Confirmation Status</th>
 							<th>Time of appointment</th>
 							<th>Product</th>
 							<th style="display:none">Has Meeting Update</th>
@@ -63,7 +63,7 @@
 							<td th:text="${eachAppointment.address}"></td>
 							<td th:text="${eachAppointment.contact}"></td>
 							<td th:text="${eachAppointment.emailId}"></td>
-							<td th:text="${eachAppointment.confirmationStatus}"></td>
+							<td class="confirmation-status" th:text="${eachAppointment.confirmationStatus}"></td>
 							<td th:text="${eachAppointment.time}"></td>
 							<td th:text="${eachAppointment.product}"></td>
 							<td style="display:none" th:text="${eachAppointment.hasMeetingUpdate}"></td>
@@ -75,14 +75,20 @@
 		</div>
 
 							<!-- Table that lists physician in vicinity of fixed appointments  -->
-		<div class="row"><p class="slidedown-alignments"><a href="#">Click here to find physicians in vicinity</a></p></div>
+		<div class="row show-vicinity-alignments-btn">
+		<!-- <p class="slidedown-alignments"><a href="#">Click here to find physicians in vicinity</a></p> -->
+		<button type="button" class="btn btn-info btn-md slidedown-alignments">
+			<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+			<span>Click here to find physicians in vicinity</span>
+		</button>
+		</div>
 		<div class="vicinity-aligned-phys-div slidedown-alignments-show" style="display: none;">
 			<div class="row">
 				<div class="col-lg-12 col-sm-12" >
 					<table id="aligned-vicinity-physician-table" class="table table-striped table-bordered">
 						<thead>
 							<tr>
-								<th>Physician Id</th>
+								<th style="display:none">Physician Id</th>
 								<th>Physician Name</th>
 								<th>Email Id</th>
 								<th>Contact</th>
@@ -103,7 +109,7 @@
 						</thead>
 						<tbody>
 							<tr th:each="eachVicinityAlignment : ${listOfPhysInVicinity}">
-								<td th:text="${eachVicinityAlignment.physicianId}"></td>
+								<td style="display:none" th:text="${eachVicinityAlignment.physicianId}"></td>
 								<td th:text="${eachVicinityAlignment.firstName} + ' '+${eachVicinityAlignment.lastName}"></td>
 								<td th:text="${eachVicinityAlignment.email}"></td>
 								<td th:text="${eachVicinityAlignment.contactNumber}"></td>

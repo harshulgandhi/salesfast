@@ -18,7 +18,7 @@ $(document).ready(function() {
     	if(cell.childElementCount < 1 && cell.nodeName != 'INPUT' && cell.nodeName != 'SPAN' && cell.nodeName != 'TEXTAREA' ){
 	    	$(this).toggleClass('selected');
 	    	if ( $(this).hasClass('selected') ) {
-	    		$(this).css('background-color','#08C')
+	    		$(this).css('background-color','#08C');
 	            $(this).find('.appointment-paramaters').prop("disabled",false);
 	        }else{
 	        	setRowColor($(this));

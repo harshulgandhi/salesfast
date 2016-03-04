@@ -17,5 +17,6 @@ public interface AppointmentDao {
 	void setMeetinExperienceFlag(int appointmentId, int meetingUpdateFlag);
 	void updateStatus(int appointmentId, String status, String reason);
 	int getIdByPhysIdUserIdProductId(int physicianId, int userId, int productId);
+	public List<AppointmentDto> getAppointmentByStatus(String confirmationStatus);
 	
 }

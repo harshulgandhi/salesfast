@@ -30,7 +30,6 @@ public class UserToRoleServiceImpl implements UserToRoleService {
 		List<String> roles = new ArrayList<>();
 		
 		for(UserToRoleDto userRoleDto : userRoleDao.getAllRolesForUser(userId)){
-			log.info("");
 			roles.add(roleService.getBy(userRoleDto.getRoleId()).getShortName());
 		}
 		return roles;

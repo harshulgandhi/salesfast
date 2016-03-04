@@ -16,5 +16,6 @@ public interface SalesFastEmail {
 	public void setFromEmail(String email);
 	public void setFromName(String name);
 	public void sendMail();
+	void setToEmailId(String email);
 	
 }

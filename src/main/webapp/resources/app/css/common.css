@@ -26,3 +26,14 @@ ul>a{
 	font-style: italic;
     font-weight: 600;
 }
+nav.navbar-collapse.collapse a{
+	color: white;
+}
+
+.navbar-custom-style{
+	background-color: #21213A;	
+}
+
+a.navbar-brand.navbar-menu-items{
+	color: white;
+}

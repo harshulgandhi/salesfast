@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.stm.salesfast.backend.dto.AlignmentsDto;
 import com.stm.salesfast.backend.dto.MeetingExperienceDto;
 
 import org.springframework.dao.DataAccessException;
@@ -12,7 +11,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.stm.salesfast.backend.dao.specs.MeetingExperienceDao;
-import com.stm.salesfast.constant.PhysicianStatus;
 
 @Repository
 public class MeetingExperienceDaoImpl implements MeetingExperienceDao {
@@ -28,8 +26,30 @@ public class MeetingExperienceDaoImpl implements MeetingExperienceDao {
 	private static final String FETCH_BY_APPOINTMENTID = "SELECT * FROM meeting_experience WHERE appointmentId = ?";
 	private static final String FETCH_SALESREP_ENTRIES= "SELECT * FROM meeting_experience WHERE isSalesRepEntry = 1";
 	private static final String FETCH_PHYSICIAN_ENTRIES = "SELECT * FROM meeting_experience WHERE isPhysicianEntry = 1";
+	private static final String FETCH_ALL = "SELECT * FROM meeting_experience";
 	
-			
+	private static final String COUNT_ALL = "SELECT count(*) FROM meeting_experience";
+	private static final String COUNT_ALL_PHY = "SELECT count(*) FROM meeting_experience WHERE isPhysicianEntry = 1";
+	private static final String COUNT_ALL_SR = "SELECT count(*) FROM meeting_experience WHERE isSalesRepEntry = 1";
+	private static final String COUNT_LIKED_PROD = "SELECT count(*) FROM meeting_experience WHERE isPhysicianEntry = ? "
+			+ "AND isSalesRepEntry = ? "
+			+ "AND likedTheProduct = 1";
+	private static final String COUNT_AFFORDABLE = "SELECT count(*) FROM meeting_experience WHERE isPhysicianEntry = ? "
+			+ "AND isSalesRepEntry = ? "
+			+ "AND likedPriceAffordability = 1";
+	private static final String COUNT_SIDEEFECTS = "SELECT count(*) FROM meeting_experience WHERE isPhysicianEntry = ? "
+			+ "AND isSalesRepEntry = ? "
+			+ "AND impressiveLessSideEffects = 1";
+	private static final String COUNT_PRESENTATION = "SELECT count(*) FROM meeting_experience WHERE isPhysicianEntry = ? "
+			+ "AND isSalesRepEntry = ? "
+			+ "AND likedPresentation = 1";
+	private static final String COUNT_CONFIDENCE = "SELECT count(*) FROM meeting_experience WHERE isPhysicianEntry = ? "
+			+ "AND isSalesRepEntry = ? "
+			+ "AND salesRepConfidence = 1";
+	private static final String COUNT_REPUTATION = "SELECT count(*) FROM meeting_experience WHERE isPhysicianEntry = ? "
+			+ "AND isSalesRepEntry = ? "
+			+ "AND impressiveCompanyReputation = 1";
+	
 	
 	@Override
 	public void insert(MeetingExperienceDto meetingExperience) {
@@ -92,6 +112,128 @@ public class MeetingExperienceDaoImpl implements MeetingExperienceDao {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	@Override
+	public List<MeetingExperienceDto> getAll() {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_ALL, (rs, rownum) -> {
+					return new MeetingExperienceDto(rs.getInt("meetingExperienceId"), rs.getBoolean("isPhysicianEntry"), rs.getBoolean("isSalesRepEntry"), rs.getString("status"),rs.getBoolean("likedTheProduct"),rs.getBoolean("likedPriceAffordability"), rs.getBoolean("impressiveLessSideEffects"), rs.getBoolean("likedPresentation"), rs.getBoolean("salesRepConfidence"), rs.getBoolean("impressiveCompanyReputation"), rs.getInt("appointmentId"));
+				});
+			
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public int countAll(){
+		try {
+			return jdbcTemplate.queryForObject(COUNT_ALL, (rs, rownum) -> {
+				return rs.getInt(1);
+			});
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	@Override
+	public int countAllPhy(){
+		try {
+			return jdbcTemplate.queryForObject(COUNT_ALL_PHY, (rs, rownum) -> {
+				return rs.getInt(1);
+			});
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	@Override
+	public int countAllSR(){
+		try {
+			return jdbcTemplate.queryForObject(COUNT_ALL_SR, (rs, rownum) -> {
+				return rs.getInt(1);
+			});
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	@Override
+	public int countLikedProduct(int isPhy, int isSR){
+		try {
+			return jdbcTemplate.queryForObject(COUNT_LIKED_PROD, (rs, rownum) -> {
+				return rs.getInt(1);
+			},isPhy,isSR);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	@Override
+	public int countPriceAffordability(int isPhy, int isSR){
+		try {
+			return jdbcTemplate.queryForObject(COUNT_AFFORDABLE, (rs, rownum) -> {
+				return rs.getInt(1);
+			},isPhy,isSR);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	@Override
+	public int countLessSideEffects(int isPhy, int isSR){
+		try {
+			return jdbcTemplate.queryForObject(COUNT_SIDEEFECTS, (rs, rownum) -> {
+				return rs.getInt(1);
+			},isPhy,isSR);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	@Override
+	public int countLikedPresentation(int isPhy, int isSR){
+		try {
+			return jdbcTemplate.queryForObject(COUNT_PRESENTATION, (rs, rownum) -> {
+				return rs.getInt(1);
+			},isPhy,isSR);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	@Override
+	public int countRepsConfidence(int isPhy, int isSR){
+		try {
+			return jdbcTemplate.queryForObject(COUNT_CONFIDENCE, (rs, rownum) -> {
+				return rs.getInt(1);
+			},isPhy,isSR);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	@Override
+	public int countOrgReputation(int isPhy, int isSR){
+		try {
+			return jdbcTemplate.queryForObject(COUNT_REPUTATION, (rs, rownum) -> {
+				return rs.getInt(1);
+			},isPhy,isSR);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 }

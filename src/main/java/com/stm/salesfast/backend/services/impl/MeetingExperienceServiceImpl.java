@@ -1,6 +1,9 @@
 package com.stm.salesfast.backend.services.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.stm.salesfast.backend.dao.specs.MeetingExperienceDao;
@@ -45,22 +48,66 @@ public class MeetingExperienceServiceImpl implements MeetingExperienceService {
 	}
 
 	@Override
-	public MeetingExperienceDto fetchMeetingExperienceByAppointmentId(
+	public List<MeetingExperienceDto> fetchMeetingExperienceByAppointmentId(
 			int appointmentId) {
 		// TODO Auto-generated method stub
-		return null;
+		return meetingExperienceDao.getByAppointmentId(appointmentId);
 	}
 
 	@Override
-	public MeetingExperienceDto fetchMeetingExperienceForSalesRep() {
+	public List<MeetingExperienceDto> fetchMeetingExperienceForSalesRep() {
 		// TODO Auto-generated method stub
-		return null;
+		return meetingExperienceDao.getSalesRepEntries();
 	}
 
 	@Override
-	public MeetingExperienceDto fetchMeetingExperienceForPhysician() {
+	public List<MeetingExperienceDto> fetchMeetingExperienceForPhysician() {
 		// TODO Auto-generated method stub
-		return null;
+		return meetingExperienceDao.getPhysicianEntries();
+	}
+	
+	@Override
+	public List<MeetingExperienceDto> fetchAll() {
+		// TODO Auto-generated method stub
+		return meetingExperienceDao.getAll();
+	}
+	
+	@Override
+	public int countOfRecords(boolean forPhysicianEntries, boolean forSalesRepEntries){
+		if(forPhysicianEntries && forSalesRepEntries) return meetingExperienceDao.countAll();
+		else if(forPhysicianEntries) return meetingExperienceDao.countAllPhy();
+		else if(forSalesRepEntries) return meetingExperienceDao.countAllSR();
+		else return 0;
+	}
+	
+	@Override
+	public int getCountOfLikedProduct(int isPhy, int isSR){
+		return meetingExperienceDao.countLikedProduct(isPhy, isSR);
+	}
+	
+	@Override
+	public int getCountPriceAffordability(int isPhy, int isSR){
+		return meetingExperienceDao.countPriceAffordability(isPhy, isSR);
+	}
+	
+	@Override
+	public int getCountForLessSideEffects(int isPhy, int isSR){
+		return meetingExperienceDao.countLessSideEffects(isPhy, isSR);
+	}
+	
+	@Override
+	public int getCountLikedPresentation(int isPhy, int isSR){
+		return meetingExperienceDao.countLikedPresentation(isPhy, isSR);
+	}
+	
+	@Override
+	public int getCountForRepsConfidence(int isPhy, int isSR){
+		return meetingExperienceDao.countLikedProduct(isPhy, isSR);
+	}
+	
+	@Override
+	public int getCountOrgReputation(int isPhy, int isSR){
+		return meetingExperienceDao.countOrgReputation(isPhy, isSR);
 	}
 
 }

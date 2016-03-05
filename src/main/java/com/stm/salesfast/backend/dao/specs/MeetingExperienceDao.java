@@ -13,5 +13,25 @@ public interface MeetingExperienceDao {
 	public List<MeetingExperienceDto> getSalesRepEntries();
 	
 	public List<MeetingExperienceDto> getPhysicianEntries();
+
+	public List<MeetingExperienceDto> getAll();
+
+	int countOrgReputation(int isPhy, int isSR);
+
+	int countRepsConfidence(int isPhy, int isSR);
+
+	int countLikedPresentation(int isPhy, int isSR);
+
+	int countPriceAffordability(int isPhy, int isSR);
+
+	int countLikedProduct(int isPhy, int isSR);
+
+	int countAllSR();
+
+	int countAllPhy();
+
+	int countAll();
+
+	int countLessSideEffects(int isPhy, int isSR);
 	
 }

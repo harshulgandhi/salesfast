@@ -18,6 +18,8 @@
 --
 -- Table structure for table `alignments`
 --
+CREATE DATABASE if not exists salesfast;
+use salesfast;
 
 DROP TABLE IF EXISTS `alignments`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;

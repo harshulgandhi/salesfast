@@ -37,3 +37,14 @@ nav.navbar-collapse.collapse a{
 a.navbar-brand.navbar-menu-items{
 	color: white;
 }
+
+.notification-counter {   
+    position: absolute;
+    top: 13%;
+    left: 87%;
+    background-color: rgb(197, 114, 114);
+    color: #FFFFFF;
+    border-radius: 8px;
+    padding: 1px 5px;
+    font: 12px Verdana;
+}

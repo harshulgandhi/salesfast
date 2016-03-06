@@ -3,16 +3,24 @@
 <head>
 <meta charset="ISO-8859-1"/>
 <div th:replace="fragments/header :: commonhead"></div>
+<link rel="stylesheet" type="text/css" href="resources/app/css/datareport.css"/>
+
 <title>Data Report</title>
 </head>
 <body>
 	<!-- Common header -->
 	<div th:replace="fragments/header :: header"></div>
-<!-- 	
-<div id="container1" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
-<div id="container2" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
- -->
-
+	<div class="container" id="layout">
+		<div class="row row-header page-header"><h1>Data report - breakup of probable factors effecting the detailing meetings!</h1></div>
+		<div class="row row-chart">	
+			<div id="container-overall"  class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+			<div id="container-phy-resp" class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+		</div>
+		<div class="row row-chart">
+			<div id="container-salesrep-resp" class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+			<div id="container-phy-lost" class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+		</div>
+	</div>
 <!-- Common footer -->
 <div th:replace="fragments/footer :: footer"></div>
 <script  type="text/javascript" src="resources/app/js/allmeetingsdata.js"></script>

@@ -42,7 +42,7 @@ public class DataReportController {
 		return "allmeetingsdata";
 	}
 	
-	@RequestMapping(value="/getdata", method=RequestMethod.GET, produces="application/json")
+	@RequestMapping(value="/getDataOverall", method=RequestMethod.GET, produces="application/json")
 	@ResponseBody
 	public MeetingExperienceDataEntity[] getData(){
 		log.info("Fetching data for the report");

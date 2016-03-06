@@ -1,30 +1,64 @@
 /**
  * 
  */
-var dataReceived = null;
+
+var chartParameters = [{
+                    	  title: 'Physician and SalesReps response',
+                    	  containerName: '#container-overall',
+	                      url: '/getDataOverall'
+                      },
+                      {
+                    	  title: 'According to physicians',
+                    	  containerName: '#container-phy-resp',
+//                    	  url: '/getPhyResp'
+                    	  url: '/getDataOverall'
+                      },
+                      {
+                    	  title: 'According to SalesReps',
+                    	  containerName: '#container-salesrep-resp',
+//                    	  url: '/getSalesRepResp'
+                    	  url: '/getDataOverall'
+                      },
+                      {
+                    	  title: 'Probable reason for physician being lost',
+                    	  containerName: '#container-phy-lost',
+//                    	  url: '/getStatusLostData'
+                    	  url: '/getDataOverall'
+                      }]
 $(function () {
 	
     $(document).ready(function () {
-    	
-    	$.ajax({
-    		type: 'GET',
-    		url : '/getdata',
-    		dataType : 'json',
-    		success : function(data){
-    	    	console.log("Data received : "+JSON.stringify(data));
-    	    	createChart1(data);
-    		},
-    		error : function(e){
-    			console.log("Error : "+JSON.stringify(e));
-    		}
-    	});
-    	
+    	for(var i = 0; i< chartParameters.length; i++){
+    		constructPieCharts(chartParameters[i]['url'],chartParameters[i]['containerName'], chartParameters[i]['title']);
+    	}
     });
 });
 
-createChart1=function(data){
+constructPieCharts = function(url, containerName, title){
+	var dataReceived = null;
+	$.ajax({
+		type: 'GET',
+		url : url,
+		dataType : 'json',
+		success : function(data){
+	    	console.log("Data received : "+JSON.stringify(data));
+	    	createChart(containerName, title, data);
+		},
+		error : function(e){
+			console.log("Error : "+JSON.stringify(e));
+		}
+	}).done(function(){
+		console.log("ajax complete!");
+	});
+	
+	
+}
+
+
+createChart=function(containerName, title, data){
     // Build the chart
-    $('#container1').highcharts({
+	console.log("Container Name : "+containerName+", Title : "+title+", data : "+data);
+    $(containerName).highcharts({
 
         chart: {
             plotBackgroundColor: null,
@@ -33,7 +67,7 @@ createChart1=function(data){
             type: 'pie'
         },
         title: {
-            text: 'Physician and SalesReps response '
+            text: title
         },
         tooltip: {
             pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'

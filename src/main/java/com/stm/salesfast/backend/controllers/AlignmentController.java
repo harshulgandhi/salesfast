@@ -27,6 +27,7 @@ import com.stm.salesfast.backend.entity.AlignedPhysicianEntity;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.PhysicianFetchService;
+import com.stm.salesfast.backend.services.specs.ReminderService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
 import com.stm.salesfast.backend.utils.AjaxRequestListMapper;
 import com.stm.salesfast.backend.utils.SalesFastUtilities;
@@ -48,6 +49,8 @@ public class AlignmentController {
 	@Autowired
 	private PhysicianFetchService physicianService; 
 	
+	@Autowired
+	private ReminderService reminders;
 	
 	
 	@RequestMapping(value="/showalignments", method=RequestMethod.GET)
@@ -81,6 +84,9 @@ public class AlignmentController {
 			Date selectedDate = SalesFastUtilities.getDateForStringTime(appointmentList.getAppointmentDate(), "yyyy-MM-dd"); 
 			appointmentService.addAppointment(appointmentList.getPhysicianId(), selectedTime, selectedDate, appointmentList.getAppointmentStatus(), appointmentList.getProductId(), appointmentList.getAdditionalNotes());
 		}
+		/* To set reminders in case any follow up appointment
+		 * was fixed for any time in next day*/
+		reminders.followUpCallReminders();
 //		return "forward:/toRedirect";
 	} 
 }

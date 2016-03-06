@@ -94,10 +94,10 @@ $('.submit-selected-alignments').click(function(){
 		url : "/fixappointments",
 		data : JSON.stringify(fixedAppointmentDetails),
 		contentType : "application/json; charset=utf-8",
+		success: function(){
+			location.reload(true);
+		}
 	});
-	setTimeout(function(){
-		location.reload(true);
-	}, 500);
 });
 
 //Function to create JSON to store physician Ids and corresponding 

@@ -6,3 +6,6 @@ $.extend( $.fn.dataTable.defaults, {
     searching: false,
     ordering:  false
 } );
+
+//For updating the notification counter
+//document.getElementById("myspan").textContent="newtext";

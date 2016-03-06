@@ -150,11 +150,9 @@ $('.submit-selected-alignments').click(function(){
 	    },
 	    success : function() {
 	        console.log("SUCCESS!!");
+	        location.reload(true);
 	    }
 	});
-	setTimeout(function(){
-		location.reload(true);
-	}, 500);
 });
 
 

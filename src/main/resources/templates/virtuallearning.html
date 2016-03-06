@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Header to include css -->
+<div th:replace="fragments/header :: commonhead"></div>
+<link rel="stylesheet" type="text/css" href="resources/app/css/virtuallearning.css"/>
+<meta charset="ISO-8859-1" />
+<title>Virtual Learning</title>
+</head>
+<body>
+	<!-- Common header -->
+	<div th:replace="fragments/header :: header"></div>
+	<div class="container" id="layout">
+		<div class="row row-header page-header"><h1>Your Integrated Virtual Learning Environment!</h1></div>
+		<div>
+			<div class="row">
+				<object data="resources/docs/virtuallearning/O_Med_1.pdf" type="application/pdf">
+					<embed src="resources/docs/virtuallearning/O_Med_1.pdf" alt="pdf" pluginspage="http://www.adobe.com/products/acrobat/readstep2.html">
+					</embed>
+				</object>
+			</div>
+		</div>
+	</div>
+	
+</body>
+</html>

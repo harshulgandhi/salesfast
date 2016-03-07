@@ -20,6 +20,7 @@ import com.stm.salesfast.backend.dto.AppointmentDto;
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.dto.ProductDto;
 import com.stm.salesfast.backend.dto.UserDto;
+import com.stm.salesfast.backend.entity.AlignedPhysicianFollowUpEntity;
 import com.stm.salesfast.backend.entity.AppointmentEntity;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
@@ -185,8 +186,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 	}
 	
 	@Override
-	public List<AppointmentDto> getFollowUpAppointments(){
-		return appointmentDao.getAppointmentByStatus("FOLLOW UP");
+	public List<AppointmentDto> getFollowUpAppointments(int userId){
+		return appointmentDao.getAppointmentByStatus("FOLLOW UP", userId);
 	}
 	
 	@Override
@@ -216,6 +217,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 		sendMail( emailSub2, emailText2, physician.getEmail());
 	}
 	
+	@Override
+	public void updateFollowUpAppointmentStatus(Time time, Date date, String status, String additionalNotes, int appointmentId){
+		appointmentDao.updateFollowUps(time, date, status, additionalNotes, appointmentId);
+	}
+	
 	/**
 	 * Method to send email using send grid api
 	 * */
@@ -229,6 +235,44 @@ public class AppointmentServiceImpl implements AppointmentService {
 		email.addTextBody(body);
 		log.info("Sending confirmation email with content as :\n"+body);
 		email.sendMail();
+	}
+	
+	@Override
+	public List<AlignedPhysicianFollowUpEntity> followUpAppointmentsToShow() throws ParseException{
+		log.info("Appointments to follow up");
+		List<AlignedPhysicianFollowUpEntity> followUpAppointments = new ArrayList<>();
+		List<AppointmentDto> followUpAppointmentDto = getFollowUpAppointments(userDetails.getUserDetails(SalesFastUtilities.getCurrentUserName()).getUserId());
+		log.info("Number of follow up appointments : "+followUpAppointmentDto.size());
+		for(AppointmentDto appointment : followUpAppointmentDto){
+			PhysicianStgDto physician = physicianService.getPhysicianById(appointment.getPhysicianId());
+			if(appointment.getDate().getTime() == SalesFastUtilities.getCurrentDate().getTime()){
+				followUpAppointments.add(new AlignedPhysicianFollowUpEntity(appointment.getAppointmnetId(),
+						appointment.getPhysicianId(),
+						physician.getFirstName(),
+						physician.getLastName(),
+						physician.getEmail(),
+						physician.getContactNumber(),
+						physician.getAddressLineOne(),
+						physician.getAddressLineTwo(),
+						physician.getCity(),
+						physician.getState(),
+						physician.getZip(),
+						physician.getMedicalField(),
+						physician.isNew(),
+						appointment.getConfirmationStatus(),
+						appointment.getProductId(),
+						productFetchService.getProductById(appointment.getProductId()).getProductName(),
+						physician.getImportanceFactor(),
+						appointment.getDate(),
+						appointment.getTime(),
+						appointment.getAdditionalNotes()
+				));
+				
+			}
+			log.info(""+followUpAppointments.get(followUpAppointments.size()-1));
+		}
+		
+		return followUpAppointments;
 	}
 }
 

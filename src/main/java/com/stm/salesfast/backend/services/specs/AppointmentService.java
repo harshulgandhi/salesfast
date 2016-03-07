@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.util.List;
 
 import com.stm.salesfast.backend.dto.AppointmentDto;
+import com.stm.salesfast.backend.entity.AlignedPhysicianFollowUpEntity;
 import com.stm.salesfast.backend.entity.AppointmentEntity;
 
 public interface AppointmentService {
@@ -32,9 +33,14 @@ public interface AppointmentService {
 			throws ParseException;
 
 
-	public List<AppointmentDto> getFollowUpAppointments();
+	public List<AppointmentDto> getFollowUpAppointments(int userId);
 
 	public void sendMail(String subject, String body, String toEmailId);
+
+	List<AlignedPhysicianFollowUpEntity> followUpAppointmentsToShow() throws ParseException;
+
+	public void updateFollowUpAppointmentStatus(Time time, Date date, String status,
+			String additionalNotes, int appointmentId);
 
 	
 }

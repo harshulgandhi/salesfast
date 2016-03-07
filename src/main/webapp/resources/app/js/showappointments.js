@@ -41,6 +41,25 @@ $(document).ready(function() {
 	        }
     	}
     });
+
+	/**
+    * Toggles between selected and de-selected rows of the follow up
+    * appointment table. Takes care of clicks done on the 'time' element 
+    */
+    $('#followup-appointments-table tbody').on( 'click', 'tr', function (e) {
+    	var cell = $(e.target).get(0);
+    	console.log(cell);
+    	if(cell.childElementCount < 1 && cell.nodeName != 'INPUT' && cell.nodeName != 'SPAN' && cell.nodeName != 'TEXTAREA' ){
+	    	$(this).toggleClass('selected');
+	    	if ( $(this).hasClass('selected') ) {
+	    		$(this).css('background-color','#08C');
+	            $(this).find('.followup-appointment-paramaters').prop("disabled",false);
+	        }else{
+				$(this).find('.followup-appointment-paramaters').prop("disabled",false);
+	        }
+    	}
+    });
+
     $(".appointment-status-selector").select2();
      /*Initialize table with row colors*/
     var myTable = $('#aligned-vicinity-physician-table').dataTable();
@@ -70,16 +89,9 @@ $(document).ready(function() {
             //To toggle meeting update and experience buttons based on database flag for that appointment
             var hasMeetingUpdate = tableAppointment.row('.selected').data()[len-2];		
             var hasMeetingExperience = tableAppointment.row('.selected').data()[len-1];
-            console.log("Row length : "+len+"\nHas meeting update : "+hasMeetingUpdate+"\nHas meeting experience entry : "+hasMeetingExperience)
             toggleMeetingUpdateButtons(hasMeetingUpdate, hasMeetingExperience);
-//            $('.add-meeting-update-btn').prop("disabled",false);
         }
     		
-    	/*
-    	 * TO REMOVE A SELECTED ROW ON BUTTON CLICK
-    	$('#button').click( function () {
-            table.row('.selected').remove().draw( false );
-        });*/
     	$(".phys-status-selector").select2();
      	$('#meetingupdate-add-button').click(addMeetingUpdate);
      	$('#meetingexperience-add-button').click(addMeetingExperience);
@@ -114,7 +126,7 @@ $('.submit-selected-alignments').click(function(){
 	var appointStatusList = [];
 	var additionalNotesList = [];
 	
-	$('.selected').each(function(i, val){
+	$('#aligned-vicinity-physician-table selected').each(function(i, val){
 		if ($(val).find('.appointment-time').length != 0 ) {
 			var appointDate = $(val).find('.appointment-date').val();
 			var appointTime = $(val).find('.appointment-time').val();
@@ -145,11 +157,65 @@ $('.submit-selected-alignments').click(function(){
 		data : JSON.stringify(fixedAppointmentDetails),
 		contentType : "application/json; charset=utf-8",
 	    dataType : 'json',
-	    error : function() {
-	        console.log("error");
-	    },
 	    success : function() {
-	        console.log("SUCCESS!!");
+	        location.reload(true);
+	    }
+	});
+});
+
+
+/**
+ * On click of submit button, DOM is traversed 
+ * and TDs of all selected TRs are listed.
+ * First (physId) and last (appointTime) are
+ * selected as two lists which are then converted to JSON for AJAX call
+ * @TODO : Add validation in case of user clicking on submit button
+ * without entering time for all selected physicians.
+ */
+$('.submit-selected-followup-alignments').click(function(){
+	var physIds = [];
+	var appointTimeList = [];
+	var appointDateList = [];
+	var productIds = [];
+	var appointStatusList = [];
+	var additionalNotesList = [];
+	var appointmentIdList = [];
+	
+	$('#followup-appointments-table').find('.selected').each(function(i, val){
+		if ($(val).find('.appointment-time').length != 0 ) {
+			var appointDate = $(val).find('.appointment-date').val();
+			var appointTime = $(val).find('.appointment-time').val();
+			var appointStatus = $(val).find('.appointment-status-selector').val();
+			var additionalNotes = $(val).find('.appointment-notes-class').val();
+			var appointId = $(val).find('.followup-appointmentid').html();
+			console.log("appointId : "+appointId);
+			if((appointTime == '' || appointDate == '') && appointStatus != "NOT INTERESTED"){		//Check if user entered time for all selected physicians
+				alert("Please mention time and date both for all selected physicians");
+				return;
+			}
+			else{
+				console.log("TIME " + appointTime+"; DATE "+appointDate);
+				appointTimeList.push(appointTime);
+				appointDateList.push(appointDate);
+				appointStatusList.push(appointStatus);
+				additionalNotesList.push(additionalNotes);
+				appointmentIdList.push(appointId);
+			}
+		}
+			$(this).find('td').each(function(idx, valTD){
+				if(idx == 0) physIds.push($(valTD).html());
+				if(idx == 10) productIds.push($(valTD).html());		//Picking product for selected alignments
+			});
+	});
+	var fixedAppointmentDetails = createJsonFollowupAppointment(physIds, appointTimeList, productIds, appointDateList, appointStatusList, additionalNotesList, appointmentIdList);
+	console.log("Json : "+JSON.stringify(fixedAppointmentDetails));
+	$.ajax({
+		type : 'POST',
+		url : "/updatefollowupappointment",
+		data : JSON.stringify(fixedAppointmentDetails),
+		contentType : "application/json; charset=utf-8",
+	    dataType : 'json',
+	    success : function() {
 	        location.reload(true);
 	    }
 	});
@@ -158,7 +224,7 @@ $('.submit-selected-alignments').click(function(){
 
 var addMeetingUpdate = function(event){
 	
-	var appointmentId = tableAppointment.row('.selected').data()[0];													//Getting Appointment id
+	var appointmentId = tableAppointment.row('.selected').data()[0];												//Getting Appointment id
 	var physicianId = tableAppointment.row('.selected').data()[1];													//Getting Physician id
 	var productName = tableAppointment.row('.selected').data()[tableAppointment.row('.selected').data().length-3];	//Getting product name
 	
@@ -232,6 +298,26 @@ var createJson = function(physIds, appointTime, productIds,appointDate, appointS
 					"appointmentDate":appointDate[i],
 					"appointmentStatus":appointStatusList[i],
 					"additionalNotes":additionalNotesList[i]
+				});
+	}
+	return appointJsonList;
+}
+
+//Function to create JSON of data captured from
+//follow up appointments table
+var createJsonFollowupAppointment = function(physIds, appointTime, productIds,appointDate, appointStatusList, additionalNotesList, appointmentIdList){
+	var appointmentJson = {"appointments":[]};
+	var appointJsonList = [];
+	for( var i = 0; i<physIds.length;i++){
+		appointJsonList.push(
+				{
+					"physicianId":parseInt(physIds[i][0]), 
+					"productId":parseInt(productIds[i][0]),
+					"appointmentTime":appointTime[i],
+					"appointmentDate":appointDate[i],
+					"appointmentStatus":appointStatusList[i],
+					"additionalNotes":additionalNotesList[i],
+					"appointmentId":appointmentIdList[i]
 				});
 	}
 	return appointJsonList;

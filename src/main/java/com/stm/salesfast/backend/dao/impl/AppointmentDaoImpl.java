@@ -1,6 +1,7 @@
 package com.stm.salesfast.backend.dao.impl;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,13 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	private static final String UPDATE_STATUS = "UPDATE appointment SET confirmationStatus = ?,"
 												+ "cancellationReason = ?"
 												+ "WHERE appointmentId = ?";
-	private static final String FETCH_APPOINTMENT_BY_STATUS = "SELECT * FROM appointment WHERE confirmationStatus = ?";
+	private static final String FETCH_APPOINTMENT_BY_STATUS = "SELECT * FROM appointment WHERE confirmationStatus = ? AND userId = ?";
+	
+	private static final String UPDATE_FOLLOWUP_APPOINTMENT = "UPDATE appointment SET time = ?, "
+															+ "date = ?, "
+															+ "confirmationStatus = ?, "
+															+ "additionalNotes = ? "
+															+ "WHERE appointmentId = ?";
 	
 	@Override
 	public AppointmentDto getAppointmentById(int appointmentId) {
@@ -112,6 +119,22 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	}
 	
 	@Override
+	public void updateFollowUps(Time time, Date date,  String status,  String additionalNotes,int appointmentId) {
+		// TODO Auto-generated method stub
+		try{
+			jdbcTemplate.update(UPDATE_FOLLOWUP_APPOINTMENT, (ps)->{
+				ps.setTime(1, time);
+				ps.setDate(2, date);
+				ps.setString(3, status);
+				ps.setString(4, additionalNotes);
+				ps.setInt(5, appointmentId);
+			});
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
 	public int getIdByPhysIdUserId(int physicianId, int userId) {
 		// TODO Auto-generated method stub
 		try{
@@ -171,12 +194,12 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	 * follow up state
 	 * */
 	@Override
-	public List<AppointmentDto> getAppointmentByStatus(String confirmationStatus) {
+	public List<AppointmentDto> getAppointmentByStatus(String confirmationStatus,int userId) {
 		// TODO Auto-generated method stub
 		try{
 			return jdbcTemplate.query(FETCH_APPOINTMENT_BY_STATUS, (rs, rownnum)->{
-				return new AppointmentDto(rs.getInt("appointmentId"), rs.getTime("time"), rs.getDate("date"), rs.getInt("physicianId"), rs.getInt("userId"), rs.getInt("productId"),confirmationStatus, rs.getString("zip"),rs.getString("cancellationReason"), rs.getString("additionalNotes"), rs.getBoolean("hasMeetingUpdate"),rs.getBoolean("hasMeetingExperience"));
-			}, confirmationStatus);
+				return new AppointmentDto(rs.getInt("appointmentId"), rs.getTime("time"), rs.getDate("date"), rs.getInt("physicianId"), userId, rs.getInt("productId"),confirmationStatus, rs.getString("zip"),rs.getString("cancellationReason"), rs.getString("additionalNotes"), rs.getBoolean("hasMeetingUpdate"),rs.getBoolean("hasMeetingExperience"));
+			}, confirmationStatus, userId);
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}

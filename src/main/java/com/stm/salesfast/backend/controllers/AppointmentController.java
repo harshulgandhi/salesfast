@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.entity.AlignedPhysicianEntity;
+import com.stm.salesfast.backend.entity.AlignedPhysicianFollowUpEntity;
 import com.stm.salesfast.backend.entity.AppointmentEntity;
 import com.stm.salesfast.backend.entity.MeetingExperienceEntity;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
@@ -62,10 +63,13 @@ public class AppointmentController {
 		List<AppointmentEntity> futureAppointmentsList = appointmentFetchService.getFutureAppointmentToShow(userAccountService.getUserIdByUserName(CURRENTUSERNAME));
 		List<AlignedPhysicianEntity> alignedPhysicianInVicinity = alignmentFetchService.getAlignmentByUserIdInVicinityOfAppointments(
 				(userAccountService.getUserAccountByUserName(CURRENTUSERNAME)).getUserId());
+		List<AlignedPhysicianFollowUpEntity> followUpAppointments = appointmentFetchService.followUpAppointmentsToShow();
+		
 		
 		model.addAttribute("listOfTodaysAppointments", todaysAppointmentsList);
 		model.addAttribute("listOfFutureAppointments", futureAppointmentsList);
 		model.addAttribute("listOfPhysInVicinity", alignedPhysicianInVicinity);
+		model.addAttribute("followUpAppointments", followUpAppointments);
 		return "showappointment";
 	}
 	

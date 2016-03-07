@@ -43,7 +43,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 				new AntPathRequestMatcher("/getdata"),
 				new AntPathRequestMatcher("/shownotifications"),
 				new AntPathRequestMatcher("/deletenotification"),
-				new AntPathRequestMatcher("/virtuallearning")
+				new AntPathRequestMatcher("/virtuallearning"),
+				new AntPathRequestMatcher("/updatefollowupappointment")
 				};
 
 		@Override

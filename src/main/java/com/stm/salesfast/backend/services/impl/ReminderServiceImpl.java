@@ -6,6 +6,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import com.stm.salesfast.backend.dto.AppointmentDto;
@@ -23,6 +25,7 @@ import com.stm.salesfast.backend.utils.SalesFastUtilities;
 @Service
 public class ReminderServiceImpl implements ReminderService{
 	private Logger log = LoggerFactory.getLogger(ReminderServiceImpl.class.getName());
+	private String CURRENTUSERNAME="";
 	
 	@Autowired
 	AppointmentService appointmentService;
@@ -42,7 +45,9 @@ public class ReminderServiceImpl implements ReminderService{
 	@Override
 	public void followUpCallReminders() throws ParseException {
 		// TODO Auto-generated method stub
-		List<AppointmentDto> appointments = appointmentService.getFollowUpAppointments();
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		CURRENTUSERNAME = user.getUsername(); //get logged in user name
+		List<AppointmentDto> appointments = appointmentService.getFollowUpAppointments(userDetails.getUserDetails(CURRENTUSERNAME).getUserId());
 		log.info("Number of appointments to follow up : "+appointments.size());
 		for(AppointmentDto eachAppointment : appointments){
 			log.info("number of days : "+SalesFastUtilities.numberOfDays(eachAppointment.getDate()));

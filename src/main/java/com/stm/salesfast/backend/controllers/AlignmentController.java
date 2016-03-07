@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.entity.AlignedPhysicianEntity;
+import com.stm.salesfast.backend.entity.FollowupAppointmentUpdateEntity;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.PhysicianFetchService;
@@ -84,5 +85,22 @@ public class AlignmentController {
 		 * was fixed for any time in next day*/
 		reminders.followUpCallReminders();
 //		return "forward:/toRedirect";
-	} 
+	}
+	
+	@RequestMapping(value="/updatefollowupappointment", method=RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@ResponseBody
+	public void updateFollowUpAppointments(@RequestBody FollowupAppointmentUpdateEntity[] appointments) throws ParseException{
+		for (FollowupAppointmentUpdateEntity appointmentUpdate : appointments){
+			log.info("Appointment fixed for physician = "+appointmentUpdate);
+			Time selectedTime = SalesFastUtilities.getTimeForStringTime(appointmentUpdate.getAppointmentTime(), "HH:mm");
+			Date selectedDate = SalesFastUtilities.getDateForStringTime(appointmentUpdate.getAppointmentDate(), "yyyy-MM-dd");
+			appointmentService.updateFollowUpAppointmentStatus(selectedTime, selectedDate, 
+					appointmentUpdate.getAppointmentStatus(), 
+					appointmentUpdate.getAdditionalNotes(), 
+					appointmentUpdate.getAppointmentId());
+		}
+		/* To set reminders in case any follow up appointment
+		 * was fixed for any time in next day*/
+		reminders.followUpCallReminders();
+	}
 }

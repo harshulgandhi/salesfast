@@ -25,6 +25,6 @@ public class SalesFastApp {
 //		createAlignments.createAlignments();
 		createAlignments.calculatePhysicianImportance();
 		
-		reminders.followUpCallReminders();
+//		reminders.followUpCallReminders();
 	}
 }

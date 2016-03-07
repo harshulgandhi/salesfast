@@ -6,6 +6,9 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+
 public class SalesFastUtilities {
 	
 	private final static double AVERAGE_MILLIS_PER_MONTH = 365.24 * 24 * 60 * 60 * 1000 / 12;
@@ -45,4 +48,8 @@ public class SalesFastUtilities {
 		return (toDate.getTime() - currDate.getTime())/AVERAGE_MILLIS_PER_DAY;
 	}
 	
+	public static String getCurrentUserName(){
+		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return user.getUsername(); //get logged in user name
+	}
 }

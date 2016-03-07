@@ -59,10 +59,6 @@ public class AlignmentController {
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		CURRENTUSERNAME = user.getUsername(); //get logged in user name
 	    log.info("\nLogged in user is : "+CURRENTUSERNAME+" and his role is "+user.getAuthorities());
-		
-		/* These alignments are the ones that haven't been 
-		 * converted to an appointment yet.
-		 * */
 		List<AlignedPhysicianEntity> alignedPhysician = alignmentFetchService.getAlignmentByUserIdToShow(
 				(userAccountService.getUserAccountByUserName(CURRENTUSERNAME)).getUserId());
 		model.addAttribute("listOfAlignedPhysician", alignedPhysician);

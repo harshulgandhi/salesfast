@@ -10,7 +10,12 @@ import org.springframework.stereotype.Service;
 
 import com.stm.salesfast.backend.dao.specs.TrainingMaterialDao;
 import com.stm.salesfast.backend.dto.TrainingMaterialDto;
+import com.stm.salesfast.backend.entity.VirtualLearningEntity;
+import com.stm.salesfast.backend.services.specs.TerritoryService;
 import com.stm.salesfast.backend.services.specs.TrainingMaterialService;
+import com.stm.salesfast.backend.services.specs.UserDetailService;
+import com.stm.salesfast.constant.ConstantValues;
+import com.stm.salesfast.constant.SessionConstants;
 
 @Service
 public class TrainingMaterialServiceImpl implements TrainingMaterialService{
@@ -19,6 +24,12 @@ public class TrainingMaterialServiceImpl implements TrainingMaterialService{
 	@Autowired
 	TrainingMaterialDao trainingMaterialDao;
 	
+	@Autowired
+	UserDetailService userDetail;
+	
+	@Autowired
+	TerritoryService terrService;
+	
 	@Override
 	public TrainingMaterialDto getById(int trainingMaterialId) {
 		return trainingMaterialDao.getBy(trainingMaterialId);
@@ -26,9 +37,7 @@ public class TrainingMaterialServiceImpl implements TrainingMaterialService{
 
 	@Override
 	public List<TrainingMaterialDto> getByUserId(int userId) {
-//		log.info("Fetching training material for user : "+userId);
 		List<TrainingMaterialDto> trainingMat = trainingMaterialDao.getByUserId(userId);
-//		for(TrainingMaterialDto eachRecord : trainingMat) log.info("Each training record  : "+eachRecord);
 		return trainingMat;
 	}
 
@@ -50,9 +59,27 @@ public class TrainingMaterialServiceImpl implements TrainingMaterialService{
 	@Override
 	public String getMedicalFieldForUser(int userId) {
 		// TODO Auto-generated method stub
-//		log.info("Getting medical field for user : "+userId);
 		if(getByUserId(userId).size() == 0) return null;
 		else return getByUserId(userId).get(0).getMedicalFieldId();
+	}
+	
+	@Override
+	public List<VirtualLearningEntity> getAllDocumentsPath(int userId){
+		List<VirtualLearningEntity> allDocumentPaths = new ArrayList<>();
+		List<String> trainingMaterial = getUrlsForUser(userId);
+		int i = 0;
+		for(String eachFile : trainingMaterial){
+			allDocumentPaths.add(new VirtualLearningEntity(ConstantValues.TRAINING_MATERIAL_PATH+eachFile, "Medicine "+(++i)+" "+eachFile.replace(".pdf", "")));
+		}
+		allDocumentPaths.add(new VirtualLearningEntity(ConstantValues.ORGANISATIONAL_DOCS_PATH+ConstantValues.CODE_OF_CONDUCT_FILE,
+				"Code of Conduct"));
+		allDocumentPaths.add(new VirtualLearningEntity(ConstantValues.ORGANISATIONAL_DOCS_PATH+ConstantValues.GENERAL_GUIDELINES_FILE,
+				"General Guidelines"));
+		int userIdDM = userDetail.getDistrictManagerId(SessionConstants.USER_ID);
+		
+		allDocumentPaths.add(new VirtualLearningEntity(ConstantValues.ORGANISATIONAL_DOCS_PATH+ConstantValues.MANAGER_TIPS_FILE.replace(".pdf", "_"+userIdDM+".pdf"), "Your Manager's Tips"));
+		
+		return allDocumentPaths;
 	}
 
 }

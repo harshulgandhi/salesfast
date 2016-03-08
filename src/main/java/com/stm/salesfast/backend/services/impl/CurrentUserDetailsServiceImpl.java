@@ -11,6 +11,7 @@ import com.stm.salesfast.backend.entity.CurrentUser;
 import com.stm.salesfast.backend.entity.UserAccountEntity;
 import com.stm.salesfast.backend.services.specs.CurrentUserDetailsService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
+import com.stm.salesfast.constant.SessionConstants;
 
 @Service
 public class CurrentUserDetailsServiceImpl implements CurrentUserDetailsService {
@@ -33,6 +34,8 @@ public class CurrentUserDetailsServiceImpl implements CurrentUserDetailsService 
         if (user == null) {
         	throw new UsernameNotFoundException(String.format("User with id=%s was not found", username));
         }
+        SessionConstants.CURRENTUSERNAME = user.getUsername();
+        SessionConstants.USER_ID = userService.getUserAccountByUserName(username).getUserId();
         
         return new CurrentUser(user);
 	}

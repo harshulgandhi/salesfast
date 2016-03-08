@@ -3,6 +3,7 @@ package com.stm.salesfast.backend.services.specs;
 import java.util.List;
 
 import com.stm.salesfast.backend.dto.TrainingMaterialDto;
+import com.stm.salesfast.backend.entity.VirtualLearningEntity;
 
 public interface TrainingMaterialService {
 	
@@ -15,4 +16,6 @@ public interface TrainingMaterialService {
 	public List<String> getUrlsForUser(int userId);
 	
 	public String getMedicalFieldForUser(int userId);
+
+	public List<VirtualLearningEntity> getAllDocumentsPath(int userId);
 }

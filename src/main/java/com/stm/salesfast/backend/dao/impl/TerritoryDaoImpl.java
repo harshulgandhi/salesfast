@@ -1,5 +1,7 @@
 package com.stm.salesfast.backend.dao.impl;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,7 @@ public class TerritoryDaoImpl implements TerritoryDao{
 	
 	private static final String  FETCH_BY_ID = "SELECT * FROM territories WHERE territoryId = ?";
 	private static final String  FETCH_BY_ZIP = "SELECT * FROM territories WHERE zip = ?";
-	
+	private static final String FETCH_BY_USER = "SELECT * FROM territories WHERE userID = ?";
 	
 	@Override
 	public TerritoryDto getBy(int territoryId) {
@@ -50,4 +52,18 @@ public class TerritoryDaoImpl implements TerritoryDao{
 		}
 		return null;
 	}
+	
+	@Override
+	public List<TerritoryDto> getByUser(int userId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(
+					FETCH_BY_USER, (rs, rownum) -> {
+						return new TerritoryDto(rs.getInt("territoryId"), rs.getString("territoryName"), rs.getString("zip"),userId,rs.getInt("districtId"));}
+					, userId);
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	} 
 }

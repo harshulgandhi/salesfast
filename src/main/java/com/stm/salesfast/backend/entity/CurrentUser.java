@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.User;
 
 import com.stm.salesfast.backend.services.specs.UserAccountService;
 import com.stm.salesfast.backend.services.specs.UserToRoleService;
+import com.stm.salesfast.constant.SessionConstants;
 
 
 public class CurrentUser extends User{
@@ -24,18 +25,14 @@ public class CurrentUser extends User{
 	@Autowired
 	UserAccountService userAccount;
 	
-	/**This has been hard coded for now, will be
-	 * fetched from database once roles table is
-	 * populated
-	 */
-	private static List<String> rolesList = Arrays.asList("SalesRep","DM","NH");
-	
 	public CurrentUser(UserAccountEntity userAccountEntity){
 		super(userAccountEntity.getUsername(), userAccountEntity.getPassword(), AuthorityUtils.
 				createAuthorityList(userAccountEntity.getRoles().toArray(new String[userAccountEntity.getRoles().size()]))
 				);
 
 		this.userAccountEntity = userAccountEntity;
+		
+		SessionConstants.CURRENTUSERNAME = this.userAccountEntity.getUsername();
 	}
 
 	public UserAccountEntity getUser() {

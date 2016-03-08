@@ -9,4 +9,5 @@ public interface UserDetailService {
 	public UserDto getUserDetails(String username);
 	public List<UserDto> getAllUsers();
 	public List<UserDto> getAllSalesReps();
+	public int getDistrictManagerId(int userId);
 }

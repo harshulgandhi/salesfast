@@ -7,4 +7,6 @@ public interface TerritoryService {
 	public TerritoryDto getBy(int territoryId);
 	
 	public TerritoryDto getBy(String zip);
+	
+	public TerritoryDto getByUser(int userId);
 }

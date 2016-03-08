@@ -26,5 +26,12 @@ public class TerritoryServiceImpl implements TerritoryService {
 		return territoryDao.getBy(zip);
 	}
 
+	@Override
+	public TerritoryDto getByUser(int userId) {
+		// TODO Auto-generated method stub
+		
+		return territoryDao.getByUser(userId).size() == 0 ? null : territoryDao.getByUser(userId).get(0);
+	}
+
 	
 }

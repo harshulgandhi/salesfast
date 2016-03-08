@@ -10,6 +10,7 @@ import com.stm.salesfast.backend.dao.specs.UserDao;
 import com.stm.salesfast.backend.dto.RolesDto;
 import com.stm.salesfast.backend.dto.UserDto;
 import com.stm.salesfast.backend.services.specs.RoleService;
+import com.stm.salesfast.backend.services.specs.TerritoryService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
 import com.stm.salesfast.backend.services.specs.UserDetailService;
 import com.stm.salesfast.backend.services.specs.UserToRoleService;
@@ -28,6 +29,9 @@ public class UserDetailServiceImpl implements UserDetailService{
 	
 	@Autowired
 	RoleService roleService;
+	
+	@Autowired
+	TerritoryService terrService;
 	
 	@Override
 	public UserDto getUserDetails(int userId) {
@@ -59,5 +63,10 @@ public class UserDetailServiceImpl implements UserDetailService{
 		}
 		return allSalesReps;
 	}
-	
+
+	@Override
+	public int getDistrictManagerId(int userId) {
+		// TODO Auto-generated method stub
+		return terrService.getByUser(userId).getDistrictId();
+	}
 }

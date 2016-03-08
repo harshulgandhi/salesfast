@@ -14,5 +14,7 @@ public interface UserDao {
 	public void deleteBy(int userId);
 	
 	public List<UserDto> getAll();
+
+	UserDto getBy(String firstName, String lastName, String email);
 	
 }

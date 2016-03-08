@@ -5,6 +5,7 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Random;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -51,5 +52,10 @@ public class SalesFastUtilities {
 	public static String getCurrentUserName(){
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return user.getUsername(); //get logged in user name
+	}
+	
+	public static int generateRandomNumber(){
+		 Random rand= new Random();
+         return rand.nextInt(900) + 100;
 	}
 }

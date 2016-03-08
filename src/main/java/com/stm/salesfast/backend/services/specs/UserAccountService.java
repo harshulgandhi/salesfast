@@ -10,7 +10,7 @@ public interface UserAccountService {
 	public String getPassword(String username);
 	public int getUserIdByUserName(String username);
 	
-	/*TO IMPLEMENT SPRING SECURITY*/
 	public UserAccountEntity getUserAccountEntityByUserName(String username);
+	void insertNewUserAccount(UserAccountDto userAccount);
 	
 }

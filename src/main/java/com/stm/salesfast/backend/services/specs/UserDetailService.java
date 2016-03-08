@@ -10,4 +10,8 @@ public interface UserDetailService {
 	public List<UserDto> getAllUsers();
 	public List<UserDto> getAllSalesReps();
 	public int getDistrictManagerId(int userId);
+	public String getUserCompleteName(int userId);
+	void insertUserDetails(UserDto userDetails);
+	boolean checkIfUserExists(String firstName, String lastName, String email);
+	int getUserIdByName(String firstName, String lastName, String email);
 }

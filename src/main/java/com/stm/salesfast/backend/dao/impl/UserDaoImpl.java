@@ -26,6 +26,9 @@ public class UserDaoImpl implements UserDao {
 	private static final String INSERT_USER = "INSERT INTO USER "+
 	" (firstName, lastName, email, contactNumber, addressLineOne, addressLineTwo, city, state, zip, startDate, endDate) " +
 	" VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+	private static final String FETCH_BY_NAME = "SELECT * FROM salesfast.user where firstName = ?"
+			+ " AND lastName = ? "
+			+ " AND email = ?";
 	
 	@Override
 	public UserDto getBy(int userId) {
@@ -39,7 +42,6 @@ public class UserDaoImpl implements UserDao {
 			e.printStackTrace();
 		}
 		return null;
-		
 	}
 
 	@Override
@@ -79,5 +81,20 @@ public class UserDaoImpl implements UserDao {
 		}
 		return null;
 	}
-
+	
+	@Override
+	public UserDto getBy(String firstName,String lastName, String email) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.queryForObject(FETCH_BY_NAME, (rs, rownum) -> {
+				return new UserDto(rs.getInt("userId"), rs.getString("firstName"), rs.getString("lastName"),rs.getString("email"),rs.getString("contactNumber"),rs.getString("addressLineOne"),rs.getString("addressLineTwo"),rs.getString("city"),rs.getString("state"),rs.getString("zip"), rs.getDate("startDate"), rs.getDate("endDate"));
+				},  firstName, lastName, email);
+			
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
 }

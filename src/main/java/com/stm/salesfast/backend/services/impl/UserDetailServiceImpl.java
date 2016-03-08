@@ -69,4 +69,27 @@ public class UserDetailServiceImpl implements UserDetailService{
 		// TODO Auto-generated method stub
 		return terrService.getByUser(userId).getDistrictId();
 	}
+
+	@Override
+	public String getUserCompleteName(int userId) {
+		// TODO Auto-generated method stub
+		return userDetailDao.getBy(userId).getFirstName()+" "
+				+userDetailDao.getBy(userId).getLastName();
+	}
+	
+	@Override
+	public void insertUserDetails(UserDto userDetails){
+		userDetailDao.insert(userDetails);
+	}
+	
+	@Override
+	public boolean checkIfUserExists(String firstName, String lastName, String email){
+		return userDetailDao.getBy(firstName, lastName, email) == null;
+	}
+	
+	@Override
+	public int getUserIdByName(String firstName, String lastName, String email){
+		return userDetailDao.getBy(firstName, lastName, email).getUserId();
+	}
+	
 }

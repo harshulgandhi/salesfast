@@ -2,24 +2,35 @@ package com.stm.salesfast.backend.services.impl;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stm.salesfast.backend.dao.specs.MeetingUpdateDao;
 import com.stm.salesfast.backend.dto.MeetingUpdateDto;
+import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.dto.ProductDto;
+import com.stm.salesfast.backend.dto.UserAccountDto;
+import com.stm.salesfast.backend.dto.UserDto;
 import com.stm.salesfast.backend.entity.MeetingUpdateEntity;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
 import com.stm.salesfast.backend.services.specs.PhysicianFetchService;
 import com.stm.salesfast.backend.services.specs.ProductFetchService;
+import com.stm.salesfast.backend.services.specs.UserAccountService;
+import com.stm.salesfast.backend.services.specs.UserDetailService;
+import com.stm.salesfast.backend.utils.SalesFastEmail;
+import com.stm.salesfast.backend.utils.SalesFastEmailSendGridImpl;
 import com.stm.salesfast.backend.utils.SalesFastUtilities;
 
 @Service
 public class MeetingUpdateServiceImpl implements MeetingUpdateService {
-
+	private Logger log = LoggerFactory.getLogger(MeetingUpdateServiceImpl.class.getName());
+	
 	@Autowired
 	ProductFetchService productService;
 	
@@ -31,6 +42,13 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 	
 	@Autowired
 	PhysicianFetchService physicianService;
+	
+	@Autowired
+	UserDetailService userService;
+	
+	@Autowired
+	UserAccountService userAccountService;
+	
 	
 	/**
 	 * Method to add meeting update to db, also updates
@@ -51,8 +69,67 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 		
 		appointmentService.setHasMeetingUpdateFlag(meetingUpdateEntity.getAppointmentId(), 1);
 		physicianService.updatePhysicianStatus(meetingUpdateEntity.getPhysicianId(), meetingUpdateEntity.getMeetingStatus());
+		setupEDetailing(meetingUpdateEntity);
 	}
-
+	
+	/**
+	 * Check if edetailing required. If yes, generate credentials
+	 * for phys, send email to him and enter user account details for 
+	 * this phys in db
+	 * */
+	@Override
+	public void setupEDetailing(MeetingUpdateEntity meetingUpdateEntity){
+		log.info("Setting up e detailing : "+meetingUpdateEntity.isEDetailing()+" "+meetingUpdateEntity.getMeetingStatus());
+		
+		if(meetingUpdateEntity.isEDetailing() && !meetingUpdateEntity.getMeetingStatus().equals("LOST")){
+			log.info("Condition satisfied");
+			PhysicianStgDto physician = physicianService.getPhysicianById(meetingUpdateEntity.getPhysicianId());
+			/*If physician already exists as a user of SalesFast
+			 * */
+			if(userService.checkIfUserExists(physician.getFirstName(), physician.getLastName(), physician.getEmail())){
+				log.info("Set up needed");
+				UserAccountDto userAccount = userAccountService.getUserAccountByUserId(
+						userService.getUserIdByName(physician.getFirstName()
+								, physician.getLastName()
+								, physician.getEmail()));
+				//Send email saying "Log in to enter meeting experience and check out onine documentation about our products"
+				String emailSub = "SalesFast - Feedback for meeting experience and checkout latest products";
+				String emailBody = "Please provide your valuable feedback about your last meeting with"
+						+ "BioPharma Sales Representative by logging into your SalesFast account at"
+						+ "http://127.0.0.1/login.";
+				sendMail(emailSub, emailBody, physician.getEmail());
+			}
+			else{
+				log.info("Set up NOT needed");
+				//Insert into user and useraccount
+				userService.insertUserDetails(new UserDto(physician.getFirstName(),
+											physician.getLastName(),
+											physician.getEmail(),
+											physician.getContactNumber(),
+											physician.getAddressLineOne(),
+											physician.getAddressLineTwo(),
+											physician.getCity(),
+											physician.getState(),
+											physician.getZip(),
+											null, null));
+				int userId = userService.getUserIdByName(physician.getFirstName(), physician.getLastName(), physician.getEmail());
+				String password = physician.getLastName() + SalesFastUtilities.generateRandomNumber();
+				userAccountService.insertNewUserAccount(new UserAccountDto(physician.getFirstName(),password, userId));
+				
+				//Send email welcoming physician to BioPharma family with username and password
+				String emailSub = "Welcome to BioPharma's special physicians family!";
+				String emailBody = "Welcome to BioPharma's SalesFast tool. You can use this tool "
+						+ "to provide feedback about each meeting you have with our SalesReps, which "
+						+ "will help us serve you better and efficiently. In addition, this tool allows "
+						+ "you to go through latest products the BioPharma has released, saving your "
+						+ "precious time from Detailing Meetings. Your login information is as mentioned below:  \n"
+						+ "URL : http://127.0.0.1/login\n"
+						+ "User Name : "+physician.getFirstName()+"\n"
+						+ "Password : "+password;
+			}
+		}
+	}
+	
 	@Override
 	public MeetingUpdateDto getMeetingUpdateByAppointmentId(int appointmentId) {
 		// TODO Auto-generated method stub
@@ -70,4 +147,18 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 		return prescribingProducts;
 	}
 
+	/**
+	 * Method to send email using send grid api
+	 * */
+	@Override
+	public void sendMail(String subject, String body, String toEmailId){
+		SalesFastEmail email = new SalesFastEmailSendGridImpl();
+		email.setFromEmail("no-reply@biopharma.com");
+		email.setFromName("BioPharma SalesForce");
+		email.addSubject(subject);
+		
+		email.addTextBody(body);
+		log.info("Sending confirmation email with content as :\n"+body);
+		email.sendMail();
+	}
 }

@@ -67,6 +67,9 @@ public class UserAccountServiceImpl implements UserAccountService {
 		return userId;
 	}
 
-	
+	@Override
+	public void insertNewUserAccount(UserAccountDto userAccount){
+		userAccountDao.insert(userAccount);
+	}
 
 }

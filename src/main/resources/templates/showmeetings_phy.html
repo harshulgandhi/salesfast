@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Header to include css -->
+<div th:replace="fragments/header :: commonhead"></div>
+<link rel="stylesheet" type="text/css" href="resources/app/css/showmeetings_phy.css"/>
+<meta charset="ISO-8859-1" />
+<title>SalesFast e-Detailing</title>
+</head>
+<body>
+	<!-- Common header -->
+	<div th:replace="fragments/header :: header"></div>
+	
+	<div class="container" id="layout">
+		<div class="row row-header page-header"><h3>Meetings that you have had with BioPharma!</h3></div>
+		<div class="row update-buttons-row">
+			<div class="col-lg-12 col-sm-12 table-buttons">
+				<button type="button" class="btn btn-default btn-md add-meeting-exp-phy-btn"
+					data-toggle="modal" data-target="#phy-meetingexperience-add-modal" disabled="disabled">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+					<span>Add meeting experience</span>
+				</button>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="col-lg-12 col-sm-12">
+				<table id="detailed-meeting-table" class="table table-striped table-bordered">
+					<thead>
+						<tr>
+							<th>Meeting Date</th>
+							<th>Meeting Time</th>
+							<th>SalesRep Name</th>
+							<th>SalesRep Contact</th>
+							<th>Product Discussed</th>
+							<th>Status</th>
+							<th style="display:none">Appointment Id</th>
+							<th style="display:none">Physician Id</th>
+							<th style="display:none">Has Meeting Experience</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each=" : ${}">
+							<td th:text="${eachAppointment.physicianName}"></td>
+							<td th:text="${eachAppointment.address}"></td>
+							<td th:text="${eachAppointment.contact}"></td>
+							<td th:text="${eachAppointment.emailId}"></td>
+							<td style="display:none" th:text="${eachAppointment.appointmentId}"></td>
+							<td style="display:none" th:text="${eachAppointment.physicianId}"></td>
+							<td class="confirmation-status" th:text="${eachAppointment.confirmationStatus}"></td>
+							<td th:text="${eachAppointment.time}"></td>
+							<td th:text="${eachAppointment.product}"></td>
+							<td style="display:none" th:text="${eachAppointment.hasMeetingUpdate}"></td>
+							<td style="display:none" th:text="${eachAppointment.hasMeetingExperience}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		
+	</div>
+
+<!-- Common footer -->
+<div th:replace="fragments/footer :: footer"></div>
+<script  type="text/javascript" src="resources/app/js/showmeetings_phy.js"></script>
+</body>
+</html>

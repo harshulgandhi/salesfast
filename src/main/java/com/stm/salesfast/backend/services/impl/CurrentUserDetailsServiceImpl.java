@@ -36,6 +36,7 @@ public class CurrentUserDetailsServiceImpl implements CurrentUserDetailsService 
         }
         SessionConstants.CURRENTUSERNAME = user.getUsername();
         SessionConstants.USER_ID = userService.getUserAccountByUserName(username).getUserId();
+        SessionConstants.CURRENT_USER_ROLES = user.getRoles();
         
         return new CurrentUser(user);
 	}

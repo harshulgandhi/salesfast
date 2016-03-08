@@ -22,13 +22,17 @@ public class PhysicianController {
 	@Autowired
 	PhysicianFetchService physicianService;
 	
+	/**
+	 * This request mapping is exempted from someone logging into
+	 * the system.
+	 * */
 	@RequestMapping(value="/yourappointment", method=RequestMethod.GET)
 	public String showAppointment(Model model, @RequestParam int id){
 		/*Fetch respective appointment and return the entity as an object after adding it to the model*/
 		PhysicianAppointmentEntity appointmentDetail = physicianService.getAppointmentDetailForPhysician(id);
 		log.info("Appointment for this physicians is : \n"+appointmentDetail);
 		model.addAttribute("appointmentDetail", appointmentDetail);
-		
 		return appointmentDetail.getStatus().equals("CANCELLED") ? "appointmentcancelled":"appointmentcancellation";
 	}
+	
 }

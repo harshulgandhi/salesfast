@@ -13,6 +13,7 @@ import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.MeetingExperienceService;
 import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
 import com.stm.salesfast.constant.ConstantValues;
+import com.stm.salesfast.constant.SessionConstants;
 
 @Service
 public class MeetingExperienceServiceImpl implements MeetingExperienceService {
@@ -29,8 +30,9 @@ public class MeetingExperienceServiceImpl implements MeetingExperienceService {
 	@Override
 	public void insert(MeetingExperienceEntity meetingExperience) {
 		// TODO Auto-generated method stub
-		boolean isSalesRepEntry = ConstantValues.currentrole_temp == "SalesRep" ? true : false;
-		boolean isPhysicianEntry = ConstantValues.currentrole_temp == "PH" ? true : false;
+		boolean isSalesRepEntry = SessionConstants.CURRENT_USER_ROLES.contains("SalesRep") ? true : false;
+		boolean isPhysicianEntry = SessionConstants.CURRENT_USER_ROLES.contains("PH") ? true : false;
+		
 		String status = meetingUpdateService.getMeetingUpdateByAppointmentId(meetingExperience.getAppointmentId()).getStatus();
 		
 		meetingExperienceDao.insert(new MeetingExperienceDto(isPhysicianEntry,

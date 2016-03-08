@@ -3,8 +3,6 @@ package com.stm.salesfast.constant;
 public final class ConstantValues {
 	public static final String organisation = "BioPharma";
 
-	public static final String currentrole_temp = "SalesRep";
-	
 	public static final String FORMAT_APPOINTMENT_CANCELLATION = "Dr. %s has cancelled the appointment.";
 	
 	public static final String FORMAT_FOLLOWUP = "Reminder: Call Dr. %s tomorrow to follow up regarding detailing for medicine %s, as discussed during previous call.";

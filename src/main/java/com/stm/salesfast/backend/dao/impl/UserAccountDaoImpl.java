@@ -20,6 +20,7 @@ public class UserAccountDaoImpl implements UserAccountDao {
 	private 
 	static final String FETCH = "SELECT * FROM user_account where username = ?";
 	static final String FETCH_BY_USERID = "SELECT * FROM user_account where userId = ?";
+	static final String INSERT = "INSERT INTO user_account (username, password, userId)";
 	
 	@Override
 	public void saveOrUpdateLoginCredentials(UserAccountDto loginCred) {
@@ -54,5 +55,11 @@ public class UserAccountDaoImpl implements UserAccountDao {
 		}
 		return null;
 	}
+	
+	@Override
+	public void insert(UserAccountDto userAccount){
+		
+	}
+	
 
 }

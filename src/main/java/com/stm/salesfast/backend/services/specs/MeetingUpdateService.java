@@ -14,4 +14,8 @@ public interface MeetingUpdateService {
 	public MeetingUpdateDto getMeetingUpdateByAppointmentId(int appointmentId);
 	
 	public List<Integer> getPrescribingProduct(int physicianId);
+
+	void setupEDetailing(MeetingUpdateEntity meetingUpdateEntity);
+
+	void sendMail(String subject, String body, String toEmailId);
 }

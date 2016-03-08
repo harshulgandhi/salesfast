@@ -70,7 +70,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 		int userId = userAccountService.getUserIdByUserName(CURRENTUSERNAME);
 		UserDto userDetail = userDetails.getUserDetails(userId);
 		String zip = physicianService.getPhysicianZipById(physId);
-		appointmentDao.insertAppointment(new AppointmentDto(time, date, physId, userId, productId,confirmationStatus, zip, new String(""), additionalNotes, false, false));
+		appointmentDao.insertAppointment(new AppointmentDto(time, date, physId, userId, productId,confirmationStatus, zip, new String(""), additionalNotes, false, false, false));
 		
 		/* Send confirmation email to physician */
 		int appointmentId = appointmentDao.getIdByPhysIdUserIdProductId(physId, userId, productId);
@@ -111,7 +111,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 						eachAppointment.getDate(),
 						productDto.getProductName(),
 						eachAppointment.isHasMeetingUpdate(),
-						eachAppointment.isHasMeetingExperience(),
+						eachAppointment.isHasMeetingExperienceFromSR(),
 						eachAppointment.getCancellationReason(),
 						eachAppointment.getAdditionalNotes()));
 			}
@@ -145,7 +145,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 						eachAppointment.getDate(),
 						productDto.getProductName(),
 						eachAppointment.isHasMeetingUpdate(),
-						eachAppointment.isHasMeetingExperience(),
+						eachAppointment.isHasMeetingExperienceFromSR(),
 						eachAppointment.getCancellationReason(),
 						eachAppointment.getAdditionalNotes()));
 			}

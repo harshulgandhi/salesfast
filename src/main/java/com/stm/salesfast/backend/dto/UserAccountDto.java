@@ -10,8 +10,16 @@ import lombok.ToString;
 @ToString
 public class UserAccountDto {
 	
+
 	private int userAccountId;
 	private String username;
 	private String password;
 	private int userId;
+	
+	public UserAccountDto(String firstName, String password2, int userId2) {
+		// TODO Auto-generated constructor stub
+		this.username = firstName;
+		this.password = password2;
+		this.userId = userId2;
+	}
 }

@@ -19,9 +19,4 @@ public class MeetingExperienceEntity {
 	private boolean salesRepConfidence;
 	private boolean impressiveCompanyReputation;
 	
-	
-	@Override
-	public String toString(){
-		return "Appointment Id : "+appointmentId+"\nlikedTheProduct : "+(likedTheProduct)+"\n likedPriceAffordability : "+likedPriceAffordability+"\n impressiveLessSideEffects : "+impressiveLessSideEffects+"\n likedPresentation : "+(likedPresentation)+"\n salesRepConfidence : "+(salesRepConfidence)+"\n impressiveCompanyReputation : "+(impressiveCompanyReputation);
-	}
 }

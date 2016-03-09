@@ -8,6 +8,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.stm.salesfast.backend.dao.specs.MeetingUpdateDao;
@@ -16,13 +17,16 @@ import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.dto.ProductDto;
 import com.stm.salesfast.backend.dto.UserAccountDto;
 import com.stm.salesfast.backend.dto.UserDto;
+import com.stm.salesfast.backend.dto.UserToRoleDto;
 import com.stm.salesfast.backend.entity.MeetingUpdateEntity;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
 import com.stm.salesfast.backend.services.specs.PhysicianFetchService;
 import com.stm.salesfast.backend.services.specs.ProductFetchService;
+import com.stm.salesfast.backend.services.specs.RoleService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
 import com.stm.salesfast.backend.services.specs.UserDetailService;
+import com.stm.salesfast.backend.services.specs.UserToRoleService;
 import com.stm.salesfast.backend.utils.SalesFastEmail;
 import com.stm.salesfast.backend.utils.SalesFastEmailSendGridImpl;
 import com.stm.salesfast.backend.utils.SalesFastUtilities;
@@ -49,6 +53,11 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 	@Autowired
 	UserAccountService userAccountService;
 	
+	@Autowired
+	RoleService roles;
+	
+	@Autowired
+	UserToRoleService userRole;
 	
 	/**
 	 * Method to add meeting update to db, also updates
@@ -61,7 +70,7 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 		meetingUpdateDao.insert(new MeetingUpdateDto(
 				SalesFastUtilities.getCurrentDate(), 
 				meetingUpdateEntity.getMeetingStatus(),
-				meetingUpdateEntity.isEDetailing(),
+				Boolean.parseBoolean(meetingUpdateEntity.getIsEDetailing()),
 				meetingUpdateEntity.getPhysicianId(),
 				product.getProductId(),
 				product.getMedicalFieldId(),
@@ -79,15 +88,15 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 	 * */
 	@Override
 	public void setupEDetailing(MeetingUpdateEntity meetingUpdateEntity){
-		log.info("Setting up e detailing : "+meetingUpdateEntity.isEDetailing()+" "+meetingUpdateEntity.getMeetingStatus());
+		log.info("Setting up e detailing : "+meetingUpdateEntity.getIsEDetailing()+" "+meetingUpdateEntity.getMeetingStatus());
 		
-		if(meetingUpdateEntity.isEDetailing() && !meetingUpdateEntity.getMeetingStatus().equals("LOST")){
+		if(Boolean.parseBoolean(meetingUpdateEntity.getIsEDetailing()) && !meetingUpdateEntity.getMeetingStatus().equals("LOST")){
 			log.info("Condition satisfied");
 			PhysicianStgDto physician = physicianService.getPhysicianById(meetingUpdateEntity.getPhysicianId());
 			/*If physician already exists as a user of SalesFast
 			 * */
 			if(userService.checkIfUserExists(physician.getFirstName(), physician.getLastName(), physician.getEmail())){
-				log.info("Set up needed");
+				log.info("Set up NOT needed");
 				UserAccountDto userAccount = userAccountService.getUserAccountByUserId(
 						userService.getUserIdByName(physician.getFirstName()
 								, physician.getLastName()
@@ -100,8 +109,8 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 				sendMail(emailSub, emailBody, physician.getEmail());
 			}
 			else{
-				log.info("Set up NOT needed");
-				//Insert into user and useraccount
+				log.info("Set up needed");
+				//Insert into user, useraccount, userToRole
 				userService.insertUserDetails(new UserDto(physician.getFirstName(),
 											physician.getLastName(),
 											physician.getEmail(),
@@ -113,8 +122,9 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 											physician.getZip(),
 											null, null));
 				int userId = userService.getUserIdByName(physician.getFirstName(), physician.getLastName(), physician.getEmail());
-				String password = physician.getLastName() + SalesFastUtilities.generateRandomNumber();
-				userAccountService.insertNewUserAccount(new UserAccountDto(physician.getFirstName(),password, userId));
+				String password = physician.getLastName().toLowerCase() + SalesFastUtilities.generateRandomNumber();
+				userAccountService.insertNewUserAccount(new UserAccountDto(physician.getFirstName().toLowerCase(),password, userId));
+				userRole.insertUserToRoleMapping(new UserToRoleDto(userId, roles.getBy("PH").getRoleId()));
 				
 				//Send email welcoming physician to BioPharma family with username and password
 				String emailSub = "Welcome to BioPharma's special physicians family!";
@@ -124,8 +134,9 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 						+ "you to go through latest products the BioPharma has released, saving your "
 						+ "precious time from Detailing Meetings. Your login information is as mentioned below:  \n"
 						+ "URL : http://127.0.0.1/login\n"
-						+ "User Name : "+physician.getFirstName()+"\n"
+						+ "User Name : "+physician.getFirstName().toLowerCase()+"\n"
 						+ "Password : "+password;
+				sendMail(emailSub, emailBody, physician.getEmail());
 			}
 		}
 	}
@@ -160,5 +171,10 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 		email.addTextBody(body);
 		log.info("Sending confirmation email with content as :\n"+body);
 		email.sendMail();
+	}
+	
+	@Override
+	public List<MeetingUpdateDto> getForPhysiciansPortal(String status1, String status2, int physicianId) {
+		return meetingUpdateDao.getForPhysiciansPortal(status1, status2, physicianId);
 	}
 }

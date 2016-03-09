@@ -9,7 +9,7 @@ import com.stm.salesfast.backend.dao.specs.PhysicianStgDao;
 import com.stm.salesfast.backend.dto.AppointmentDto;
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.dto.ProductDto;
-import com.stm.salesfast.backend.entity.PhysicianAppointmentEntity;
+import com.stm.salesfast.backend.entity.PhysicianAppointmentCancellationEntity;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.PhysicianFetchService;
 import com.stm.salesfast.backend.services.specs.ProductFetchService;
@@ -44,14 +44,14 @@ public class PhysicianFetchServiceImpl implements PhysicianFetchService {
 	}
 
 	@Override
-	public PhysicianAppointmentEntity getAppointmentDetailForPhysician(int appointmentId) {
+	public PhysicianAppointmentCancellationEntity getAppointmentDetailForPhysician(int appointmentId) {
 		// TODO Auto-generated method stub
 		
 		AppointmentDto appointmentDto = appointmentService.getById(appointmentId);
 		int userId = appointmentDto.getUserId();
 		String salesRepName = userDetailService.getUserDetails(userId).getFirstName() + " " +userDetailService.getUserDetails(userId).getLastName();
 		ProductDto product = productService.getProductById(appointmentDto.getProductId());
-		return new PhysicianAppointmentEntity(appointmentId, salesRepName, ConstantValues.organisation, product.getProductName(), appointmentDto.getTime().toString(), appointmentDto.getConfirmationStatus());
+		return new PhysicianAppointmentCancellationEntity(appointmentId, salesRepName, ConstantValues.organisation, product.getProductName(), appointmentDto.getTime().toString(), appointmentDto.getConfirmationStatus());
 		
 	}
 
@@ -78,5 +78,10 @@ public class PhysicianFetchServiceImpl implements PhysicianFetchService {
 		// TODO Auto-generated method stub
 		PhysicianStgDto physician = physicianDao.getBy(physicianId);
 		return physician.getFirstName() + " " + physician.getLastName();
+	}
+	
+	@Override
+	public int getPhysicianIdByName(String firstName, String lastName, String email){
+		return physicianDao.getBy(firstName, lastName, email).getPhysicianId();
 	}
 }

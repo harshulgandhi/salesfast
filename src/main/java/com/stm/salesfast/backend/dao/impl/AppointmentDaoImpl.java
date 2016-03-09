@@ -34,9 +34,15 @@ public class AppointmentDaoImpl implements AppointmentDao {
 														+"SET `hasMeetingUpdate` = ? "
 														+"WHERE `appointmentId` = ?;";
 	
-	private static final String UPDATE_HASMEETINGEXPERIENCE = "UPDATE `salesfast`.`appointment` "
+	private static final String UPDATE_HASMEETINGEXPERIENCE_FROM_SR = "UPDATE `salesfast`.`appointment` "
 														+"SET `hasMeetingExperienceFromSR` = ? "
-														+"WHERE `appointmentId` = ?;";
+														+"WHERE `appointmentId` = ?";
+	
+	private static final String UPDATE_HASMEETINGEXPERIENCE_FROM_PH = "UPDATE `salesfast`.`appointment` "
+														+"SET `hasMeetingExperienceFromPH` = ? "
+														+"WHERE `appointmentId` = ?";
+	
+	
 	private static final String UPDATE_STATUS = "UPDATE appointment SET confirmationStatus = ?,"
 												+ "cancellationReason = ?"
 												+ "WHERE appointmentId = ?";
@@ -48,7 +54,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
 															+ "additionalNotes = ? "
 															+ "WHERE appointmentId = ?";
 	
-	
+	private static final String FETCH_BY_PHYS = "SELECT * FROM appointment WHERE (confirmationStatus = ? OR confirmationStatus = ? ) AND physicianId = ?";
 	
 	@Override
 	public AppointmentDto getAppointmentById(int appointmentId) {
@@ -179,12 +185,26 @@ public class AppointmentDaoImpl implements AppointmentDao {
 		}
 	}
 	
+	
 	@Override
-	public void setMeetinExperienceFlag(int appointmentId, int meetingExperienceFlag) {
+	public void setMeetinExperienceFlagFromSR(int appointmentId, int meetingExpFromSR) {
 		// TODO Auto-generated method stub
 		try{
-			jdbcTemplate.update(UPDATE_HASMEETINGEXPERIENCE, (ps)->{
-				ps.setInt(1, meetingExperienceFlag);
+			jdbcTemplate.update(UPDATE_HASMEETINGEXPERIENCE_FROM_SR, (ps)->{
+				ps.setInt(1, meetingExpFromSR);
+				ps.setInt(2, appointmentId);
+			});
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void setMeetinExperienceFlagFromPH(int appointmentId, int  meetingExpFromPH) {
+		// TODO Auto-generated method stub
+		try{
+			jdbcTemplate.update(UPDATE_HASMEETINGEXPERIENCE_FROM_PH, (ps)->{
+				ps.setInt(1, meetingExpFromPH);
 				ps.setInt(2, appointmentId);
 			});
 		}catch(DataAccessException e){
@@ -203,6 +223,23 @@ public class AppointmentDaoImpl implements AppointmentDao {
 			return jdbcTemplate.query(FETCH_APPOINTMENT_BY_STATUS, (rs, rownnum)->{
 				return new AppointmentDto(rs.getInt("appointmentId"), rs.getTime("time"), rs.getDate("date"), rs.getInt("physicianId"), userId, rs.getInt("productId"),confirmationStatus, rs.getString("zip"),rs.getString("cancellationReason"), rs.getString("additionalNotes"), rs.getBoolean("hasMeetingUpdate"),rs.getBoolean("hasMeetingExperienceFromSR"),rs.getBoolean("hasMeetingExperienceFromPH"));
 			}, confirmationStatus, userId);
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * Returns the list of all appointments for physician
+	 * that are not "CANCELLED"
+	 * */
+	@Override
+	public List<AppointmentDto> getAppointmentForPhysician(String confirmationStatus1, String confirmationStatus2, int physicianId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_BY_PHYS, (rs, rownnum)->{
+				return new AppointmentDto(rs.getInt("appointmentId"), rs.getTime("time"), rs.getDate("date"), rs.getInt("physicianId"), rs.getInt("userId"), rs.getInt("productId"),rs.getString("confirmationStatus"), rs.getString("zip"),rs.getString("cancellationReason"), rs.getString("additionalNotes"), rs.getBoolean("hasMeetingUpdate"),rs.getBoolean("hasMeetingExperienceFromSR"),rs.getBoolean("hasMeetingExperienceFromPH"));
+			}, confirmationStatus1, confirmationStatus2, physicianId);
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}

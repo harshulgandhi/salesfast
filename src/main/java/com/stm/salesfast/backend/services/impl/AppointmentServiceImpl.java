@@ -180,9 +180,13 @@ public class AppointmentServiceImpl implements AppointmentService {
 	}
 
 	@Override
-	public void setHasMeetingExperienceFlag(int appointmentId, int flag) {
-		appointmentDao.setMeetinExperienceFlag(appointmentId, flag);
-		
+	public void setHasMeetingExperienceFlagFromSR(int appointmentId, int isSalesRepEntry) {
+		appointmentDao.setMeetinExperienceFlagFromSR(appointmentId, isSalesRepEntry);
+	}
+	
+	@Override
+	public void setHasMeetingExperienceFlagFromPH(int appointmentId,  int isPhyEntry) {
+		appointmentDao.setMeetinExperienceFlagFromPH(appointmentId, isPhyEntry);
 	}
 	
 	@Override
@@ -273,6 +277,18 @@ public class AppointmentServiceImpl implements AppointmentService {
 		}
 		
 		return followUpAppointments;
+	}
+	
+	/**
+	 * Returns the list of appointments for a physician
+	 * that are not CANCELLED. These will be shown on 
+	 * meetings page of physician's portal 
+	 * */
+	@Override
+	public List<AppointmentDto> getAppointmentsForPhysician(String confirmationStatus1, String confirmationStatus2, int physicianId){
+		List<AppointmentDto> appointments = appointmentDao.getAppointmentForPhysician(confirmationStatus1,confirmationStatus1, physicianId);
+		log.info("No Appointments fetched : "+appointments.size());
+		return appointments;
 	}
 }
 

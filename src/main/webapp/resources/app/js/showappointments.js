@@ -81,8 +81,8 @@ $(document).ready(function() {
     		
         }else{
         	tableAppointment.$('tr.selected').removeClass('selected');
-            $(this).addClass('selected');
             defaultColor = $(this).css('background-color');
+             $(this).addClass('selected');
             $(this).css('background-color','#08C');
             var len = tableAppointment.row('.selected').data().length;					
             
@@ -234,7 +234,7 @@ var addMeetingUpdate = function(event){
 	formData['physicianId'] = physicianId;
 	formData['productName'] = productName;
 	formData['meetingStatus'] = $('.phys-status-selector').val();
-	formData['isEDetailing'] = $('.edetailing-flag-selector').val();
+	formData['isEDetailing'] = $('.edetailing-flag-selector').val() === "1" ? 'true':'false';
 	
 	console.log("Form data : "+JSON.stringify(formData));
 	

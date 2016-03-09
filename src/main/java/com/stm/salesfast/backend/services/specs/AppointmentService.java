@@ -21,11 +21,6 @@ public interface AppointmentService {
 	
 	public AppointmentDto getById(int appointmentId);
 	
-	public void setHasMeetingUpdateFlag(int appointmentId, int flag);
-	
-	public void setHasMeetingExperienceFlag(int appointmentId, int flag);
-
-
 	public void cancelAppointment(int appointmentId, String reason);
 
 	public void addAppointment(int physId, Time time, Date date,
@@ -41,6 +36,17 @@ public interface AppointmentService {
 
 	public void updateFollowUpAppointmentStatus(Time time, Date date, String status,
 			String additionalNotes, int appointmentId);
+
+	List<AppointmentDto> getAppointmentsForPhysician(
+			String confirmationStatus1, String confirmationStatus2, int physicianId);
+
+	public void setHasMeetingUpdateFlag(int appointmentId, int flag);
+
+	public void setHasMeetingExperienceFlagFromSR(int appointmentId,
+			int isSalesRepEntry);
+
+	public void setHasMeetingExperienceFlagFromPH(int appointmentId, int isPhyEntry);
+
 
 	
 }

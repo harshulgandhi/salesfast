@@ -34,6 +34,9 @@ public class PhysicianStgDaoImpl implements PhysicianStgDao {
 	private static final String UPDATE_STATUS = "UPDATE physicians_staging SET "
 												+ " status = ? "
 												+ " WHERE physicianId = ?";
+	private static final String FETCH_BY_NAME = "SELECT * FROM physicians_staging where firstName = ?"
+			+ " AND lastName = ? "
+			+ " AND email = ?";
 	
 	@Override
 	public PhysicianStgDto getBy(int physicianId) {
@@ -112,6 +115,20 @@ public class PhysicianStgDaoImpl implements PhysicianStgDao {
 			return jdbcTemplate.query(FETCH_ALL, (rs, rownum) -> {
 				return new PhysicianStgDto(rs.getInt("physicianId"), rs.getString("firstName"), rs.getString("lastName"),rs.getString("email"),rs.getString("contactNumber"),rs.getString("addressLineOne"),rs.getString("addressLineTwo"),rs.getString("city"),rs.getString("state"),rs.getString("zip"), rs.getString("medicalField"), rs.getBoolean("isNew"), rs.getString("status"),rs.getDate("practiceStartDate"),rs.getDouble("importanceFactor"));
 				});
+			
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public PhysicianStgDto getBy(String firstName,String lastName, String email) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.queryForObject(FETCH_BY_NAME, (rs, rownum) -> {
+				return new PhysicianStgDto(rs.getInt("physicianId"), rs.getString("firstName"), rs.getString("lastName"),rs.getString("email"),rs.getString("contactNumber"),rs.getString("addressLineOne"),rs.getString("addressLineTwo"),rs.getString("city"),rs.getString("state"),rs.getString("zip"), rs.getString("medicalField"), rs.getBoolean("isNew"), rs.getString("status"),rs.getDate("practiceStartDate"),rs.getDouble("importanceFactor"));
+				},  firstName, lastName, email);
 			
 		}catch(DataAccessException e){
 			e.printStackTrace();

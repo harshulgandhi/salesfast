@@ -7,4 +7,6 @@ import com.stm.salesfast.backend.dto.UserToRoleDto;
 
 public interface UserToRoleService {
 	public List<String> getAllRolesForUser(int userId);
+
+	void insertUserToRoleMapping(UserToRoleDto userRole);
 }

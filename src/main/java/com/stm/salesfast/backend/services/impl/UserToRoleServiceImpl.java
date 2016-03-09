@@ -34,5 +34,10 @@ public class UserToRoleServiceImpl implements UserToRoleService {
 		}
 		return roles;
 	}
+	
+	@Override
+	public void insertUserToRoleMapping(UserToRoleDto userRole){
+		userRoleDao.insert(userRole);
+	}
 
 }

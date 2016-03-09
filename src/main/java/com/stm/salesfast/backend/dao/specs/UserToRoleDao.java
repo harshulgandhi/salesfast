@@ -6,4 +6,6 @@ import com.stm.salesfast.backend.dto.UserToRoleDto;
 
 public interface UserToRoleDao {
 	public List<UserToRoleDto> getAllRolesForUser(int userId);
+
+	void insert(UserToRoleDto userRole);
 }

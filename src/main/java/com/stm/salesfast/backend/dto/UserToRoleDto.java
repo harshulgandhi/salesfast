@@ -13,6 +13,10 @@ import lombok.ToString;
 @Data
 @ToString
 public class UserToRoleDto {
+	public UserToRoleDto(int userId2, int roleId2) {
+		this.userId = userId2;
+		this.roleId = roleId2;
+	}
 	private int userRoleId;
 	private int userId;
 	private int roleId;

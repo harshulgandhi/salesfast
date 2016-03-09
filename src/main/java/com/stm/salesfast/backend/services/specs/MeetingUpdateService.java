@@ -18,4 +18,8 @@ public interface MeetingUpdateService {
 	void setupEDetailing(MeetingUpdateEntity meetingUpdateEntity);
 
 	void sendMail(String subject, String body, String toEmailId);
+
+
+	List<MeetingUpdateDto> getForPhysiciansPortal(String status1,
+			String status2, int physicianId);
 }

@@ -23,6 +23,7 @@ public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
 			+ "(`date`,`status`,`isEDetailed`,`physicianId`,`productId`,`medicalFieldId`,`appointmentId`) "
 			+ "VALUES (?,?,?,?,?,?,?);";
 	private static final String FETCH_FOR_PRESCRIBING = "SELECT * FROM meeting_update WHERE appointmentId  = ? AND status = 'PRESCRIBING'";
+	private static final String FETCH_FOR_PHYS_PORTAL = "SELECT * FROM meeting_update WHERE (status = ? OR status = ? ) AND physicianId = ?";
 	
 	@Autowired
 	JdbcTemplate jdbcTemplate;
@@ -65,9 +66,23 @@ public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
 	public List<MeetingUpdateDto> getByPrescribingPhysicians(int physicianId) {
 		// TODO Auto-generated method stub
 		try{
-			return jdbcTemplate.query(FETCH_BY_APPOINTMENTID, (rs, rownum) -> {
+			return jdbcTemplate.query(FETCH_FOR_PRESCRIBING, (rs, rownum) -> {
 					return new MeetingUpdateDto(rs.getInt("meetingUpdateId"), rs.getDate("date"), rs.getString("status"), rs.getBoolean("isEDetailed"), physicianId, rs.getInt("productId"),rs.getString("medicalFieldId"),rs.getInt("appointmentId"));
 				}, physicianId);
+			
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public List<MeetingUpdateDto> getForPhysiciansPortal(String status1, String status2, int physicianId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_FOR_PHYS_PORTAL, (rs, rownum) -> {
+					return new MeetingUpdateDto(rs.getInt("meetingUpdateId"), rs.getDate("date"), rs.getString("status"), rs.getBoolean("isEDetailed"), physicianId, rs.getInt("productId"),rs.getString("medicalFieldId"),rs.getInt("appointmentId"));
+				}, status1, status2, physicianId);
 			
 		}catch(DataAccessException e){
 			e.printStackTrace();

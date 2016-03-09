@@ -1,6 +1,5 @@
 package com.stm.salesfast.backend.entity;
 
-import java.sql.Time;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,7 +10,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Data
 @ToString
-public class PhysicianAppointmentEntity {
+public class PhysicianAppointmentCancellationEntity {
 
 	private int appointmentId;
 	private String salesRepName;

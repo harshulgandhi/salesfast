@@ -3,6 +3,7 @@ package com.stm.salesfast.backend.dao.specs;
 import java.util.List;
 
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
+import com.stm.salesfast.backend.dto.UserDto;
 
 public interface PhysicianStgDao {
 	public PhysicianStgDto getBy(int physicianId);
@@ -18,4 +19,6 @@ public interface PhysicianStgDao {
 	public void updateImportance(double importanceFactor, int physicianId);
 
 	void updateStatus(int physicianId, String status);
+
+	PhysicianStgDto getBy(String firstName, String lastName, String email);
 }

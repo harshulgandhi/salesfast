@@ -84,7 +84,7 @@ public class UserDetailServiceImpl implements UserDetailService{
 	
 	@Override
 	public boolean checkIfUserExists(String firstName, String lastName, String email){
-		return userDetailDao.getBy(firstName, lastName, email) == null;
+		return userDetailDao.getBy(firstName, lastName, email) != null;
 	}
 	
 	@Override

@@ -2,6 +2,8 @@ package com.stm.salesfast.backend.services.impl;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,8 @@ import com.stm.salesfast.constant.SessionConstants;
 
 @Service
 public class MeetingExperienceServiceImpl implements MeetingExperienceService {
-
+	private Logger log = LoggerFactory.getLogger(MeetingExperienceServiceImpl.class.getName());
+	
 	@Autowired
 	MeetingExperienceDao meetingExperienceDao;
 	
@@ -32,7 +35,6 @@ public class MeetingExperienceServiceImpl implements MeetingExperienceService {
 		// TODO Auto-generated method stub
 		boolean isSalesRepEntry = SessionConstants.CURRENT_USER_ROLES.contains("SalesRep") ? true : false;
 		boolean isPhysicianEntry = SessionConstants.CURRENT_USER_ROLES.contains("PH") ? true : false;
-		
 		String status = meetingUpdateService.getMeetingUpdateByAppointmentId(meetingExperience.getAppointmentId()).getStatus();
 		
 		meetingExperienceDao.insert(new MeetingExperienceDto(isPhysicianEntry,
@@ -46,7 +48,9 @@ public class MeetingExperienceServiceImpl implements MeetingExperienceService {
 				meetingExperience.isImpressiveCompanyReputation(),
 				meetingExperience.getAppointmentId()
 				));
-		appointmentService.setHasMeetingExperienceFlag(meetingExperience.getAppointmentId(), 1);
+		if(isSalesRepEntry) appointmentService.setHasMeetingExperienceFlagFromSR(meetingExperience.getAppointmentId(), 1);
+		if(isPhysicianEntry) appointmentService.setHasMeetingExperienceFlagFromPH(meetingExperience.getAppointmentId(), 1 );
+//		if (isPhysicianEntry) appointmentService.setHasMeetingExperienceFlagFromPH(meetingExperience.getAppointmentId(), 1);
 	}
 
 	@Override

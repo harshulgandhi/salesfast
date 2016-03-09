@@ -15,9 +15,11 @@ import com.stm.salesfast.backend.dao.specs.AlignmentsDao;
 import com.stm.salesfast.backend.dao.specs.PhysicianStgDao;
 import com.stm.salesfast.backend.dto.AlignmentsDto;
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
+import com.stm.salesfast.backend.dto.UserDto;
 import com.stm.salesfast.backend.entity.AlignedPhysicianEntity;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
 import com.stm.salesfast.backend.services.specs.ProductFetchService;
+import com.stm.salesfast.backend.services.specs.UserDetailService;
 
 @Service
 public class AlignmentFetchServiceImpl implements AlignmentFetchService {
@@ -35,6 +37,9 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 	
 	@Autowired
 	private ProductFetchService productService;
+	
+	@Autowired
+	private UserDetailService userService;
 	
 	@Override
 	public List<AlignmentsDto> getAlignmentByUserId(int userId) {
@@ -129,6 +134,12 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 	@Override
 	public void insert(AlignmentsDto alignment) {
 		alignmentDao.insertAlignment(alignment);
+	}
+	
+	@Override
+	public UserDto getUserByForAlignment(int physicianId, int productId){
+		AlignmentsDto alignment = alignmentDao.getAlignmentByPhysicianProductId(physicianId, productId);
+		return userService.getUserDetails(alignment.getUserId()); 
 	}
 
 

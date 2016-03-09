@@ -24,4 +24,7 @@ public interface AlignmentsDao {
 	
 
 	List<AlignmentsDto> getAlignmentByUserIdInVicinity(int userId);
+
+	AlignmentsDto getAlignmentByPhysicianProductId(int physicianId,
+			int productId);
 }

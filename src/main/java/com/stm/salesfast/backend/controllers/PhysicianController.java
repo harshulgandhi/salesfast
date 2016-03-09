@@ -78,8 +78,9 @@ public class PhysicianController {
 	@ResponseBody
 	public EDetailingMaterialEntity[] getEDetailingMaterial(Model model) {
 		log.info("Get entities for user "+SessionConstants.USER_ID);
-		List<EDetailingMaterialEntity> eDetailingMat = trainingMatService.getAllDocumentsPath(SessionConstants.USER_ID);
-		return eDetailingMat.toArray(new EDetailingMaterialEntity[eDetailingMat.size()]);
+		/*List<EDetailingMaterialEntity> eDetailingMat = trainingMatService.getAllDocumentsPath(SessionConstants.USER_ID);
+		return eDetailingMat.toArray(new EDetailingMaterialEntity[eDetailingMat.size()]);*/
+		return null;
 	}
 	
 }

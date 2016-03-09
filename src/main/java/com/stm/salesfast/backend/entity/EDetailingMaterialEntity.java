@@ -15,6 +15,7 @@ import lombok.ToString;
 public class EDetailingMaterialEntity {
 
 	private String filePath;
+	private String fileName;
 	private String labelToShow;
 	private String salesRepName;
 	private String salesRepContact;

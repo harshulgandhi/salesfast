@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.stm.salesfast.backend.dto.AlignmentsDto;
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
+import com.stm.salesfast.backend.dto.UserDto;
 import com.stm.salesfast.backend.entity.AlignedPhysicianEntity;
 
 public interface AlignmentFetchService {
@@ -20,4 +21,5 @@ public interface AlignmentFetchService {
 	public List<AlignedPhysicianEntity> getAlignmentByUserIdInVicinityOfAppointments(int userId);
 	
 	public void insert(AlignmentsDto alignment);
+	public UserDto getUserByForAlignment(int physicianId, int productId);
 }

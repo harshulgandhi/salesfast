@@ -10,17 +10,6 @@ h1{
 .select-bool-flag{
 	width : 40%;
 }
-/* .navbar-style-override{
-	background-color: #671B02;
-}
-
-.navbar-menu-items{
-	color : white;
-}
-
-ul>a{
-	color : white;
-} */
 
 .confirmation-status{
 	font-style: italic;
@@ -32,6 +21,10 @@ nav.navbar-collapse.collapse a{
 
 .navbar-custom-style{
 	background-color: #21213A;	
+}
+
+.product-dropdown-menu{
+	background-color: #21213A;
 }
 
 a.navbar-brand.navbar-menu-items{
@@ -49,7 +42,8 @@ a.navbar-brand.navbar-menu-items{
     font: 12px Verdana;
 }
 
-nav.navbar-collapse ul li:hover {
+nav.navbar-collapse ul li:hover,nav.navbar-collapse ul li ul:hover,nav.navbar-collapse ul li ul li:hover {
     background-color: cadetblue;
     font-weight: 600;
 }
+

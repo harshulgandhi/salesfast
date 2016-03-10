@@ -41,7 +41,7 @@ public class MedicalFieldDaoImpl implements MedicalFieldDao{
 		// TODO Auto-generated method stub
 		try{
 			return jdbcTemplate.query(
-					FETCH_BY_ID, (rs, rownum) -> {
+					FETCH_ALL, (rs, rownum) -> {
 						return new MedicalFieldDto(rs.getString("medicalFieldId"), rs.getString("medicalFieldName"));
 						});
 		}catch(DataAccessException e){

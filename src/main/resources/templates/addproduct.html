@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Header to include css -->
+<div th:replace="fragments/header :: commonhead"></div>
+<link rel="stylesheet" type="text/css" href="resources/app/css/addproduct.css"/>
+<meta charset="ISO-8859-1"/>
+<title>Add Product</title>
+</head>
+<body>
+<!-- Common header -->
+	<div th:replace="fragments/header :: header"></div>
+	<div class="container" id="layout">
+		<div class="row row-header page-header"><h3>Add a new product</h3></div>
+		<div class="row row-custom-style">
+			<div class="col-lg-3 medfield-left-panel">
+				<select class="medical-field-selector validate-ele" name="medicalfield">
+					<option disabled="disabled" selected="selected" value="none"> -- select medical field -- </option>
+				</select>
+			</div>
+			<div class="col-lg-4 newproduct-middle-panel">
+				<form id="add-product-form" class="form-horizontal">
+					<div class="form-group">
+						<label class="control-label" id="prduct-name-label">Product Name</label>
+						<input name="product-name" type="text" class="form-control validate-ele" id="product-name"/>
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label" id="release-date-label">Release Date</label>
+						<input name="release-date" type="date" class="form-control validate-ele" id="prod-release-date"/>
+					</div>
+				</form>
+			</div>
+			
+			<div class="col-lg-5 filesupload-right-panel">
+				<form id="upload-files-form" class="form-horizontal" action="/uploadfiles" th:action="@{/uploadfiles}" method="post" enctype="multipart/form-data">
+					<div class="form-group">
+						<label for="virtual-training-doc" class="control-label" id="prduct-name-label">Virtual Training Document</label>
+						<input name="virtualtrainingfile" type="file" class="form-control validate-ele" id="virtual-training-doc"/>
+					</div>
+					<div class="form-group">
+						<label for="e-detailing-doc" class="control-label" id="release-date-label">E Detailing Document</label>
+						<input name="edetailingfile" type="file" class="form-control validate-ele" id="e-detailing-doc"/>
+					</div>
+					<button type="submit" class="btn btn-default" onclick="clicked();">Submit</button>
+				</form>
+			</div>
+			
+        </div>
+	</div>
+
+<!-- Common footer -->
+<div th:replace="fragments/footer :: footer"></div>
+<script  type="text/javascript" src="resources/app/js/addproduct.js"></script>
+</body>
+</html>

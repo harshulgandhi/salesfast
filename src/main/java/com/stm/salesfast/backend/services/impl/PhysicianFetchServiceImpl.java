@@ -2,6 +2,8 @@ package com.stm.salesfast.backend.services.impl;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +11,7 @@ import com.stm.salesfast.backend.dao.specs.PhysicianStgDao;
 import com.stm.salesfast.backend.dto.AppointmentDto;
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.dto.ProductDto;
+import com.stm.salesfast.backend.dto.UserDto;
 import com.stm.salesfast.backend.entity.PhysicianAppointmentCancellationEntity;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.PhysicianFetchService;
@@ -18,7 +21,8 @@ import com.stm.salesfast.constant.ConstantValues;
 
 @Service
 public class PhysicianFetchServiceImpl implements PhysicianFetchService {
-
+	private Logger log = LoggerFactory.getLogger(PhysicianFetchServiceImpl.class.getName());
+	
 	@Autowired
 	PhysicianStgDao physicianDao;
 	
@@ -83,5 +87,13 @@ public class PhysicianFetchServiceImpl implements PhysicianFetchService {
 	@Override
 	public int getPhysicianIdByName(String firstName, String lastName, String email){
 		return physicianDao.getBy(firstName, lastName, email).getPhysicianId();
+	}
+	
+	@Override
+	public PhysicianStgDto getPhysicianByHisUserId(int userId){
+		UserDto user = userDetailService.getUserDetails(userId);
+		log.info("Getting physician Id for FirstName : "+user.getFirstName()+", Last Name : "+user.getLastName()+", email : "+user.getEmail());
+		int physicianId = getPhysicianIdByName(user.getFirstName(), user.getLastName(), user.getEmail());
+		return getPhysicianById(physicianId);
 	}
 }

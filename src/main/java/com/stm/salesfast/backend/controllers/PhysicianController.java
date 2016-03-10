@@ -23,6 +23,7 @@ import com.stm.salesfast.backend.entity.MeetingExperienceEntity;
 import com.stm.salesfast.backend.entity.MeetingUpdateEntity;
 import com.stm.salesfast.backend.entity.PhysicianAppointmentCancellationEntity;
 import com.stm.salesfast.backend.entity.VirtualLearningEntity;
+import com.stm.salesfast.backend.services.specs.EDetailingMaterialService;
 import com.stm.salesfast.backend.services.specs.MeetingExperienceService;
 import com.stm.salesfast.backend.services.specs.PhysicianFetchService;
 import com.stm.salesfast.backend.services.specs.PhysicianPortalService;
@@ -40,6 +41,9 @@ public class PhysicianController {
 	
 	@Autowired
 	MeetingExperienceService meetingExperienceService;
+	
+	@Autowired
+	EDetailingMaterialService eDetailingMatService;
 	/**
 	 * This request mapping is exempted from someone logging into
 	 * the system.
@@ -74,13 +78,19 @@ public class PhysicianController {
 		meetingExperienceService.insert(meetingExp);
 	}
 	
+	@RequestMapping(value="/edetailing", method=RequestMethod.GET)
+	public String showEDetailingPage(Model model){
+		return "edetailing";
+	}
+	
 	@RequestMapping(value = "/getedetailingdata",method=RequestMethod.GET, produces="application/json")
 	@ResponseBody
 	public EDetailingMaterialEntity[] getEDetailingMaterial(Model model) {
 		log.info("Get entities for user "+SessionConstants.USER_ID);
-		/*List<EDetailingMaterialEntity> eDetailingMat = trainingMatService.getAllDocumentsPath(SessionConstants.USER_ID);
-		return eDetailingMat.toArray(new EDetailingMaterialEntity[eDetailingMat.size()]);*/
-		return null;
+		List<EDetailingMaterialEntity> eDetailingMat = eDetailingMatService.getEDetailingMaterialForUI(SessionConstants.USER_ID);
+		log.info("No of edetailing files "+eDetailingMat.size());
+		return eDetailingMat.toArray(new EDetailingMaterialEntity[eDetailingMat.size()]);
+		
 	}
 	
 }

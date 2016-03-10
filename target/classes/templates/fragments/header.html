@@ -36,7 +36,7 @@
 	            <li id="nav-appointment"><a class="navbar-menu-items" href="./datareport" th:if="${session.roles.contains('DM')}">Data Report</a></li>
 	            <li id="nav-appointment"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('DM')}">View Alignments</a></li>
 	            
-	            <li id="nav-appointment"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('PH')}">e-Detailing</a></li>
+	            <li id="nav-appointment"><a class="navbar-menu-items" href="./edetailing" th:if="${session.roles.contains('PH')}">e-Detailing</a></li>
 	            
 	            <li id="nav-logout"><a class="navbar-menu-items" href="/logout" >Logout</a></li>
 	          </ul>

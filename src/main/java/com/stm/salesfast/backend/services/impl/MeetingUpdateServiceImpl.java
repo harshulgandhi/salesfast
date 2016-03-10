@@ -12,6 +12,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.stm.salesfast.backend.dao.specs.MeetingUpdateDao;
+import com.stm.salesfast.backend.dto.EDetailingMaterialDto;
 import com.stm.salesfast.backend.dto.MeetingUpdateDto;
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.dto.ProductDto;
@@ -20,6 +21,7 @@ import com.stm.salesfast.backend.dto.UserDto;
 import com.stm.salesfast.backend.dto.UserToRoleDto;
 import com.stm.salesfast.backend.entity.MeetingUpdateEntity;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
+import com.stm.salesfast.backend.services.specs.EDetailingMaterialService;
 import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
 import com.stm.salesfast.backend.services.specs.PhysicianFetchService;
 import com.stm.salesfast.backend.services.specs.ProductFetchService;
@@ -59,6 +61,9 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 	@Autowired
 	UserToRoleService userRole;
 	
+	@Autowired
+	EDetailingMaterialService eDetailingMatService;
+	
 	/**
 	 * Method to add meeting update to db, also updates
 	 * has hasMeetingUpdate flag and physician status
@@ -88,11 +93,10 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 	 * */
 	@Override
 	public void setupEDetailing(MeetingUpdateEntity meetingUpdateEntity){
-		log.info("Setting up e detailing : "+meetingUpdateEntity.getIsEDetailing()+" "+meetingUpdateEntity.getMeetingStatus());
 		
 		if(Boolean.parseBoolean(meetingUpdateEntity.getIsEDetailing()) && !meetingUpdateEntity.getMeetingStatus().equals("LOST")){
-			log.info("Condition satisfied");
 			PhysicianStgDto physician = physicianService.getPhysicianById(meetingUpdateEntity.getPhysicianId());
+			
 			/*If physician already exists as a user of SalesFast
 			 * */
 			if(userService.checkIfUserExists(physician.getFirstName(), physician.getLastName(), physician.getEmail())){
@@ -107,7 +111,19 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 						+ "BioPharma Sales Representative by logging into your SalesFast account at"
 						+ "http://127.0.0.1/login.";
 				sendMail(emailSub, emailBody, physician.getEmail());
+				//Add product to for eDetailing
+				eDetailingMatService.insert(new EDetailingMaterialDto(
+						meetingUpdateEntity.getProductName()+".pdf",
+						meetingUpdateEntity.getPhysicianId(),
+						physician.getMedicalField(),
+						productService.getProductByName(meetingUpdateEntity.getProductName()).getProductId()
+					));
+				
 			}
+			/*
+			 * Physician getting added as a salesfast user for the first
+			 * time.
+			 * */
 			else{
 				log.info("Set up needed");
 				//Insert into user, useraccount, userToRole
@@ -137,6 +153,14 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 						+ "User Name : "+physician.getFirstName().toLowerCase()+"\n"
 						+ "Password : "+password;
 				sendMail(emailSub, emailBody, physician.getEmail());
+				
+				//Add product to for eDetailing
+				eDetailingMatService.insert(new EDetailingMaterialDto(
+							meetingUpdateEntity.getProductName()+".pdf",
+							meetingUpdateEntity.getPhysicianId(),
+							physician.getMedicalField(),
+							productService.getProductByName(meetingUpdateEntity.getProductName()).getProductId()
+						));
 			}
 		}
 	}

@@ -41,7 +41,7 @@ public class EDetailingMaterialDaoImpl implements EDetailingMaterialDao {
 	public List<EDetailingMaterialDto> getByPhysicianId(int physicianId) {
 		try{
 			return jdbcTemplate.query(FETCH_BY_PHYS, (rs, rownnum)->{
-				return new EDetailingMaterialDto(rs.getInt("eDetailingId"), rs.getString("detailingFileName"), rs.getInt("physicianId"), rs.getString("medicalFieldId"), rs.getInt("productId"));
+				return new EDetailingMaterialDto(rs.getInt("eDetailingMaterialId"), rs.getString("detailingFileName"), rs.getInt("physicianId"), rs.getString("medicalFieldId"), rs.getInt("productId"));
 			}, physicianId);
 		}catch(DataAccessException e){
 			e.printStackTrace();

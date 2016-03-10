@@ -21,5 +21,5 @@ public interface AlignmentFetchService {
 	public List<AlignedPhysicianEntity> getAlignmentByUserIdInVicinityOfAppointments(int userId);
 	
 	public void insert(AlignmentsDto alignment);
-	public UserDto getUserByForAlignment(int physicianId, int productId);
+	public UserDto getUserForAlignment(int physicianId, int productId);
 }

@@ -15,4 +15,12 @@ public class EDetailingMaterialDto {
 	private int physicianId;
 	private String medicalFieldID;
 	private int productId;
+	
+	public EDetailingMaterialDto(String string, int physicianId2,
+			String medicalField, int productId2) {
+		this.detailingFileName = string;
+		this.physicianId = physicianId2;
+		this.medicalFieldID = medicalField;
+		this.productId = productId2;
+	}
 }

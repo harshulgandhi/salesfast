@@ -137,7 +137,7 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 	}
 	
 	@Override
-	public UserDto getUserByForAlignment(int physicianId, int productId){
+	public UserDto getUserForAlignment(int physicianId, int productId){
 		AlignmentsDto alignment = alignmentDao.getAlignmentByPhysicianProductId(physicianId, productId);
 		return userService.getUserDetails(alignment.getUserId()); 
 	}

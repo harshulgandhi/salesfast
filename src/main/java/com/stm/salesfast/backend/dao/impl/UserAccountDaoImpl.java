@@ -47,7 +47,7 @@ public class UserAccountDaoImpl implements UserAccountDao {
 		// TODO Auto-generated method stub
 		try{
 			return jdbcTemplate.queryForObject(
-					FETCH, (rs, rownum) -> {
+					FETCH_BY_USERID, (rs, rownum) -> {
 						return new UserAccountDto(rs.getInt("userAccountId"), rs.getString("userName"), rs.getString("password"), userId);}
 					, userId);
 		}catch(DataAccessException e){

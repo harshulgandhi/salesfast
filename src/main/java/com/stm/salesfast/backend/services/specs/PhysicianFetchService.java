@@ -23,4 +23,6 @@ public interface PhysicianFetchService {
 	public String getPhysicianName(int physicianId);
 
 	public int getPhysicianIdByName(String firstName, String lastName, String email);
+
+	public PhysicianStgDto getPhysicianByHisUserId(int userId);
 }

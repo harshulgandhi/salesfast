@@ -9,5 +9,6 @@ public interface ProductsDao {
 	public ProductDto getProduct(int productId);
 	public ProductDto getProduct(String productName);
 	public List<ProductDto> getProductForMedicalField(String medicalFieldId);
+	public void insert(ProductDto product);
 	
 }

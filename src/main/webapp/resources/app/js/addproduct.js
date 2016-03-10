@@ -39,14 +39,26 @@ $(document).ready(function () {
 var populateMedFieldSelector = function(data){
 	for(var i = 0; i<data.length; i++){
 		$('.medical-field-selector').append(
-				'<option value="'+data[i]["medicalFieldName"]+'">'+data[i]["medicalFieldName"]+'</option>'
+				'<option value="'+data[i]["medicalFieldId"]+'">'+data[i]["medicalFieldName"]+'</option>'
 		);
 	}
 	$(".medical-field-selector").select2();
 }
 
-function clicked() {
-    if(confirm('checks before submitting')){
+function getnewproduct() {
+	if(confirm('Are you sure you want to add this product?')){
+		var d = {};
+		d['productName'] = $('#product-name').val();
+		d['releaseDate'] = $('#prod-release-date').val();
+		d['medicalFieldId'] = $('.medical-field-selector').val();
+		console.log("Data captured : "+JSON.stringify(d)); 	
+		$.ajax({
+			type : 'POST',
+	        url : "/addnewproduct",
+	        data : JSON.stringify(d),
+	        contentType : 'application/json'
+	    });
     	document.getElementById('upload-files-form').submit();
-    }
+    	return true;
+	}else return false;
 }

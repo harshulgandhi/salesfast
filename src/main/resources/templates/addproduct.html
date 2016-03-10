@@ -19,7 +19,7 @@
 				</select>
 			</div>
 			<div class="col-lg-4 newproduct-middle-panel">
-				<form id="add-product-form" class="form-horizontal">
+				<form id="add-product-form" class="form-horizontal" >
 					<div class="form-group">
 						<label class="control-label" id="prduct-name-label">Product Name</label>
 						<input name="product-name" type="text" class="form-control validate-ele" id="product-name"/>
@@ -33,7 +33,8 @@
 			</div>
 			
 			<div class="col-lg-5 filesupload-right-panel">
-				<form id="upload-files-form" class="form-horizontal" action="/uploadfiles" th:action="@{/uploadfiles}" method="post" enctype="multipart/form-data">
+				<form id="upload-files-form" class="form-horizontal" action="/uploadfiles" th:action="@{/uploadfiles}" method="post" enctype="multipart/form-data"
+					onsubmit="return getnewproduct()">
 					<div class="form-group">
 						<label for="virtual-training-doc" class="control-label" id="prduct-name-label">Virtual Training Document</label>
 						<input name="virtualtrainingfile" type="file" class="form-control validate-ele" id="virtual-training-doc"/>
@@ -42,7 +43,7 @@
 						<label for="e-detailing-doc" class="control-label" id="release-date-label">E Detailing Document</label>
 						<input name="edetailingfile" type="file" class="form-control validate-ele" id="e-detailing-doc"/>
 					</div>
-					<button type="submit" class="btn btn-default" onclick="clicked();">Submit</button>
+					<button type="submit" class="btn btn-default">Submit</button>
 				</form>
 			</div>
 			

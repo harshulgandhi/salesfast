@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.stm.salesfast.backend.dao.specs.ProductsDao;
 import com.stm.salesfast.backend.dto.ProductDto;
+import com.stm.salesfast.backend.entity.NewProductEntity;
 import com.stm.salesfast.backend.services.specs.ProductFetchService;
 
 @Service
@@ -17,20 +18,25 @@ public class ProductFetchServiceImpl implements ProductFetchService {
 	
 	@Override
 	public ProductDto getProductById(int productId) {
-		// TODO Auto-generated method stub
 		return productDao.getProduct(productId);
 	}
 
 	@Override
 	public ProductDto getProductByName(String productName) {
-		// TODO Auto-generated method stub
 		return productDao.getProduct(productName);
 	}
 
 	@Override
 	public List<ProductDto> getProductByMedicalField(String medicalFieldId) {
-		// TODO Auto-generated method stub
 		return productDao.getProductForMedicalField(medicalFieldId);
 	}
 
+	@Override
+	public void insertNewProduct(NewProductEntity newProduct){
+		productDao.insert(new ProductDto(
+				newProduct.getProductName(),
+				newProduct.getReleaseDate(),
+				newProduct.getMedicalFieldId()
+				));
+	}
 }

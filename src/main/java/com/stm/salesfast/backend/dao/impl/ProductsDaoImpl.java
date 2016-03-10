@@ -24,6 +24,8 @@ public class ProductsDaoImpl implements ProductsDao{
 	private static final String  FETCH_BY_ID = "SELECT * FROM products WHERE productId = ?";
 	private static final String  FETCH_BY_NAME = "SELECT * FROM products WHERE productName = ?";
 	private static final String  FETCH_BY_MEDICALFIELD = "SELECT * FROM products WHERE medicalFieldId= ?";
+	private static final String INSERT = "INSERT INTO products (productName, releaseDate, medicalFieldId) "
+			+ "VALUES (?,?,?)";
 	
 	@Override
 	public ProductDto getProduct(int productId) {
@@ -31,7 +33,7 @@ public class ProductsDaoImpl implements ProductsDao{
 		try{
 			return jdbcTemplate.queryForObject(
 					FETCH_BY_ID, (rs, rownum) -> {
-						return new ProductDto(productId, rs.getString("productName"), rs.getString("releaseDate"),rs.getString("medicalFieldId"));}
+						return new ProductDto(productId, rs.getString("productName"), rs.getDate("releaseDate"),rs.getString("medicalFieldId"));}
 					, productId);
 		}catch(DataAccessException e){
 			e.printStackTrace();
@@ -46,7 +48,7 @@ public class ProductsDaoImpl implements ProductsDao{
 			log.debug("Fetching for product : "+productName);
 			return jdbcTemplate.queryForObject(
 					FETCH_BY_NAME, (rs, rownum) -> {
-						return new ProductDto(rs.getInt("productId"), productName, rs.getString("releaseDate"),rs.getString("medicalFieldId"));}
+						return new ProductDto(rs.getInt("productId"), productName, rs.getDate("releaseDate"),rs.getString("medicalFieldId"));}
 					, productName);
 		}catch(DataAccessException e){
 			e.printStackTrace();
@@ -60,13 +62,26 @@ public class ProductsDaoImpl implements ProductsDao{
 		try{
 			return jdbcTemplate.query(
 					FETCH_BY_MEDICALFIELD, (rs, rownum) -> {
-						return new ProductDto(rs.getInt("productId"), rs.getString("productName"), rs.getString("releaseDate"),medicalFieldId)
+						return new ProductDto(rs.getInt("productId"), rs.getString("productName"), rs.getDate("releaseDate"),medicalFieldId)
 						;}
 					, medicalFieldId);
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	@Override
+	public void insert(ProductDto product){
+		try{
+			jdbcTemplate.update(INSERT, (ps)->{
+				ps.setString(1, product.getProductName());
+				ps.setDate(2, product.getReleaseDate());
+				ps.setString(3, product.getMedicalFieldId());
+			});
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
 	}
 
 }

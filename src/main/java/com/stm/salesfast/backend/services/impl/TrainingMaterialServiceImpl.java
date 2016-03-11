@@ -82,4 +82,9 @@ public class TrainingMaterialServiceImpl implements TrainingMaterialService{
 		return allDocumentPaths;
 	}
 
+	@Override
+	public void insert(TrainingMaterialDto trainingMat){
+		trainingMaterialDao.insert(trainingMat);
+	}
+	
 }

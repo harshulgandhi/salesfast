@@ -23,4 +23,5 @@ public interface AlignmentFetchService {
 	
 	public void insert(AlignmentsDto alignment) throws IOException;
 	public UserDto getUserForAlignment(int physicianId, int productId);
+	public List<Integer> getUserIdsWorkingInMedicalField(String medicalFieldId);
 }

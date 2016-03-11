@@ -44,7 +44,6 @@ public class ReminderServiceImpl implements ReminderService{
 	
 	@Override
 	public void followUpCallReminders() throws ParseException {
-		// TODO Auto-generated method stub
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		CURRENTUSERNAME = user.getUsername(); //get logged in user name
 		List<AppointmentDto> appointments = appointmentService.getFollowUpAppointments(userDetails.getUserDetails(CURRENTUSERNAME).getUserId());
@@ -59,7 +58,6 @@ public class ReminderServiceImpl implements ReminderService{
 
 	@Override
 	public void addReminderToNotifications(AppointmentDto appointment) {
-		// TODO Auto-generated method stub
 		String productName = productService.getProductById(appointment.getProductId()).getProductName();
 		String physicianName = physService.getPhysicianName(appointment.getPhysicianId());
 		int userId = appointment.getUserId();

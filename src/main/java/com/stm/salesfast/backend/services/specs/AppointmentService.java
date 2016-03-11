@@ -47,6 +47,8 @@ public interface AppointmentService {
 
 	public void setHasMeetingExperienceFlagFromPH(int appointmentId, int isPhyEntry);
 
+	public List<Integer> getPhysiciansNotInterestedBeforeDetailing(int userId);
+
 
 	
 }

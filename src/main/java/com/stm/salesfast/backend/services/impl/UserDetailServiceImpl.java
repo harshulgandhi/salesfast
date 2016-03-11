@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stm.salesfast.backend.dao.specs.UserDao;
+import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.dto.RolesDto;
 import com.stm.salesfast.backend.dto.UserDto;
+import com.stm.salesfast.backend.services.specs.PhysicianFetchService;
 import com.stm.salesfast.backend.services.specs.RoleService;
 import com.stm.salesfast.backend.services.specs.TerritoryService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
@@ -32,6 +34,9 @@ public class UserDetailServiceImpl implements UserDetailService{
 	
 	@Autowired
 	TerritoryService terrService;
+	
+	@Autowired
+	PhysicianFetchService physService;
 	
 	@Override
 	public UserDto getUserDetails(int userId) {
@@ -91,5 +96,11 @@ public class UserDetailServiceImpl implements UserDetailService{
 	public int getUserIdByName(String firstName, String lastName, String email){
 		return userDetailDao.getBy(firstName, lastName, email).getUserId();
 	}
-	
+
+	@Override
+	public UserDto getUserForPhysicianId(int physicianId){
+		PhysicianStgDto physician = physService.getPhysicianById(physicianId);
+		int userId = getUserIdByName(physician.getFirstName(), physician.getLastName(), physician.getEmail());
+		return getUserDetails(userId);
+	}
 }

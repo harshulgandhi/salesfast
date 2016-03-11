@@ -11,5 +11,7 @@ public interface EDetailingMaterialDao {
 	public List<EDetailingMaterialDto> getByPhysicianId(int physicianId);
 	
 	public void insert(EDetailingMaterialDto eDetailing);
+
+	List<Integer> getPhysicians(String medicalFieldId);
 	
 }

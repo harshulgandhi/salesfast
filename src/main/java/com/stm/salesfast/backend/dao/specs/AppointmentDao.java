@@ -34,5 +34,7 @@ public interface AppointmentDao {
 	public void setMeetinExperienceFlagFromSR(int appointmentId, int meetingExpFromSR);
 
 	public void setMeetinExperienceFlagFromPH(int appointmentId, int meetingExpFromPH);
+
+	public List<Integer> getNotInterestedPhysicians(int userId);
 	
 }

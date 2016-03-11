@@ -201,4 +201,14 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 	public List<MeetingUpdateDto> getForPhysiciansPortal(String status1, String status2, int physicianId) {
 		return meetingUpdateDao.getForPhysiciansPortal(status1, status2, physicianId);
 	}
+	
+	@Override
+	public List<Integer> getLostPhysiciansForAUser(int userId){
+		return meetingUpdateDao.getLostPhysiciansForUser(userId);
+	}
+	
+	@Override
+	public List<Integer> getPrescribingPhysiciansForAUser(int userId){
+		return meetingUpdateDao.getPrescribingPhysiciansForUser(userId);
+	}
 }

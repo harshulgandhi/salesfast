@@ -56,6 +56,8 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	
 	private static final String FETCH_BY_PHYS = "SELECT * FROM appointment WHERE (confirmationStatus = ? OR confirmationStatus = ? ) AND physicianId = ?";
 	
+	private static final String FETCH_NOT_INTERESTED_PHY_FORUSER = "SELECT physicianId FROM appointment WHERE confirmationStatus = 'NOT INTERESTED' AND userId = ? GROUP BY physicianId";
+	
 	@Override
 	public AppointmentDto getAppointmentById(int appointmentId) {
 		// TODO Auto-generated method stub
@@ -240,6 +242,19 @@ public class AppointmentDaoImpl implements AppointmentDao {
 			return jdbcTemplate.query(FETCH_BY_PHYS, (rs, rownnum)->{
 				return new AppointmentDto(rs.getInt("appointmentId"), rs.getTime("time"), rs.getDate("date"), rs.getInt("physicianId"), rs.getInt("userId"), rs.getInt("productId"),rs.getString("confirmationStatus"), rs.getString("zip"),rs.getString("cancellationReason"), rs.getString("additionalNotes"), rs.getBoolean("hasMeetingUpdate"),rs.getBoolean("hasMeetingExperienceFromSR"),rs.getBoolean("hasMeetingExperienceFromPH"));
 			}, confirmationStatus1, confirmationStatus2, physicianId);
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public List<Integer> getNotInterestedPhysicians(int userId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_NOT_INTERESTED_PHY_FORUSER, (rs, rownnum)->{
+				return rs.getInt("physicianId");
+			}, userId);
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}

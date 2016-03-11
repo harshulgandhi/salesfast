@@ -290,6 +290,17 @@ public class AppointmentServiceImpl implements AppointmentService {
 		log.info("No Appointments fetched : "+appointments.size());
 		return appointments;
 	}
+	
+	/**
+	 * Physicians who said they were not interested even before meeting
+	 * the sales rep
+	 * */
+	@Override
+	public List<Integer> getPhysiciansNotInterestedBeforeDetailing(int userId){
+		return appointmentDao.getNotInterestedPhysicians(userId);
+	}
+	
+	
 }
 
 

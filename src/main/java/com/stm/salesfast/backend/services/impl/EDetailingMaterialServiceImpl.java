@@ -75,5 +75,10 @@ public class EDetailingMaterialServiceImpl implements EDetailingMaterialService 
 		}
 		return eDetailingMat;
 	}
+	
+	@Override
+	public List<Integer> getPhysiciansInEdetailingForMedicalField(String medicalFieldId){
+		return eDetailingDao.getPhysicians(medicalFieldId);
+	}
 
 }

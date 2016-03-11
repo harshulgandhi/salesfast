@@ -22,6 +22,8 @@ public class EDetailingMaterialDaoImpl implements EDetailingMaterialDao {
 	private static final String INSERT = "INSERT INTO edetailing_material "
 			+ "(detailingFileName, physicianId, medicalFieldId, productid) "
 			+ "VALUES (?,?,?,?)";
+	private static final String FETCH_ALL_PHYS = "SELECT physicianId FROM edetailing_material WHERE medicalFieldId = ? GROUP BY physicianId";
+	
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 	
@@ -62,6 +64,18 @@ public class EDetailingMaterialDaoImpl implements EDetailingMaterialDao {
 			e.printStackTrace();
 		}
 
+	}
+	
+	@Override
+	public List<Integer> getPhysicians(String medicalFieldId) {
+		try{
+			return jdbcTemplate.query(FETCH_ALL_PHYS, (rs, rownnum)->{
+				return rs.getInt("physicianId");
+			}, medicalFieldId);
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

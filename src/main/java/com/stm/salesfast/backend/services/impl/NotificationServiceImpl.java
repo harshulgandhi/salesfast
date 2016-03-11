@@ -78,5 +78,29 @@ public class NotificationServiceImpl implements NotificationService {
 		String notification = String.format(ConstantValues.FORMAT_FOLLOWUP, physicianName, productName);
 		notificationDao.insertNotification(new NotificationsDto(notification, false, userId, notificationCategory));
 	}
+	
+	@Override
+	public void insertNotificationNewProductPhysician(int userId, String productName, String notificationCategory){
+		String notification = String.format(ConstantValues.FORMAT_PHYSICIAN_NEW_PRODUCT, productName);
+		notificationDao.insertNotification(new NotificationsDto(notification, false, userId, notificationCategory));
+	}
+	
+	@Override
+	public void insertNotificationNewProductSalesRep(int userId, String productName, String physicianName, String notificationCategory){
+		String notification = String.format(ConstantValues.FORMAT_FOLLOWUP_CUSTGROWTH_LOST, productName, physicianName);
+		notificationDao.insertNotification(new NotificationsDto(notification, false, userId, notificationCategory));
+	}
+	
+	@Override
+	public void insertNotificationSalesRepPhysNotInterest(int userId, String productName, String physicianName, String notificationCategory){
+		String notification = String.format(ConstantValues.FORMAT_FOLLOWUP_CUSTGROWTH_NOT_INTERESTED, productName, physicianName);
+		notificationDao.insertNotification(new NotificationsDto(notification, false, userId, notificationCategory));
+	}
+	
+	@Override
+	public void insertNotificationSalesRepPhysPrescribing(int userId, String productName, String physicianName, String notificationCategory){
+		String notification = String.format(ConstantValues.FORMAT_FOLLOWUP_CUSTRETENTION, productName, physicianName);
+		notificationDao.insertNotification(new NotificationsDto(notification, false, userId, notificationCategory));
+	}
 
 }

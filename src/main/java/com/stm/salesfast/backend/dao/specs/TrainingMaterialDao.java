@@ -10,4 +10,6 @@ public interface TrainingMaterialDao {
 	public List<TrainingMaterialDto> getByUserId(int userId);
 	
 	public List<TrainingMaterialDto> getByMedicalField(String medicalFieldId);
+
+	public void insert(TrainingMaterialDto trainingMat);
 }

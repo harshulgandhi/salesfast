@@ -50,6 +50,10 @@ public class AlignmentsDaoImpl implements AlignmentsDao {
 												+ "appointment.productId = alignments.productId)";
 	private static final String FETCH_BY_PHYSICIAN_PRODUCT = "SELECT * FROM alignments WHERE physicianId = ? and productId = ?";
 	
+	private static final String FETCH_USER_FOR_MEDICAL_FIELD = "SELECT userId from alignments WHERE productId IN "
+															+ "(SELECT productId FROM products WHERE medicalFieldId = ?) "
+															+ "GROUP BY userId";
+	
 	@Override
 	public AlignmentsDto getAlignmentById(int alignmentId) {
 		try{
@@ -212,6 +216,20 @@ public class AlignmentsDaoImpl implements AlignmentsDao {
 		}
 		return null;
 	}
+	
+	@Override
+	public List<Integer> getUsersForParticularMedicalField(String medicalField){
+		try{
+			return jdbcTemplate.query(FETCH_USER_FOR_MEDICAL_FIELD, (rs, rownum) -> {
+				return rs.getInt("userId");
+				}, medicalField);
+			
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 }
 
 

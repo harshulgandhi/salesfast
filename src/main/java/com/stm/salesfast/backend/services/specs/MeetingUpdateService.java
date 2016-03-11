@@ -15,11 +15,15 @@ public interface MeetingUpdateService {
 	
 	public List<Integer> getPrescribingProduct(int physicianId);
 
-	void setupEDetailing(MeetingUpdateEntity meetingUpdateEntity);
+	public void setupEDetailing(MeetingUpdateEntity meetingUpdateEntity);
 
-	void sendMail(String subject, String body, String toEmailId);
+	public void sendMail(String subject, String body, String toEmailId);
 
 
-	List<MeetingUpdateDto> getForPhysiciansPortal(String status1,
+	public List<MeetingUpdateDto> getForPhysiciansPortal(String status1,
 			String status2, int physicianId);
+
+	public List<Integer> getLostPhysiciansForAUser(int userId);
+
+	public List<Integer> getPrescribingPhysiciansForAUser(int userId);
 }

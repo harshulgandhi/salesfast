@@ -13,5 +13,15 @@ public interface NotificationService {
 	public List<NotificationEntity> getNotificationsForUser(int userId);
 	public void insertNotificationAppointmentCancellation(int userId, String physicianName, String notificationCategory);
 	public void insertNotificationFollowupReminder(int userId, String physicianName, String productName, String notificationCategory);
+	public void insertNotificationNewProductPhysician(int userId, String productName,
+			String notificationCategory);
+	public void insertNotificationNewProductSalesRep(int userId, String productName,
+			String physicianName, String notificationCategory);
+	public void insertNotificationSalesRepPhysNotInterest(int userId,
+			String productName, String physicianName,
+			String notificationCategory);
+	public void insertNotificationSalesRepPhysPrescribing(int userId,
+			String productName, String physicianName,
+			String notificationCategory);
 	
 }

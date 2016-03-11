@@ -14,4 +14,5 @@ public interface UserDetailService {
 	void insertUserDetails(UserDto userDetails);
 	boolean checkIfUserExists(String firstName, String lastName, String email);
 	int getUserIdByName(String firstName, String lastName, String email);
+	public UserDto getUserForPhysicianId(int physicianId);
 }

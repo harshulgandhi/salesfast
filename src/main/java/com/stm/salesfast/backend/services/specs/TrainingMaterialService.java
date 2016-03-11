@@ -18,4 +18,6 @@ public interface TrainingMaterialService {
 	public String getMedicalFieldForUser(int userId);
 
 	public List<VirtualLearningEntity> getAllDocumentsPath(int userId);
+
+	public void insert(TrainingMaterialDto trainingMat);
 }

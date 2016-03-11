@@ -24,8 +24,10 @@ public interface AlignmentsDao {
 	public List<AlignmentsDto> getAlignmentByUserIdNotInAppointments(int userId);
 	
 
-	List<AlignmentsDto> getAlignmentByUserIdInVicinity(int userId);
+	public List<AlignmentsDto> getAlignmentByUserIdInVicinity(int userId);
 
-	AlignmentsDto getAlignmentByPhysicianProductId(int physicianId,
+	public AlignmentsDto getAlignmentByPhysicianProductId(int physicianId,
 			int productId);
+
+	public List<Integer> getUsersForParticularMedicalField(String medicalField);
 }

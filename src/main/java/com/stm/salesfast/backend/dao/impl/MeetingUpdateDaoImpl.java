@@ -24,6 +24,16 @@ public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
 			+ "VALUES (?,?,?,?,?,?,?);";
 	private static final String FETCH_FOR_PRESCRIBING = "SELECT * FROM meeting_update WHERE appointmentId  = ? AND status = 'PRESCRIBING'";
 	private static final String FETCH_FOR_PHYS_PORTAL = "SELECT * FROM meeting_update WHERE (status = ? OR status = ? ) AND physicianId = ?";
+	private static final String FETCH_LOST_PHY = "SELECT physicianId FROM meeting_update "
+													+ "WHERE status='LOST' AND "
+													+ "(physicianId, productId) IN "
+													+ "(SELECT physicianId, productId from appointment "
+													+ " WHERE userId = ?)";
+	private static final String FETCH_PRESCRIBING_PHY = "SELECT physicianId FROM meeting_update "
+													+ "WHERE status='PRESCRIBING' AND "
+													+ "(physicianId, productId) IN "
+													+ "(SELECT physicianId, productId from appointment "
+													+ " WHERE userId = ?)";
 	
 	@Autowired
 	JdbcTemplate jdbcTemplate;
@@ -89,4 +99,34 @@ public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
 		}
 		return null;
 	}
+	
+	@Override
+	public List<Integer> getLostPhysiciansForUser(int userId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_LOST_PHY, (rs, rownum) -> {
+					return rs.getInt("physicianId");
+				}, userId);
+			
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}	
+	
+	@Override
+	public List<Integer> getPrescribingPhysiciansForUser(int userId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_PRESCRIBING_PHY, (rs, rownum) -> {
+					return rs.getInt("physicianId");
+				}, userId);
+			
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
 }

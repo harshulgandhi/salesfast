@@ -143,5 +143,8 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 		return userService.getUserDetails(alignment.getUserId()); 
 	}
 
-
+	@Override
+	public List<Integer> getUserIdsWorkingInMedicalField(String medicalFieldId){
+		return alignmentDao.getUsersForParticularMedicalField(medicalFieldId);
+	}
 }

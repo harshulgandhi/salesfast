@@ -1,5 +1,6 @@
 package com.stm.salesfast.backend.services.specs;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.stm.salesfast.backend.dto.AlignmentsDto;
@@ -20,6 +21,6 @@ public interface AlignmentFetchService {
 	public List<Integer> getAlignedProduct(int userId, int physicianId);
 	public List<AlignedPhysicianEntity> getAlignmentByUserIdInVicinityOfAppointments(int userId);
 	
-	public void insert(AlignmentsDto alignment);
+	public void insert(AlignmentsDto alignment) throws IOException;
 	public UserDto getUserForAlignment(int physicianId, int productId);
 }

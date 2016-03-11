@@ -60,27 +60,14 @@ public class ProductsController {
 		log.info("File received ! ");
 		log.info("File 1 : "+virtualTrainingFile.getOriginalFilename()+"["+virtualTrainingFile.getContentType()+"]"+"\nFile 2 : "+eDetailingFile.getOriginalFilename()+"["+eDetailingFile.getContentType()+"]");
 		addProdService.saveUploadedFiles(virtualTrainingFile, eDetailingFile);
-		//Saving training material file
-				String realPathtoUploads =  request.getServletContext().getRealPath(ConstantValues.TRAINING_MATERIAL_PATH);
-				String orgName = virtualTrainingFile.getOriginalFilename();
-		        String filePath = realPathtoUploads + orgName;
-		        File dest = new File(filePath);
-		        virtualTrainingFile.transferTo(dest);
-		        
-		      //Saving training material file
-				String realPathtoUploads2 =  request.getServletContext().getRealPath(ConstantValues.EDETAILING_DOCS_PATH);
-				String orgName2 = virtualTrainingFile.getOriginalFilename();
-				String filePath2 = realPathtoUploads2 + orgName2;
-				File dest2 = new File(filePath2);
-				eDetailingFile.transferTo(dest2);
 				
 		return "addproduct";
     }
 	
 	@RequestMapping(value="/addnewproduct", method=RequestMethod.POST, consumes = "application/json")
 	@ResponseBody
-	public void addNewProduct(@RequestBody NewProductEntity newProduct) throws ParseException{
+	public void addNewProduct(@RequestBody NewProductEntity newProduct) throws ParseException, IOException{
 		log.info("New Product received  : "+newProduct);
-		productService.insertNewProduct(newProduct);
+		addProdService.addNewProduct(newProduct);
 	}
 }

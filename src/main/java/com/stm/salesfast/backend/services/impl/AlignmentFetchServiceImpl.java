@@ -1,5 +1,6 @@
 package com.stm.salesfast.backend.services.impl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -132,7 +133,7 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 	}
 
 	@Override
-	public void insert(AlignmentsDto alignment) {
+	public void insert(AlignmentsDto alignment) throws IOException {
 		alignmentDao.insertAlignment(alignment);
 	}
 	

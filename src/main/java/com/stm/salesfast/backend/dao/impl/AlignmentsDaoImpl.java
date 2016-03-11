@@ -1,5 +1,6 @@
 package com.stm.salesfast.backend.dao.impl;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -110,7 +111,7 @@ public class AlignmentsDaoImpl implements AlignmentsDao {
 	}
 
 	@Override
-	public void insertAlignment(AlignmentsDto alignmentDto) {
+	public void insertAlignment(AlignmentsDto alignmentDto) throws IOException {
 		// TODO Auto-generated method stub
 		try{
 			jdbcTemplate.update(INSERT,(ps)->{
@@ -122,7 +123,8 @@ public class AlignmentsDaoImpl implements AlignmentsDao {
 				ps.setInt(6, alignmentDto.getProductId());
 			});
 		}catch(DataAccessException e){
-			e.printStackTrace();
+//			throw new IOException(e);
+			log.info("######### Duplicate alignments generated");
 		}
 	}
 

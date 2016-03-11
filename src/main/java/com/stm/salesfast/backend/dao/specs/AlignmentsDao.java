@@ -1,5 +1,6 @@
 package com.stm.salesfast.backend.dao.specs;
 
+import java.io.IOException;
 import java.util.List;
 
 import com.stm.salesfast.backend.dto.AlignmentsDto;
@@ -14,7 +15,7 @@ public interface AlignmentsDao {
 	
 	public List<AlignmentsDto> getAlignmentByUserIdZip(int userId, String zip);
 	
-	public void insertAlignment(AlignmentsDto alignmentDto);
+	public void insertAlignment(AlignmentsDto alignmentDto) throws IOException;
 	
 	public  List<AlignmentsDto> getAlignmentByUserIdPhysId(int userId, int physicianId);
 	

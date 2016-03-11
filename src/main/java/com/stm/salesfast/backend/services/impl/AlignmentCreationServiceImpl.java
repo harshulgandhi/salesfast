@@ -1,5 +1,6 @@
 package com.stm.salesfast.backend.services.impl;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,7 +93,7 @@ public class AlignmentCreationServiceImpl implements AlignmentCreationService {
 
 
 	@Override
-	public void createAlignments() {
+	public void createAlignments() throws IOException {
 		// TODO Auto-generated method stub
 		List<AlignmentsDto> alignments = calculateAlignments();
 		for(AlignmentsDto alignment : alignments) alignmentService.insert(alignment);

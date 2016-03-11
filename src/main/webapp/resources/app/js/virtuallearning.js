@@ -6,7 +6,7 @@ $(document).ready(function () {
 	
 	$.ajax({
 		type: 'GET',
-		url : '/getedetailingdata',
+		url : '/getvirtuallearningdata',
 		dataType : 'json',
 		success : function(data){
 	    	console.log("Data received : "+JSON.stringify(data));

@@ -44,7 +44,43 @@ public class DataReportController {
 	
 	@RequestMapping(value="/getDataOverall", method=RequestMethod.GET, produces="application/json")
 	@ResponseBody
-	public MeetingExperienceDataEntity[] getData(){
+	public MeetingExperienceDataEntity[] getOverallData(){
+		log.info("Fetching data for the report");
+		List<MeetingExperienceDataEntity> analysisOverAll = analysis.analyseOverall();
+		log.info("Analysed data : ");
+		for(MeetingExperienceDataEntity analysedData : analysisOverAll){
+			log.info(""+analysedData);
+		}
+		return analysisOverAll.toArray(new MeetingExperienceDataEntity[0]);
+	}
+	
+	@RequestMapping(value="/getPhyResp", method=RequestMethod.GET, produces="application/json")
+	@ResponseBody
+	public MeetingExperienceDataEntity[] getOnlyPhysicianData(){
+		log.info("Fetching data for the report");
+		List<MeetingExperienceDataEntity> analysisOverAll = analysis.analyseOverall();
+		log.info("Analysed data : ");
+		for(MeetingExperienceDataEntity analysedData : analysisOverAll){
+			log.info(""+analysedData);
+		}
+		return analysisOverAll.toArray(new MeetingExperienceDataEntity[0]);
+	}
+	
+	@RequestMapping(value="/getSalesRepResp", method=RequestMethod.GET, produces="application/json")
+	@ResponseBody
+	public MeetingExperienceDataEntity[] getOnlySalesRepData(){
+		log.info("Fetching data for the report");
+		List<MeetingExperienceDataEntity> analysisOverAll = analysis.analyseOverall();
+		log.info("Analysed data : ");
+		for(MeetingExperienceDataEntity analysedData : analysisOverAll){
+			log.info(""+analysedData);
+		}
+		return analysisOverAll.toArray(new MeetingExperienceDataEntity[0]);
+	}
+	
+	@RequestMapping(value="/getStatusLostData", method=RequestMethod.GET, produces="application/json")
+	@ResponseBody
+	public MeetingExperienceDataEntity[] getLostStatusData(){
 		log.info("Fetching data for the report");
 		List<MeetingExperienceDataEntity> analysisOverAll = analysis.analyseOverall();
 		log.info("Analysed data : ");

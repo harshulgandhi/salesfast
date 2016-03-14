@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.11, for osx10.11 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.10, for Win64 (x86_64)
 --
 -- Host: localhost    Database: salesfast
 -- ------------------------------------------------------
--- Server version	5.7.11
+-- Server version	5.7.10-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -251,13 +251,14 @@ CREATE TABLE `live_meeting_questions` (
   `liveMeetingQuestionId` int(11) NOT NULL AUTO_INCREMENT,
   `userId` int(11) NOT NULL,
   `question` varchar(200) NOT NULL,
-  `answer` varchar(500) NOT NULL,
-  `answeredByUser` int(11) NOT NULL,
-  `importanceIndex` float DEFAULT NULL,
+  `answer` varchar(500) DEFAULT NULL,
+  `answeredByUser` int(11) DEFAULT NULL,
+  `importanceIndex` float DEFAULT '1',
+  `questionAskedOn` date NOT NULL,
   PRIMARY KEY (`liveMeetingQuestionId`),
   KEY `fk_user_live_meeting_update_1_idx` (`userId`),
   CONSTRAINT `fk_user_live_meeting_update_1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -266,6 +267,7 @@ CREATE TABLE `live_meeting_questions` (
 
 LOCK TABLES `live_meeting_questions` WRITE;
 /*!40000 ALTER TABLE `live_meeting_questions` DISABLE KEYS */;
+INSERT INTO `live_meeting_questions` VALUES (1,1,'Q1-This the question asked by physician during the meeting.','A1-This is answer for this question submitted by one of the district managers. This should be long enough for testing. ',2,1,'2016-03-14'),(2,1,'Q2-This the question asked by physician during the meeting.','A2-This is answer for this question submitted by one of the district managers. This should be long enough for testing. ',2,1,'2016-03-14'),(4,1,'Q3-This the question asked by physician during the meeting.',NULL,NULL,1,'2016-03-14');
 /*!40000 ALTER TABLE `live_meeting_questions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -383,7 +385,7 @@ CREATE TABLE `notifications` (
   PRIMARY KEY (`notificationId`),
   KEY `fk_Notifications_User1_idx` (`userId`),
   CONSTRAINT `fk_Notifications_User1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -392,6 +394,7 @@ CREATE TABLE `notifications` (
 
 LOCK TABLES `notifications` WRITE;
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
+INSERT INTO `notifications` VALUES (40,'Sales Representative Johny Dep has a question that needs answering.',0,1,'LIVE MEETING QUESTION'),(41,'Sales Representative Johny Dep has a question that needs answering.',0,2,'LIVE MEETING QUESTION'),(42,'Sales Representative Johny Dep has a question that needs answering.',0,3,'LIVE MEETING QUESTION'),(43,'Sales Representative Johny Dep has a question that needs answering.',0,4,'LIVE MEETING QUESTION');
 /*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -835,4 +838,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-03-14  1:39:57
+-- Dump completed on 2016-03-14 19:36:00

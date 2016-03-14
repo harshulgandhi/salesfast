@@ -111,23 +111,23 @@ public class AnalysisServiceImpl implements AnalysisService{
 	@Override
 	public List<MeetingExperienceDataEntity> analyseLostStatusRecords() {
 		List<MeetingExperienceDataEntity> physicianReponseData = new ArrayList<>();
-		int countAllEntries = meetingExp.countOfRecords(false, true);
-		double percentLikedProduct = (meetingExp.getCountOfLikedProduct(0, 1))*1.0/countAllEntries; 
+		int countAllEntries = meetingExp.getCountAll_Lost();
+		double percentLikedProduct = (meetingExp.getCountOfLikedProduct_Lost())*1.0/countAllEntries; 
 		physicianReponseData.add(new MeetingExperienceDataEntity("Genuinely liked the product", percentLikedProduct));
 		
-		double percentPriceAffordability = (meetingExp.getCountPriceAffordability(0, 1))*1.0/countAllEntries; 
+		double percentPriceAffordability = (meetingExp.getCountPriceAffordability_Lost())*1.0/countAllEntries; 
 		physicianReponseData.add(new MeetingExperienceDataEntity("Price affordability", percentPriceAffordability));
 		
-		double percentLessSideEffects = (meetingExp.getCountForLessSideEffects(0, 1))*1.0/countAllEntries; 
+		double percentLessSideEffects = (meetingExp.getCountForLessSideEffects_Lost())*1.0/countAllEntries; 
 		physicianReponseData.add(new MeetingExperienceDataEntity("Liked that product is affordable", percentLessSideEffects));
 		
-		double percentLikedPresentation = (meetingExp.getCountLikedPresentation(0, 1))*1.0/countAllEntries; 
+		double percentLikedPresentation = (meetingExp.getCountLikedPresentation_Lost())*1.0/countAllEntries; 
 		physicianReponseData.add(new MeetingExperienceDataEntity("Influenced by presentation", percentLikedPresentation));
 		
-		double percentLikedRepsConfidence = (meetingExp.getCountForRepsConfidence(0, 1))*1.0/countAllEntries; 
+		double percentLikedRepsConfidence = (meetingExp.getCountForRepsConfidence_Lost())*1.0/countAllEntries; 
 		physicianReponseData.add(new MeetingExperienceDataEntity("Impressed by SalesRep's confidence", percentLikedRepsConfidence));
 		
-		double percentOrganisationReputation = (meetingExp.getCountOrgReputation(0, 1))*1.0/countAllEntries; 
+		double percentOrganisationReputation = (meetingExp.getCountOrgReputation_Lost())*1.0/countAllEntries; 
 		physicianReponseData.add(new MeetingExperienceDataEntity("Impressed with organisation's reputations", percentOrganisationReputation));
 		
 		return physicianReponseData;

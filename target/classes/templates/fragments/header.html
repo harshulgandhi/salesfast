@@ -31,7 +31,7 @@
 	            </li>
 	            <li id="nav-appointment"><a class="navbar-menu-items" href="./virtuallearning" th:if="${session.roles.contains('SalesRep')}">Virtual Learning</a></li>
 	            <li id="nav-appointment"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('SalesRep')}">Quick Assistance</a></li>
-	            <li id="nav-appointment"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('SalesRep')}">Reminders</a></li>
+	            <li id="nav-appointment"><a class="navbar-menu-items" href="./livemeetingquestions" th:if="${session.roles.contains('SalesRep')}">Live Meeting QnA</a></li>
 	            
 	            <li id="nav-appointment"><a class="navbar-menu-items" href="./datareport" th:if="${session.roles.contains('DM')}">Data Report</a></li>
 	            <li id="nav-appointment"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('DM')}">View Alignments</a></li>

@@ -58,7 +58,7 @@ public class DataReportController {
 	@ResponseBody
 	public MeetingExperienceDataEntity[] getOnlyPhysicianData(){
 		log.info("Fetching data for the report");
-		List<MeetingExperienceDataEntity> analysisOverAll = analysis.analyseOverall();
+		List<MeetingExperienceDataEntity> analysisOverAll = analysis.analysePhysicianResponse();
 		log.info("Analysed data : ");
 		for(MeetingExperienceDataEntity analysedData : analysisOverAll){
 			log.info(""+analysedData);
@@ -70,7 +70,7 @@ public class DataReportController {
 	@ResponseBody
 	public MeetingExperienceDataEntity[] getOnlySalesRepData(){
 		log.info("Fetching data for the report");
-		List<MeetingExperienceDataEntity> analysisOverAll = analysis.analyseOverall();
+		List<MeetingExperienceDataEntity> analysisOverAll = analysis.analyseSalesRepResponse();
 		log.info("Analysed data : ");
 		for(MeetingExperienceDataEntity analysedData : analysisOverAll){
 			log.info(""+analysedData);
@@ -82,7 +82,7 @@ public class DataReportController {
 	@ResponseBody
 	public MeetingExperienceDataEntity[] getLostStatusData(){
 		log.info("Fetching data for the report");
-		List<MeetingExperienceDataEntity> analysisOverAll = analysis.analyseOverall();
+		List<MeetingExperienceDataEntity> analysisOverAll = analysis.analyseLostStatusRecords();
 		log.info("Analysed data : ");
 		for(MeetingExperienceDataEntity analysedData : analysisOverAll){
 			log.info(""+analysedData);

@@ -10,20 +10,17 @@ var chartParameters = [{
                       {
                     	  title: 'According to physicians',
                     	  containerName: '#container-phy-resp',
-//                    	  url: '/getPhyResp'
-                    	  url: '/getDataOverall'
+                    	  url: '/getPhyResp'
                       },
                       {
                     	  title: 'According to SalesReps',
                     	  containerName: '#container-salesrep-resp',
-//                    	  url: '/getSalesRepResp'
-                    	  url: '/getDataOverall'
+                    	  url: '/getSalesRepResp'
                       },
                       {
                     	  title: 'Probable reason for physician being lost',
                     	  containerName: '#container-phy-lost',
-//                    	  url: '/getStatusLostData'
-                    	  url: '/getDataOverall'
+                    	  url: '/getStatusLostData'
                       }]
 $(function () {
 	

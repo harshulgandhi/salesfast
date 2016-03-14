@@ -51,6 +51,36 @@ public class MeetingExperienceDaoImpl implements MeetingExperienceDao {
 			+ "AND impressiveCompanyReputation = 1";
 	
 	
+	private static final String COUNT_ALL_LOST = "SELECT count(*) FROM meeting_experience WHERE "
+			+ "appointmentId IN "
+			+ "(SELECT appointmentId FROM meeting_update WHERE "
+			+ "status = 'LOST')";
+	private static final String COUNT_LIKED_PROD_LOST = "SELECT count(*) FROM meeting_experience WHERE "
+			+ "likedTheProduct = 1 AND appointmentId IN "
+			+ "(SELECT appointmentId FROM meeting_update WHERE "
+			+ "status = 'LOST')";
+	private static final String COUNT_AFFORDABLE_LOST = "SELECT count(*) FROM meeting_experience WHERE "
+			+ "likedPriceAffordability = 1 AND appointmentId IN "
+			+ "(SELECT appointmentId FROM meeting_update WHERE "
+			+ "status = 'LOST')";
+	private static final String COUNT_SIDEEFECTS_LOST = "SELECT count(*) FROM meeting_experience WHERE "
+			+ "impressiveLessSideEffects = 1 AND appointmentId IN "
+			+ "(SELECT appointmentId FROM meeting_update WHERE "
+			+ "status = 'LOST')";
+	private static final String COUNT_PRESENTATION_LOST = "SELECT count(*) FROM meeting_experience WHERE "
+			+ "likedPresentation = 1 AND appointmentId IN "
+			+ "(SELECT appointmentId FROM meeting_update WHERE "
+			+ "status = 'LOST')";
+	private static final String COUNT_CONFIDENCE_LOST = "SELECT count(*) FROM meeting_experience WHERE "
+			+ "salesRepConfidence = 1 AND appointmentId IN "
+			+ "(SELECT appointmentId FROM meeting_update WHERE "
+			+ "status = 'LOST')";
+	private static final String COUNT_REPUTATION_LOST = "SELECT count(*) FROM meeting_experience WHERE "
+			+ "impressiveCompanyReputation = 1 AND appointmentId IN "
+			+ "(SELECT appointmentId FROM meeting_update WHERE "
+			+ "status = 'LOST')";
+	
+	
 	@Override
 	public void insert(MeetingExperienceDto meetingExperience) {
 		// TODO Auto-generated method stub
@@ -230,6 +260,91 @@ public class MeetingExperienceDaoImpl implements MeetingExperienceDao {
 			return jdbcTemplate.queryForObject(COUNT_REPUTATION, (rs, rownum) -> {
 				return rs.getInt(1);
 			},isPhy,isSR);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+
+	@Override
+	public int countAll_Lost(){
+		try {
+			return jdbcTemplate.queryForObject(COUNT_ALL_LOST, (rs, rownum) -> {
+				return rs.getInt(1);
+			});
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	@Override
+	public int countLikedProduct_Lost(){
+		try {
+			return jdbcTemplate.queryForObject(COUNT_LIKED_PROD_LOST, (rs, rownum) -> {
+				return rs.getInt(1);
+			});
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	@Override
+	public int countPriceAffordabilityLost(){
+		try {
+			return jdbcTemplate.queryForObject(COUNT_AFFORDABLE_LOST, (rs, rownum) -> {
+				return rs.getInt(1);
+			});
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	@Override
+	public int countLessSideEffectsLost(){
+		try {
+			return jdbcTemplate.queryForObject(COUNT_SIDEEFECTS_LOST, (rs, rownum) -> {
+				return rs.getInt(1);
+			});
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	@Override
+	public int countLikedPresentationLost(){
+		try {
+			return jdbcTemplate.queryForObject(COUNT_PRESENTATION_LOST, (rs, rownum) -> {
+				return rs.getInt(1);
+			});
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	@Override
+	public int countRepsConfidenceLost(){
+		try {
+			return jdbcTemplate.queryForObject(COUNT_CONFIDENCE_LOST, (rs, rownum) -> {
+				return rs.getInt(1);
+			});
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	@Override
+	public int countOrgReputationLost(){
+		try {
+			return jdbcTemplate.queryForObject(COUNT_REPUTATION_LOST, (rs, rownum) -> {
+				return rs.getInt(1);
+			});
 		} catch (DataAccessException e) {
 			e.printStackTrace();
 		}

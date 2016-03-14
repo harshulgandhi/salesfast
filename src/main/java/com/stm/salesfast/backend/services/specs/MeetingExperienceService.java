@@ -30,4 +30,18 @@ public interface MeetingExperienceService {
 	int getCountForRepsConfidence(int isPhy, int isSR);
 
 	int getCountOrgReputation(int isPhy, int isSR);
+
+	int getCountAll_Lost();
+
+	int getCountOfLikedProduct_Lost();
+
+	int getCountPriceAffordability_Lost();
+
+	int getCountForLessSideEffects_Lost();
+
+	int getCountLikedPresentation_Lost();
+
+	int getCountForRepsConfidence_Lost();
+
+	int getCountOrgReputation_Lost();
 }

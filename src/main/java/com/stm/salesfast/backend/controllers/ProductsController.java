@@ -1,11 +1,9 @@
 package com.stm.salesfast.backend.controllers;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +22,6 @@ import com.stm.salesfast.backend.entity.NewProductEntity;
 import com.stm.salesfast.backend.services.specs.AddNewProductService;
 import com.stm.salesfast.backend.services.specs.MedicalFieldService;
 import com.stm.salesfast.backend.services.specs.ProductFetchService;
-import com.stm.salesfast.constant.ConstantValues;
 
 @Controller
 public class ProductsController {
@@ -38,9 +35,6 @@ public class ProductsController {
 	
 	@Autowired
 	AddNewProductService addProdService;
-	
-	@Autowired
-    private HttpServletRequest request;
 	
 	@RequestMapping(value="/addproductspage", method=RequestMethod.GET)
 	public String addProductsPage(Model model){

@@ -108,7 +108,7 @@ public class MeetingExperienceServiceImpl implements MeetingExperienceService {
 	
 	@Override
 	public int getCountForRepsConfidence(int isPhy, int isSR){
-		return meetingExperienceDao.countLikedProduct(isPhy, isSR);
+		return meetingExperienceDao.countRepsConfidence(isPhy, isSR);
 	}
 	
 	@Override
@@ -116,4 +116,43 @@ public class MeetingExperienceServiceImpl implements MeetingExperienceService {
 		return meetingExperienceDao.countOrgReputation(isPhy, isSR);
 	}
 
+	/*
+	 * For all lost physicians
+	 * */
+	
+	@Override
+	public int getCountAll_Lost(){
+		return meetingExperienceDao.countAll_Lost();
+	}
+	
+	@Override
+	public int getCountOfLikedProduct_Lost(){
+		return meetingExperienceDao.countLikedProduct_Lost();
+	}
+	
+	@Override
+	public int getCountPriceAffordability_Lost(){
+		return meetingExperienceDao.countPriceAffordabilityLost();
+	}
+	
+	@Override
+	public int getCountForLessSideEffects_Lost(){
+		return meetingExperienceDao.countLessSideEffectsLost();
+	}
+	
+	@Override
+	public int getCountLikedPresentation_Lost(){
+		return meetingExperienceDao.countLikedPresentationLost();
+	}
+	
+	@Override
+	public int getCountForRepsConfidence_Lost(){
+		return meetingExperienceDao.countRepsConfidenceLost();
+	}
+	
+	@Override
+	public int getCountOrgReputation_Lost(){
+		return meetingExperienceDao.countOrgReputationLost();
+	}
+	
 }

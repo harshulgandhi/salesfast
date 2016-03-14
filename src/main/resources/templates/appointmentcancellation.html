@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+w<!DOCTYPE html>
 <html>
 <head>
 <!-- Header to include css -->
@@ -13,33 +13,21 @@
 		
 		<div class="row">
 			<div class="col-lg-12 col-sm-12">
-				<table id="appointment-fixed-physician-table" class="table">
+				<table id="question-answer-table" class="table">
 					<thead>
 					</thead>
 					<tbody>
 						<tr style="display: none">
-							<td id="caption">Appointment Id : </td>
-							<td class="appointment-id" id="value" th:text="${appointmentDetail.appointmentId}"></td>
+							<td id="caption">Importance Index : </td>
+							<td class="importance-index" id="importance-factor-id" th:text="${appointmentDetail.appointmentId}"></td>
 						</tr>
 						<tr>
-							<td id="caption">Sales Representative : </td>
+							<td id="caption">Question : </td>
 							<td id="value" th:text="${appointmentDetail.salesRepName}"></td>
 						</tr>
 						<tr>
-							<td id="caption">Organization : </td>
+							<td id="caption">Answer : </td>
 							<td id="value" th:text="${appointmentDetail.organisationName}"></td>
-						</tr>
-						<tr>
-							<td id="caption">Product : </td>
-							<td id="value" th:text="${appointmentDetail.product}"></td>
-						</tr>
-						<tr>
-							<td id="caption">Time : </td>
-							<td id="value" th:text="${appointmentDetail.time}"></td>
-						</tr>
-						<tr>
-							<td id="caption">Status : </td>
-							<td id="value" th:text="${appointmentDetail.status}"></td>
 						</tr>
 					</tbody>
 				</table>

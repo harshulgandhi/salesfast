@@ -33,5 +33,19 @@ public interface MeetingExperienceDao {
 	int countAll();
 
 	int countLessSideEffects(int isPhy, int isSR);
+
+	int countAll_Lost();
+
+	int countLikedProduct_Lost();
+
+	int countPriceAffordabilityLost();
+
+	int countLessSideEffectsLost();
+
+	int countLikedPresentationLost();
+
+	int countRepsConfidenceLost();
+
+	int countOrgReputationLost();
 	
 }

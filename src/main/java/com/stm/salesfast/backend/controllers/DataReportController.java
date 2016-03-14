@@ -23,20 +23,6 @@ public class DataReportController {
 	@Autowired
 	private AnalysisService analysis;
 	
-	DataReportMapper[] dataReport ={ new DataReportMapper("Microsoft Internet Explorer", (float) 56.33), 
-			new DataReportMapper("Chrome", (float) 24.03), 
-			new DataReportMapper("Firefox", (float) 10.38), 
-			new DataReportMapper("Safari", (float) 4.77),
-			new DataReportMapper("Proprietary or Undetectable", (float) 0.2)};
-
-	public void helper(){
-		/*dataReport.add(new DataReportMapper("Microsoft Internet Explorer", (float) 56.33));
-		dataReport.add(new DataReportMapper("Chrome", (float) 24.03));
-		dataReport.add(new DataReportMapper("Firefox", (float) 10.38));
-		dataReport.add(new DataReportMapper("Safari", (float) 4.77));
-		dataReport.add(new DataReportMapper("Proprietary or Undetectable", (float) 0.2));*/
-	}
-	
 	@RequestMapping(value="/datareport", method=RequestMethod.GET)
 	public String loginPage(){
 		return "allmeetingsdata";

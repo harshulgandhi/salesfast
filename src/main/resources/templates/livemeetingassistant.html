@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Header to include css -->
+<div th:replace="fragments/header :: commonhead"></div>
+<link rel="stylesheet" type="text/css" href="resources/app/css/livemeetingassistant.css"/>
+<meta charset="UTF-8" />
+<title>Live Meeting Assistant</title>
+</head>
+<body>
+
+	<!-- Common header -->
+	<div th:replace="fragments/header :: header"></div>
+	
+	<div class="container" id="layout">
+		<div class="row row-header page-header"><h3>Need assistance during the meeting!</h3></div>
+		<div class="row col-lg-12 enter-question">
+			<form id="enter-question-form" class="form-horizontal" >
+				<div class="form-group enter-question-ele">
+					<label class="control-label" id="enter-question-label">Enter your question</label>
+					<input name="question" type="text" class="form-control validate-ele" id="question"/>
+				</div>
+				
+				<div class="form-group latest-answer-ele" style="display : none;" >
+					<label class="control-label" id="live-answer-label">Latest answer</label>
+					<input name="latest-answer" type="date" class="form-control validate-ele" id="answer"/>
+				</div>
+				<button type="submit" class="btn btn-default submit-question-btn">Submit</button>
+			</form>
+		</div>
+		<div class="row similar-question-answer-div slidedown-similar-question-answer-show" style="display: none;">
+			<div class="col-lg-12 col-sm-12" >
+				<table id="similar-question-answer-table" class="table">
+					<thead>
+						<tr style="display: none;">
+							<th>Label </th>
+							<th>Content</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="display: none;">
+							<td>Importance factor</td>
+							<td>1.5</td>
+						</tr>
+						<!-- <tr style="font-style: italic;">
+							<td style="width: 8%;">Questions : </td>
+							<td style="font-weight: 600;">This the question asked by physician during the meeting.</td>
+						</tr>
+						<tr>
+							<td style="font-style: italic;">Answer : </td>
+							<td>This is answer for this question submitted by one of the district managers. This should be long enough for testing. 
+							This is answer for this question submitted by one of the district managers. This should be long enough for testing.
+							This is answer for this question submitted by one of the district managers. This should be long enough for testing.
+							</td>
+						</tr> -->
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row show-all-questions">
+		<button type="button" class="btn btn-default	 btn-md slidedown-questions">
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+			<span>Click here to view all questions (sorted in order of importance)</span>
+		</button>
+		</div>
+		<div class="row question-answer-div slidedown-question-answer-show" style="display: none;">
+			<div class="col-lg-12 col-sm-12" >
+				<table id="question-answer-table" class="table">
+					<thead>
+						<tr style="display: none;">
+							<th>Label </th>
+							<th>Content</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr style="display: none;">
+							<td>Importance factor</td>
+							<td>1.5</td>
+						</tr>
+						<!-- <tr style="font-style: italic;">
+							<td style="width: 8%;">Questions : </td>
+							<td style="font-weight: 600;">This the question asked by physician during the meeting.</td>
+						</tr>
+						<tr>
+							<td style="font-style: italic;">Answer : </td>
+							<td>This is answer for this question submitted by one of the district managers. This should be long enough for testing. 
+							This is answer for this question submitted by one of the district managers. This should be long enough for testing.
+							This is answer for this question submitted by one of the district managers. This should be long enough for testing.
+							</td>
+						</tr> -->
+						
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+
+<!-- Common footer -->
+<div th:replace="fragments/footer :: footer"></div>
+<script type="text/javascript" src="resources/app/js/livemeetingassistant.js"></script>
+</body>
+</html>

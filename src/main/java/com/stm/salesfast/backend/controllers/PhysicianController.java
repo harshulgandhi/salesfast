@@ -86,7 +86,7 @@ public class PhysicianController {
 	@RequestMapping(value = "/getedetailingdata",method=RequestMethod.GET, produces="application/json")
 	@ResponseBody
 	public EDetailingMaterialEntity[] getEDetailingMaterial(Model model) {
-		log.info("Get entities for user "+SessionConstants.USER_ID);
+		log.info("Get EDetailingMaterial entities for user "+SessionConstants.USER_ID);
 		List<EDetailingMaterialEntity> eDetailingMat = eDetailingMatService.getEDetailingMaterialForUI(SessionConstants.USER_ID);
 		log.info("No of edetailing files "+eDetailingMat.size());
 		return eDetailingMat.toArray(new EDetailingMaterialEntity[eDetailingMat.size()]);

@@ -10,10 +10,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @Data
 @ToString
-public class EDetailingMaterialEntity {
-	private String filePath;
-	private String fileName;
-	private String productName;
-	private String salesRepName;
-	private String salesRepContact;
+public class NewQuestionEntity {
+	private String question;
 }

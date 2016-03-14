@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Random;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
 
@@ -58,4 +59,15 @@ public class SalesFastUtilities {
 		 Random rand= new Random();
          return rand.nextInt(900) + 100;
 	}
+	
+	public static double checkSimilarQuestions(String question){
+		String shorter  = "Dose for O_Med_2 is harmful to diabetic patient?";
+		String longer= "Are diabetic patients severly effected by O_Med_2?";
+		int longerLength = longer.length();
+		return (longerLength - StringUtils.getLevenshteinDistance(longer, shorter)) / (double) longerLength;
+	}
+
+	/*public static void main(String[] args) {
+		System.out.println("distance : "+SalesFastUtilities.checkSimilarQuestions(""));
+	}*/
 }

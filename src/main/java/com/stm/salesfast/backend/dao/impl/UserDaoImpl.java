@@ -29,6 +29,11 @@ public class UserDaoImpl implements UserDao {
 	private static final String FETCH_BY_NAME = "SELECT * FROM salesfast.user where firstName = ?"
 			+ " AND lastName = ? "
 			+ " AND email = ?";
+	private static final String FETCH_NON_PHYS_USERS = "SELECT * FROM user WHERE (firstName, "
+													+ "lastName, email, contactNumber) NOT IN "
+													+ "(SELECT firstName, lastName, email, "
+													+ "contactNumber FROM physicians_staging)";
+	
 	
 	@Override
 	public UserDto getBy(int userId) {
@@ -96,5 +101,18 @@ public class UserDaoImpl implements UserDao {
 		return null;
 	}
 	
+	@Override
+	public List<UserDto> getAllNonPhysicians() {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_NON_PHYS_USERS, (rs, rownum) -> {
+				return new UserDto(rs.getInt("userId"), rs.getString("firstName"), rs.getString("lastName"),rs.getString("email"),rs.getString("contactNumber"),rs.getString("addressLineOne"),rs.getString("addressLineTwo"),rs.getString("city"),rs.getString("state"),rs.getString("zip"), rs.getDate("startDate"), rs.getDate("endDate"));
+				});
+			
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 }

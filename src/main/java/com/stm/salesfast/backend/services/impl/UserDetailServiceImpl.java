@@ -57,6 +57,12 @@ public class UserDetailServiceImpl implements UserDetailService{
 	}
 
 	@Override
+	public List<UserDto> getAllNonPhysicianUsers() {
+		// TODO Auto-generated method stub
+		return userDetailDao.getAllNonPhysicians();
+	}
+	
+	@Override
 	public List<UserDto> getAllSalesReps() {
 		// TODO Auto-generated method stub
 		List<UserDto> allUsers = getAllUsers();

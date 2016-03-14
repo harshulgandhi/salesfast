@@ -1,28 +1,79 @@
 package com.stm.salesfast.backend.services.impl;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.codehaus.groovy.classgen.genArrayAccess;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.stm.salesfast.backend.dao.specs.LiveMeetingQuestionsDao;
 import com.stm.salesfast.backend.dto.LiveMeetingQuestionsDto;
+import com.stm.salesfast.backend.dto.UserDto;
 import com.stm.salesfast.backend.entity.LiveMeetingQnAEntity;
+import com.stm.salesfast.backend.entity.NewQuestionEntity;
 import com.stm.salesfast.backend.services.specs.LiveMeetingQuestionService;
+import com.stm.salesfast.backend.services.specs.NotificationService;
+import com.stm.salesfast.backend.services.specs.UserDetailService;
+import com.stm.salesfast.backend.utils.SalesFastEmail;
+import com.stm.salesfast.backend.utils.SalesFastEmailSendGridImpl;
+import com.stm.salesfast.backend.utils.SalesFastUtilities;
+import com.stm.salesfast.constant.ConstantValues;
+import com.stm.salesfast.constant.SessionConstants;
 
 @Service
 public class LiveMeetingQuestionServiceImpl implements LiveMeetingQuestionService{
-
+	
+	private Logger log = LoggerFactory.getLogger(AddNewProductServiceImpl.class.getName());
+	
 	@Autowired
 	LiveMeetingQuestionsDao liveMeetingDao;
+	
+	@Autowired
+	UserDetailService userService;
+	
+	@Autowired
+	NotificationService notification;
+	
 	@Override
-	public void insertQuestion(LiveMeetingQuestionsDto liveMeetingQuestion) {
+	public void insertQuestionwAnswer(LiveMeetingQuestionsDto liveMeetingQuestion) {
 		liveMeetingDao.insert(liveMeetingQuestion);
 	}
 
+	@Override
+	public void insertQuestionOnly(NewQuestionEntity liveMeetingQuestionOnly) throws ParseException {
+		
+		liveMeetingDao.insertQuestionOnly(new LiveMeetingQuestionsDto(
+					SessionConstants.USER_ID,
+					liveMeetingQuestionOnly.getQuestion(),
+					SalesFastUtilities.getCurrentDate()
+				));
+		//notify all users (if no suggestion found?)
+		notifyAllUsers(SessionConstants.USER_ID);
+	}
+	
+	@Override
+	public void notifyAllUsers(int userId){
+		String salesRepName = userService.getUserCompleteName(userId);
+		List<UserDto> biopharmaUsers = userService.getAllNonPhysicianUsers();
+		for(UserDto eachUser : biopharmaUsers){
+			//insert into notifications for all users
+			notification.insertNotificationLiveMeetingQuestion(salesRepName, eachUser.getUserId(), "LIVE MEETING QUESTION");
+			
+			//send email to all users
+			String emailBody = "Sales Representative "+salesRepName+" has posted a question "
+					+ "that he is not able to answer to a physician he is detailing right now. "
+					+ "Log into SalesFast @ http://127.0.0.1/unansweredquest to read the question"
+					+ "and answer it if possible.";
+			String subject = "A SalesRep needs your help.";
+			sendLiveMeetingNewQuestionEmail(subject, emailBody, eachUser.getEmail());
+		}
+	}
+	
 	@Override
 	public List<LiveMeetingQnAEntity> getAllQuestions() {
 		
@@ -68,5 +119,18 @@ public class LiveMeetingQuestionServiceImpl implements LiveMeetingQuestionServic
 		int longerLength = longer.length();
 		return (longerLength - StringUtils.getLevenshteinDistance(longer, shorter)) / (double) longerLength;
 	}
+	
+	@Override
+	public void sendLiveMeetingNewQuestionEmail(String subject, String body, String toEmailId) {
+		SalesFastEmail email = new SalesFastEmailSendGridImpl();
+		email.setFromEmail("no-reply@biopharma.com");
+		email.setFromName("BioPharma SalesForce");
+		email.addSubject(subject);
+		
+		email.addTextBody(body);
+		log.info("Sending new product email with content as :\n"+body);
+		email.sendMail();
+	}
 
+	
 }

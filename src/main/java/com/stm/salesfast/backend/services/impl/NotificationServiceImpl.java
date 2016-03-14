@@ -103,4 +103,9 @@ public class NotificationServiceImpl implements NotificationService {
 		notificationDao.insertNotification(new NotificationsDto(notification, false, userId, notificationCategory));
 	}
 
+	@Override
+	public void insertNotificationLiveMeetingQuestion(String salesRepName, int userId, String notificationCategory){
+		String notification = String.format(ConstantValues.FORMAT_NEW_QUESTION, salesRepName);
+		notificationDao.insertNotification(new NotificationsDto(notification, false, userId, notificationCategory));
+	}
 }

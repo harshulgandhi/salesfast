@@ -23,5 +23,7 @@ public interface NotificationService {
 	public void insertNotificationSalesRepPhysPrescribing(int userId,
 			String productName, String physicianName,
 			String notificationCategory);
+	public void insertNotificationLiveMeetingQuestion(String salesRepName, int userId,
+			String notificationCategory);
 	
 }

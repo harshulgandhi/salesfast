@@ -19,8 +19,20 @@ public class LiveMeetingQuestionsDaoImpl implements LiveMeetingQuestionsDao {
 	private static final String INSERT = "INSERT INTO live_meeting_questions "
 			+ "(userId, question, answer, answeredByUser, importanctIndex) "
 			+ "VALUES (?,?,?,?,?)";
+	
+	private static final String INSERT_QUESTION_ONLY = "INSERT INTO live_meeting_questions "
+			+ "(userId, question) "
+			+ "VALUES (?,?)";
 	private static final String FETCH_ALL = "SELECT * FROM live_meeting_questions";
 	
+	private static final String FETCH_QUES_wo_ANSWER = "SELECT * FROM live_meeting_questions "
+			+ "WHERE answer IS null AND "
+			+ "answeredById IS null "
+			+ "ORDER BY questionAskedOn DESC";
+	private static final String INSERT_ANSWER_TOA_QUES = "UPDATE live_meeting_questions "
+			+ "SET answer = ?, "
+			+ "answeredByUser = ? "
+			+ "WHERE liveMeetingQuestionId = ?";
 	
 	@Override
 	public void insert(LiveMeetingQuestionsDto liveMeetingQuestion) {
@@ -31,6 +43,20 @@ public class LiveMeetingQuestionsDaoImpl implements LiveMeetingQuestionsDao {
 				ps.setString(3, liveMeetingQuestion.getAnswer());
 				ps.setInt(4, liveMeetingQuestion.getAnsweredByUser());
 				ps.setDouble(5, liveMeetingQuestion.getImportanceIndex());
+				ps.setDate(6, liveMeetingQuestion.getQuestionAskedOn());
+			});
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void insertQuestionOnly(LiveMeetingQuestionsDto liveMeetingQuestion) {
+		try{
+			jdbcTemplate.update(INSERT_QUESTION_ONLY, (ps)->{
+				ps.setInt(1, liveMeetingQuestion.getUserId());
+				ps.setString(2, liveMeetingQuestion.getQuestion());
+				ps.setDate(3, liveMeetingQuestion.getQuestionAskedOn());
 			});
 		}catch(DataAccessException e){
 			e.printStackTrace();
@@ -38,10 +64,35 @@ public class LiveMeetingQuestionsDaoImpl implements LiveMeetingQuestionsDao {
 	}
 
 	@Override
+	public void insertAnswerToAQuestion(LiveMeetingQuestionsDto liveMeetingQuestion) {
+		try{
+			jdbcTemplate.update(INSERT_ANSWER_TOA_QUES, (ps)->{
+				ps.setString(1, liveMeetingQuestion.getAnswer());
+				ps.setInt(2, liveMeetingQuestion.getAnsweredByUser());
+				ps.setInt(3, liveMeetingQuestion.getLiveMeetingQuestionsId());
+			});
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
 	public List<LiveMeetingQuestionsDto> getAll() {
 		try{
 			return jdbcTemplate.query(FETCH_ALL, (rs, rownnum)->{
-				return new LiveMeetingQuestionsDto(rs.getInt("liveMeetingQuestionId"), rs.getInt("userId"),rs.getString("question"),rs.getString("answer"), rs.getInt("answeredByUser"), rs.getFloat("importanceIndex"));
+				return new LiveMeetingQuestionsDto(rs.getInt("liveMeetingQuestionId"), rs.getInt("userId"),rs.getString("question"),rs.getString("answer"), rs.getInt("answeredByUser"), rs.getFloat("importanceIndex"), rs.getDate("questionAskedOn"));
+			});
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public List<LiveMeetingQuestionsDto> getAllwoAnswer() {
+		try{
+			return jdbcTemplate.query(FETCH_QUES_wo_ANSWER, (rs, rownnum)->{
+				return new LiveMeetingQuestionsDto(rs.getInt("liveMeetingQuestionId"), rs.getInt("userId"),rs.getString("question"),rs.getString("answer"), rs.getInt("answeredByUser"), rs.getFloat("importanceIndex"), rs.getDate("questionAskedOn"));
 			});
 		}catch(DataAccessException e){
 			e.printStackTrace();

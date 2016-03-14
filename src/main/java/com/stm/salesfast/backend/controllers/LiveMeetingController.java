@@ -1,6 +1,7 @@
 package com.stm.salesfast.backend.controllers;
 
 
+import java.text.ParseException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -56,8 +57,9 @@ public class LiveMeetingController {
 	
 	@RequestMapping(value="/submitquestion", method=RequestMethod.POST, consumes = "application/json")
 	@ResponseBody
-	public  void addNewProduct(@RequestBody NewQuestionEntity newQuestion) {
+	public  void addNewProduct(@RequestBody NewQuestionEntity newQuestion) throws ParseException {
 		log.info("New question received  : "+newQuestion);
 		newQuestionSubmitted = newQuestion.getQuestion();
+		liveMeetingService.insertQuestionOnly(newQuestion);
 	}
 }

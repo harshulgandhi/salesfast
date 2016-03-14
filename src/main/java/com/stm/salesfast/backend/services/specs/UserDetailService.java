@@ -11,8 +11,9 @@ public interface UserDetailService {
 	public List<UserDto> getAllSalesReps();
 	public int getDistrictManagerId(int userId);
 	public String getUserCompleteName(int userId);
-	void insertUserDetails(UserDto userDetails);
-	boolean checkIfUserExists(String firstName, String lastName, String email);
-	int getUserIdByName(String firstName, String lastName, String email);
+	public void insertUserDetails(UserDto userDetails);
+	public boolean checkIfUserExists(String firstName, String lastName, String email);
+	public int getUserIdByName(String firstName, String lastName, String email);
 	public UserDto getUserForPhysicianId(int physicianId);
+	public List<UserDto> getAllNonPhysicianUsers();
 }

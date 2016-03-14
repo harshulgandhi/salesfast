@@ -15,6 +15,8 @@ public interface UserDao {
 	
 	public List<UserDto> getAll();
 
-	UserDto getBy(String firstName, String lastName, String email);
+	public UserDto getBy(String firstName, String lastName, String email);
+
+	public List<UserDto> getAllNonPhysicians();
 	
 }

@@ -27,13 +27,13 @@ public class LiveMeetingQuestionsDaoImpl implements LiveMeetingQuestionsDao {
 	
 	private static final String FETCH_QUES_wo_ANSWER = "SELECT * FROM live_meeting_questions "
 			+ "WHERE answer IS null AND "
-			+ "answeredByUser IS null "
+			+ "answeredByUser IS null AND "
+			+ "userId != ? "
 			+ "ORDER BY questionAskedOn DESC";
 	private static final String INSERT_ANSWER_TOA_QUES = "UPDATE live_meeting_questions "
 			+ "SET answer = ?, "
 			+ "answeredByUser = ? "
 			+ "WHERE liveMeetingQuestionId = ?";
-	
 	
 	
 	@Override
@@ -66,12 +66,12 @@ public class LiveMeetingQuestionsDaoImpl implements LiveMeetingQuestionsDao {
 	}
 
 	@Override
-	public void insertAnswerToAQuestion(LiveMeetingQuestionsDto liveMeetingQuestion) {
+	public void insertAnswerToAQuestion(String answer, int answeredByUser, int liveMeetingQuestionId) {
 		try{
 			jdbcTemplate.update(INSERT_ANSWER_TOA_QUES, (ps)->{
-				ps.setString(1, liveMeetingQuestion.getAnswer());
-				ps.setInt(2, liveMeetingQuestion.getAnsweredByUser());
-				ps.setInt(3, liveMeetingQuestion.getLiveMeetingQuestionsId());
+				ps.setString(1,answer);
+				ps.setInt(2, answeredByUser);
+				ps.setInt(3,liveMeetingQuestionId);
 			});
 		}catch(DataAccessException e){
 			e.printStackTrace();
@@ -91,11 +91,11 @@ public class LiveMeetingQuestionsDaoImpl implements LiveMeetingQuestionsDao {
 	}
 	
 	@Override
-	public List<LiveMeetingQuestionsDto> getAllwoAnswer() {
+	public List<LiveMeetingQuestionsDto> getAllwoAnswer(int userId) {
 		try{
 			return jdbcTemplate.query(FETCH_QUES_wo_ANSWER, (rs, rownnum)->{
 				return new LiveMeetingQuestionsDto(rs.getInt("liveMeetingQuestionId"), rs.getInt("userId"),rs.getString("question"),rs.getString("answer"), rs.getInt("answeredByUser"), rs.getFloat("importanceIndex"), rs.getDate("questionAskedOn"));
-			});
+			}, userId);
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}

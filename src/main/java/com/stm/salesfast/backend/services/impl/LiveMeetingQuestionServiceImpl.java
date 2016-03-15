@@ -57,6 +57,13 @@ public class LiveMeetingQuestionServiceImpl implements LiveMeetingQuestionServic
 	}
 	
 	@Override
+	public void insertAnswerToAQuestion(LiveMeetingQnAEntity quesWithAnswer){
+		liveMeetingDao.insertAnswerToAQuestion(quesWithAnswer.getAnswer(),
+				SessionConstants.USER_ID,
+				quesWithAnswer.getLiveMeetingQuestionId());
+	}
+	
+	@Override
 	public void notifyAllUsers(int userId){
 		String salesRepName = userService.getUserCompleteName(userId);
 		List<UserDto> biopharmaUsers = userService.getAllNonPhysicianUsers();
@@ -96,10 +103,11 @@ public class LiveMeetingQuestionServiceImpl implements LiveMeetingQuestionServic
 	@Override
 	public List<LiveMeetingQnAEntity> getAllUnansweredQuestions() {
 		
-		List<LiveMeetingQuestionsDto> questionAnswer = liveMeetingDao.getAllwoAnswer();  
+		List<LiveMeetingQuestionsDto> questionAnswer = liveMeetingDao.getAllwoAnswer(SessionConstants.USER_ID);  
 		List<LiveMeetingQnAEntity> questionAnswerEntities = new ArrayList<>();
 		for(LiveMeetingQuestionsDto eachQnA : questionAnswer){
 			questionAnswerEntities.add(new LiveMeetingQnAEntity(
+					eachQnA.getLiveMeetingQuestionsId(),
 					eachQnA.getUserId(),
 					eachQnA.getQuestion(),
 					eachQnA.getAnswer(),

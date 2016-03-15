@@ -28,4 +28,6 @@ public interface LiveMeetingQuestionService {
 	public void notifyAllUsers(int userId);
 
 	public List<LiveMeetingQnAEntity> getAllUnansweredQuestions();
+
+	public void insertAnswerToAQuestion(LiveMeetingQnAEntity quesWithAnswer);
 }

@@ -12,8 +12,9 @@ public interface LiveMeetingQuestionsDao {
 
 	public void insertQuestionOnly(LiveMeetingQuestionsDto liveMeetingQuestion);
 
-	public List<LiveMeetingQuestionsDto> getAllwoAnswer();
+	public void insertAnswerToAQuestion(String answer, int answeredByUser,
+			int liveMeetingQuestionId);
 
-	public void insertAnswerToAQuestion(LiveMeetingQuestionsDto liveMeetingQuestion);
+	public List<LiveMeetingQuestionsDto> getAllwoAnswer(int userId);
 	
 }

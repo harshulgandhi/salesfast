@@ -73,9 +73,13 @@ public class LiveMeetingController {
 	public  LiveMeetingQnAEntity[] getAllUnansweredQuestions() throws ParseException {
 		log.info("Fetching UNANSWERED questions and answers!");
 		List<LiveMeetingQnAEntity> allQuestions = liveMeetingService.getAllUnansweredQuestions();
-		for(LiveMeetingQnAEntity eachQues : allQuestions){
-			log.info(""+eachQues);
-		}
 		return allQuestions.toArray(new LiveMeetingQnAEntity[allQuestions.size()]);
+	}
+	
+	@RequestMapping(value="/submitanswer", method=RequestMethod.POST, consumes = "application/json")
+	@ResponseBody
+	public  void submitAnswer(@RequestBody LiveMeetingQnAEntity answer) throws ParseException {
+		log.info("New Answer received  : "+answer);
+		liveMeetingService.insertAnswerToAQuestion(answer);
 	}
 }

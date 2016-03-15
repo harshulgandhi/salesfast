@@ -92,7 +92,6 @@ var populateAllQuestions = function(questions){
 					'</tr>'		
 			);
 		}
-		
 	}
 }
 
@@ -122,8 +121,5 @@ var populateSimilarQuestions = function(questions){
 					'</tr>'		
 			);
 		}
-		
 	}
-	
-	
 }

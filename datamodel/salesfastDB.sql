@@ -41,7 +41,7 @@ CREATE TABLE `alignments` (
   CONSTRAINT `fk_Alignments_Physicians_Staging1` FOREIGN KEY (`physicianId`) REFERENCES `physicians_staging` (`physicianId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Alignments_Product1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Alignments_User1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=224 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -82,7 +82,7 @@ CREATE TABLE `appointment` (
   CONSTRAINT `fk_Appointment_Physicians_Staging1` FOREIGN KEY (`physicianId`) REFERENCES `physicians_staging` (`physicianId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Appointment_Products1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Appointment_User1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=152 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,7 +91,7 @@ CREATE TABLE `appointment` (
 
 LOCK TABLES `appointment` WRITE;
 /*!40000 ALTER TABLE `appointment` DISABLE KEYS */;
-INSERT INTO `appointment` VALUES (144,'15:00:00','2016-03-13',1,1,3,'CONFIRMED','11001','','',1,1,0),(145,'13:00:00','2016-03-13',1,1,4,'CONFIRMED','11001','','',1,1,0),(146,'00:56:00','2016-03-13',5,1,3,'CONFIRMED','11001','','',1,1,1),(147,'14:00:00','2016-03-13',5,1,4,'CONFIRMED','11001','','',1,1,1),(148,'14:58:00','2016-03-13',2,1,3,'CONFIRMED','11001','','',1,1,1),(149,'13:59:00','2016-03-13',2,1,4,'CONFIRMED','11001','','',1,1,1),(150,'01:01:00','2016-03-13',4,1,3,'CONFIRMED','11001','','',1,1,0),(151,'12:00:00','2016-03-13',4,1,4,'CONFIRMED','11001','','',1,1,0);
+INSERT INTO `appointment` VALUES (152,'14:59:00','2016-03-15',1,1,3,'CONFIRMED','11001','','',0,0,0);
 /*!40000 ALTER TABLE `appointment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -124,35 +124,6 @@ INSERT INTO `districts` VALUES (1,'East','Illinois',4),(2,'East','Maryland',4);
 UNLOCK TABLES;
 
 --
--- Table structure for table `edetailing_credentials`
---
-
-DROP TABLE IF EXISTS `edetailing_credentials`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `edetailing_credentials` (
-  `eDetailingCredentialId` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(45) NOT NULL,
-  `password` varchar(45) NOT NULL,
-  `physicianId` int(11) NOT NULL,
-  PRIMARY KEY (`eDetailingCredentialId`),
-  UNIQUE KEY `username_UNIQUE` (`username`),
-  UNIQUE KEY `password_UNIQUE` (`password`),
-  KEY `fk_eDetailing_Credentials_Physicians_Staging1_idx` (`physicianId`),
-  CONSTRAINT `fk_eDetailing_Credentials_Physicians_Staging1` FOREIGN KEY (`physicianId`) REFERENCES `physicians_staging` (`physicianId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `edetailing_credentials`
---
-
-LOCK TABLES `edetailing_credentials` WRITE;
-/*!40000 ALTER TABLE `edetailing_credentials` DISABLE KEYS */;
-/*!40000 ALTER TABLE `edetailing_credentials` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `edetailing_material`
 --
 
@@ -181,37 +152,7 @@ CREATE TABLE `edetailing_material` (
 
 LOCK TABLES `edetailing_material` WRITE;
 /*!40000 ALTER TABLE `edetailing_material` DISABLE KEYS */;
-INSERT INTO `edetailing_material` VALUES (13,'O_Med_1.pdf',4,'ONC',3),(14,'O_Med_1.pdf',2,'ONC',3),(27,'O_Med_1.pdf',5,'ONC',3),(28,'O_Med_2.pdf',5,'ONC',4),(29,'O_Med_2.pdf',2,'ONC',4),(30,'O_Med_1.pdf',2,'ONC',3),(31,'O_Med_1.pdf',2,'ONC',3);
 /*!40000 ALTER TABLE `edetailing_material` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `edetailingcredentials`
---
-
-DROP TABLE IF EXISTS `edetailingcredentials`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `edetailingcredentials` (
-  `eDetailingCredentialId` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(45) NOT NULL,
-  `password` varchar(45) NOT NULL,
-  `physicianId` int(11) NOT NULL,
-  PRIMARY KEY (`eDetailingCredentialId`),
-  UNIQUE KEY `username_UNIQUE` (`username`),
-  UNIQUE KEY `password_UNIQUE` (`password`),
-  KEY `fk_eDetailingCredentials_Physicians_Source1_idx` (`physicianId`),
-  CONSTRAINT `fk_eDetailingCredentials_Physicians_Source1` FOREIGN KEY (`physicianId`) REFERENCES `physicians_source` (`physicianId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `edetailingcredentials`
---
-
-LOCK TABLES `edetailingcredentials` WRITE;
-/*!40000 ALTER TABLE `edetailingcredentials` DISABLE KEYS */;
-/*!40000 ALTER TABLE `edetailingcredentials` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -258,7 +199,7 @@ CREATE TABLE `live_meeting_questions` (
   PRIMARY KEY (`liveMeetingQuestionId`),
   KEY `fk_user_live_meeting_update_1_idx` (`userId`),
   CONSTRAINT `fk_user_live_meeting_update_1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -267,7 +208,7 @@ CREATE TABLE `live_meeting_questions` (
 
 LOCK TABLES `live_meeting_questions` WRITE;
 /*!40000 ALTER TABLE `live_meeting_questions` DISABLE KEYS */;
-INSERT INTO `live_meeting_questions` VALUES (1,1,'Q1-This the question asked by physician during the meeting.','A1-This is answer for this question submitted by one of the district managers. This should be long enough for testing. ',2,1,'2016-03-14'),(2,1,'Q2-This the question asked by physician during the meeting.','A2-This is answer for this question submitted by one of the district managers. This should be long enough for testing. ',2,1,'2016-03-14'),(4,1,'Q3-This the question asked by physician during the meeting.',NULL,NULL,1,'2016-03-14');
+INSERT INTO `live_meeting_questions` VALUES (1,1,'Q1-This the question asked by physician during the meeting.','A1-This is answer for this question submitted by one of the district managers. This should be long enough for testing. ',2,1,'2016-03-14'),(2,1,'Q2-This the question asked by physician during the meeting.','A2-This is answer for this question submitted by one of the district managers. This should be long enough for testing. ',2,1,'2016-03-14'),(4,1,'Q3-This the question asked by physician during the meeting.','This is the answer to question three .. this should be a lon answer',4,1,'2016-03-14'),(5,1,'Q2-This the question asked',NULL,NULL,1,'2016-03-15'),(6,1,'Q 5- Physician asked me this question about O_Med_1 that i am not able to answer',NULL,NULL,1,'2016-03-15'),(7,1,'Q 6 - physician asked me this question and i dont know the answer','Here is the answer to your question. I hope this helps.',4,1,'2016-03-15');
 /*!40000 ALTER TABLE `live_meeting_questions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -326,7 +267,6 @@ CREATE TABLE `meeting_experience` (
 
 LOCK TABLES `meeting_experience` WRITE;
 /*!40000 ALTER TABLE `meeting_experience` DISABLE KEYS */;
-INSERT INTO `meeting_experience` VALUES (1,0,1,'PRESCRIBING',1,0,1,1,0,1,146),(2,0,1,'LOST',1,1,1,1,0,0,150),(3,0,1,'LOST',0,0,1,1,1,1,151),(4,0,1,'LOST',1,1,1,1,0,0,145),(5,0,1,'LOST',1,0,1,1,1,0,144),(6,0,1,'PRESCRIBING',0,1,0,1,1,1,147),(7,0,1,'PRESCRIBING',0,1,0,1,1,1,147),(8,0,1,'PRESCRIBING',1,0,1,0,1,1,149),(9,0,1,'PRESCRIBING',0,1,1,1,1,0,148),(10,1,0,'PRESCRIBING',1,0,1,0,1,1,149),(11,1,0,'PRESCRIBING',0,1,0,1,1,1,148),(12,1,0,'PRESCRIBING',0,1,0,1,1,1,148),(13,1,0,'PRESCRIBING',0,1,0,1,1,1,148),(14,1,0,'PRESCRIBING',1,0,1,0,1,1,146),(15,1,0,'PRESCRIBING',0,0,1,1,1,1,147);
 /*!40000 ALTER TABLE `meeting_experience` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -356,7 +296,7 @@ CREATE TABLE `meeting_update` (
   CONSTRAINT `fk_Meeting_Update_Medical_Fields1` FOREIGN KEY (`medicalFieldId`) REFERENCES `medical_fields` (`medicalFieldId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Meeting_Update_Physicians_Staging1` FOREIGN KEY (`physicianId`) REFERENCES `physicians_staging` (`physicianId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Meeting_Update_Products1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -365,7 +305,6 @@ CREATE TABLE `meeting_update` (
 
 LOCK TABLES `meeting_update` WRITE;
 /*!40000 ALTER TABLE `meeting_update` DISABLE KEYS */;
-INSERT INTO `meeting_update` VALUES (21,'2016-03-13','PRESCRIBING',1,5,3,'ONC',146),(22,'2016-03-13','LOST',0,4,3,'ONC',150),(23,'2016-03-13','LOST',0,4,4,'ONC',151),(24,'2016-03-13','LOST',0,1,4,'ONC',145),(25,'2016-03-13','LOST',0,1,3,'ONC',144),(26,'2016-03-13','PRESCRIBING',1,5,4,'ONC',147),(27,'2016-03-13','PRESCRIBING',1,2,4,'ONC',149),(28,'2016-03-13','PRESCRIBING',1,2,3,'ONC',148);
 /*!40000 ALTER TABLE `meeting_update` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -385,7 +324,7 @@ CREATE TABLE `notifications` (
   PRIMARY KEY (`notificationId`),
   KEY `fk_Notifications_User1_idx` (`userId`),
   CONSTRAINT `fk_Notifications_User1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -394,7 +333,6 @@ CREATE TABLE `notifications` (
 
 LOCK TABLES `notifications` WRITE;
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
-INSERT INTO `notifications` VALUES (40,'Sales Representative Johny Dep has a question that needs answering.',0,1,'LIVE MEETING QUESTION'),(41,'Sales Representative Johny Dep has a question that needs answering.',0,2,'LIVE MEETING QUESTION'),(42,'Sales Representative Johny Dep has a question that needs answering.',0,3,'LIVE MEETING QUESTION'),(43,'Sales Representative Johny Dep has a question that needs answering.',0,4,'LIVE MEETING QUESTION');
 /*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -545,7 +483,7 @@ CREATE TABLE `products` (
   PRIMARY KEY (`productId`),
   KEY `fk_Products_Medical_Fields1_idx` (`medicalFieldId`),
   CONSTRAINT `fk_Products_Medical_Fields1` FOREIGN KEY (`medicalFieldId`) REFERENCES `medical_fields` (`medicalFieldId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -695,7 +633,7 @@ CREATE TABLE `training_material` (
   CONSTRAINT `fk_Training_Material_Medical_Fields1` FOREIGN KEY (`medicalFieldId`) REFERENCES `medical_fields` (`medicalFieldId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Training_Material_Products1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Training_Material_User1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -738,7 +676,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Johny','Dep','salesfast.stm@gmail.com','99009922','22-103, Normanton Park',NULL,'Florence','South Carolina','11001','2014-01-01','9999-01-01'),(2,'Chritain','Bale','salesfast.stm@gmail.com','99223311','104-Block 5, Beverly hills',NULL,'Florence','South Carolina','11003','2014-01-01','9999-01-01'),(3,'David','Schwimmer','salesfast.stm@gmail.com','77664455','102-Block 3, Beverly hills',NULL,'Florence','South Carolina','11006','2014-01-01','9999-01-01'),(4,'Morgan','Freeman','salesfast.stm@gmail.com','00992900','18-104, Clementi Heights',NULL,'Florence','South Carolina','11006','2013-01-01','9999-01-01'),(13,'Clint','Eastwood','salesfast.stm@gmail.com','99992299','2-43 New Ridge Mountain',NULL,'Florence','South Carolina','11001',NULL,NULL),(14,'Alfred','Hitchcock','salesfast.stm@gmail.com','11110000','25 Beverly Hill',NULL,'Florence','South Carolina','11001',NULL,NULL),(15,'Quentin','Tarantino','salesfast.stm@gmail.com','66667766','23-103, Normanton Park',NULL,'Florence','South Carolina','11001',NULL,NULL);
+INSERT INTO `user` VALUES (1,'Johny','Dep','salesfast.stm@gmail.com','99009922','22-103, Normanton Park',NULL,'Florence','South Carolina','11001','2014-01-01','9999-01-01'),(2,'Chritain','Bale','salesfast.stm@gmail.com','99223311','104-Block 5, Beverly hills',NULL,'Florence','South Carolina','11003','2014-01-01','9999-01-01'),(3,'David','Schwimmer','salesfast.stm@gmail.com','77664455','102-Block 3, Beverly hills',NULL,'Florence','South Carolina','11006','2014-01-01','9999-01-01'),(4,'Morgan','Freeman','salesfast.stm@gmail.com','00992900','18-104, Clementi Heights',NULL,'Florence','South Carolina','11006','2013-01-01','9999-01-01');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -768,7 +706,7 @@ CREATE TABLE `user_account` (
 
 LOCK TABLES `user_account` WRITE;
 /*!40000 ALTER TABLE `user_account` DISABLE KEYS */;
-INSERT INTO `user_account` VALUES (1,'christain','balechristain',2),(2,'johny','depjohny',1),(3,'david','schwimmerdavid',3),(4,'morgan','freemanmorgan',4),(10,'clint','eastwood101',13),(11,'alfred','hitchcock256',14),(12,'quentin','tarantino530',15);
+INSERT INTO `user_account` VALUES (1,'christain','balechristain',2),(2,'johny','depjohny',1),(3,'david','schwimmerdavid',3),(4,'morgan','freemanmorgan',4);
 /*!40000 ALTER TABLE `user_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -797,7 +735,7 @@ CREATE TABLE `user_to_role` (
 
 LOCK TABLES `user_to_role` WRITE;
 /*!40000 ALTER TABLE `user_to_role` DISABLE KEYS */;
-INSERT INTO `user_to_role` VALUES (1,1,1),(2,2,1),(3,3,1),(4,4,2),(9,13,4),(10,14,4),(11,15,4);
+INSERT INTO `user_to_role` VALUES (1,1,1),(2,2,1),(3,3,1),(4,4,2);
 /*!40000 ALTER TABLE `user_to_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -838,4 +776,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-03-14 19:36:00
+-- Dump completed on 2016-03-15 16:42:04

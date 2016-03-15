@@ -89,19 +89,102 @@ $('.submit-selected-alignments').click(function(){
 		});
 	});
 	if(!isDataInvalid){
-		var fixedAppointmentDetails = createJson(physIds, appointTimeList, productIds, appointDateList, appointStatusList, additionalNotesList);
-		console.log("Json : "+JSON.stringify(fixedAppointmentDetails));
-		$.ajax({
-			type : 'POST',
-			url : "/fixappointments",
-			data : JSON.stringify(fixedAppointmentDetails),
-			contentType : "application/json; charset=utf-8",
-			success: function(){
-				location.reload(true);
-			}
-		});
+		fixAppointments(physIds, appointTimeList, productIds, appointDateList, appointStatusList, additionalNotesList);
 	}
 });
+
+
+var fixAppointments = function(physIds, appointTimeList, productIds, appointDateList, appointStatusList, additionalNotesList){
+	$.ajax({
+		type: 'GET',
+		url : '/getfutureappointments',
+		dataType : 'json',
+		success : function(data){
+	    	console.log("Data received (Future appoinments): "+JSON.stringify(data));
+	    	var fixedAppointmentDetails = createJson(physIds, appointTimeList, productIds, appointDateList, appointStatusList, additionalNotesList);
+	    	console.log("Json : "+JSON.stringify(fixedAppointmentDetails));
+	    	if(checkFutureAppointmentOverlap(data, fixedAppointmentDetails) &&  checkTodaysAppointmentOverlap(data)){
+		    	$.ajax({
+		    		type : 'POST',
+		    		url : "/fixappointments",
+		    		data : JSON.stringify(fixedAppointmentDetails),
+		    		contentType : "application/json; charset=utf-8",
+		    		success: function(){
+		    			location.reload(true);
+		    		}
+		    	});
+	    	}
+		},
+		error : function(e){
+			console.log("Error : "+JSON.stringify(e));
+		}
+	});
+	
+}
+
+var checkFutureAppointmentOverlap = function(futureAppointments, currentAppointments){
+	console.log("Checking for overlapping appointments ");
+	console.log("Future appointments : "+JSON.stringify(futureAppointments));
+	console.log("Current appointments : "+JSON.stringify(currentAppointments));
+	for(var i = 0; i<currentAppointments.length; i++){
+		for(var j = 0; j<futureAppointments.length; j++){
+			if(currentAppointments[i]["appointmentDate"] == futureAppointments[i]["date"] ){
+				var time_1 = (new Date (new Date().toDateString() + ' ' + currentAppointments[i]["appointmentTime"]));
+				var time_2 = (new Date (new Date().toDateString() + ' ' + futureAppointments[i]["time"]));
+				var diff = Math.abs(time_1 - time_2);
+				console.log("Diff : "+diff);
+				if(Math.floor((diff/1000)/60) <= 15){
+					alert("One of the appointments you are booking overlaps (lies within 15 minutes) with already confirmed appointment with Dr. " +
+							futureAppointments[i]["physicianName"]+" on "+ futureAppointments[i]["date"]+ " at "+ futureAppointments[i]["time"]+". Please" +
+							" try to reschedule this appointment.");
+					return false;
+				}
+			}
+		}
+	}
+	return true;
+}
+
+
+var checkTodaysAppointmentOverlap = function(currentAppointments){
+	console.log("Checking for overlapping in today's appointments ");
+	console.log("Current appointments : "+JSON.stringify(currentAppointments));
+	for(var i = 0; i<currentAppointments.length; i++){
+		for(var j = 0; j<currentAppointments.length; j++){
+			if(currentAppointments[i]["appointmentDate"] == currentAppointments[i]["appointmentDate"] ){
+				var time_1 = (new Date (new Date().toDateString() + ' ' + currentAppointments[i]["appointmentTime"]));
+				var time_2 = (new Date (new Date().toDateString() + ' ' + currentAppointments[i]["appointmentTime"]));
+				var diff = Math.abs(time_1 - time_2);
+				console.log("Diff : "+diff);
+				if(Math.floor((diff/1000)/60) <= 15){
+					alert('Two of the appointments you are trying to fix, for '+currentAppointments[i]["appointmentDate"]+' @ '
+							+currentAppointments[i]["appointmentTime"]+', overlap (lie within 15 minutes) with each other.'
+							+'Try to rechedule either of these to be able to submit all appointments.');
+					return false;
+				}
+			}
+		}
+	}
+	return true;
+}
+
+
+var getFutureAppointments = function(){
+	var futureAppointments = [];
+	$.ajax({
+		type: 'GET',
+		url : '/getfutureappointments',
+		dataType : 'json',
+		success : function(data){
+	    	console.log("Data received (Future appoinments): "+JSON.stringify(data));
+	    	futureAppointments = data;
+		},
+		error : function(e){
+			console.log("Error : "+JSON.stringify(e));
+		}
+	});
+	return futureAppointments;
+}
 
 //Function to create JSON to store physician Ids and corresponding 
 //appointment time

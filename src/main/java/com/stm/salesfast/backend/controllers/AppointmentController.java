@@ -30,6 +30,7 @@ import com.stm.salesfast.backend.services.specs.NotificationService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
 import com.stm.salesfast.backend.entity.MeetingUpdateEntity;
 import com.stm.salesfast.constant.ConstantValues;
+import com.stm.salesfast.constant.SessionConstants;
 
 @Controller
 public class AppointmentController {
@@ -59,8 +60,8 @@ public class AppointmentController {
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		CURRENTUSERNAME = user.getUsername(); //get logged in user name
 		
-		List<AppointmentEntity> todaysAppointmentsList = appointmentFetchService.getTodaysAppointmentToShow(userAccountService.getUserIdByUserName(CURRENTUSERNAME));
-		List<AppointmentEntity> futureAppointmentsList = appointmentFetchService.getFutureAppointmentToShow(userAccountService.getUserIdByUserName(CURRENTUSERNAME));
+		List<AppointmentEntity> todaysAppointmentsList = appointmentFetchService.getTodaysAppointmentToShow(SessionConstants.USER_ID);
+		List<AppointmentEntity> futureAppointmentsList = appointmentFetchService.getFutureAppointmentToShow(SessionConstants.USER_ID);
 		List<AlignedPhysicianEntity> alignedPhysicianInVicinity = alignmentFetchService.getAlignmentByUserIdInVicinityOfAppointments(
 				(userAccountService.getUserAccountByUserName(CURRENTUSERNAME)).getUserId());
 		List<AlignedPhysicianFollowUpEntity> followUpAppointments = appointmentFetchService.followUpAppointmentsToShow();
@@ -94,6 +95,14 @@ public class AppointmentController {
 		log.info("Cancellation request received for appointment "+appointmentId+" due to "+cancellationReason);
 		appointmentFetchService.cancelAppointment(appointmentId, cancellationReason);
 		
+	}
+	
+	@RequestMapping(value="/getfutureappointments",  headers="Accept=*/*", method=RequestMethod.GET, produces="appliation/json")
+	@ResponseBody
+	public AppointmentEntity[] getAllQuestionsWithAnswers() throws ParseException{
+		log.info("Fetching all questions and answers!");
+		List<AppointmentEntity> futureAppointmentsList = appointmentFetchService.getFutureAppointmentToShow(SessionConstants.USER_ID);
+		return futureAppointmentsList.toArray(new AppointmentEntity[futureAppointmentsList.size()]);
 	}
 }
 

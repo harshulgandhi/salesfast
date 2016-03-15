@@ -56,7 +56,9 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 				new AntPathRequestMatcher("/livemeetingquestions"),
 				new AntPathRequestMatcher("/getallqna"),
 				new AntPathRequestMatcher("/submitquestion"),
-				new AntPathRequestMatcher("/getsimilarqna")
+				new AntPathRequestMatcher("/getsimilarqna"),
+				new AntPathRequestMatcher("/unansweredques"),
+				new AntPathRequestMatcher("/getunansweredques")
 				};
 
 		@Override

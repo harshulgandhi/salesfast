@@ -10,3 +10,40 @@ h1{
 .select-bool-flag{
 	width : 40%;
 }
+
+.confirmation-status{
+	font-style: italic;
+    font-weight: 600;
+}
+nav.navbar-collapse.collapse a{
+	color: white;
+}
+
+.navbar-custom-style{
+	background-color: #21213A;	
+}
+
+.product-dropdown-menu{
+	background-color: #21213A;
+}
+
+a.navbar-brand.navbar-menu-items{
+	color: white;
+}
+
+.notification-counter {   
+    position: absolute;
+    top: 13%;
+    left: 87%;
+    background-color: rgb(197, 114, 114);
+    color: #FFFFFF;
+    border-radius: 8px;
+    padding: 1px 5px;
+    font: 12px Verdana;
+}
+
+nav.navbar-collapse ul li:hover,nav.navbar-collapse ul li ul:hover,nav.navbar-collapse ul li ul li:hover {
+    background-color: cadetblue;
+    font-weight: 600;
+}
+

@@ -26,4 +26,6 @@ public interface LiveMeetingQuestionService {
 			String toEmailId);
 
 	public void notifyAllUsers(int userId);
+
+	public List<LiveMeetingQnAEntity> getAllUnansweredQuestions();
 }

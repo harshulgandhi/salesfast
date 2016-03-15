@@ -57,9 +57,25 @@ public class LiveMeetingController {
 	
 	@RequestMapping(value="/submitquestion", method=RequestMethod.POST, consumes = "application/json")
 	@ResponseBody
-	public  void addNewProduct(@RequestBody NewQuestionEntity newQuestion) throws ParseException {
+	public  void addNewQuestion(@RequestBody NewQuestionEntity newQuestion) throws ParseException {
 		log.info("New question received  : "+newQuestion);
 		newQuestionSubmitted = newQuestion.getQuestion();
 		liveMeetingService.insertQuestionOnly(newQuestion);
+	}
+
+	@RequestMapping(value="/unansweredques", method=RequestMethod.GET)
+	public String answerAQuesPage(){
+		return "answeraquestion";
+	}
+	
+	@RequestMapping(value="/getunansweredques", headers="Accept=*/*", method=RequestMethod.GET, produces="appliation/json")
+	@ResponseBody
+	public  LiveMeetingQnAEntity[] getAllUnansweredQuestions() throws ParseException {
+		log.info("Fetching UNANSWERED questions and answers!");
+		List<LiveMeetingQnAEntity> allQuestions = liveMeetingService.getAllUnansweredQuestions();
+		for(LiveMeetingQnAEntity eachQues : allQuestions){
+			log.info(""+eachQues);
+		}
+		return allQuestions.toArray(new LiveMeetingQnAEntity[allQuestions.size()]);
 	}
 }

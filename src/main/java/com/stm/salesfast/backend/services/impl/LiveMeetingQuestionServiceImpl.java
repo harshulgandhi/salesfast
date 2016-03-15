@@ -90,7 +90,25 @@ public class LiveMeetingQuestionServiceImpl implements LiveMeetingQuestionServic
 		
 		return questionAnswerEntities;
 	}
-	
+	/**
+	 * Questions that need to be answered
+	 * */
+	@Override
+	public List<LiveMeetingQnAEntity> getAllUnansweredQuestions() {
+		
+		List<LiveMeetingQuestionsDto> questionAnswer = liveMeetingDao.getAllwoAnswer();  
+		List<LiveMeetingQnAEntity> questionAnswerEntities = new ArrayList<>();
+		for(LiveMeetingQuestionsDto eachQnA : questionAnswer){
+			questionAnswerEntities.add(new LiveMeetingQnAEntity(
+					eachQnA.getUserId(),
+					eachQnA.getQuestion(),
+					eachQnA.getAnswer(),
+					eachQnA.getImportanceIndex()
+					));
+		}
+		
+		return questionAnswerEntities;
+	}
 	
 	/**
 	 * Fetching all similar questions based on 
@@ -111,6 +129,7 @@ public class LiveMeetingQuestionServiceImpl implements LiveMeetingQuestionServic
 		
 		return similarQuestions;
 	}
+	
 	
 	@Override
 	public double checkSimilarity(String newQuestion, String existingQuestion){

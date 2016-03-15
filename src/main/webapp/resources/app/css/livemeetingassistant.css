@@ -26,6 +26,16 @@
 	
 }
 
+.row-sub-header{
+	margin-top: 0%;
+    margin-bottom: 1%;
+    width: 97%;
+    margin-left: 16px;
+    padding-top: 1%;
+    padding-bottom: 0%;
+    border-bottom: 2px solid rgb(25, 16, 162);
+}
+
 
 .odd-quest-row{
 	background-color: floralwhite;

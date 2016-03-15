@@ -21,18 +21,20 @@ public class LiveMeetingQuestionsDaoImpl implements LiveMeetingQuestionsDao {
 			+ "VALUES (?,?,?,?,?)";
 	
 	private static final String INSERT_QUESTION_ONLY = "INSERT INTO live_meeting_questions "
-			+ "(userId, question) "
-			+ "VALUES (?,?)";
-	private static final String FETCH_ALL = "SELECT * FROM live_meeting_questions";
+			+ "(userId, question, questionAskedOn) "
+			+ "VALUES (?,?,?)";
+	private static final String FETCH_ALL = "SELECT * FROM live_meeting_questions WHERE answer IS NOT NULL";
 	
 	private static final String FETCH_QUES_wo_ANSWER = "SELECT * FROM live_meeting_questions "
 			+ "WHERE answer IS null AND "
-			+ "answeredById IS null "
+			+ "answeredByUser IS null "
 			+ "ORDER BY questionAskedOn DESC";
 	private static final String INSERT_ANSWER_TOA_QUES = "UPDATE live_meeting_questions "
 			+ "SET answer = ?, "
 			+ "answeredByUser = ? "
 			+ "WHERE liveMeetingQuestionId = ?";
+	
+	
 	
 	@Override
 	public void insert(LiveMeetingQuestionsDto liveMeetingQuestion) {

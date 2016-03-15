@@ -1,0 +1,38 @@
+@CHARSET "UTF-8";
+
+.row-header{
+	margin-top: 7%;
+	border-bottom: 2px solid #1910A2;
+    padding-top: 1%;
+    padding-bottom: 0%;
+}
+
+.form-group.question-ele, .form-group.write-your-answer-ele{
+    margin-right: 0px;
+    margin-left: 0px;	
+}
+.submit-answer{
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-bottom: 1%;
+    border-style: groove;
+	margin-bottom: 2%;
+    
+}
+
+.slidedown-questions{
+	width: 95%;
+	text-align: left;
+	margin-bottom: 2%;
+	margin-top: 2%;
+	color: #000;
+	background-color: #D4D4D4;
+	border-color: #C3C1C1; 
+	border-radius: 0px;
+    margin-left: 15px;
+	
+}
+
+
+
+

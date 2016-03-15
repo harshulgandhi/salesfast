@@ -19,12 +19,11 @@ $(document).ready(function() {
 		
 	});
 	$('#notifications-table tbody').on( 'click', '.detail-notification', function () {
-		/*$.ajax({
-			type: 'GET',
-			url: '/showappointments',
-		});*/
+		var r_ = $(this).parents('tr');
+		if(r_.find('.notification-category').html() == "LIVE MEETING QUESTION"){
+			window.location.replace("/home")
+		}
 		
-		window.location.replace("/showappointments")
 	});
 });
  

@@ -42,8 +42,13 @@ a.navbar-brand.navbar-menu-items{
     font: 12px Verdana;
 }
 
-nav.navbar-collapse ul li:hover,nav.navbar-collapse ul li ul:hover,nav.navbar-collapse ul li ul li:hover {
+.dropdown-menu>li>a:hover{
+	background-color: cadetblue;
+    font-weight: 600;
+    color: black;
+}
+
+nav.navbar-collapse ul li:hover,nav.navbar-collapse ul li ul:hover,nav.navbar-collapse ul li.dropdown ul.product-dropdown-menu li:hover {
     background-color: cadetblue;
     font-weight: 600;
 }
-

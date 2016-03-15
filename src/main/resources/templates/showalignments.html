@@ -40,7 +40,7 @@
 					<tbody>
 						<tr th:each="eachAlignment : ${listOfAlignedPhysician}">
 							<td style="display:none" th:text="${eachAlignment.physicianId}"></td>
-							<td th:text="${eachAlignment.firstName} + ' '+${eachAlignment.lastName}"></td>
+							<td class="physician-name" th:text="${eachAlignment.firstName} + ' '+${eachAlignment.lastName}"></td>
 							<td th:text="${eachAlignment.email}"></td>
 							<td th:text="${eachAlignment.contactNumber}"></td>
 							<td th:text="${eachAlignment.addressLineOne} +' '+ ${eachAlignment.addressLineTwo}+' '+${eachAlignment.city}+' '+${eachAlignment.zip}"></td>
@@ -71,7 +71,7 @@
 				</table>
 			</div>
 		</div>
-		<div class="row submit-for-appointments"><button type="submit" class="submit-selected-alignments">Submit Appointments</button></div>
+		<div class="row submit-for-appointments"><button type="button" class="btn btn-default submit-selected-alignments">Submit Appointments</button></div>
 	</div>
 <!-- Common footer -->
 <div th:replace="fragments/footer :: footer"></div>

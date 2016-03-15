@@ -22,7 +22,10 @@ $(document).ready(function() {
 		var r_ = $(this).parents('tr');
 		if(r_.find('.notification-category').html() == "LIVE MEETING QUESTION"){
 			window.location.replace("/unansweredques")
+		}else if(r_.find('.notification-category').html() == "QUESTION WAS ANSWERED"){
+			window.location.replace("/livemeetingquestions")
 		}
+		
 		
 	});
 });

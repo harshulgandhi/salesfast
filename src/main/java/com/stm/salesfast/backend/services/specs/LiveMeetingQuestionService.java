@@ -30,4 +30,6 @@ public interface LiveMeetingQuestionService {
 	public List<LiveMeetingQnAEntity> getAllUnansweredQuestions();
 
 	public void insertAnswerToAQuestion(LiveMeetingQnAEntity quesWithAnswer);
+
+	public List<LiveMeetingQnAEntity> getAllQuestionsAskedBySelf();
 }

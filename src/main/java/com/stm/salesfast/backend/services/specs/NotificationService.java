@@ -25,5 +25,7 @@ public interface NotificationService {
 			String notificationCategory);
 	public void insertNotificationLiveMeetingQuestion(String salesRepName, int userId,
 			String notificationCategory);
+	public void insertNotificationQuestionAnswered(String answeredByName, int userId,
+			String notificationCategory);
 	
 }

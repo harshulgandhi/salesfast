@@ -55,6 +55,17 @@ public class LiveMeetingController {
 		return allQuestions.toArray(new LiveMeetingQnAEntity[allQuestions.size()]);
 	}
 	
+	@RequestMapping(value="/getquestionaskedbyself",  headers="Accept=*/*", method=RequestMethod.GET, produces="appliation/json")
+	@ResponseBody
+	public LiveMeetingQnAEntity[] getQuestionAskedBySelf(){
+		log.info("Fetching SELF ASKED questions and answers!");
+		List<LiveMeetingQnAEntity> allQuestions = liveMeetingService.getAllQuestionsAskedBySelf();
+		for(LiveMeetingQnAEntity eachQues : allQuestions){
+			log.info(""+eachQues);
+		}
+		return allQuestions.toArray(new LiveMeetingQnAEntity[allQuestions.size()]);
+	}
+	
 	@RequestMapping(value="/submitquestion", method=RequestMethod.POST, consumes = "application/json")
 	@ResponseBody
 	public  void addNewQuestion(@RequestBody NewQuestionEntity newQuestion) throws ParseException {

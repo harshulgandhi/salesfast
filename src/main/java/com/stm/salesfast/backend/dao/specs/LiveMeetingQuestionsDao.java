@@ -16,5 +16,7 @@ public interface LiveMeetingQuestionsDao {
 			int liveMeetingQuestionId);
 
 	public List<LiveMeetingQuestionsDto> getAllwoAnswer(int userId);
+
+	public List<LiveMeetingQuestionsDto> getAllAskedBySelf(int userId);
 	
 }

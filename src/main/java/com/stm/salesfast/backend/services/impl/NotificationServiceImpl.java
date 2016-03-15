@@ -108,4 +108,10 @@ public class NotificationServiceImpl implements NotificationService {
 		String notification = String.format(ConstantValues.FORMAT_NEW_QUESTION, salesRepName);
 		notificationDao.insertNotification(new NotificationsDto(notification, false, userId, notificationCategory));
 	}
+	
+	@Override
+	public void insertNotificationQuestionAnswered(String answeredByName, int userId, String notificationCategory){
+		String notification = String.format(ConstantValues.FORMAT_QUESTION_ANSWERED, answeredByName);
+		notificationDao.insertNotification(new NotificationsDto(notification, false, userId, notificationCategory));
+	}
 }

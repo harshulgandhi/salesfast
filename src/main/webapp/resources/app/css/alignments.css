@@ -13,3 +13,7 @@
     margin-left: -15%;
     width: 130%;
 }
+
+table#aligned-physician-table>thead>tr {
+    font-style: italic;
+}

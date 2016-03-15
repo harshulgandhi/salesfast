@@ -17,6 +17,8 @@ public final class ConstantValues {
 	
 	public static final String FORMAT_NEW_QUESTION = "Sales Representative %s has a question that needs answering.";
 	
+	public static final String FORMAT_QUESTION_ANSWERED = "Mr. %s just answered a question you asked during one of your meetings with a physician.";
+	
 	public static final String TRAINING_MATERIAL_PATH = "resources/docs/virtuallearning/";
 	
 	public static final String ORGANISATIONAL_DOCS_PATH = "resources/docs/organisational/";

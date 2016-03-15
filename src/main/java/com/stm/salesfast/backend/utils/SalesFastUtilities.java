@@ -66,8 +66,8 @@ public class SalesFastUtilities {
 		int longerLength = longer.length();
 		return (longerLength - StringUtils.getLevenshteinDistance(longer, shorter)) / (double) longerLength;
 	}
-
-	/*public static void main(String[] args) {
+/*
+	public static void main(String[] args) {
 		System.out.println("distance : "+SalesFastUtilities.checkSimilarQuestions(""));
 	}*/
 }

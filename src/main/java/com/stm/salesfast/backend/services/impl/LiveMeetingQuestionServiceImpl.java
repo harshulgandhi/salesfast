@@ -61,6 +61,16 @@ public class LiveMeetingQuestionServiceImpl implements LiveMeetingQuestionServic
 		liveMeetingDao.insertAnswerToAQuestion(quesWithAnswer.getAnswer(),
 				SessionConstants.USER_ID,
 				quesWithAnswer.getLiveMeetingQuestionId());
+		
+		//Notify the user who asked the question
+		String answeredBy = userService.getUserCompleteName(SessionConstants.USER_ID);
+		notification.insertNotificationQuestionAnswered(answeredBy, quesWithAnswer.getUserId(), "QUESTION WAS ANSWERED");
+		
+		//send email to user who asked the question
+		String emailBody = answeredBy+" answered a question that you have asked."
+				+ " Visit http://127.0.0.1/livemeetingquestions to see the answer";
+		String subject = "Your question just got answered";
+		sendLiveMeetingNewQuestionEmail(subject, emailBody, userService.getUserDetails(quesWithAnswer.getUserId()).getEmail());
 	}
 	
 	@Override
@@ -68,16 +78,18 @@ public class LiveMeetingQuestionServiceImpl implements LiveMeetingQuestionServic
 		String salesRepName = userService.getUserCompleteName(userId);
 		List<UserDto> biopharmaUsers = userService.getAllNonPhysicianUsers();
 		for(UserDto eachUser : biopharmaUsers){
-			//insert into notifications for all users
-			notification.insertNotificationLiveMeetingQuestion(salesRepName, eachUser.getUserId(), "LIVE MEETING QUESTION");
-			
-			//send email to all users
-			String emailBody = "Sales Representative "+salesRepName+" has posted a question "
-					+ "that he is not able to answer to a physician he is detailing right now. "
-					+ "Log into SalesFast @ http://127.0.0.1/unansweredquest to read the question"
-					+ "and answer it if possible.";
-			String subject = "A SalesRep needs your help.";
-			sendLiveMeetingNewQuestionEmail(subject, emailBody, eachUser.getEmail());
+			if(eachUser.getUserId() != userId){
+				//insert into notifications for all users
+				notification.insertNotificationLiveMeetingQuestion(salesRepName, eachUser.getUserId(), "LIVE MEETING QUESTION");
+				
+				//send email to all users
+				String emailBody = "Sales Representative "+salesRepName+" has posted a question "
+						+ "that he is not able to answer to a physician he is detailing right now. "
+						+ "Log into SalesFast @ http://127.0.0.1/unansweredquest to read the question"
+						+ "and answer it if possible.";
+				String subject = "A SalesRep needs your help.";
+				sendLiveMeetingNewQuestionEmail(subject, emailBody, eachUser.getEmail());
+			}
 		}
 	}
 	
@@ -97,6 +109,7 @@ public class LiveMeetingQuestionServiceImpl implements LiveMeetingQuestionServic
 		
 		return questionAnswerEntities;
 	}
+	
 	/**
 	 * Questions that need to be answered
 	 * */
@@ -117,6 +130,29 @@ public class LiveMeetingQuestionServiceImpl implements LiveMeetingQuestionServic
 		
 		return questionAnswerEntities;
 	}
+
+	
+	/**
+	 * Questions that were asked by logged in user
+	 * */
+	@Override
+	public List<LiveMeetingQnAEntity> getAllQuestionsAskedBySelf() {
+		
+		List<LiveMeetingQuestionsDto> questionAnswer = liveMeetingDao.getAllAskedBySelf(SessionConstants.USER_ID);  
+		List<LiveMeetingQnAEntity> questionAnswerEntities = new ArrayList<>();
+		for(LiveMeetingQuestionsDto eachQnA : questionAnswer){
+			questionAnswerEntities.add(new LiveMeetingQnAEntity(
+					eachQnA.getLiveMeetingQuestionsId(),
+					eachQnA.getUserId(),
+					eachQnA.getQuestion(),
+					eachQnA.getAnswer(),
+					eachQnA.getImportanceIndex()
+					));
+		}
+		
+		return questionAnswerEntities;
+	}
+	
 	
 	/**
 	 * Fetching all similar questions based on 

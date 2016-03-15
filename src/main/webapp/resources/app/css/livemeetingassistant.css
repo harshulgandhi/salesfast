@@ -13,7 +13,7 @@
 }
 
 
-.slidedown-questions{
+.slidedown-questions,.slidedown-questions-self {
 	width: 95%;
 	text-align: left;
 	margin-bottom: 2%;

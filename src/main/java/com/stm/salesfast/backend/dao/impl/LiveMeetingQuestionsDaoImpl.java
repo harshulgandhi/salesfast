@@ -35,6 +35,10 @@ public class LiveMeetingQuestionsDaoImpl implements LiveMeetingQuestionsDao {
 			+ "answeredByUser = ? "
 			+ "WHERE liveMeetingQuestionId = ?";
 	
+	private static final String FETCH_ALL_ASKED_BY_SELF = "SELECT * FROM live_meeting_questions WHERE "
+			+ "userId = ? ORDER BY questionAskedOn DESC";
+	
+	
 	
 	@Override
 	public void insert(LiveMeetingQuestionsDto liveMeetingQuestion) {
@@ -94,6 +98,18 @@ public class LiveMeetingQuestionsDaoImpl implements LiveMeetingQuestionsDao {
 	public List<LiveMeetingQuestionsDto> getAllwoAnswer(int userId) {
 		try{
 			return jdbcTemplate.query(FETCH_QUES_wo_ANSWER, (rs, rownnum)->{
+				return new LiveMeetingQuestionsDto(rs.getInt("liveMeetingQuestionId"), rs.getInt("userId"),rs.getString("question"),rs.getString("answer"), rs.getInt("answeredByUser"), rs.getFloat("importanceIndex"), rs.getDate("questionAskedOn"));
+			}, userId);
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public List<LiveMeetingQuestionsDto> getAllAskedBySelf(int userId) {
+		try{
+			return jdbcTemplate.query(FETCH_ALL_ASKED_BY_SELF, (rs, rownnum)->{
 				return new LiveMeetingQuestionsDto(rs.getInt("liveMeetingQuestionId"), rs.getInt("userId"),rs.getString("question"),rs.getString("answer"), rs.getInt("answeredByUser"), rs.getFloat("importanceIndex"), rs.getDate("questionAskedOn"));
 			}, userId);
 		}catch(DataAccessException e){

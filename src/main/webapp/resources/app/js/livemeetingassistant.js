@@ -7,7 +7,12 @@ $(document).ready(function() {
 	$('.slidedown-questions').click(function(){
 		$('.slidedown-question-answer-show').slideToggle('fast');
 	});
+	$('.slidedown-questions-self').click(function(){
+		$('.slidedown-self-question-answer-show').slideToggle('fast');
+	});
+	
 	getAllQuestions();
+	getAllQuestionsAskedBySelf();
 });
 
 var getAllQuestions = function(){
@@ -26,6 +31,24 @@ var getAllQuestions = function(){
 		console.log("ajax complete!");
 	});
 }
+
+var getAllQuestionsAskedBySelf = function(){
+	$.ajax({
+		type: 'GET',
+		url : '/getquestionaskedbyself',
+		dataType : 'json',
+		success : function(data){
+	    	console.log("Data received (Self questions): "+JSON.stringify(data));
+	    	populateAllQuestionsAskedBySelf(data);
+		},
+		error : function(e){
+			console.log("Error : "+JSON.stringify(e));
+		}
+	}).done(function(){
+		console.log("ajax complete!");
+	});
+}
+
 
 
 $('.submit-question-btn').click(function(){
@@ -94,6 +117,38 @@ var populateAllQuestions = function(questions){
 		}
 	}
 }
+
+var populateAllQuestionsAskedBySelf = function(questions){
+	
+	for(var i = 0; i<questions.length; i++){
+		if(questions[i]["answer"] == null) questions[i]["answer"] = '<i style="color: red;">This question has not been answered yet.</i>';
+		if(i % 2 == 0){
+			$('#self-question-answer-table tbody').append(
+				'<tr class="question-tr even-quest-row" style="font-style: italic;">'+
+					'<td style="width: 8%;">Questions : </td>'+
+					'<td style="font-weight: 600;">'+questions[i]["question"]+'</td>'+
+				'</tr>'+
+				'<tr class="answer-tr even-ans-row">'+
+					'<td style="font-style: italic;">Answer : </td>'+
+					'<td>'+questions[i]["answer"]+'</td>'+
+				'</tr>'		
+			);
+		}else{
+			$('#self-question-answer-table tbody').append(
+					'<tr class="question-tr odd-quest-row" style="font-style: italic;">'+
+						'<td style="width: 8%;">Questions : </td>'+
+						'<td style="font-weight: 600;">'+questions[i]["question"]+'</td>'+
+					'</tr>'+
+					'<tr class="answer-tr odd-ans-row">'+
+						'<td style="font-style: italic;">Answer : </td>'+
+						'<td>'+questions[i]["answer"]+'</td>'+
+					'</tr>'		
+			);
+		}
+	}
+}
+
+
 
 var populateSimilarQuestions = function(questions){
 	

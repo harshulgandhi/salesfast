@@ -16,11 +16,11 @@ public class SalesFastEmailSendGridImpl implements SalesFastEmail {
 	private Logger log = LoggerFactory.getLogger(SalesFastEmailSendGridImpl.class.getName());
 	private static SendGrid sendGrid = new SendGrid("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");
 	private String subject = "";
-	private String textBody = "";
+	private String textBody = "Yahooooo";
 	private String htmlBody = "";
 	private String fromEmail = "no-reply@xrates.io";
 	private String fromName = "Exchange Rates";
-	private String toEmailId = "";
+	private String toEmailId = "salesfast.stm@gmail.com";
 
 /*	@Override
 	public void addTo(UserDto user) {
@@ -85,7 +85,9 @@ public class SalesFastEmailSendGridImpl implements SalesFastEmail {
 			email.setHtml(htmlBody);
 		}
 		try {
+			System.out.println("Sending mail now ...");
 			sendGrid.send(email);
+			System.out.println("Mail sent successfully !!");
 		} catch (SendGridException e) {
 			log.error("SendGridException in sending email : " + e);
 		}

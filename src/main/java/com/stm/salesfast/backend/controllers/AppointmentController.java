@@ -101,7 +101,7 @@ public class AppointmentController {
 	@ResponseBody
 	public AppointmentEntity[] getAllQuestionsWithAnswers() throws ParseException{
 		log.info("Fetching all questions and answers!");
-		List<AppointmentEntity> futureAppointmentsList = appointmentFetchService.getFutureAppointmentToShow(SessionConstants.USER_ID);
+		List<AppointmentEntity> futureAppointmentsList = appointmentFetchService.getAllAppointmentToShow(SessionConstants.USER_ID);
 		return futureAppointmentsList.toArray(new AppointmentEntity[futureAppointmentsList.size()]);
 	}
 }

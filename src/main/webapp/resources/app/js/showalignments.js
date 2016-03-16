@@ -103,7 +103,7 @@ var fixAppointments = function(physIds, appointTimeList, productIds, appointDate
 	    	console.log("Data received (Future appoinments): "+JSON.stringify(data));
 	    	var fixedAppointmentDetails = createJson(physIds, appointTimeList, productIds, appointDateList, appointStatusList, additionalNotesList);
 	    	console.log("Json : "+JSON.stringify(fixedAppointmentDetails));
-	    	if(checkFutureAppointmentOverlap(data, fixedAppointmentDetails) &&  checkTodaysAppointmentOverlap(data)){
+	    	if(checkFutureAppointmentOverlap(data, fixedAppointmentDetails) && checkTodaysAppointmentOverlap(fixedAppointmentDetails)){
 		    	$.ajax({
 		    		type : 'POST',
 		    		url : "/fixappointments",
@@ -128,14 +128,14 @@ var checkFutureAppointmentOverlap = function(futureAppointments, currentAppointm
 	console.log("Current appointments : "+JSON.stringify(currentAppointments));
 	for(var i = 0; i<currentAppointments.length; i++){
 		for(var j = 0; j<futureAppointments.length; j++){
-			if(currentAppointments[i]["appointmentDate"] == futureAppointments[i]["date"] ){
+			if(currentAppointments[i]["appointmentDate"] == futureAppointments[j]["date"] ){
 				var time_1 = (new Date (new Date().toDateString() + ' ' + currentAppointments[i]["appointmentTime"]));
-				var time_2 = (new Date (new Date().toDateString() + ' ' + futureAppointments[i]["time"]));
+				var time_2 = (new Date (new Date().toDateString() + ' ' + futureAppointments[j]["time"]));
 				var diff = Math.abs(time_1 - time_2);
 				console.log("Diff : "+diff);
 				if(Math.floor((diff/1000)/60) <= 15){
 					alert("One of the appointments you are booking overlaps (lies within 15 minutes) with already confirmed appointment with Dr. " +
-							futureAppointments[i]["physicianName"]+" on "+ futureAppointments[i]["date"]+ " at "+ futureAppointments[i]["time"]+". Please" +
+							futureAppointments[j]["physicianName"]+" on "+ futureAppointments[j]["date"]+ " at "+ futureAppointments[j]["time"]+". Please" +
 							" try to reschedule this appointment.");
 					return false;
 				}
@@ -150,10 +150,11 @@ var checkTodaysAppointmentOverlap = function(currentAppointments){
 	console.log("Checking for overlapping in today's appointments ");
 	console.log("Current appointments : "+JSON.stringify(currentAppointments));
 	for(var i = 0; i<currentAppointments.length; i++){
-		for(var j = 0; j<currentAppointments.length; j++){
-			if(currentAppointments[i]["appointmentDate"] == currentAppointments[i]["appointmentDate"] ){
+		for(var j = i; j<currentAppointments.length; j++){
+			if(currentAppointments[i]["appointmentDate"] == currentAppointments[j]["appointmentDate"] &&
+					currentAppointments[i]["physicianId"] != currentAppointments[j]["physicianId"]){
 				var time_1 = (new Date (new Date().toDateString() + ' ' + currentAppointments[i]["appointmentTime"]));
-				var time_2 = (new Date (new Date().toDateString() + ' ' + currentAppointments[i]["appointmentTime"]));
+				var time_2 = (new Date (new Date().toDateString() + ' ' + currentAppointments[j]["appointmentTime"]));
 				var diff = Math.abs(time_1 - time_2);
 				console.log("Diff : "+diff);
 				if(Math.floor((diff/1000)/60) <= 15){

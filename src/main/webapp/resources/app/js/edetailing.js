@@ -28,7 +28,6 @@ var createEDetailingEnvironment = function(data){
 				'	<span class="button-value">'+data[i]["productName"]+'</span> '+
 				'	<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> '+
 				'</button><br/>'
-
 		);
 	}
 	$('.btn-left-panel').find('button').on('click',function(){

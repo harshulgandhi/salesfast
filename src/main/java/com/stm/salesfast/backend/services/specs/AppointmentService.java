@@ -49,6 +49,8 @@ public interface AppointmentService {
 
 	public List<Integer> getPhysiciansNotInterestedBeforeDetailing(int userId);
 
+	public List<AppointmentEntity> getAllAppointmentToShow(int userId);
+
 
 	
 }

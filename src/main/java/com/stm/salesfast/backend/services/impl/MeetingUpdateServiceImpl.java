@@ -188,6 +188,7 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 	@Override
 	public void sendMail(String subject, String body, String toEmailId){
 		SalesFastEmail email = new SalesFastEmailSendGridImpl();
+		email.setToEmailId(toEmailId);
 		email.setFromEmail("no-reply@biopharma.com");
 		email.setFromName("BioPharma SalesForce");
 		email.addSubject(subject);

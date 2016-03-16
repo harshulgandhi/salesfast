@@ -48,6 +48,7 @@
 							<th>Product</th>
 							<th style="display:none">Has Meeting Update</th>
 							<th style="display:none">Has Meeting Experience</th>
+							<th>Notes</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -63,6 +64,7 @@
 							<td th:text="${eachAppointment.product}"></td>
 							<td style="display:none" th:text="${eachAppointment.hasMeetingUpdate}"></td>
 							<td style="display:none" th:text="${eachAppointment.hasMeetingExperience}"></td>
+							<td th:text="${eachAppointment.additionalUpdate}"></td>
 						</tr>
 					</tbody>
 				</table>

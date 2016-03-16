@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Header to include css -->
+<div th:replace="fragments/header :: commonhead"></div>
+<link rel="stylesheet" type="text/css" href="resources/app/css/samplefeedback.css"/>
+<meta charset="UTF-8" />
+<title>Live Meeting Assistant</title>
+</head>
+<body>
+
+	<div class="container" id="layout">
+		<div class="row row-header page-header"><h3>Please provide your valuable feedback
+		regarding medicine <span class="product-name" th:text="${productName}"></span></h3></div>
+		<span class="product-id" th:text="${productId}" style="display : none;"></span>
+
+		<div class="row sample-feedback">
+			<form id="sample-feedback-form" class="col-xs-9 form-horizontal">
+										
+				<div class="form-group">
+					<label class="col-xs-7 control-label" id="med-effective-id">Is medicine effective?</label>
+					<div class="col-xs-5">
+						<select class="med-effective-selector validate-ele form-control select-bool-flag" name="med-effective">
+							<option value="1">YES</option>
+							<option value="0">NO</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group">
+					<label class="col-xs-7 control-label" id="has-side-effects-id">Does medicine have side effects?</label>
+					<div class="col-xs-5">
+						<select class="side-effects-selector validate-ele form-control select-bool-flag" name="side-effects">
+							<option value="1">YES</option>
+							<option selected="selected" value="0">NO</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group" >
+					<label class="col-xs-7 control-label" id="side-effects-comment-label">What type of side effects?</label>
+					<div class="col-xs-5">
+						<textarea name="side-effects-comment" class="form-control side-effects" id="side-effects-feedback-id" 
+						 placeholder="comments about side effects" rows="2" required="required" disabled="disabled"></textarea>
+					 </div>
+				</div>
+				
+				<div class="form-group">
+					<label class="col-xs-7 control-label" id="is-affordable-id">Is medicine affordable?</label>
+					<div class="col-xs-5">
+						<select class="is-affordable-selector validate-ele form-control select-bool-flag" name="is-affordable">
+							<option value="1">YES</option>
+							<option value="0">NO</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="form-group" >
+					<label class="col-xs-7 control-label" id="other-comment-label">Any other comments about this medicine?</label>
+					<div class="col-xs-5">
+						<textarea name="other-comment" class="form-control other-comments" id="other-comments-id"
+						 placeholder="any other comment" rows="2" required="required"></textarea>
+					 </div>
+				</div>
+				<button id="submit-feedback" type="button" class="btn btn-warning submit-feedback-btn">Submit Feedback</button>
+			</form>
+		</div>
+	</div>
+
+
+<!-- Common footer -->
+<div th:replace="fragments/footer :: footer"></div>
+<script type="text/javascript" src="resources/app/js/samplefeedback.js"></script>
+</body>
+</html>

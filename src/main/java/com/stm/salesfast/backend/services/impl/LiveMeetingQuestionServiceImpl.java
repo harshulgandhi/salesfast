@@ -62,6 +62,9 @@ public class LiveMeetingQuestionServiceImpl implements LiveMeetingQuestionServic
 				SessionConstants.USER_ID,
 				quesWithAnswer.getLiveMeetingQuestionId());
 		
+		//Updating importance index of question that just received an answer
+		updateImportanceIndex(quesWithAnswer);
+		
 		//Notify the user who asked the question
 		String answeredBy = userService.getUserCompleteName(SessionConstants.USER_ID);
 		notification.insertNotificationQuestionAnswered(answeredBy, quesWithAnswer.getUserId(), "QUESTION WAS ANSWERED");
@@ -72,6 +75,31 @@ public class LiveMeetingQuestionServiceImpl implements LiveMeetingQuestionServic
 		String subject = "Your question just got answered";
 		sendLiveMeetingNewQuestionEmail(subject, emailBody, userService.getUserDetails(quesWithAnswer.getUserId()).getEmail());
 	}
+	
+	/**
+	 * Method to check similarity of a question with others and update its
+	 * importance factor, as soon as it is answered
+	 * */
+	public void updateImportanceIndex(LiveMeetingQnAEntity quesWithAnswer){
+		List<LiveMeetingQuestionsDto> allQuestions = liveMeetingDao.getAll();
+		double importanceIndex = 1.0;
+		for(LiveMeetingQuestionsDto eachQuestion : allQuestions){
+			//Checking similarity only with questions having answer
+			if(eachQuestion.getAnswer() != null && !eachQuestion.getAnswer().equals("") && 
+					checkSimilarity(quesWithAnswer.getQuestion(), eachQuestion.getQuestion()) > 0.3){
+				importanceIndex+=1.0;
+				
+				//Updating importance index for question already present in db
+				LiveMeetingQuestionsDto thisQuestion = liveMeetingDao.getById(eachQuestion.getLiveMeetingQuestionsId());
+				liveMeetingDao.updateImportanceIndex(thisQuestion.getImportanceIndex() + 1.0, eachQuestion.getLiveMeetingQuestionsId());
+			}
+		}
+		
+		//updating importance index of question that just received an answer
+		liveMeetingDao.updateImportanceIndex(importanceIndex,quesWithAnswer.getLiveMeetingQuestionId());
+		
+	}
+	
 	
 	@Override
 	public void notifyAllUsers(int userId){
@@ -134,6 +162,8 @@ public class LiveMeetingQuestionServiceImpl implements LiveMeetingQuestionServic
 	
 	/**
 	 * Questions that were asked by logged in user
+	 * sorted in desc order of date the ques was 
+	 * asked on
 	 * */
 	@Override
 	public List<LiveMeetingQnAEntity> getAllQuestionsAskedBySelf() {
@@ -166,11 +196,10 @@ public class LiveMeetingQuestionServiceImpl implements LiveMeetingQuestionServic
 		List<LiveMeetingQnAEntity> similarQuestions = new ArrayList<>();
 		
 		for(LiveMeetingQnAEntity eachQuestion : allQuestions){
-			if( checkSimilarity(question, eachQuestion.getQuestion()) > 0.4){
+			if( checkSimilarity(question, eachQuestion.getQuestion()) > 0.3){
 				similarQuestions.add(eachQuestion);
 			}
 		}
-		
 		return similarQuestions;
 	}
 	

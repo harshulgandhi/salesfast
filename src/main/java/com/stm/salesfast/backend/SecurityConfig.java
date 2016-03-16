@@ -59,7 +59,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 				new AntPathRequestMatcher("/getsimilarqna"),
 				new AntPathRequestMatcher("/unansweredques"),
 				new AntPathRequestMatcher("/getunansweredques"),
-				new AntPathRequestMatcher("/submitanswer")
+				new AntPathRequestMatcher("/submitanswer"),
+				new AntPathRequestMatcher("/submitsamplefeedback")
 				};
 
 		@Override
@@ -97,6 +98,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public void configure(WebSecurity web) throws Exception {
 	    web.ignoring().antMatchers("/yourappointment");
 	    web.ignoring().antMatchers("/cancelappointment");
+	    web.ignoring().antMatchers("/samplefeedback");
+	    web.ignoring().antMatchers("/submitsamplefeedback");
 	    
 	}
 }

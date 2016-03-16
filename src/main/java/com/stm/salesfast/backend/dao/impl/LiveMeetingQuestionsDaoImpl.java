@@ -23,8 +23,9 @@ public class LiveMeetingQuestionsDaoImpl implements LiveMeetingQuestionsDao {
 	private static final String INSERT_QUESTION_ONLY = "INSERT INTO live_meeting_questions "
 			+ "(userId, question, questionAskedOn) "
 			+ "VALUES (?,?,?)";
-	private static final String FETCH_ALL = "SELECT * FROM live_meeting_questions WHERE answer IS NOT NULL";
-	
+	private static final String FETCH_ALL = "SELECT * FROM live_meeting_questions WHERE answer IS NOT NULL"
+			+ " ORDER BY importanceIndex DESC";
+	private static final String FETCH_BY_ID = "SELECT * FROM live_meeting_questions WHERE liveMeetingQuestionId = ?";
 	private static final String FETCH_QUES_wo_ANSWER = "SELECT * FROM live_meeting_questions "
 			+ "WHERE answer IS null AND "
 			+ "answeredByUser IS null AND "
@@ -38,6 +39,9 @@ public class LiveMeetingQuestionsDaoImpl implements LiveMeetingQuestionsDao {
 	private static final String FETCH_ALL_ASKED_BY_SELF = "SELECT * FROM live_meeting_questions WHERE "
 			+ "userId = ? ORDER BY questionAskedOn DESC";
 	
+	private static final String UPDATE_IMPORTANCE_INDEX = "UPDATE live_meeting_questions "
+			+ "SET importanceIndex = ? "
+			+ "WHERE liveMeetingQuestionId = ?";
 	
 	
 	@Override
@@ -83,11 +87,35 @@ public class LiveMeetingQuestionsDaoImpl implements LiveMeetingQuestionsDao {
 	}
 	
 	@Override
+	public void updateImportanceIndex(double importanceIndex, int liveMeetingQuestionId) {
+		try{
+			jdbcTemplate.update(UPDATE_IMPORTANCE_INDEX, (ps)->{
+				ps.setDouble(1,importanceIndex);
+				ps.setInt(2, liveMeetingQuestionId);
+			});
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
 	public List<LiveMeetingQuestionsDto> getAll() {
 		try{
 			return jdbcTemplate.query(FETCH_ALL, (rs, rownnum)->{
 				return new LiveMeetingQuestionsDto(rs.getInt("liveMeetingQuestionId"), rs.getInt("userId"),rs.getString("question"),rs.getString("answer"), rs.getInt("answeredByUser"), rs.getFloat("importanceIndex"), rs.getDate("questionAskedOn"));
 			});
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public LiveMeetingQuestionsDto getById(int liveMeetingId) {
+		try{
+			return jdbcTemplate.queryForObject(FETCH_BY_ID, (rs, rownnum)->{
+				return new LiveMeetingQuestionsDto(rs.getInt("liveMeetingQuestionId"), rs.getInt("userId"),rs.getString("question"),rs.getString("answer"), rs.getInt("answeredByUser"), rs.getFloat("importanceIndex"), rs.getDate("questionAskedOn"));
+			}, liveMeetingId);
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}

@@ -1,0 +1,13 @@
+@CHARSET "ISO-8859-1";
+
+.analysis-right-panel{
+	border-left: 2px solid #ccc;
+    height: 100%;
+}
+
+.row-header{
+	margin-top: 7%;
+	border-bottom: 2px solid #1910A2;
+	padding-top: 1%;
+    padding-bottom: 0%;
+} 

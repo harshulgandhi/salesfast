@@ -37,6 +37,9 @@ public class SampleFeedbackController {
 		sampleFeedbackService.insertFeedback(sampleFeedback);
 	}
 	
-	
+	@RequestMapping(value="/samplefeedbackreport", method=RequestMethod.GET)
+	public String samplefeedbackpage(){
+		return "samplefeedbackreport";
+	}
 	
 }

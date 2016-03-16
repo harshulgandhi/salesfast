@@ -87,8 +87,8 @@ $(document).ready(function() {
             var len = tableAppointment.row('.selected').data().length;					
             
             //To toggle meeting update and experience buttons based on database flag for that appointment
-            var hasMeetingUpdate = tableAppointment.row('.selected').data()[len-2];		
-            var hasMeetingExperience = tableAppointment.row('.selected').data()[len-1];
+            var hasMeetingUpdate = tableAppointment.row('.selected').data()[len-3];		
+            var hasMeetingExperience = tableAppointment.row('.selected').data()[len-2];
             toggleMeetingUpdateButtons(hasMeetingUpdate, hasMeetingExperience);
         }
     		
@@ -226,7 +226,7 @@ var addMeetingUpdate = function(event){
 	
 	var appointmentId = tableAppointment.row('.selected').data()[0];												//Getting Appointment id
 	var physicianId = tableAppointment.row('.selected').data()[1];													//Getting Physician id
-	var productName = tableAppointment.row('.selected').data()[tableAppointment.row('.selected').data().length-3];	//Getting product name
+	var productName = tableAppointment.row('.selected').data()[tableAppointment.row('.selected').data().length-4];	//Getting product name
 	
 	var formData = {};
 	

@@ -109,7 +109,7 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 				String emailSub = "SalesFast - Feedback for meeting experience and checkout latest products";
 				String emailBody = "Please provide your valuable feedback about your last meeting with"
 						+ "BioPharma Sales Representative by logging into your SalesFast account at"
-						+ "http://127.0.0.1/login.";
+						+ "http://127.0.0.1:8080/login.";
 				sendMail(emailSub, emailBody, physician.getEmail());
 				//Add product to for eDetailing
 				eDetailingMatService.insert(new EDetailingMaterialDto(
@@ -149,7 +149,7 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 						+ "will help us serve you better and efficiently. In addition, this tool allows "
 						+ "you to go through latest products the BioPharma has released, saving your "
 						+ "precious time from Detailing Meetings. Your login information is as mentioned below:  \n"
-						+ "URL : http://127.0.0.1/login\n"
+						+ "URL : http://127.0.0.1:8080/login\n"
 						+ "User Name : "+physician.getFirstName().toLowerCase()+"\n"
 						+ "Password : "+password;
 				sendMail(emailSub, emailBody, physician.getEmail());

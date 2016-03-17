@@ -18,5 +18,7 @@ public interface PatientSampleFeedbackDao {
 
 	public List<String> sideEffectComments(int productId);
 
-	public List<String> sideOtherComments(int productId);
+	public List<String> otherComments(int productId);
+
+	public int countAll(int productId);
 }

@@ -3,6 +3,7 @@ package com.stm.salesfast.backend.services.specs;
 import java.util.List;
 
 import com.stm.salesfast.backend.dto.ProductDto;
+import com.stm.salesfast.backend.entity.MedicalFieldEntity;
 import com.stm.salesfast.backend.entity.NewProductEntity;
 
 public interface ProductFetchService {
@@ -14,4 +15,7 @@ public interface ProductFetchService {
 	public List<ProductDto> getProductByMedicalField(String medicalFieldId);
 
 	public void insertNewProduct(NewProductEntity newProduct);
+
+	public List<ProductDto> getProductByMedicalField(
+			List<MedicalFieldEntity> medicalFields);
 }

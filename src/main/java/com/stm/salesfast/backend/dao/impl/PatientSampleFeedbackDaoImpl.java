@@ -32,10 +32,12 @@ public class PatientSampleFeedbackDaoImpl implements PatientSampleFeedbackDao{
 			+ "productId = ?"; 
 	private static final String FETCH_SIDEEFFECT_COMMENTS = "SELECT sideEffectsComments FROM patient_sample_feedback "
 			+ "WHERE productId = ? "
-			+ "AND sideEffectsComments IS NOT NULL";
+			+ "AND sideEffectsComments <> ''";
 	private static final String FETCH_OTHER_COMMENTS = "SELECT otherComments FROM patient_sample_feedback "
 			+ "WHERE productId = ? "
-			+ "AND otherComments IS NOT NULL";
+			+ "AND otherComments <> ''";
+	private static final String COUNT_ALL = "SELECT COUNT(*) FROM patient_sample_feedback "
+			+ "WHERE productId = ?";
 	
 	
 	@Override
@@ -91,6 +93,18 @@ public class PatientSampleFeedbackDaoImpl implements PatientSampleFeedbackDao{
 	}
 	
 	@Override
+	public int countAll(int productId){
+		try {
+			return jdbcTemplate.queryForObject(COUNT_ALL, (rs, rownum) -> {
+				return rs.getInt(1);
+			}, productId);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	@Override
 	public List<String> sideEffectComments(int productId){
 		try {
 			return jdbcTemplate.query(FETCH_SIDEEFFECT_COMMENTS, (rs, rownum) -> {
@@ -103,7 +117,7 @@ public class PatientSampleFeedbackDaoImpl implements PatientSampleFeedbackDao{
 	}
 	
 	@Override
-	public List<String> sideOtherComments(int productId){
+	public List<String> otherComments(int productId){
 		try {
 			return jdbcTemplate.query(FETCH_OTHER_COMMENTS, (rs, rownum) -> {
 				return rs.getString(1);

@@ -61,7 +61,11 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 				new AntPathRequestMatcher("/getunansweredques"),
 				new AntPathRequestMatcher("/submitanswer"),
 				new AntPathRequestMatcher("/submitsamplefeedback"),
-				new AntPathRequestMatcher("/samplefeedbackreport")
+				new AntPathRequestMatcher("/samplefeedbackreport"),
+				new AntPathRequestMatcher("/getproductsforuser"),
+				new AntPathRequestMatcher("/samplefeedbacksubmitted"),
+				new AntPathRequestMatcher("/getsideeffectcomments"),
+				new AntPathRequestMatcher("/getothercomments")
 				};
 
 		@Override
@@ -101,6 +105,7 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 	    web.ignoring().antMatchers("/cancelappointment");
 	    web.ignoring().antMatchers("/samplefeedback");
 	    web.ignoring().antMatchers("/submitsamplefeedback");
+	    web.ignoring().antMatchers("/samplefeedbacksubmitted");
 	    
 	}
 }

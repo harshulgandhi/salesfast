@@ -37,6 +37,7 @@ $(document).on('click', 'button.submit-feedback-btn', function(){
 	        contentType : 'application/json'
 	    }).done(function() {
 	    	console.log("submitted");
+	    	window.location.replace("/samplefeedbacksubmitted");
 	    });
 	}else{
 		alert("Please mention what side effect you are facing after consuming this medicine.");

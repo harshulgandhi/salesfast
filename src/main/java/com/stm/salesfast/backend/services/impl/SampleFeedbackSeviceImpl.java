@@ -1,5 +1,7 @@
 package com.stm.salesfast.backend.services.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,36 @@ public class SampleFeedbackSeviceImpl implements SampleFeedbackService{
 				sampleFeedback.getOtherComments(),
 				sampleFeedback.getProductId()
 				));
+	}
+	
+	@Override
+	public int getCountAll(int productId){
+		return sampleFeedbackDao.countAll(productId);
+	}
+	
+	@Override
+	public int getCountSideEffects(int productId){
+		return sampleFeedbackDao.countHasSideeffects(productId);
+	}
+	
+	@Override
+	public int getCountIsEffective(int productId){
+		return sampleFeedbackDao.countIsAffordable(productId);
+	}
+	
+	@Override
+	public int getCountIsAffordable(int productId){
+		return sampleFeedbackDao.countIsAffordable(productId);
+	}
+	
+	@Override
+	public List<String> getSideEffectComments(int productId){
+		return sampleFeedbackDao.sideEffectComments(productId);
+	}
+	
+	@Override
+	public List<String> getOtherComments(int productId){
+		return sampleFeedbackDao.otherComments(productId);
 	}
 
 }

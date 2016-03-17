@@ -14,9 +14,9 @@ import com.stm.salesfast.backend.services.specs.AnalysisService;
 import com.stm.salesfast.backend.services.specs.MeetingExperienceService;
 
 @Service
-public class AnalysisServiceImpl implements AnalysisService{
+public class MeetingExpAnalysisServiceImpl implements AnalysisService{
 	
-	private Logger log = LoggerFactory.getLogger(AnalysisServiceImpl.class.getName());
+	private Logger log = LoggerFactory.getLogger(MeetingExpAnalysisServiceImpl.class.getName());
 	
 	@Autowired
 	MeetingExperienceService meetingExp;

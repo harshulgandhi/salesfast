@@ -1,16 +1,19 @@
 /**
  * 
  */
+var chartData = [
+	                ['Is Medicine Effective',   40.2],
+	                ['Does it have side effects',   27.4],
+	                ['Is it affordable', 33.4]
+	            ];
 
 $(document).on('click','button.show-analysis',function(){
-	createChart('#container-sample');
+	createChart('#container-sample', chartData);
 });
 
 
-createChart=function(containerName){//}, title, data){
+createChart=function(containerName, chartData){//}, title, data){
     // Build the chart
-//	console.log("Container Name : "+containerName+", Title : "+title+", data : "+data);
-	console.log("Creating chart");
 	$(containerName).highcharts({
 	        chart: {
 	            plotBackgroundColor: null,
@@ -30,11 +33,11 @@ createChart=function(containerName){//}, title, data){
 	            pie: {
 	                dataLabels: {
 	                    enabled: true,
-	                    distance: -50,
+	                    distance: -30,
 	                    style: {
 	                        fontWeight: 'bold',
-	                        color: 'white',
-	                        textShadow: '0px 1px 2px black'
+	                        color: 'black'
+	                        
 	                    }
 	                },
 	                startAngle: -90,
@@ -46,21 +49,8 @@ createChart=function(containerName){//}, title, data){
 	            type: 'pie',
 	            name: 'Browser share',
 	            innerSize: '50%',
-	            data: [
-	                ['Firefox',   10.38],
-	                ['IE',       56.33],
-	                ['Chrome', 24.03],
-	                ['Safari',    4.77],
-	                ['Opera',     0.91],
-	                {
-	                    name: 'Proprietary or Undetectable',
-	                    y: 0.2,
-	                    dataLabels: {
-	                        enabled: false
-	                    }
-	                }
-	            ]
+	            data:chartData
 	        }]
 	    });
-		$('.btn-right-panel').slideToggle('fast');
-});
+		$('.analysis-right-panel').slideToggle('fast');
+}

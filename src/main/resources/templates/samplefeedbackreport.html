@@ -3,7 +3,7 @@
 <head>
 <!-- Header to include css -->
 <div th:replace="fragments/header :: commonhead"></div>
-<link rel="stylesheet" type="text/css" href="resources/app/css/samplefeedback.css"/>
+<link rel="stylesheet" type="text/css" href="resources/app/css/samplefeedbackreport.css"/>
 <meta charset="ISO-8859-1" />
 <title>Sample Med Analysis</title>
 </head>
@@ -19,7 +19,7 @@
 				<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 			</button><br/>
           </div>
-          <div class="col-lg-9 analysis-right-panel">
+          <div class="col-lg-9 analysis-right-panel" style="display: none;">
           	<div id="container-sample"  class="col-md-6" style="min-width: 310px; height: 400px; 
           	max-width: 600px; margin: 0 auto"></div>
           </div>
@@ -27,6 +27,6 @@
 	</div>
 <!-- Common footer -->
 <div th:replace="fragments/footer :: footer"></div>
-<script  type="text/javascript" src="resources/app/js/samplefeedback.js"></script>
+<script  type="text/javascript" src="resources/app/js/samplefeedbackreport.js"></script>
 </body>
 </html>

@@ -1,5 +1,7 @@
 package com.stm.salesfast.backend.dao.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,6 +19,24 @@ public class PatientSampleFeedbackDaoImpl implements PatientSampleFeedbackDao{
 	private static final String INSERT = "INSERT INTO patient_sample_feedback "
 			+ "(isMedicineEffective, hasSideEffects, isAffordable, sideEffectsComments, otherComments, productId) "
 			+ "VALUES (?,?,?,?,?,?)";
+	private static final String COUNT_MED_EFFICIENCY = "SELECT COUNT(*) FROM patient_sample_feedback "
+			+ "WHERE isMedicineEffective = 1 AND "
+			+ "productId = ?";
+	
+	private static final String COUNT_SIDE_EFFECTS = "SELECT COUNT(*) FROM patient_sample_feedback "
+			+ "WHERE hasSideEffects = 1 AND "
+			+ "productId = ?"; 
+	
+	private static final String COUNT_AFFORDABLE = "SELECT COUNT(*) FROM patient_sample_feedback "
+			+ "WHERE isAffordable = 1 AND "
+			+ "productId = ?"; 
+	private static final String FETCH_SIDEEFFECT_COMMENTS = "SELECT sideEffectsComments FROM patient_sample_feedback "
+			+ "WHERE productId = ? "
+			+ "AND sideEffectsComments IS NOT NULL";
+	private static final String FETCH_OTHER_COMMENTS = "SELECT otherComments FROM patient_sample_feedback "
+			+ "WHERE productId = ? "
+			+ "AND otherComments IS NOT NULL";
+	
 	
 	@Override
 	public void insert(PatientSampleFeedbackDto sampleFeedback) {
@@ -32,6 +52,66 @@ public class PatientSampleFeedbackDaoImpl implements PatientSampleFeedbackDao{
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public int countMedEfficiency(int productId){
+		try {
+			return jdbcTemplate.queryForObject(COUNT_MED_EFFICIENCY, (rs, rownum) -> {
+				return rs.getInt(1);
+			}, productId);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	@Override
+	public int countHasSideeffects(int productId){
+		try {
+			return jdbcTemplate.queryForObject(COUNT_SIDE_EFFECTS, (rs, rownum) -> {
+				return rs.getInt(1);
+			}, productId);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	@Override
+	public int countIsAffordable(int productId){
+		try {
+			return jdbcTemplate.queryForObject(COUNT_AFFORDABLE, (rs, rownum) -> {
+				return rs.getInt(1);
+			}, productId);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
+	@Override
+	public List<String> sideEffectComments(int productId){
+		try {
+			return jdbcTemplate.query(FETCH_SIDEEFFECT_COMMENTS, (rs, rownum) -> {
+				return rs.getString(1);
+			}, productId);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public List<String> sideOtherComments(int productId){
+		try {
+			return jdbcTemplate.query(FETCH_OTHER_COMMENTS, (rs, rownum) -> {
+				return rs.getString(1);
+			}, productId);
+		} catch (DataAccessException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

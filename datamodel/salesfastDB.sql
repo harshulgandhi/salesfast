@@ -91,7 +91,7 @@ CREATE TABLE `appointment` (
 
 LOCK TABLES `appointment` WRITE;
 /*!40000 ALTER TABLE `appointment` DISABLE KEYS */;
-INSERT INTO `appointment` VALUES (153,'14:59:00','2016-03-15',1,1,3,'CONFIRMED','11001','','',1,1,1),(154,'14:59:00','2016-03-15',1,1,4,'CONFIRMED','11001','','',1,1,1),(155,'13:59:00','2016-03-16',5,1,3,'CONFIRMED','11001','','',1,1,1),(156,'14:30:00','2016-03-16',5,1,4,'CONFIRMED','11001','','',1,1,1),(157,'14:58:00','2016-03-16',2,1,3,'CONFIRMED','11001','','',1,1,1),(158,'17:01:00','2016-03-17',2,1,4,'CONFIRMED','11001','','',0,0,0),(159,'11:00:00','2016-03-16',4,1,3,'CONFIRMED','11001','','',1,1,1),(160,'18:00:00','2016-03-16',4,1,4,'CONFIRMED','11001','','',1,1,1);
+INSERT INTO `appointment` VALUES (153,'14:59:00','2016-03-15',1,1,3,'CONFIRMED','11001','','',1,1,1),(154,'14:59:00','2016-03-15',1,1,4,'CONFIRMED','11001','','',1,1,1),(155,'13:59:00','2016-03-16',5,1,3,'CONFIRMED','11001','','',1,1,1),(156,'14:30:00','2016-03-16',5,1,4,'CANCELLED','11001','Not available','',1,1,1),(157,'14:58:00','2016-03-16',2,1,3,'CONFIRMED','11001','','',1,1,1),(158,'17:01:00','2016-03-17',2,1,4,'CONFIRMED','11001','','',0,0,0),(159,'11:00:00','2016-03-16',4,1,3,'CANCELLED','11001','Not available','',1,1,1),(160,'18:00:00','2016-03-16',4,1,4,'CANCELLED','11001','Have to go out of town','',1,1,1);
 /*!40000 ALTER TABLE `appointment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -209,7 +209,7 @@ CREATE TABLE `live_meeting_questions` (
 
 LOCK TABLES `live_meeting_questions` WRITE;
 /*!40000 ALTER TABLE `live_meeting_questions` DISABLE KEYS */;
-INSERT INTO `live_meeting_questions` VALUES (1,1,'Q1-This the question asked by physician during the meeting.','A1-This is answer for this question submitted by one of the district managers. This should be long enough for testing. ',2,1,'2016-03-14'),(2,1,'Q2-This the question asked by physician during the meeting.','A2-This is answer for this question submitted by one of the district managers. This should be long enough for testing. ',2,1,'2016-03-14'),(4,1,'Q3-This the question asked by physician during the meeting.','This is the answer to question three .. this should be a lon answer',4,1,'2016-03-14'),(5,1,'Q2-This the question asked',NULL,NULL,1,'2016-03-15'),(6,1,'Q 5- Physician asked me this question about O_Med_1 that i am not able to answer',NULL,NULL,1,'2016-03-15'),(7,1,'Q 6 - physician asked me this question and i dont know the answer','Here is the answer to your question. I hope this helps.',4,1,'2016-03-15');
+INSERT INTO `live_meeting_questions` VALUES (1,1,'Q1-This the question asked by physician during the meeting.','A1-This is answer for this question submitted by one of the district managers. This should be long enough for testing. ',2,2,'2016-03-14'),(2,1,'Q2-This the question asked by physician during the meeting.','A2-This is answer for this question submitted by one of the district managers. This should be long enough for testing. ',2,2,'2016-03-14'),(4,1,'Q3-This the question asked by physician during the meeting.','This is the answer to question three .. this should be a lon answer',4,2,'2016-03-14'),(5,1,'Q2-This the question asked',NULL,NULL,1,'2016-03-15'),(6,1,'Q 5- Physician asked me this question about O_Med_1 that i am not able to answer','I am submitting the answer to this question. I am submitting the answer to this question. I am submitting the answer to this question. I am submitting the answer to this question. I am submitting the answer to this question. I am submitting the answer to this question.I am submitting the answer to this question.',1,6,'2016-03-15'),(7,1,'Q 6 - physician asked me this question and i dont know the answer','Here is the answer to your question. I hope this helps.',4,2,'2016-03-15');
 /*!40000 ALTER TABLE `live_meeting_questions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -327,7 +327,7 @@ CREATE TABLE `notifications` (
   PRIMARY KEY (`notificationId`),
   KEY `fk_Notifications_User1_idx` (`userId`),
   CONSTRAINT `fk_Notifications_User1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -336,6 +336,7 @@ CREATE TABLE `notifications` (
 
 LOCK TABLES `notifications` WRITE;
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
+INSERT INTO `notifications` VALUES (2,'Dr. Clint Eastwood has cancelled the appointment.',0,1,'CANCELLED APPOINTMENTS'),(5,'Mr. Johny Dep just answered a question you asked during one of your meetings with a physician.',0,1,'QUESTION WAS ANSWERED');
 /*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -357,7 +358,7 @@ CREATE TABLE `patient_sample_feedback` (
   PRIMARY KEY (`patientSampleFeedbackId`),
   KEY `fk_Patient_Sample_Feedback_Products1_idx` (`productId`),
   CONSTRAINT `fk_Patient_Sample_Feedback_Products1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -366,7 +367,7 @@ CREATE TABLE `patient_sample_feedback` (
 
 LOCK TABLES `patient_sample_feedback` WRITE;
 /*!40000 ALTER TABLE `patient_sample_feedback` DISABLE KEYS */;
-INSERT INTO `patient_sample_feedback` VALUES (1,1,1,0,'Side effect 1','Other comment',1),(2,0,1,1,'Side effect 2','',2),(3,0,0,1,'','Not effective',3),(4,0,1,1,'SIde effect worse','Other comment is',2);
+INSERT INTO `patient_sample_feedback` VALUES (1,1,1,0,'Side effect 1','Other comment',1),(2,0,1,1,'Side effect 2','',2),(3,0,0,1,'','Not effective',3),(4,0,1,1,'SIde effect worse','Other comment is',2),(5,1,1,1,'Some side effects','Other comments',1),(6,0,0,1,'Some side effects','Not effective',1),(7,1,1,0,'Not much','Expensive',1),(8,1,0,1,'Not much','No other comments',1),(9,0,0,0,'','Yes',1),(10,1,1,0,'Some','',1),(11,1,1,1,'Some','',1),(12,0,1,0,'Itching','',2),(13,1,0,0,'','Expensive\n',2),(14,0,1,0,'Boyels','',2),(15,1,0,1,'','',2),(16,0,0,0,'','',2),(17,1,1,0,'Something','',2),(18,0,0,0,'','',2),(19,0,1,0,'Some side effects','',2),(20,1,1,1,'SIde','',3),(21,0,1,0,'Side Effect','Not effective',3),(22,0,0,0,'','',3),(23,1,1,0,'Itching','Good product',3),(24,0,1,0,'Serious side effect','good med',3),(25,0,1,0,'has','',4),(26,0,1,0,'Side','other comments',4),(27,1,0,1,'','Comments Comments Comments Comments Comments Comments Comments Comments Comments',4),(28,0,0,1,'','Other comments',4),(29,1,1,0,'Stomachache','',4),(30,1,1,1,'sdasd','sds',4),(31,1,1,1,'dasdDA','zsdaads',1);
 /*!40000 ALTER TABLE `patient_sample_feedback` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -781,4 +782,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-03-16 19:16:05
+-- Dump completed on 2016-03-17 19:24:49

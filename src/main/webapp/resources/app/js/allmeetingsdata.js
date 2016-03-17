@@ -28,6 +28,8 @@ $(function () {
     	for(var i = 0; i< chartParameters.length; i++){
     		constructPieCharts(chartParameters[i]['url'],chartParameters[i]['containerName'], chartParameters[i]['title']);
     	}
+    	
+    	updateNotificationCounter();
     });
 });
 
@@ -48,7 +50,7 @@ constructPieCharts = function(url, containerName, title){
 		console.log("ajax complete!");
 	});
 	
-	
+	updateNotificationCounter();
 }
 
 
@@ -86,3 +88,6 @@ createChart=function(containerName, title, data){
         }]
     });
 }
+
+
+  

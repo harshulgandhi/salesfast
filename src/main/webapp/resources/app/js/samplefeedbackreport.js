@@ -27,7 +27,7 @@ $(document).ready(function(){
 	}).done(function(){
 		console.log("ajax complete!");
 	});
-	
+	updateNotificationCounter();
 });
 
 

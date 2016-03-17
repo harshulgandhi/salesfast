@@ -33,7 +33,7 @@ $(document).ready(function () {
 			$("#upload-files-form input, #upload-files-form button, #upload-files-form submit").attr('disabled',true);
 		}
 	});
-	
+	updateNotificationCounter();
 });
 
 var populateMedFieldSelector = function(data){
@@ -59,6 +59,25 @@ function getnewproduct() {
 	        contentType : 'application/json'
 	    });
     	document.getElementById('upload-files-form').submit();
+    	updateNotificationCounter();
     	return true;
 	}else return false;
 }
+
+//
+//var updateNotificationCounter = function(){
+//	$.ajax({
+//		type : 'GET',
+//		url : "/getnotificationcount",
+//		contentType : 'application/json',
+//		dataType : 'json',
+//		success : function(data){
+//	    	console.log("Data received  : "+JSON.stringify(data));
+//	    	document.getElementById("notification-count").textContent=data[0];
+//	    },
+//		error : function(e){
+//			console.log("Error : "+JSON.stringify(e));
+//		}
+//	});
+//}
+//  

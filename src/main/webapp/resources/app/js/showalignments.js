@@ -35,6 +35,8 @@ $(document).ready(function() {
     for(var i = 0; i<tableRows.length ; i++){
     	setRowColor($(tableRows[i]));
     }
+    
+    updateNotificationCounter();
 });	
 
 /**

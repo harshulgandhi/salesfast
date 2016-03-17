@@ -4,6 +4,7 @@
 $(document).ready(function() {
 	var table = $('#notifications-table').DataTable();
 	 
+	
 	$('#notifications-table tbody').on( 'click', '.remove-notification', function () {
 		var r_ = $(this).parents('tr');
 		var userId = r_.find('td.user-id').html();
@@ -16,7 +17,7 @@ $(document).ready(function() {
 			contentType: 'application/json; charset=utf-8',
 			dataType: 'json'
 		});
-		
+		updateNotificationCounter();
 	});
 	$('#notifications-table tbody').on( 'click', '.detail-notification', function () {
 		var r_ = $(this).parents('tr');
@@ -28,6 +29,7 @@ $(document).ready(function() {
 		
 		
 	});
+	updateNotificationCounter();
+	
 });
  
-    

@@ -27,5 +27,6 @@ public interface NotificationService {
 			String notificationCategory);
 	public void insertNotificationQuestionAnswered(String answeredByName, int userId,
 			String notificationCategory);
+	public int getNotificationCountForUser(int userId);
 	
 }

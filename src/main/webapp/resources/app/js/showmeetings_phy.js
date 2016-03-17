@@ -29,6 +29,7 @@ $(document).ready(function() {
     	
     	$('#meetingexperience-add-phy-button').click(addMeetingExperienceFromPhy);
     });
+	updateNotificationCounter();
 });
 
 var addMeetingExperienceFromPhy = function(event){

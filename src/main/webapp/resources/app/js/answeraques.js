@@ -6,7 +6,7 @@ var unansweredQuestions = {}
 
 $(document).ready(function() {
 	getUnansweredQuestions();
-
+	updateNotificationCounter();
 });
 
 $(document).on('click', "button.submit-answer-btn", function() {

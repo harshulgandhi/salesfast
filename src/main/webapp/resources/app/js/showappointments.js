@@ -22,6 +22,8 @@ $(document).ready(function() {
 		   $(val).css('background-color','mistyrose');
 	   }
    })
+   
+   updateNotificationCounter();
 	   
    /**
     * Toggles between selected and de-selected rows of the table

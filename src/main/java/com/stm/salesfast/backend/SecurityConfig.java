@@ -65,7 +65,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 				new AntPathRequestMatcher("/getproductsforuser"),
 				new AntPathRequestMatcher("/samplefeedbacksubmitted"),
 				new AntPathRequestMatcher("/getsideeffectcomments"),
-				new AntPathRequestMatcher("/getothercomments")
+				new AntPathRequestMatcher("/getothercomments"),
+				new AntPathRequestMatcher("/getnotificationcount")
 				};
 
 		@Override

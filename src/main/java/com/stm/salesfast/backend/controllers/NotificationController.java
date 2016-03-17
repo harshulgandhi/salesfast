@@ -18,6 +18,7 @@ import com.stm.salesfast.backend.entity.AlignedPhysicianEntity;
 import com.stm.salesfast.backend.entity.NotificationEntity;
 import com.stm.salesfast.backend.services.specs.NotificationService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
+import com.stm.salesfast.constant.SessionConstants;
 
 @Controller
 public class NotificationController {
@@ -53,4 +54,10 @@ public class NotificationController {
 		notificationService.deleteNotification(notificationId);
 	}
 	
+	@RequestMapping(value="/getnotificationcount", method=RequestMethod.GET)
+	@ResponseBody
+	public int[] notificationCount(){
+		int notificationCount = notificationService.getNotificationCountForUser(SessionConstants.USER_ID);
+		return new int[]{notificationCount};
+	}
 }

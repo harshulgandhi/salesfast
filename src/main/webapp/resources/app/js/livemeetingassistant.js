@@ -13,6 +13,7 @@ $(document).ready(function() {
 	
 	getAllQuestions();
 	getAllQuestionsAskedBySelf();
+	updateNotificationCounter();
 });
 
 var getAllQuestions = function(){

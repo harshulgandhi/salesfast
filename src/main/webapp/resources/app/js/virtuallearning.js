@@ -19,6 +19,8 @@ $(document).ready(function () {
 	}).done(function(){
 		console.log("ajax complete!");
 	});
+	
+	updateNotificationCounter();
 });
 
 var createLearningEnvironment = function(data){

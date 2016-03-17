@@ -26,11 +26,15 @@
 	            <!-- <li id="nav-target-incentive"><a class="navbar-menu-items" href="./targetandincentive" th:if="${session.roles.contains('SalesRep')}">Target And Incentive</a></li> -->
 	            <li id="nav-appointment"><a class="navbar-menu-items" href="./showappointments" th:if="${session.roles.contains('SalesRep')}">Appointment</a></li>
 	            <li id="nav-appointment"><a class="navbar-menu-items" href="./showmeetingsphys" th:if="${session.roles.contains('PH')}">Your Meetings With Us</a></li>
-	            <li id="nav-appointment"><a class="navbar-menu-items" href="./shownotifications" th:if="${session.roles.contains('SalesRep')} or ${session.roles.contains('DM')} or ${session.roles.contains('PH')}">Notifications</a>
-	           		<span class="notification-counter" id="notification-count">1</span>
-	            </li>
-	            <li id="nav-appointment"><a class="navbar-menu-items" href="./virtuallearning" th:if="${session.roles.contains('SalesRep')}">Virtual Learning</a></li>
 	            <li class="dropdown">
+		          <a class="dropdown-toggle navbar-menu-items" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:if="${session.roles.contains('DM')} or ${session.roles.contains('NH')}">Products</a>
+		          <ul class="dropdown-menu product-dropdown-menu">
+		            <li><a class="navbar-menu-items" href="./home">View Products</a></li>
+		            <li><a class="navbar-menu-items" href="./addproductspage">Add Products</a></li>
+		          </ul>
+		        </li>
+		        <li id="nav-appointment"><a class="navbar-menu-items" href="./datareport" th:if="${session.roles.contains('DM')}">Data Report</a></li>
+		        <li class="dropdown">
 		          <a class="dropdown-toggle navbar-menu-items" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:if="${session.roles.contains('DM')} or ${session.roles.contains('NH')} or ${session.roles.contains('SalesRep')}">Quick Assistance</a>
 		          <!-- <span class="glyphicon glyphicon glyphicon-menu-down" aria-hidden="true"></span> -->
 		          <ul class="dropdown-menu product-dropdown-menu">
@@ -39,17 +43,16 @@
 		            <li><a class="navbar-menu-items" href="./samplefeedbackreport">Product Feedback</a></li>
 		          </ul>
 		        </li>
-	            <li id="nav-appointment"><a class="navbar-menu-items" href="./datareport" th:if="${session.roles.contains('DM')}">Data Report</a></li>
+	            <li id="nav-appointment"><a class="navbar-menu-items" href="./shownotifications" th:if="${session.roles.contains('SalesRep')} or ${session.roles.contains('DM')} or ${session.roles.contains('PH')}">Notifications</a>
+	           		<span class="notification-counter" id="notification-count"></span>
+	            </li>
+	            <li id="nav-appointment"><a class="navbar-menu-items" href="./virtuallearning" th:if="${session.roles.contains('SalesRep')}">Virtual Learning</a></li>
+	            
+	          
 	            <li id="nav-appointment"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('DM')}">View Alignments</a></li>
 	            
 	            <li id="nav-appointment"><a class="navbar-menu-items" href="./edetailing" th:if="${session.roles.contains('PH')}">e-Detailing</a></li>
-	            <li class="dropdown">
-		          <a class="dropdown-toggle navbar-menu-items" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:if="${session.roles.contains('DM')} or ${session.roles.contains('NH')}">Products</a>
-		          <ul class="dropdown-menu product-dropdown-menu">
-		            <li><a class="navbar-menu-items" href="./home">View Products</a></li>
-		            <li><a class="navbar-menu-items" href="./addproductspage">Add Products</a></li>
-		          </ul>
-		        </li>
+	            
 	            
 	            <li id="nav-logout"><a class="navbar-menu-items" href="/logout" >Logout</a></li>
 	          </ul>

@@ -12,4 +12,5 @@ public interface NotificationsDao {
 	public void updateNotification(String notification, int notificationId);
 	public List<NotificationsDto> getByUser(int userId);
 	public void insertNotification(NotificationsDto notification);
+	public int countBy(int userId);
 }

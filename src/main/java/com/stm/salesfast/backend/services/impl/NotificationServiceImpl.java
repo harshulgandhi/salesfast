@@ -66,6 +66,11 @@ public class NotificationServiceImpl implements NotificationService {
 		}
 		return notificationEntities;
 	}
+	
+	@Override
+	public int getNotificationCountForUser(int userId){
+		return notificationDao.countBy(userId);
+	}
 
 	/**
 	 * Insert notification for reminder of

@@ -19,6 +19,7 @@ public class NotificationsDaoImpl implements NotificationsDao {
 	private static final String DELETE_BY = "DELETE FROM notifications WHERE notificationId = ?";
 	private static final String UPDATE_NOTIFICATION = "UPDATE notifications SET notification=? WHERE notificationId = ?";
 	private static final String INSERT = "INSERT INTO notifications (notification, hasRead, userId, notificationCategory) VALUES (?,?,?,?)";
+	private static final String COUNT_BY_USERID = "SELECT COUNT(*) FROM notifications WHERE userId = ?";
 	
 	
 	@Autowired
@@ -104,4 +105,16 @@ public class NotificationsDaoImpl implements NotificationsDao {
 		}
 	}
 
+	@Override
+	public int countBy(int userId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.queryForObject(COUNT_BY_USERID, (rs, rownnum)->{
+				return rs.getInt(1);
+			}, userId);
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return 0;
+	}
 }

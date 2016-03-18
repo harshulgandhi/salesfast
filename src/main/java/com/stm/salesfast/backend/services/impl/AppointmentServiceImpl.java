@@ -33,6 +33,7 @@ import com.stm.salesfast.backend.utils.SalesFastEmail;
 import com.stm.salesfast.backend.utils.SalesFastEmailSendGridImpl;
 import com.stm.salesfast.backend.utils.SalesFastUtilities;
 import com.stm.salesfast.constant.ConstantValues;
+import com.stm.salesfast.constant.SessionConstants;
 
 @Service
 public class AppointmentServiceImpl implements AppointmentService {
@@ -277,7 +278,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 	public List<AlignedPhysicianFollowUpEntity> followUpAppointmentsToShow() throws ParseException{
 		log.info("Appointments to follow up");
 		List<AlignedPhysicianFollowUpEntity> followUpAppointments = new ArrayList<>();
-		List<AppointmentDto> followUpAppointmentDto = getFollowUpAppointments(userDetails.getUserDetails(SalesFastUtilities.getCurrentUserName()).getUserId());
+		List<AppointmentDto> followUpAppointmentDto = getFollowUpAppointments(SessionConstants.USER_ID);
 		log.info("Number of follow up appointments : "+followUpAppointmentDto.size());
 		for(AppointmentDto appointment : followUpAppointmentDto){
 			PhysicianStgDto physician = physicianService.getPhysicianById(appointment.getPhysicianId());
@@ -305,7 +306,6 @@ public class AppointmentServiceImpl implements AppointmentService {
 				));
 				
 			}
-			log.info(""+followUpAppointments.get(followUpAppointments.size()-1));
 		}
 		
 		return followUpAppointments;

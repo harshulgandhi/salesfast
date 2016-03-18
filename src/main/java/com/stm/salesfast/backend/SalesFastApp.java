@@ -1,5 +1,6 @@
 package com.stm.salesfast.backend;
 
+import java.io.IOException;
 import java.text.ParseException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +20,10 @@ public class SalesFastApp {
 	private ReminderService reminders;
 	
 	@Scheduled(fixedRate=86400000)
-	public void printWelcomeMessage() throws ParseException{
+	public void printWelcomeMessage() throws ParseException, IOException{
 		System.out.println(" **** SALES FAST APPLICATION UP AND RUNNING **** ");
 		createAlignments.getDataForProcessing();
-//		createAlignments.createAlignments();
+		createAlignments.createAlignments();
 		createAlignments.calculatePhysicianImportance();
 		
 //		reminders.followUpCallReminders();

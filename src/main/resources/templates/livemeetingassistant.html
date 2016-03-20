@@ -82,7 +82,12 @@
 			<span>Click here to view all answered questions (sorted in order of importance)</span>
 		</button>
 		</div>
-		<div class="row question-answer-div slidedown-question-answer-show" style="display: none;">
+		<div class="row question-answer-div slidedown-question-answer-show" >
+			<input type="text" class="global_filter" id="global_filter"></input>
+			<button type="button" class="btn btn-default btn-md get-filtered-rows">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				<span>Print selected</span>
+			</button>		
 			<div class="col-lg-12 col-sm-12" >
 				<table id="question-answer-table" class="table">
 					<thead>

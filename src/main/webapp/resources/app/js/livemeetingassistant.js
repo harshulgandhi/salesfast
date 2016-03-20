@@ -4,9 +4,9 @@
 
 $(document).ready(function() {
 
-	$('.slidedown-questions').click(function(){
-		$('.slidedown-question-answer-show').slideToggle('fast');
-	});
+//	$('.slidedown-questions').click(function(){
+//		$('.slidedown-question-answer-show').slideToggle('fast');
+//	});
 	$('.slidedown-questions-self').click(function(){
 		$('.slidedown-self-question-answer-show').slideToggle('fast');
 	});
@@ -14,7 +14,10 @@ $(document).ready(function() {
 	getAllQuestions();
 	getAllQuestionsAskedBySelf();
 	updateNotificationCounter();
+	
+
 });
+
 
 var getAllQuestions = function(){
 	$.ajax({
@@ -147,9 +150,18 @@ var populateAllQuestionsAskedBySelf = function(questions){
 			);
 		}
 	}
+	var table = $('#question-answer-table').dataTable({
+		"bSort": false
+	});
 }
 
+$(document).on('click', 'button.get-filtered-rows', function get_filtered_datatable() {
+    var filteredrows = $("#question-answer-table").dataTable()._('tr', {"filter": "applied"});
 
+    for ( var i = 0; i < filteredrows.length; i++ ) {
+        console.log(filteredrows[i]);
+    };
+});
 
 var populateSimilarQuestions = function(questions){
 	

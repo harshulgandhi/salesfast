@@ -69,6 +69,7 @@ $(document).ready(function() {
     for(var i = 0; i<tableRows.length ; i++){
     	setRowColor($(tableRows[i]));
     }
+    
     tableAppointment = $('#appointment-fixed-physician-table').DataTable({
  	   order: [[7, "asc"]]
     });
@@ -82,9 +83,11 @@ $(document).ready(function() {
     		$(this).css('background-color', defaultColor);
     		
         }else{
+        	tableAppointment.$('tr.selected').css('background-color',defaultColor);
         	tableAppointment.$('tr.selected').removeClass('selected');
+        	
             defaultColor = $(this).css('background-color');
-             $(this).addClass('selected');
+            $(this).addClass('selected');
             $(this).css('background-color','#08C');
             var len = tableAppointment.row('.selected').data().length;					
             

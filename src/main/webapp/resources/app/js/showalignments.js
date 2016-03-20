@@ -112,7 +112,7 @@ var fixAppointments = function(physIds, appointTimeList, productIds, appointDate
 		    		data : JSON.stringify(fixedAppointmentDetails),
 		    		contentType : "application/json; charset=utf-8",
 		    		success: function(){
-		    			location.reload(true);
+		    			window.location.replace("/showappointments");
 		    		}
 		    	});
 	    	}

@@ -40,6 +40,13 @@ constructPieCharts = function(url, containerName, title){
 		url : url,
 		dataType : 'json',
 		success : function(data){
+	    	$.each(data, function(k, v) {
+	    		if(data[0]["y"] == "NaN"){
+		    		for(var i = 0; i<data.length; i++){
+		    			data[i]["y"] = 0.0;
+		    		}
+	    		}
+    		});
 	    	console.log("Data received : "+JSON.stringify(data));
 	    	createChart(containerName, title, data);
 		},
@@ -58,34 +65,47 @@ createChart=function(containerName, title, data){
     // Build the chart
 	console.log("Container Name : "+containerName+", Title : "+title+", data : "+data);
     $(containerName).highcharts({
-
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie'
+    	chart: {
+            type: 'column'
         },
         title: {
             text: title
         },
-        tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        subtitle: {
+            text: 'Meeting experience parameters'
         },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: false
-                },
-                showInLegend: true
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'Percentage of responses'
             }
         },
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.1f}%'
+                }
+            }
+        },
+
+        tooltip: {
+            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+        },
+
         series: [{
-            name: 'Brands',
+            name: 'Meeting experience responses',
             colorByPoint: true,
             data: data
         }]
+        
     });
 }
 

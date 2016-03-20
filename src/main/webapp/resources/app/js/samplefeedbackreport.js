@@ -2,12 +2,6 @@
  * 
  */
 var chartData = [];
-	               /* ['Is Medicine Effective',   60.2],
-	                ['Does it have side effects',   42.4],
-	                ['Is it affordable', 50.4]
-	            ];*/
-
-//[{"isMedicineEffective":30,"hasSideEffects":60,"isAffordable":30}]
 
 
 var allProducts = [];
@@ -91,6 +85,11 @@ var addButtons = function(productList){
 		getAnalysisData(productList[i]["productId"], containerId, productList[i]["productName"]);
 		
 	}
+	//Triggering click event to show first graph
+	var list = $('button.show-analysis');
+	var btn = list[0];
+	$('#'+btn.id).trigger( "click" );
+	$(window).resize();
 }
 
 var getAnalysisData = function(productId, containerId, productName){
@@ -100,7 +99,17 @@ var getAnalysisData = function(productId, containerId, productName){
 		dataType : 'json',
 		success : function(data){
 	    	console.log("Data received : "+JSON.stringify(data));
-	    	formatData(data,containerId, productName,productId);
+	    	if(data[0]["isMedicineEffective"] == "NaN") {
+	    		for(var i = 0; i < data.length; i++){
+	    		    data[i]["isMedicineEffective"] = 0.0;
+	    		    data[i]["hasSideEffects"] = 0.0;
+	    		    data[i]["isAffordable"] = 0.0;
+	    		}
+	    		console.log("Data after updating to 0 : "+JSON.stringify(data));
+	    		formatData(data,containerId, productName,productId);
+	    	}else{
+	    		formatData(data,containerId, productName,productId);
+	    	}
 		},
 		error : function(e){
 			console.log("Error : "+JSON.stringify(e));
@@ -111,55 +120,73 @@ var getAnalysisData = function(productId, containerId, productName){
 }
 
 var formatData = function(rawData, containerId, productName,productId){
-	chartData.push(['Is Medicine Effective', rawData[0]["isMedicineEffective"]]);
-	chartData.push(['Does it have side effects', rawData[0]["hasSideEffects"]]);
-	chartData.push(['Is it affordable', rawData[0]["isAffordable"]]);
-	createChart(containerId, chartData, productName,productId);
+	var data = {};
+	data['name'] = "Feedback";
+	data['colorByPoint'] = true;
+	data['data'] = [{
+		 name: 'Is Medicine Effective?',
+         y: rawData[0]["isMedicineEffective"],
+         drilldown: null
+	},{
+		name: 'Does it have side effects?',
+        y: rawData[0]["hasSideEffects"],
+        drilldown: null
+	},{
+		name: 'Is it affordable?',
+        y: rawData[0]["isAffordable"],
+        drilldown: null
+	}];
+	chartData.push(data);
+	createBarChart(containerId, chartData, productName,productId);
 	chartData.length = 0;
 }
 
-var createChart=function(containerName, data, productName,productId){
-    // Build the chart
-	$(containerName).highcharts({
+
+var createBarChart = function(containerName, data, productName,productId){
+	$(function () {
+	    // Create the chart
+	    $(containerName).highcharts({
 	        chart: {
-	            plotBackgroundColor: null,
-	            plotBorderWidth: 0,
-	            plotShadow: false
+	            type: 'column'
 	        },
 	        title: {
-	            text: productName+'<br>Feedback',
-	            align: 'center',
-	            verticalAlign: 'middle',
-	            y: 40
+	            text: 'Medicine '+productName+': patient\'s feedback'
 	        },
-	        tooltip: {
-	            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+	        subtitle: {
+	            text: 'Firsthand feedback from medicine consumers'
+	        },
+	        xAxis: {
+	            type: 'category'
+	        },
+	        yAxis: {
+	            title: {
+	                text: 'Percentage of total feedbacks'
+	            }
+
+	        },
+	        legend: {
+	            enabled: false
 	        },
 	        plotOptions: {
-	            pie: {
+	            series: {
+	                borderWidth: 0,
 	                dataLabels: {
 	                    enabled: true,
-	                    distance: -30,
-	                    style: {
-	                        fontWeight: 'bold',
-	                        color: 'black'
-	                        
-	                    }
-	                },
-	                startAngle: -90,
-	                endAngle: 90,
-	                center: ['50%', '75%']
+	                    format: '{point.y:.1f}%'
+	                }
 	            }
 	        },
-	        series: [{
-	            type: 'pie',
-	            name: 'Browser share',
-	            innerSize: '50%',
-	            data: data
-	        }]
-	    });
-	
+
+	        tooltip: {
+	            headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
+	            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
+	        },
+
+	        series: chartData
+	      });
+	});
 	getSideEffectComments(productId);
+	chartData.length = 0;
 }
 
 

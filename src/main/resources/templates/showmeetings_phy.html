@@ -4,6 +4,7 @@
 <!-- Header to include css -->
 <div th:replace="fragments/header :: commonhead"></div>
 <link rel="stylesheet" type="text/css" href="resources/app/css/showmeetings_phy.css"/>
+<link rel="stylesheet" type="text/css" href="resources/app/css/toggleyesnoswitch.css"/>
 <meta charset="ISO-8859-1" />
 <title>SalesFast e-Detailing</title>
 </head>
@@ -13,7 +14,7 @@
 	
 	<div class="container" id="layout">
 		<div class="row row-header page-header"><h3>Meetings that you have had with BioPharma!</h3></div>
-		<div class="row action-buttons-row">
+		<div class="row action-buttons-row" style="display: none;">
 			<div class="col-lg-12 col-sm-12 table-buttons">
 				<button type="button" class="btn btn-default btn-md add-meeting-exp-phy-btn"
 					data-toggle="modal" data-target="#meetingexperience-add-phys-modal" disabled="disabled">

@@ -3,13 +3,15 @@
  */
 
 var tableAppointment = null;
+var currentSelectedAppointment = 0;
+
 
 $(document).ready(function() {
 	tableAppointment = $('#detailed-meeting-table').DataTable({
 		   order: [[0, "desc"]]
 	   });
 	var defaultColor = "";
-	$('#detailed-meeting-table tbody').on( 'click', 'tr', function (e) {
+	/*$('#detailed-meeting-table tbody').on( 'click', 'tr', function (e) {
     	var cell = $(e.target).get(0);	
     	if ( $(this).hasClass('selected') ) {
     		$(this).removeClass('selected');
@@ -28,8 +30,29 @@ $(document).ready(function() {
         }
     	
     	$('#meetingexperience-add-phy-button').click(addMeetingExperienceFromPhy);
-    });
+    });*/
+	
+	$('#detailed-meeting-table tbody').on( 'dblclick', 'tr', function (e) {
+		if ( $(this).hasClass('selected') ) {
+    		$(this).removeClass('selected');
+		}else{
+			tableAppointment.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+          //To toggle meeting update and experience buttons based on database flag for that appointment
+            var hasMeetingExperienceFromPH = tableAppointment.$('tr.selected').find('.has-meetingexp-flag').html();
+            if(hasMeetingExperienceFromPH === 'false') {
+            	currentSelectedAppointment = $(this).find('.appointment-id').html();
+            	$("#meetingexperience-add-phys-modal").modal('show');
+            }
+		}
+		
+	});
+	
 	updateNotificationCounter();
+});
+
+$(document).on('click','button#meetingexperience-add-phy-button',function(){
+	addMeetingExperienceFromPhy();
 });
 
 var addMeetingExperienceFromPhy = function(event){
@@ -37,12 +60,12 @@ var addMeetingExperienceFromPhy = function(event){
 	var formData_ = {};
 
 	formData_['appointmentId'] = appointmentId;
-	formData_['likedTheProduct'] = $('.likedproduct-flag-selector').val() === "1" ? 'true':'false';
-	formData_['likedPriceAffordability'] = $('.priceaffordable-flag-selector').val() === "1" ? 'true':'false';
-	formData_['impressiveLessSideEffects'] = $('.less-sideeffects-flag-selector').val() === "1" ? 'true':'false';
-	formData_['likedPresentation'] = $('.likedpresentation-flag-selector').val() === "1" ? 'true':'false';
-	formData_['salesRepConfidence'] = $('.confidence-flag-selector').val() === "1" ? 'true':'false';
-	formData_['impressiveCompanyReputation'] = $('.companyreputation-flag-selector').val() === "1" ? 'true':'false';
+	formData_['likedTheProduct'] = $('.likedproduct-flag-selector').is(":checked") === true ? 'true':'false';
+	formData_['likedPriceAffordability'] = $('.priceaffordable-flag-selector').is(":checked") === true ? 'true':'false';
+	formData_['impressiveLessSideEffects'] = $('.less-sideeffects-flag-selector').is(":checked") === true ? 'true':'false';
+	formData_['likedPresentation'] = $('.likedpresentation-flag-selector').is(":checked") === true ? 'true':'false';
+	formData_['salesRepConfidence'] = $('.confidence-flag-selector').is(":checked") === true ? 'true':'false';
+	formData_['impressiveCompanyReputation'] = $('.companyreputation-flag-selector').is(":checked") === true ? 'true':'false';
 	
 
 	console.log("Meeting Experience Form data from Phy : "+JSON.stringify(formData_));

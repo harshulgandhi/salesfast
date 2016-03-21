@@ -4,9 +4,9 @@
 
 $(document).ready(function() {
 
-//	$('.slidedown-questions').click(function(){
-//		$('.slidedown-question-answer-show').slideToggle('fast');
-//	});
+	$('.slidedown-questions').click(function(){
+		$('.slidedown-question-answer-show').slideToggle('fast');
+	});
 	$('.slidedown-questions-self').click(function(){
 		$('.slidedown-self-question-answer-show').slideToggle('fast');
 	});
@@ -91,35 +91,40 @@ var getSimilarQuestions = function(){
 	});
 }
 
-
-
 var populateAllQuestions = function(questions){
 	
 	for(var i = 0; i<questions.length; i++){
 		if(i % 2 == 0){
 			$('#question-answer-table tbody').append(
 				'<tr class="question-tr even-quest-row" style="font-style: italic;">'+
-					'<td style="width: 8%;">Questions : </td>'+
-					'<td style="font-weight: 600;">'+questions[i]["question"]+'</td>'+
-				'</tr>'+
-				'<tr class="answer-tr even-ans-row">'+
-					'<td style="font-style: italic;">Answer : </td>'+
-					'<td>'+questions[i]["answer"]+'</td>'+
-				'</tr>'		
+					'<td style="width: 8%;"><div class="ques-ans-label-td">'+
+						'<div class="question-label">Question : </div>'+
+						'<div class="answer-label">Answer : </div>'+
+					'</div></td>'+
+					'<td style="font-weight: 600;"><div class="ques-ans-td">'+
+						'<div class="question">'+questions[i]["question"]+'</div>'+
+						'<div class="answer">'+questions[i]["answer"]+'</div>'+
+					'</div></td>'+
+				'</tr>'
 			);
 		}else{
 			$('#question-answer-table tbody').append(
-					'<tr class="question-tr odd-quest-row" style="font-style: italic;">'+
-						'<td style="width: 8%;">Questions : </td>'+
-						'<td style="font-weight: 600;">'+questions[i]["question"]+'</td>'+
-					'</tr>'+
-					'<tr class="answer-tr odd-ans-row">'+
-						'<td style="font-style: italic;">Answer : </td>'+
-						'<td>'+questions[i]["answer"]+'</td>'+
-					'</tr>'		
+				'<tr class="question-tr odd-quest-row" style="font-style: italic;">'+
+					'<td style="width: 8%;"><div class="ques-ans-label-td">'+
+						'<div class="question-label">Questions : </div>'+
+						'<div class="answer-label">Answer : </div>'+
+					'</div></td>'+
+					'<td style="font-weight: 600;"><div class="ques-ans-td">'+
+						'<div class="question">'+questions[i]["question"]+'</div>'+
+						'<div class="answer">'+questions[i]["answer"]+'</div>'+
+					'</div></td>'+
+				'</tr>'	
 			);
 		}
 	}
+	var table = $('#question-answer-table').dataTable({
+		"bSort": false
+	});
 }
 
 var populateAllQuestionsAskedBySelf = function(questions){
@@ -129,28 +134,33 @@ var populateAllQuestionsAskedBySelf = function(questions){
 		if(i % 2 == 0){
 			$('#self-question-answer-table tbody').append(
 				'<tr class="question-tr even-quest-row" style="font-style: italic;">'+
-					'<td style="width: 8%;">Questions : </td>'+
-					'<td style="font-weight: 600;">'+questions[i]["question"]+'</td>'+
-				'</tr>'+
-				'<tr class="answer-tr even-ans-row">'+
-					'<td style="font-style: italic;">Answer : </td>'+
-					'<td>'+questions[i]["answer"]+'</td>'+
-				'</tr>'		
+					'<td style="width: 8%;"><div class="ques-ans-label-td">'+
+						'<div class="question-label">Question : </div>'+
+						'<div class="answer-label">Answer : </div>'+
+					'</div></td>'+
+					'<td style="font-weight: 600;"><div class="ques-ans-td">'+
+						'<div class="question">'+questions[i]["question"]+'</div>'+
+						'<div class="answer">'+questions[i]["answer"]+'</div>'+
+					'</div></td>'+
+				'</tr>'
 			);
 		}else{
 			$('#self-question-answer-table tbody').append(
-					'<tr class="question-tr odd-quest-row" style="font-style: italic;">'+
-						'<td style="width: 8%;">Questions : </td>'+
-						'<td style="font-weight: 600;">'+questions[i]["question"]+'</td>'+
-					'</tr>'+
-					'<tr class="answer-tr odd-ans-row">'+
-						'<td style="font-style: italic;">Answer : </td>'+
-						'<td>'+questions[i]["answer"]+'</td>'+
-					'</tr>'		
+				'<tr class="question-tr odd-quest-row" style="font-style: italic;">'+
+					'<td style="width: 8%;"><div class="ques-ans-label-td">'+
+						'<div class="question-label">Question : </div>'+
+						'<div class="answer-label">Answer : </div>'+
+					'</div></td>'+
+					'<td style="font-weight: 600;"><div class="ques-ans-td">'+
+						'<div class="question">'+questions[i]["question"]+'</div>'+
+						'<div class="answer">'+questions[i]["answer"]+'</div>'+
+					'</div></td>'+
+				'</tr>'	
 			);
 		}
 	}
-	var table = $('#question-answer-table').dataTable({
+	
+	var table = $('#self-question-answer-table').dataTable({
 		"bSort": false
 	});
 }
@@ -169,25 +179,32 @@ var populateSimilarQuestions = function(questions){
 		if(i % 2 == 0){
 			$('#similar-question-answer-table tbody').append(
 				'<tr class="question-tr even-quest-row" style="font-style: italic;">'+
-					'<td style="width: 8%;">Questions : </td>'+
-					'<td style="font-weight: 600;">'+questions[i]["question"]+'</td>'+
-				'</tr>'+
-				'<tr class="answer-tr even-ans-row">'+
-					'<td style="font-style: italic;">Answer : </td>'+
-					'<td>'+questions[i]["answer"]+'</td>'+
-				'</tr>'		
+					'<td style="width: 8%;"><div class="ques-ans-label-td">'+
+						'<div class="question-label">Questions : </div>'+
+						'<div class="answer-label">Answer : </div>'+
+					'</div></td>'+
+					'<td style="font-weight: 600;"><div class="ques-ans-td">'+
+						'<div class="question">'+questions[i]["question"]+'</div>'+
+						'<div class="answer">'+questions[i]["answer"]+'</div>'+
+					'</div></td>'+
+				'</tr>'	
 			);
 		}else{
 			$('#similar-question-answer-table tbody').append(
 					'<tr class="question-tr odd-quest-row" style="font-style: italic;">'+
-						'<td style="width: 8%;">Questions : </td>'+
-						'<td style="font-weight: 600;">'+questions[i]["question"]+'</td>'+
-					'</tr>'+
-					'<tr class="answer-tr odd-ans-row">'+
-						'<td style="font-style: italic;">Answer : </td>'+
-						'<td>'+questions[i]["answer"]+'</td>'+
+						'<td style="width: 8%;"><div class="ques-ans-label-td">'+
+							'<div class="question-label">Questions : </div>'+
+							'<div class="answer-label">Answer : </div>'+
+						'</div></td>'+
+						'<td style="font-weight: 600;"><div class="ques-ans-td">'+
+							'<div class="question">'+questions[i]["question"]+'</div>'+
+							'<div class="answer">'+questions[i]["answer"]+'</div>'+
+						'</div></td>'+
 					'</tr>'		
 			);
 		}
 	}
+	var table = $('#similar-question-answer-table').dataTable({
+		"bSort": false
+	});
 }

@@ -3,7 +3,7 @@
  */
 var selectedAlignments = [];
 var tableAppointment = null;
-
+var currentSelectedAppointment = 0;
 $(document).ready(function() {
 	$('.slidedown-alignments').click(function(){
 		    $('.slidedown-alignments-show').slideToggle('fast');
@@ -23,7 +23,24 @@ $(document).ready(function() {
 	   }
    })
    
+   $('td.physician-name-td').append(
+		   '<span class="warning-meeting-update top" title="Double click to submit meeting update"'+
+		   'data-original-title="Double click to submit meeting update" style="color:orange;">&#9888;</span>'
+		   );
+   $(".top").tooltip({
+	    placement: "top"
+	});
+	$(".right").tooltip({
+	    placement: "right"
+	});
+	$(".bottom").tooltip({
+	    placement: "bottom"
+	});
+	$(".left").tooltip({
+	    placement: "left"
+	});
    updateNotificationCounter();
+   
 	   
    /**
     * Toggles between selected and de-selected rows of the table
@@ -74,7 +91,7 @@ $(document).ready(function() {
  	   order: [[7, "asc"]]
     });
     var defaultColor;
-    $('#appointment-fixed-physician-table tbody').on( 'click', 'tr', function (e) {
+    /*$('#appointment-fixed-physician-table tbody').on( 'click', 'tr', function (e) {
     	var cell = $(e.target).get(0);	
     	if ( $(this).hasClass('selected') ) {
     		$(this).removeClass('selected');
@@ -97,11 +114,35 @@ $(document).ready(function() {
             toggleMeetingUpdateButtons(hasMeetingUpdate, hasMeetingExperience);
         }
     		
-    	$(".phys-status-selector").select2();
+    	
+    	
      	$('#meetingupdate-add-button').click(addMeetingUpdate);
      	$('#meetingexperience-add-button').click(addMeetingExperience);
+    });*/
+    
+    //ON Double click of row, modal opens
+    $('#appointment-fixed-physician-table tbody').on( 'dblclick', 'tr', function (e) {
+    	if ( $(this).hasClass('selected') ) {
+    		$(this).removeClass('selected');
+    		$(this).css('background-color', defaultColor);
+    	}else{
+        	tableAppointment.$('tr.selected').css('background-color',defaultColor);
+        	tableAppointment.$('tr.selected').removeClass('selected');
+            defaultColor = $(this).css('background-color');
+            $(this).addClass('selected');
+            $(this).css('background-color','#08C');
+    	}
+    	currentSelectedAppointment = $(this).find('.appointment-id').html()
+    	$("#meetingupdate-add-modal").modal('show');
+    	
+    	$(".phys-status-selector").select2();
     });
 });	
+
+$(document).on('click','button#meetingupdate-add-button',function(){
+	//addMeetingExperience(); called inside addMeetingUpdate();
+	addMeetingUpdate();
+});
 
 
 /**
@@ -227,9 +268,9 @@ $('.submit-selected-followup-alignments').click(function(){
 });
 
 
-var addMeetingUpdate = function(event){
+var addMeetingUpdate = function(){
 	
-	var appointmentId = tableAppointment.row('.selected').data()[0];												//Getting Appointment id
+	var appointmentId = currentSelectedAppointment;//tableAppointment.row('.selected').data()[0];												//Getting Appointment id
 	var physicianId = tableAppointment.row('.selected').data()[1];													//Getting Physician id
 	var productName = tableAppointment.row('.selected').data()[tableAppointment.row('.selected').data().length-4];	//Getting product name
 	
@@ -239,7 +280,7 @@ var addMeetingUpdate = function(event){
 	formData['physicianId'] = physicianId;
 	formData['productName'] = productName;
 	formData['meetingStatus'] = $('.phys-status-selector').val();
-	formData['isEDetailing'] = $('.edetailing-flag-selector').val() === "1" ? 'true':'false';
+	formData['isEDetailing'] = $('.edetailing-flag-selector').is(":checked") === true ? 'true':'false';
 	
 	console.log("Form data : "+JSON.stringify(formData));
 	
@@ -249,24 +290,23 @@ var addMeetingUpdate = function(event){
         data : JSON.stringify(formData),
         contentType : 'application/json'
     }).done(function() {
-        $('#meetingupdate-add-modal').modal('hide');
-        location.reload(true);
+    	addMeetingExperience();
     });
 }
 
 
-var addMeetingExperience = function(event){
-	var appointmentId = tableAppointment.row('.selected').data()[0];													//Getting Appointment id
+var addMeetingExperience = function(){
+	var appointmentId = currentSelectedAppointment;//tableAppointment.row('.selected').data()[0];													//Getting Appointment id
 	var formData_ = {};
 
 	formData_['appointmentId'] = appointmentId;
-	formData_['likedTheProduct'] = $('.likedproduct-flag-selector').val() === "1" ? 'true':'false';
-	formData_['likedPriceAffordability'] = $('.priceaffordable-flag-selector').val() === "1" ? 'true':'false';
-	formData_['impressiveLessSideEffects'] = $('.less-sideeffects-flag-selector').val() === "1" ? 'true':'false';
-	formData_['likedPresentation'] = $('.likedpresentation-flag-selector').val() === "1" ? 'true':'false';
-	formData_['salesRepConfidence'] = $('.confidence-flag-selector').val() === "1" ? 'true':'false';
-	formData_['impressiveCompanyReputation'] = $('.companyreputation-flag-selector').val() === "1" ? 'true':'false';
 	
+	formData_['likedTheProduct'] = $('.likedproduct-flag-selector').is(":checked") === true ? 'true':'false';
+	formData_['likedPriceAffordability'] = $('.priceaffordable-flag-selector').is(":checked") === true ? 'true':'false';
+	formData_['impressiveLessSideEffects'] = $('.less-sideeffects-flag-selector').is(":checked") === true ? 'true':'false';
+	formData_['likedPresentation'] = $('.likedpresentation-flag-selector').is(":checked") === true ? 'true':'false';
+	formData_['salesRepConfidence'] = $('.confidence-flag-selector').is(":checked") === true ? 'true':'false';
+	formData_['impressiveCompanyReputation'] = $('.companyreputation-flag-selector').is(":checked")=== true ? 'true':'false';
 
 	console.log("Meeting Experience Form data : "+JSON.stringify(formData_));
 
@@ -276,7 +316,7 @@ var addMeetingExperience = function(event){
         data : JSON.stringify(formData_),
         contentType : 'application/json'
     }).done(function() {
-        $('#meetingexperience-add-modal').modal('hide');
+    	$('#meetingupdate-add-modal').modal('hide');
         location.reload(true);
     });
 }

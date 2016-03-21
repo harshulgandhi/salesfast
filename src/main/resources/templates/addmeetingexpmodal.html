@@ -3,7 +3,7 @@
 <head>
 </head>
 <body>
-<div class="modal fade" id="meetingexperience-add-modal" role="dialog" data-edit-mode="false" th:fragment="addmeetingexperiencemodal">
+<div class="modal fade" id="meetingexperience-add-modal" role="dialog" data-edit-mode="false" th:fragment="addmeetingexperiencemodal"> -->
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -13,7 +13,7 @@
 					</button>
 					<h4 class="modal-title" id="addMeetingExperienceLabel">Meeting experience</h4>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body" th:fragment="addmeetingexperiencemodal-body">
 					<form id="meeting-experience-form" class="form-horizontal">
 						<div class="form-group" id="physicianStatus" style="display:none">
 							<label class="col-xs-3 control-label" id="status-label">Status</label>
@@ -25,56 +25,63 @@
 						<div class="form-group">
 							<label class="col-xs-7 control-label" id="liked-product-id">Did physician genuinely liked the product?</label>
 							<div class="col-xs-5">
-								<select class="likedproduct-flag-selector validate-ele form-control select-bool-flag" name="liked-product">
-									<option value="1">YES</option>
-									<option value="0">NO</option>
-								</select>
+								<label class="switch switch-yes-no">
+									<input class="likedproduct-flag-selector switch-input" type="checkbox" checked="checked"/>
+									<span class="switch-label" data-on="Yes" data-off="No"></span> 
+									<span class="switch-handle"></span> 
+								</label>
 							</div>
+							
 						</div>
 						<div class="form-group">
 							<label class="col-xs-7 control-label" id="price-affordable-id">Does physician think the price is affordable?</label>
 							<div class="col-xs-5">
-								<select class="priceaffordable-flag-selector validate-ele form-control select-bool-flag" name="price-affordable">
-									<option value="1">YES</option>
-									<option value="0">NO</option>
-								</select>
+								<label class="switch switch-yes-no">
+									<input class="priceaffordable-flag-selector switch-input" type="checkbox" checked="checked"/>
+									<span class="switch-label" data-on="Yes" data-off="No"></span> 
+									<span class="switch-handle"></span> 
+								</label>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-xs-7 control-label" id="less-sideeffects-id">Does physician think medicine has less side effects?</label>
 							<div class="col-xs-5">
-								<select class="less-sideeffects-flag-selector validate-ele form-control select-bool-flag" name="less-side-effects">
-									<option value="1">YES</option>
-									<option value="0">NO</option>
-								</select>
+								<label class="switch switch-yes-no">
+									<input class="less-sideeffects-flag-selector switch-input" type="checkbox" checked="checked"/>
+									<span class="switch-label" data-on="Yes" data-off="No"></span> 
+									<span class="switch-handle"></span> 
+								</label>
 							</div>
 						</div>
 						
 						<div class="form-group">
 							<label class="col-xs-7 control-label" id="liked-presentation-id">Did physician like the presentations?</label>
 							<div class="col-xs-5">
-								<select class="likedpresentation-flag-selector validate-ele form-control select-bool-flag" name="liked-presentation">
-									<option value="1">YES</option>
-									<option value="0">NO</option>
-								</select>
+								<label class="switch switch-yes-no">
+									<input class="likedpresentation-flag-selector switch-input" type="checkbox" checked="checked"/>
+									<span class="switch-label" data-on="Yes" data-off="No"></span> 
+									<span class="switch-handle"></span> 
+								</label>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-xs-7 control-label" id="confidence-factor-id">Was physician influenced by your confidence during presentation?</label>
 							<div class="col-xs-5">
-								<select class="confidence-flag-selector validate-ele form-control select-bool-flag" name="confidence-factor">
-									<option value="1">YES</option>
-									<option value="0">NO</option>
-								</select>
+								<label class="switch switch-yes-no">
+									<input class="confidence-flag-selector switch-input" type="checkbox" checked="checked"/>
+									<span class="switch-label" data-on="Yes" data-off="No"></span> 
+									<span class="switch-handle"></span> 
+								</label>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-xs-7 control-label" id="company-reputation-id">Was physician impressed with BioPharma's reputation?</label>
 							<div class="col-xs-5">
-								<select class="companyreputation-flag-selector validate-ele form-control select-bool-flag" name="company-reputation">
-									<option value="1">YES</option>
-									<option value="0">NO</option>
-								</select>
+								<label class="switch switch-yes-no">
+									<input class="companyreputation-flag-selector switch-input" type="checkbox" checked="checked"/>
+									<span class="switch-label" data-on="Yes" data-off="No"></span> 
+									<span class="switch-handle"></span> 
+								</label>
 							</div>
 						</div>
 						

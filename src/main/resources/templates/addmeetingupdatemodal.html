@@ -6,14 +6,14 @@
 <div class="modal fade" id="meetingupdate-add-modal" role="dialog" data-edit-mode="false" th:fragment="addmeetingupdatemodal">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
-				<div class="modal-header">
+				<div class="modal-custom-header-1 modal-header">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
 					<h4 class="modal-title" id="addMeetingUpdateLabel">Meeting update</h4>
 				</div>
-				<div class="modal-body">
+				<div class="modal-body modal-body-1">
 					<form id="meeting-update-form" class="form-horizontal">
 						<div class="form-group" id="physician-id" style="display:none">
 							<label class="col-xs-3 control-label" id="id-label">ID</label>
@@ -32,10 +32,11 @@
 						<div class="form-group">
 							<label class="col-xs-5 control-label" id="edetailing-label">Opting for e-Detailing</label>
 							<div class="col-xs-5">
-								<select class="edetailing-flag-selector validate-ele form-control select-bool-flag" name="edetailing">
-									<option value="1">YES</option>
-									<option value="0">NO</option>
-								</select>
+								<label class="switch switch-yes-no edetailing-flag">
+									<input class="edetailing-flag-selector switch-input" type="checkbox" checked="checked"/>
+									<span class="switch-label" data-on="Yes" data-off="No"></span> 
+									<span class="switch-handle"></span> 
+								</label>
 							</div>
 						</div>
 						
@@ -51,6 +52,12 @@
 						</div>
 					</form>
 				</div>
+				<div class="modal-custom-header-2 modal-header">
+					<h4 class="modal-title modal-title-2" id="addMeetingUpdateLabel">Meeting characteristics</h4>
+				</div>
+				
+				<div th:replace="addmeetingexpmodal :: addmeetingexperiencemodal-body"></div>
+				
 				<div class="modal-footer">
 					<button id="meetingupdate-cancel-button" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 					<button id="meetingupdate-add-button" type="button" class="btn btn-primary">Save</button>

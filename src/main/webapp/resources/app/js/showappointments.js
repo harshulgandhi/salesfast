@@ -11,7 +11,6 @@ $(document).ready(function() {
    var table = $('#aligned-vicinity-physician-table').DataTable({
 	   order: [[16, "desc"]]
    });
-   
    $('#appointment-fixed-physician-table').find('tr').each(function(i, val){
 	   if($(val).find('.confirmation-status').html() == 'CANCELLED'){
 		   $(val).css('background-color','mistyrose');
@@ -41,6 +40,23 @@ $(document).ready(function() {
 	});
    updateNotificationCounter();
    
+   $('.today-appointment-li').on('click', function(){
+	   $('.future-appointment-div').css('display','none');
+	   $('.today-appointment-div').css('display','block');
+   });
+   
+   $('.future-appointment-li').on('click', function(){
+	   $('.today-appointment-div').css('display','none');
+	   $('.future-appointment-div').css('display','block');
+   });
+   
+   $('.left-menu-ul').on('click','li',function(){
+	   $('li.left-menu-selected').removeClass('left-menu-selected');
+	   $(this).addClass('left-menu-selected');
+	   $(this).find('a').addClass('left-menu-selected-anchor');
+   });
+   
+   $( ".today-appointment-li" ).trigger( "click" );
 	   
    /**
     * Toggles between selected and de-selected rows of the table
@@ -65,16 +81,21 @@ $(document).ready(function() {
     * Toggles between selected and de-selected rows of the follow up
     * appointment table. Takes care of clicks done on the 'time' element 
     */
+    var defaultColorFollowup;
     $('#followup-appointments-table tbody').on( 'click', 'tr', function (e) {
     	var cell = $(e.target).get(0);
     	console.log(cell);
     	if(cell.childElementCount < 1 && cell.nodeName != 'INPUT' && cell.nodeName != 'SPAN' && cell.nodeName != 'TEXTAREA' ){
 	    	$(this).toggleClass('selected');
 	    	if ( $(this).hasClass('selected') ) {
+	    		defaultColorFollowup = $(this).css('background-color');
 	    		$(this).css('background-color','#08C');
+	    		$(this).css('color','white');
 	            $(this).find('.followup-appointment-paramaters').prop("disabled",false);
 	        }else{
-				$(this).find('.followup-appointment-paramaters').prop("disabled",false);
+	        	$(this).css('background-color', defaultColorFollowup);
+	        	$(this).css('color','black');
+				$(this).find('.followup-appointment-paramaters').prop("disabled",true);
 	        }
     	}
     });

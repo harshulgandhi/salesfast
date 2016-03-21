@@ -14,8 +14,6 @@ $(document).ready(function() {
 	getAllQuestions();
 	getAllQuestionsAskedBySelf();
 	updateNotificationCounter();
-	
-
 });
 
 

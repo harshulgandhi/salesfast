@@ -11,209 +11,217 @@
 <body>
 	<!-- Common header -->
 	<div th:replace="fragments/header :: header"></div>
-	
-	<div class="container" id="layout">
-		<div class="row row-header page-header"><h3>Your Appointments For Today</h3></div>
-		<div class="row update-buttons-row">
-			<div class="col-lg-12 col-sm-12 table-buttons">
-				<button type="button" class="btn btn-default btn-md add-meeting-update-btn"
-					data-toggle="modal" data-target="#meetingupdate-add-modal" disabled="disabled" style="display: none;">
-					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-					<span>Add Meeting Update</span>
+	<div class="outer-container">
+		<div class="left-nav" id='cssmenu'>
+			<ul class="left-menu-ul">
+				<li class='active today-appointment-li' ><a href='#'><span>TODAY's APPOINMENTS</span></a></li>
+				<li class='last future-appointment-li'><a href='#'><span>FUTURE APPOINTMENTS</span></a></li>
+			</ul>
+		</div>
+		<div class="container" id="layout">
+			<div class="today-appointment-div" style="display: none;">
+				<div class="row row-header page-header"><h3>Your Appointments For Today</h3></div>
+				<div class="row update-buttons-row">
+					<div class="col-lg-12 col-sm-12 table-buttons">
+						<button type="button" class="btn btn-default btn-md add-meeting-update-btn"
+							data-toggle="modal" data-target="#meetingupdate-add-modal" disabled="disabled" style="display: none;">
+							<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+							<span>Add Meeting Update</span>
+						</button>
+						<button id="meeting-experience-modal-btn" type="button" class="btn btn-default btn-md add-meeting-experience-btn" 
+							data-toggle="modal" data-target="#meetingexperience-add-modal" disabled="disabled" style="display: none;">
+							<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+							<span>Add Meeting Experience</span>
+						</button>
+						<button id="future-appointment-modal-btn" type="button" class="btn btn-default btn-md future-appointment-btn" 
+							data-toggle="modal" data-target="#future-appointment-modal">
+							<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+							<span>Show Future Appointments</span>
+						</button>
+					</div> 
+				</div>
+				<div class="row">
+					<div class="col-lg-12 col-sm-12">
+						<table id="appointment-fixed-physician-table" class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<th class="appointment-id" style="display:none">Appointment Id</th>
+									<th style="display:none">Physician Id</th>
+									<th>Physician Name</th>
+									<th>Address</th>
+									<th>Contact</th>
+									<th>Email Id</th>
+									<th class="confirmation-status-head">Confirmation Status</th>
+									<th>Time of appointment</th>
+									<th>Product</th>
+									<th class="meeting-update-flag" style="display:none">Has Meeting Update</th>
+									<th class="meeting-exp-flag" style="display:none">Has Meeting Experience</th>
+									<th>Notes</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="eachAppointment : ${listOfTodaysAppointments}">
+									<td class="appointment-id"  style="display:none" th:text="${eachAppointment.appointmentId}"></td>
+									<td style="display:none" th:text="${eachAppointment.physicianId}"></td>
+									<td class="physician-name-td" th:text="${eachAppointment.physicianName}"></td>
+									<td th:text="${eachAppointment.address}"></td>
+									<td th:text="${eachAppointment.contact}"></td>
+									<td th:text="${eachAppointment.emailId}"></td>
+									<td class="confirmation-status" th:text="${eachAppointment.confirmationStatus}"></td>
+									<td th:text="${eachAppointment.time}"></td>
+									<td th:text="${eachAppointment.product}"></td>
+									<td class="meeting-update-flag" style="display:none" th:text="${eachAppointment.hasMeetingUpdate}"></td>
+									<td class="meeting-exp-flag" style="display:none" th:text="${eachAppointment.hasMeetingExperience}"></td>
+									<td th:text="${eachAppointment.additionalUpdate}"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+										<!-- Appointments that were set for follow up -->
+				<div class="row page-header row-header"><h3>Your Follow Ups For Today!</h3></div>
+				<div class="row follow-up-appointments">
+					<div class="col-lg-12 col-sm-12" >
+						<table id="followup-appointments-table" class="table table-striped table-bordered">
+							<thead>
+								<tr>
+									<th style="display:none">Physician Id</th>
+									<th>Physician Name</th>
+									<th>Email Id</th>
+									<th>Contact</th>
+									<th>Address</th>
+									<th style="display:none">City</th>
+									<th style="display:none">State</th>
+									<th style="display:none">ZIP</th>
+									<th style="display:none">Medical Field</th>
+									<th>Product</th>
+									<th style="display:none">Product Id</th>
+									<th>Is a new Physician?</th>
+									<th>Date</th>
+									<th>Time</th>
+									<th>Appointment Status</th>
+									<th>Notes</th>
+									<th style="display:none">Importance Factor</th>
+									<th class="followup-appointmentid" style="display:none">AppointmentId</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="eachFollowUpAppointment : ${followUpAppointments}">
+									<td style="display:none" th:text="${eachFollowUpAppointment.physicianId}"></td>
+									<td th:text="${eachFollowUpAppointment.firstName} + ' '+${eachFollowUpAppointment.lastName}"></td>
+									<td th:text="${eachFollowUpAppointment.email}"></td>
+									<td th:text="${eachFollowUpAppointment.contactNumber}"></td>
+									<td th:text="${eachFollowUpAppointment.addressLineOne} +' '+ ${eachFollowUpAppointment.addressLineTwo}+' '+${eachFollowUpAppointment.city}+' '+${eachFollowUpAppointment.zip}"></td>
+									<td style="display:none" th:text="${eachFollowUpAppointment.city}"></td>
+									<td style="display:none" th:text="${eachFollowUpAppointment.state}"></td>
+									<td style="display:none" th:text="${eachFollowUpAppointment.zip}"></td>
+									<td style="display:none" th:text="${eachFollowUpAppointment.medicalField}"></td>
+									<td th:text="${eachFollowUpAppointment.productName}"></td>
+									<td style="display:none" th:text="${eachFollowUpAppointment.productId}"></td>								
+									<td th:unless="${eachFollowUpAppointment.isNew}" th:text="NO"></td>
+									<td th:if="${eachFollowUpAppointment.isNew}" th:text="YES"></td>
+									<td><input class="appointment-date followup-appointment-paramaters" type="date" disabled="disabled" th:value="${eachFollowUpAppointment.followUpDate}"/></td>
+									<td><input class="appointment-time followup-appointment-paramaters" type="time" disabled="disabled" th:value="${eachFollowUpAppointment.followUpTime}"/></td>
+									<td>
+										<div class="col-xs-5">
+											<select class="appointment-status-selector validate-ele followup-appointment-paramaters" name="appointmentstatus" disabled="disabled" th:default="${eachFollowUpAppointment.status}"> 
+												<option value="CONFIRMED">Confirmed</option>
+												<option value="FOLLOW UP" selected="selected">Follow Up</option>
+												<option value="NOT INTERESTED">Not Interested</option>
+											</select>
+										</div>
+									</td>
+									<td><textarea name="id" class="form-control appointment-notes-class followup-appointment-paramaters" 
+									id="appointment-notes-id" placeholder="Additional notes" rows="2" required="required" disabled="disabled" th:value="${eachFollowUpAppointment.additionalNotes}"></textarea></td>
+									<td class="importance-factor" style="display:none" th:text="${eachFollowUpAppointment.importanceFactor}"></td>
+									<td class="followup-appointmentid" style="display:none" th:text="${eachFollowUpAppointment.appointmentId}"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="row submit-for-followup-appointments"><button type="submit" class="btn btn-default submit-selected-followup-alignments">Submit Appointments</button></div>
+					
+					
+									<!-- Table that lists physician in vicinity of fixed appointments  -->
+				<div class="row show-vicinity-alignments-btn">
+				<!-- <p class="slidedown-alignments"><a href="#">Click here to find physicians in vicinity</a></p> -->
+				<button type="button" class="btn btn-info btn-md slidedown-alignments">
+					<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+					<span>Click here to find physicians in vicinity</span>
 				</button>
-				<button id="meeting-experience-modal-btn" type="button" class="btn btn-default btn-md add-meeting-experience-btn" 
-					data-toggle="modal" data-target="#meetingexperience-add-modal" disabled="disabled" style="display: none;">
-					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-					<span>Add Meeting Experience</span>
-				</button>
-				<button id="future-appointment-modal-btn" type="button" class="btn btn-default btn-md future-appointment-btn" 
-					data-toggle="modal" data-target="#future-appointment-modal">
-					<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
-					<span>Show Future Appointments</span>
-				</button>
-			</div> 
-		</div>
-		<div class="row">
-			<div class="col-lg-12 col-sm-12">
-				<table id="appointment-fixed-physician-table" class="table table-striped table-bordered">
-					<thead>
-						<tr>
-							<th class="appointment-id" style="display:none">Appointment Id</th>
-							<th style="display:none">Physician Id</th>
-							<th>Physician Name</th>
-							<th>Address</th>
-							<th>Contact</th>
-							<th>Email Id</th>
-							<th class="confirmation-status-head">Confirmation Status</th>
-							<th>Time of appointment</th>
-							<th>Product</th>
-							<th class="meeting-update-flag" style="display:none">Has Meeting Update</th>
-							<th class="meeting-exp-flag" style="display:none">Has Meeting Experience</th>
-							<th>Notes</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="eachAppointment : ${listOfTodaysAppointments}">
-							<td class="appointment-id"  style="display:none" th:text="${eachAppointment.appointmentId}"></td>
-							<td style="display:none" th:text="${eachAppointment.physicianId}"></td>
-							<td class="physician-name-td" th:text="${eachAppointment.physicianName}"></td>
-							<td th:text="${eachAppointment.address}"></td>
-							<td th:text="${eachAppointment.contact}"></td>
-							<td th:text="${eachAppointment.emailId}"></td>
-							<td class="confirmation-status" th:text="${eachAppointment.confirmationStatus}"></td>
-							<td th:text="${eachAppointment.time}"></td>
-							<td th:text="${eachAppointment.product}"></td>
-							<td class="meeting-update-flag" style="display:none" th:text="${eachAppointment.hasMeetingUpdate}"></td>
-							<td class="meeting-exp-flag" style="display:none" th:text="${eachAppointment.hasMeetingExperience}"></td>
-							<td th:text="${eachAppointment.additionalUpdate}"></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-								<!-- Appointments that were set for follow up -->
-		<div class="row page-header row-header"><h3>Your Follow Ups For Today!</h3></div>
-		<div class="row">
-			<div class="col-lg-12 col-sm-12" >
-				<table id="followup-appointments-table" class="table table-striped table-bordered">
-					<thead>
-						<tr>
-							<th style="display:none">Physician Id</th>
-							<th>Physician Name</th>
-							<th>Email Id</th>
-							<th>Contact</th>
-							<th>Address</th>
-							<th style="display:none">City</th>
-							<th style="display:none">State</th>
-							<th style="display:none">ZIP</th>
-							<th style="display:none">Medical Field</th>
-							<th>Product</th>
-							<th style="display:none">Product Id</th>
-							<th>Is a new Physician?</th>
-							<th>Date</th>
-							<th>Time</th>
-							<th>Appointment Status</th>
-							<th>Notes</th>
-							<th style="display:none">Importance Factor</th>
-							<th class="followup-appointmentid" style="display:none">AppointmentId</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr th:each="eachFollowUpAppointment : ${followUpAppointments}">
-							<td style="display:none" th:text="${eachFollowUpAppointment.physicianId}"></td>
-							<td th:text="${eachFollowUpAppointment.firstName} + ' '+${eachFollowUpAppointment.lastName}"></td>
-							<td th:text="${eachFollowUpAppointment.email}"></td>
-							<td th:text="${eachFollowUpAppointment.contactNumber}"></td>
-							<td th:text="${eachFollowUpAppointment.addressLineOne} +' '+ ${eachFollowUpAppointment.addressLineTwo}+' '+${eachFollowUpAppointment.city}+' '+${eachFollowUpAppointment.zip}"></td>
-							<td style="display:none" th:text="${eachFollowUpAppointment.city}"></td>
-							<td style="display:none" th:text="${eachFollowUpAppointment.state}"></td>
-							<td style="display:none" th:text="${eachFollowUpAppointment.zip}"></td>
-							<td style="display:none" th:text="${eachFollowUpAppointment.medicalField}"></td>
-							<td th:text="${eachFollowUpAppointment.productName}"></td>
-							<td style="display:none" th:text="${eachFollowUpAppointment.productId}"></td>								
-							<td th:unless="${eachFollowUpAppointment.isNew}" th:text="NO"></td>
-							<td th:if="${eachFollowUpAppointment.isNew}" th:text="YES"></td>
-							<td><input class="appointment-date followup-appointment-paramaters" type="date" disabled="disabled" th:value="${eachFollowUpAppointment.followUpDate}"/></td>
-							<td><input class="appointment-time followup-appointment-paramaters" type="time" disabled="disabled" th:value="${eachFollowUpAppointment.followUpTime}"/></td>
-							<td>
-								<div class="col-xs-5">
-									<select class="appointment-status-selector validate-ele followup-appointment-paramaters" name="appointmentstatus" disabled="disabled" th:default="${eachFollowUpAppointment.status}"> 
-										<option value="CONFIRMED">Confirmed</option>
-										<option value="FOLLOW UP" selected="selected">Follow Up</option>
-										<option value="NOT INTERESTED">Not Interested</option>
-									</select>
-								</div>
-							</td>
-							<td><textarea name="id" class="form-control appointment-notes-class followup-appointment-paramaters" 
-							id="appointment-notes-id" placeholder="Additional notes" rows="2" required="required" disabled="disabled" th:value="${eachFollowUpAppointment.additionalNotes}"></textarea></td>
-							<td class="importance-factor" style="display:none" th:text="${eachFollowUpAppointment.importanceFactor}"></td>
-							<td class="followup-appointmentid" style="display:none" th:text="${eachFollowUpAppointment.appointmentId}"></td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div>
-		<div class="row submit-for-followup-appointments"><button type="submit" class="btn btn-default submit-selected-followup-alignments">Submit Appointments</button></div>
-			
-			
-							<!-- Table that lists physician in vicinity of fixed appointments  -->
-		<div class="row show-vicinity-alignments-btn">
-		<!-- <p class="slidedown-alignments"><a href="#">Click here to find physicians in vicinity</a></p> -->
-		<button type="button" class="btn btn-info btn-md slidedown-alignments">
-			<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-			<span>Click here to find physicians in vicinity</span>
-		</button>
-		</div>
-		<div class="vicinity-aligned-phys-div slidedown-alignments-show" style="display: none;">
-			<div class="row">
-				<div class="col-lg-12 col-sm-12" >
-					<table id="aligned-vicinity-physician-table" class="table table-striped table-bordered">
-						<thead>
-							<tr>
-								<th style="display:none">Physician Id</th>
-								<th>Physician Name</th>
-								<th>Email Id</th>
-								<th>Contact</th>
-								<th>Address</th>
-								<th style="display:none">City</th>
-								<th style="display:none">State</th>
-								<th style="display:none">ZIP</th>
-								<th style="display:none">Medical Field</th>
-								<th>Product</th>
-								<th style="display:none">Product Id</th>
-								<th>Is a new Physician?</th>
-								<th>Date</th>
-								<th>Time</th>
-								<th>Appointment Status</th>
-								<th>Notes</th>
-								<th style="display:none">Importance Factor</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="eachVicinityAlignment : ${listOfPhysInVicinity}">
-								<td style="display:none" th:text="${eachVicinityAlignment.physicianId}"></td>
-								<td th:text="${eachVicinityAlignment.firstName} + ' '+${eachVicinityAlignment.lastName}"></td>
-								<td th:text="${eachVicinityAlignment.email}"></td>
-								<td th:text="${eachVicinityAlignment.contactNumber}"></td>
-								<td th:text="${eachVicinityAlignment.addressLineOne} +' '+ ${eachVicinityAlignment.addressLineTwo}+' '+${eachVicinityAlignment.city}+' '+${eachVicinityAlignment.zip}"></td>
-								<td style="display:none" th:text="${eachVicinityAlignment.city}"></td>
-								<td style="display:none" th:text="${eachVicinityAlignment.state}"></td>
-								<td style="display:none" th:text="${eachVicinityAlignment.zip}"></td>
-								<td style="display:none" th:text="${eachVicinityAlignment.medicalField}"></td>
-								<td th:text="${eachVicinityAlignment.productName}"></td>
-								<td style="display:none" th:text="${eachVicinityAlignment.productId}"></td>								
-								<td th:unless="${eachVicinityAlignment.isNew}" th:text="NO"></td>
-								<td th:if="${eachVicinityAlignment.isNew}" th:text="YES"></td>
-								<td><input class="appointment-date appointment-paramaters" type="date" disabled="disabled"/></td>
-								<td><input class="appointment-time appointment-paramaters" type="time" disabled="disabled"/></td>
-								<td>
-									<div class="col-xs-5">
-										<select class="appointment-status-selector validate-ele appointment-paramaters" name="appointmentstatus" disabled="disabled"> <!-- multiple="multiple"> -->
-											<option value="CONFIRMED">Confirmed</option>
-											<option value="FOLLOW UP">Follow Up</option>
-											<option value="NOT INTERESTED">Not Interested</option>
-										</select>
-									</div>
-								</td>
-								<td><textarea name="id" class="form-control appointment-notes-class appointment-paramaters" 
-								id="appointment-notes-id" placeholder="Additional notes" rows="2" required="required" disabled="disabled"></textarea></td>
-								<td class="importance-factor" style="display:none" th:text="${eachVicinityAlignment.importanceFactor}"></td>
-							</tr>
-						</tbody>
-					</table>
+				</div>
+				<div class="vicinity-aligned-phys-div slidedown-alignments-show" style="display: none;">
+					<div class="row">
+						<div class="col-lg-12 col-sm-12" >
+							<table id="aligned-vicinity-physician-table" class="table table-striped table-bordered">
+								<thead>
+									<tr>
+										<th style="display:none">Physician Id</th>
+										<th>Physician Name</th>
+										<th>Email Id</th>
+										<th>Contact</th>
+										<th>Address</th>
+										<th style="display:none">City</th>
+										<th style="display:none">State</th>
+										<th style="display:none">ZIP</th>
+										<th style="display:none">Medical Field</th>
+										<th>Product</th>
+										<th style="display:none">Product Id</th>
+										<th>Is a new Physician?</th>
+										<th>Date</th>
+										<th>Time</th>
+										<th>Appointment Status</th>
+										<th>Notes</th>
+										<th style="display:none">Importance Factor</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="eachVicinityAlignment : ${listOfPhysInVicinity}">
+										<td style="display:none" th:text="${eachVicinityAlignment.physicianId}"></td>
+										<td th:text="${eachVicinityAlignment.firstName} + ' '+${eachVicinityAlignment.lastName}"></td>
+										<td th:text="${eachVicinityAlignment.email}"></td>
+										<td th:text="${eachVicinityAlignment.contactNumber}"></td>
+										<td th:text="${eachVicinityAlignment.addressLineOne} +' '+ ${eachVicinityAlignment.addressLineTwo}+' '+${eachVicinityAlignment.city}+' '+${eachVicinityAlignment.zip}"></td>
+										<td style="display:none" th:text="${eachVicinityAlignment.city}"></td>
+										<td style="display:none" th:text="${eachVicinityAlignment.state}"></td>
+										<td style="display:none" th:text="${eachVicinityAlignment.zip}"></td>
+										<td style="display:none" th:text="${eachVicinityAlignment.medicalField}"></td>
+										<td th:text="${eachVicinityAlignment.productName}"></td>
+										<td style="display:none" th:text="${eachVicinityAlignment.productId}"></td>								
+										<td th:unless="${eachVicinityAlignment.isNew}" th:text="NO"></td>
+										<td th:if="${eachVicinityAlignment.isNew}" th:text="YES"></td>
+										<td><input class="appointment-date appointment-paramaters" type="date" disabled="disabled"/></td>
+										<td><input class="appointment-time appointment-paramaters" type="time" disabled="disabled"/></td>
+										<td>
+											<div class="col-xs-5">
+												<select class="appointment-status-selector validate-ele appointment-paramaters" name="appointmentstatus" disabled="disabled"> <!-- multiple="multiple"> -->
+													<option value="CONFIRMED">Confirmed</option>
+													<option value="FOLLOW UP">Follow Up</option>
+													<option value="NOT INTERESTED">Not Interested</option>
+												</select>
+											</div>
+										</td>
+										<td><textarea name="id" class="form-control appointment-notes-class appointment-paramaters" 
+										id="appointment-notes-id" placeholder="Additional notes" rows="2" required="required" disabled="disabled"></textarea></td>
+										<td class="importance-factor" style="display:none" th:text="${eachVicinityAlignment.importanceFactor}"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="row submit-for-appointments"><button type="submit" class="submit-selected-alignments">Submit Appointments</button></div>
 				</div>
 			</div>
-			<div class="row submit-for-appointments"><button type="submit" class="submit-selected-alignments">Submit Appointments</button></div>
+			<div class="future-appointment-div" style="display: none;">
+				<div class="row row-header page-header"><h3>Future Appointments!</h3></div>
+				<div class="row future-appointment-div"><div th:replace="futureappointmentmodal :: futureappointmentmodal-body"></div></div>
+			</div>
 		</div>
-		
 	</div>
-	
 	
 							<!-- Modal for adding meeting updates -->
 	<div th:replace="addmeetingupdatemodal :: addmeetingupdatemodal"></div>
-	
-							<!-- Modal for adding meeting experience updates -->
-	<!-- <div th:replace="addmeetingexpmodal :: addmeetingexperiencemodal"></div> -->
 	
 							<!-- Modal for viewing future appointments -->
 	<div th:replace="futureappointmentmodal :: futureappointmentmodal"></div>

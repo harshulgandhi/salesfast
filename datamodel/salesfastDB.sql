@@ -41,7 +41,7 @@ CREATE TABLE `alignments` (
   CONSTRAINT `fk_Alignments_Physicians_Staging1` FOREIGN KEY (`physicianId`) REFERENCES `physicians_staging` (`physicianId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Alignments_Product1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Alignments_User1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=819 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=497 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -82,7 +82,7 @@ CREATE TABLE `appointment` (
   CONSTRAINT `fk_Appointment_Physicians_Staging1` FOREIGN KEY (`physicianId`) REFERENCES `physicians_staging` (`physicianId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Appointment_Products1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Appointment_User1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=191 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=202 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,7 +91,7 @@ CREATE TABLE `appointment` (
 
 LOCK TABLES `appointment` WRITE;
 /*!40000 ALTER TABLE `appointment` DISABLE KEYS */;
-INSERT INTO `appointment` VALUES (176,'14:00:00','2016-03-18',1,1,4,'CONFIRMED','11001','','',1,1,0),(177,'14:30:00','2016-03-18',5,1,3,'CONFIRMED','11001','','additional notes 2',1,1,0),(178,'14:30:00','2016-03-18',5,1,4,'CONFIRMED','11001','','',1,1,0),(179,'13:00:00','2016-03-21',2,1,3,'CONFIRMED','11001','','',1,1,0),(180,'01:00:00','2016-03-21',2,1,4,'CONFIRMED','11001','','',1,1,0),(181,'23:00:00','2016-03-19',4,1,3,'FOLLOW UP','11001','','',0,0,0),(186,'14:59:00','2016-03-21',1,1,5,'CONFIRMED','11001','','',1,1,1),(187,'15:00:00','2016-03-21',5,1,5,'CONFIRMED','11001','','',0,0,0),(188,'12:59:00','2016-03-21',2,1,5,'CONFIRMED','11001','','',0,0,0),(189,'13:00:00','2016-03-14',4,1,4,'CONFIRMED','11001','','',0,0,0),(190,'14:00:00','2016-03-21',1,1,3,'CONFIRMED','11001','','',1,1,0);
+INSERT INTO `appointment` VALUES (192,'14:59:00','2016-03-22',1,1,3,'CONFIRMED','11001','','',1,1,0),(193,'15:00:00','2016-03-22',1,1,4,'CONFIRMED','11001','','									',0,0,0),(194,'14:00:00','2016-03-23',1,1,5,'CANCELLED','11001','I have to go out of town','',0,0,0),(195,'13:00:00','2016-03-22',5,1,3,'FOLLOW UP','11001','','',0,0,0),(196,'14:00:00','2016-03-22',5,1,4,'FOLLOW UP','11001','','',0,0,0),(197,'14:00:00','2016-03-22',5,1,5,'FOLLOW UP','11001','','',0,0,0),(198,'14:00:00','2016-03-22',2,1,3,'FOLLOW UP','11001','','',0,0,0),(199,'18:00:00','2016-03-22',2,1,4,'CONFIRMED','11001','','									',0,0,0),(200,'15:00:00','2016-03-24',4,1,3,'CANCELLED','11001','Not available','',0,0,0),(201,'03:00:00','2016-03-23',4,1,3,'CONFIRMED','11001','','									',0,0,0);
 /*!40000 ALTER TABLE `appointment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -173,7 +173,7 @@ CREATE TABLE `edetailing_material` (
   CONSTRAINT `fk_eDetailing_Material_Medical_Fields1` FOREIGN KEY (`medicalFieldId`) REFERENCES `medical_fields` (`medicalFieldId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_eDetailing_Material_Physicians_Staging1` FOREIGN KEY (`physicianId`) REFERENCES `physicians_staging` (`physicianId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_eDetailing_Material_Products1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -318,7 +318,7 @@ CREATE TABLE `meeting_experience` (
   PRIMARY KEY (`meetingExperienceId`),
   KEY `fk_Meeting_Experience_Appointment1_idx` (`appointmentId`),
   CONSTRAINT `fk_Meeting_Experience_Appointment1` FOREIGN KEY (`appointmentId`) REFERENCES `appointment` (`appointmentId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -327,7 +327,7 @@ CREATE TABLE `meeting_experience` (
 
 LOCK TABLES `meeting_experience` WRITE;
 /*!40000 ALTER TABLE `meeting_experience` DISABLE KEYS */;
-INSERT INTO `meeting_experience` VALUES (18,0,1,'PRESCRIBING',1,1,1,1,1,1,176),(19,0,1,'PRESCRIBING',1,1,1,1,1,1,177),(20,0,1,'PRESCRIBING',1,1,1,0,0,1,178),(21,0,1,'PRESCRIBING',0,1,1,0,0,0,180),(23,0,1,'PRESCRIBING',0,0,0,1,1,1,179),(24,0,1,'PRESCRIBING',1,0,1,0,0,1,186),(25,1,0,'PRESCRIBING',1,0,1,0,0,1,186),(26,0,1,'PRESCRIBING',1,1,0,0,0,1,190);
+INSERT INTO `meeting_experience` VALUES (27,0,1,'PRESCRIBING',1,0,1,0,1,0,192);
 /*!40000 ALTER TABLE `meeting_experience` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -357,7 +357,7 @@ CREATE TABLE `meeting_update` (
   CONSTRAINT `fk_Meeting_Update_Medical_Fields1` FOREIGN KEY (`medicalFieldId`) REFERENCES `medical_fields` (`medicalFieldId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Meeting_Update_Physicians_Staging1` FOREIGN KEY (`physicianId`) REFERENCES `physicians_staging` (`physicianId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Meeting_Update_Products1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -366,7 +366,7 @@ CREATE TABLE `meeting_update` (
 
 LOCK TABLES `meeting_update` WRITE;
 /*!40000 ALTER TABLE `meeting_update` DISABLE KEYS */;
-INSERT INTO `meeting_update` VALUES (13,'2016-03-18','PRESCRIBING',1,1,4,'ONC',176),(16,'2016-03-18','PRESCRIBING',1,5,3,'ONC',177),(17,'2016-03-18','PRESCRIBING',1,5,4,'ONC',178),(18,'2016-03-21','PRESCRIBING',1,2,4,'ONC',180),(23,'2016-03-21','PRESCRIBING',1,2,3,'ONC',179),(24,'2016-03-21','PRESCRIBING',1,1,5,'ONC',186),(25,'2016-03-21','PRESCRIBING',1,1,3,'ONC',190);
+INSERT INTO `meeting_update` VALUES (26,'2016-03-22','PRESCRIBING',1,1,3,'ONC',192);
 /*!40000 ALTER TABLE `meeting_update` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -386,7 +386,7 @@ CREATE TABLE `notifications` (
   PRIMARY KEY (`notificationId`),
   KEY `fk_Notifications_User1_idx` (`userId`),
   CONSTRAINT `fk_Notifications_User1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -395,7 +395,7 @@ CREATE TABLE `notifications` (
 
 LOCK TABLES `notifications` WRITE;
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
-INSERT INTO `notifications` VALUES (6,'Reminder: Call Dr. Clint Eastwood tomorrow to follow up regarding detailing for medicine O_Med_1, as discussed during previous call.',0,1,'FOLLOW UP'),(7,'We just release a new product O_Med_3. Visit your e-detailing page for more details.',0,9,'NEW PRODUCT'),(8,'We just release a new product O_Med_3. Visit your e-detailing page for more details.',0,10,'NEW PRODUCT'),(9,'O_Med_3 was just released. Call Dr. Clint Eastwood who was not interested in detailing about last product.',0,1,'NEW PRODUCT'),(10,'O_Med_3 was just released. Call Dr. Christopher Nolan who has been prescribing BioPharma medicines and detail him about this new medicine.',0,1,'NEW PRODUCT'),(11,'O_Med_3 was just released. Call Dr. Christopher Nolan who has been prescribing BioPharma medicines and detail him about this new medicine.',0,1,'NEW PRODUCT'),(12,'O_Med_3 was just released. Call Dr. Quentin Tarantino who has been prescribing BioPharma medicines and detail him about this new medicine.',0,1,'NEW PRODUCT'),(13,'O_Med_3 was just released. Call Dr. Quentin Tarantino who has been prescribing BioPharma medicines and detail him about this new medicine.',0,1,'NEW PRODUCT'),(14,'Sales Representative Johny Dep has a question that needs answering.',0,2,'LIVE MEETING QUESTION'),(15,'Sales Representative Johny Dep has a question that needs answering.',0,3,'LIVE MEETING QUESTION'),(16,'Sales Representative Johny Dep has a question that needs answering.',0,4,'LIVE MEETING QUESTION');
+INSERT INTO `notifications` VALUES (6,'Reminder: Call Dr. Clint Eastwood tomorrow to follow up regarding detailing for medicine O_Med_1, as discussed during previous call.',0,1,'FOLLOW UP'),(7,'We just release a new product O_Med_3. Visit your e-detailing page for more details.',0,9,'NEW PRODUCT'),(8,'We just release a new product O_Med_3. Visit your e-detailing page for more details.',0,10,'NEW PRODUCT'),(9,'O_Med_3 was just released. Call Dr. Clint Eastwood who was not interested in detailing about last product.',0,1,'NEW PRODUCT'),(10,'O_Med_3 was just released. Call Dr. Christopher Nolan who has been prescribing BioPharma medicines and detail him about this new medicine.',0,1,'NEW PRODUCT'),(11,'O_Med_3 was just released. Call Dr. Christopher Nolan who has been prescribing BioPharma medicines and detail him about this new medicine.',0,1,'NEW PRODUCT'),(12,'O_Med_3 was just released. Call Dr. Quentin Tarantino who has been prescribing BioPharma medicines and detail him about this new medicine.',0,1,'NEW PRODUCT'),(13,'O_Med_3 was just released. Call Dr. Quentin Tarantino who has been prescribing BioPharma medicines and detail him about this new medicine.',0,1,'NEW PRODUCT'),(14,'Sales Representative Johny Dep has a question that needs answering.',0,2,'LIVE MEETING QUESTION'),(15,'Sales Representative Johny Dep has a question that needs answering.',0,3,'LIVE MEETING QUESTION'),(16,'Sales Representative Johny Dep has a question that needs answering.',0,4,'LIVE MEETING QUESTION'),(17,'Dr. Johny Dep has cancelled the appointment.',0,9,'CANCELLED APPOINTMENTS');
 /*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -841,4 +841,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-03-21 19:20:01
+-- Dump completed on 2016-03-22 19:55:37

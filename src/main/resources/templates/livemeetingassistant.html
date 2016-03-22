@@ -11,97 +11,108 @@
 
 	<!-- Common header -->
 	<div th:replace="fragments/header :: header"></div>
-	
-	<div class="container" id="layout">
-		<div class="row row-header page-header"><h3>Need assistance during the meeting!</h3></div>
-		<div class="row col-lg-12 enter-question">
-			<form id="enter-question-form" class="form-horizontal" >
-				<div class="form-group enter-question-ele">
-					<label class="control-label" id="enter-question-label">Enter your question</label>
-					<input name="question" type="text" class="form-control validate-ele" id="question"/>
-				</div>
-				
-				<div class="form-group latest-answer-ele" style="display : none;" >
-					<label class="control-label" id="live-answer-label">Latest answer</label>
-					<input name="latest-answer" type="date" class="form-control validate-ele" id="answer"/>
-				</div>
-				<button type="button" class="btn btn-default submit-question-btn">Submit</button>
-			</form>
+	<div class="outer-container">
+		<div class="left-nav" id='cssmenu'>
+			<ul class="left-menu-ul">
+				<li class='active live-meeting-qna-li' ><a href='/livemeetingquestions'><span>LIVE MEETING QnA</span></a></li>
+				<li class='submit-answer-li'><a href='/unansweredques'><span>ANSWER A QUESTION</span></a></li>
+				<li class='last sample-med-li'><a href='/samplefeedbackreport'><span>MEDICINE FEEDBACKs</span></a></li>
+			</ul>
 		</div>
-		<div class="row similar-question-answer-div slidedown-similar-question-answer-show" style="display: none;">
-		<div class="row-sub-header col-lg-12"><h4>Suggestions - similar questions that might help!</h4></div>
-			<div class="col-lg-12 col-sm-12" >
-				<table id="similar-question-answer-table" class="table">
-					<thead>
-						<tr style="display: none;">
-							<th>Label </th>
-							<th>Content</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr style="display: none;">
-							<td>Importance factor</td>
-							<td>1.5</td>
-						</tr>
-					</tbody>
-				</table>
+		<div class="container" id="layout">
+			<div class="row row-header page-header"><h3>Need assistance during the meeting!</h3></div>
+			<div class="row col-lg-12 enter-question">
+				<form id="enter-question-form" class="form-horizontal" >
+					<div class="form-group enter-question-ele">
+						<label class="control-label" id="enter-question-label">Enter your question</label>
+						<input name="question" type="text" class="form-control validate-ele" id="question"/>
+					</div>
+					
+					<div class="form-group latest-answer-ele" style="display : none;" >
+						<label class="control-label" id="live-answer-label">Latest answer</label>
+						<input name="latest-answer" type="date" class="form-control validate-ele" id="answer"/>
+					</div>
+					<button type="button" class="btn btn-default submit-question-btn">Submit</button>
+				</form>
 			</div>
-		</div>
-		
-					<!-- All questions asked by THIS USER till date -->
-		<div class="row show-self-questions">
-		<button type="button" class="btn btn-default btn-md slidedown-questions-self">
-			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-			<span>Click here to view all questions asked by you (sorted in order of date on which it was asked)</span>
-		</button>
-		</div>
-		<div class="row question-answer-div slidedown-self-question-answer-show" style="display: none;">
-			<div class="col-lg-12 col-sm-12" >
-				<table id="self-question-answer-table" class="table">
-					<thead>
-						<tr style="display: none;">
-							<th>Label </th>
-							<th>Content</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr style="display: none;">
-							<td>Importance factor</td>
-							<td>1.5</td>
-						</tr>
-					</tbody>
-				</table>
+			<div class="row similar-question-answer-div slidedown-similar-question-answer-show" style="display: none;">
+			<div class="row-sub-header suggestion-header col-lg-12">
+				<h4>Suggestions - similar questions that might help!</h4>
+				<button type="button" class="btn btn-primary submit-question-post-suggest-btn">Submit question if suggestions did not help!</button>
 			</div>
-		</div>
-		
-		
-					<!-- All questions asked by any user till date -->
-		<div class="row show-all-questions">
-		<button type="button" class="btn btn-default	 btn-md slidedown-questions">
-			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-			<span>Click here to view all answered questions (sorted in order of importance)</span>
-		</button>
-		</div>
-		<div class="row question-answer-div slidedown-question-answer-show" style="display: none;" >
-			<div class="col-lg-12 col-sm-12" >
-				<table id="question-answer-table" class="table">
-					<thead>
-						<tr style="display: none;">
-							<th>Label </th>
-							<th>Content</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr style="display: none;">
-							<td>Importance factor</td>
-							<td>1.5</td>
-						</tr>
-					</tbody>
-				</table>
+			
+				<div class="col-lg-12 col-sm-12" >
+					<table id="similar-question-answer-table" class="table">
+						<thead>
+							<tr style="display: none;">
+								<th>Label </th>
+								<th>Content</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr style="display: none;">
+								<td>Importance factor</td>
+								<td>1.5</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
+						<!-- All questions asked by THIS USER till date -->
+			<div class="row show-self-questions">
+			<button type="button" class="btn btn-default btn-md slidedown-questions-self">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				<span style="display: -webkit-inline-box;margin-bottom: -10px;"><p>Click here to view <strong>all questions</strong> asked by you (sorted in order of date on which it was asked)</p></span>
+			</button>
+			</div>
+			<div class="row question-answer-div slidedown-self-question-answer-show" style="display: none;">
+				<div class="col-lg-12 col-sm-12" >
+					<table id="self-question-answer-table" class="table">
+						<thead>
+							<tr style="display: none;">
+								<th>Label </th>
+								<th>Content</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr style="display: none;">
+								<td>Importance factor</td>
+								<td>1.5</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
+			
+						<!-- All questions asked by any user till date -->
+			<div class="row show-all-questions">
+			<button type="button" class="btn btn-default	 btn-md slidedown-questions">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				<span style="display: -webkit-inline-box;margin-bottom: -10px;"><p>Click here to <strong>view all answered questions</strong> (sorted in order of importance)</p></span>
+			</button>
+			</div>
+			<div class="row question-answer-div slidedown-question-answer-show" style="display: none;" >
+				<div class="col-lg-12 col-sm-12" >
+					<table id="question-answer-table" class="table">
+						<thead>
+							<tr style="display: none;">
+								<th>Label </th>
+								<th>Content</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr style="display: none;">
+								<td>Importance factor</td>
+								<td>1.5</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>
-
 
 <!-- Common footer -->
 <div th:replace="fragments/footer :: footer"></div>

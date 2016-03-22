@@ -10,12 +10,21 @@
 <body>
 	<!-- Common header -->
 	<div th:replace="fragments/header :: header"></div>
-	<div class="container" id="layout">
-		<div class="row row-header page-header"><h3>Sample medicine feedback analysis</h3></div>
-		<div class="row row-custom-style">
-          <div class="col-lg-3 btn-left-panel">
-          </div>
-        </div>
+	<div class="outer-container">
+		<div class="left-nav" id='cssmenu'>
+			<ul class="left-menu-ul">
+				<li class='active live-meeting-qna-li' ><a href='/livemeetingquestions'><span>LIVE MEETING QnA</span></a></li>
+				<li class='last submit-answer-li'><a href='/unansweredques'><span>ANSWER A QUESTION</span></a></li>
+				<li class='last sample-med-li'><a href='/samplefeedbackreport'><span>MEDICINE FEEDBACKs</span></a></li>
+			</ul>
+		</div>
+		<div class="container" id="layout">
+			<div class="row row-header page-header"><h3>Sample medicine feedback analysis</h3></div>
+			<div class="row row-custom-style">
+	          <div class="col-lg-3 btn-left-panel">
+	          </div>
+	        </div>
+		</div>
 	</div>
 <!-- Common footer -->
 <div th:replace="fragments/footer :: footer"></div>

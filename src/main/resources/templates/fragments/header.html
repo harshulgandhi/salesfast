@@ -34,14 +34,16 @@
 		          </ul>
 		        </li>
 		        <li id="nav-appointment"><a class="navbar-menu-items" href="./datareport" th:if="${session.roles.contains('DM')}">Data Report</a></li>
-		        <li class="dropdown">
+		        <li id="nav-appointment"><a class="navbar-menu-items" href="./livemeetingquestions" th:if="${session.roles.contains('DM')} or ${session.roles.contains('NH')} or ${session.roles.contains('SalesRep')}">Quick Assistance</a></li>
+		        <!-- <li class="dropdown">
 		          <a class="dropdown-toggle navbar-menu-items" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:if="${session.roles.contains('DM')} or ${session.roles.contains('NH')} or ${session.roles.contains('SalesRep')}">Quick Assistance</a>
 		          <ul class="dropdown-menu product-dropdown-menu">
 		            <li><a class="navbar-menu-items" href="./livemeetingquestions">Live Meeting QnA</a></li>
 		            <li><a class="navbar-menu-items" href="./unansweredques">Answer a question</a></li>
 		            <li><a class="navbar-menu-items" href="./samplefeedbackreport">Product Feedback</a></li>
 		          </ul>
-		        </li>
+		        </li> -->
+		        
 	            <li id="nav-appointment"><a class="navbar-menu-items" href="./shownotifications" th:if="${session.roles.contains('SalesRep')} or ${session.roles.contains('DM')} or ${session.roles.contains('PH')}">Notifications</a>
 	           		<span class="notification-counter" id="notification-count"></span>
 	            </li>

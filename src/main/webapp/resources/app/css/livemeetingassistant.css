@@ -67,5 +67,11 @@ div.answer{
 	font-style: initial;
 }
 
+button.btn.btn-primary.submit-question-post-suggest-btn {
+    border-radius: 0px;
+    margin-left: 140%;
+}
 
-
+.suggestion-header{
+	display: -webkit-box;
+}

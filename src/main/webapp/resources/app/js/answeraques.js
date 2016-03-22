@@ -5,6 +5,8 @@
 var unansweredQuestions = {}
 
 $(document).ready(function() {
+	$('li.left-menu-selected').removeClass('left-menu-selected');
+	$('li.submit-answer-li').addClass('left-menu-selected');
 	getUnansweredQuestions();
 	updateNotificationCounter();
 });

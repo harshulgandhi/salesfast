@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.stm.salesfast.backend.entity.LiveMeetingQnAEntity;
@@ -46,9 +47,9 @@ public class LiveMeetingController {
 	
 	@RequestMapping(value="/getsimilarqna",  headers="Accept=*/*", method=RequestMethod.GET, produces="appliation/json")
 	@ResponseBody
-	public LiveMeetingQnAEntity[] getSimilarQuestionsWithAnswers(){
+	public LiveMeetingQnAEntity[] getSimilarQuestionsWithAnswers(@RequestParam(value="ques") String ques){
 		log.info("Fetching SIMILAR questions and answers!");
-		List<LiveMeetingQnAEntity> allQuestions = liveMeetingService.getSimilarQuestions(newQuestionSubmitted);
+		List<LiveMeetingQnAEntity> allQuestions = liveMeetingService.getSimilarQuestions(ques);
 		for(LiveMeetingQnAEntity eachQues : allQuestions){
 			log.info(""+eachQues);
 		}

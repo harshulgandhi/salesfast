@@ -6,6 +6,10 @@ var chartData = [];
 
 var allProducts = [];
 $(document).ready(function(){
+	
+	$('li.left-menu-selected').removeClass('left-menu-selected');
+	$('li.sample-med-li').addClass('left-menu-selected');
+	
 	$.ajax({
 		type: 'GET',
 		url : '/getproductsforuser',

@@ -11,6 +11,9 @@ $(document).ready(function() {
 		$('.slidedown-self-question-answer-show').slideToggle('fast');
 	});
 	
+	$('li.left-menu-selected').removeClass('left-menu-selected');
+	$('li.live-meeting-qna-li').addClass('left-menu-selected');
+	
 	getAllQuestions();
 	getAllQuestionsAskedBySelf();
 	updateNotificationCounter();
@@ -54,6 +57,11 @@ var getAllQuestionsAskedBySelf = function(){
 
 
 $('.submit-question-btn').click(function(){
+	getSimilarQuestions();
+});
+
+
+$(document).on('click','button.submit-question-post-suggest-btn',function(){
 	var formdata = {};
 	formdata['question'] = $('#question').val();
 	$.ajax({
@@ -63,18 +71,19 @@ $('.submit-question-btn').click(function(){
 		data : JSON.stringify(formdata)
 	}).done(function(){
 		console.log("question submit ajax complete!");
-		getSimilarQuestions();
+		location.reload(true);
 	});
 });
 
 
-
 var getSimilarQuestions = function(){
+	var formdata = {};
+	formdata['question'] = $('#question').val();
+	var quest = $('#question').val();
 	console.log("Fetching similar questions");
 	$.ajax({
 		type : 'GET',
-		url : "/getsimilarqna",
-		contentType : 'application/json',
+		url : "/getsimilarqna?ques="+quest,
 		dataType : 'json',
 		success : function(data){
 	    	console.log("Data received (Similar questions) : "+JSON.stringify(data));

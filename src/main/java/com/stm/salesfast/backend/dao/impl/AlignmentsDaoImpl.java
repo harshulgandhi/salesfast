@@ -37,9 +37,10 @@ public class AlignmentsDaoImpl implements AlignmentsDao {
 	/*This query fetches only those alignments for user that  are not in appointments table*/
 	private static final String FETCH_BY_USERID_NOTIN_APPOINTMENTS = "SELECT * FROM alignments WHERE alignments.userId = ? AND "
 																	+ "NOT EXISTS (SELECT 1 from appointment WHERE "
-																	+ "appointment.physicianId = alignments.physicianId AND "
+																	+ "(appointment.physicianId = alignments.physicianId AND "
 																	+ "appointment.userId = alignments.userId AND "
-																	+ "appointment.productId = alignments.productId)";
+																	+ "appointment.productId = alignments.productId) AND "
+																	+ "appointment.confirmationStatus != 'CANCELLED')";
 	
 	/*This query fetches alignments to physicians available in close vicinity to physicians who have confirmed appointments*/
 	private static final String FETCH_VICINITY = "SELECT * FROM alignments WHERE alignments.userId = ? AND alignments.zip IN "

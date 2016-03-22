@@ -5,6 +5,10 @@ public final class ConstantValues {
 
 	public static final String FORMAT_APPOINTMENT_CANCELLATION = "Dr. %s has cancelled the appointment.";
 	
+	public static final String FORMAT_APPOINTMENT_CANCELLATION_BY_SR = "BioPharma SalesRep %s has cancelled the appointment. He will fix a fresh appointment for someother time.";
+	
+	public static final String FORMAT_APPOINTMENT_RESCHEDULING_BY_SR = "BioPharma SalesRep %s has rescheduled an appointment on %s at %s.";
+	
 	public static final String FORMAT_FOLLOWUP = "Reminder: Call Dr. %s tomorrow to follow up regarding detailing for medicine %s, as discussed during previous call.";
 	
 	public static final String FORMAT_FOLLOWUP_CUSTGROWTH_LOST = "%s was just released. Call Dr. %s who did not agree to prescribe to our last product.";

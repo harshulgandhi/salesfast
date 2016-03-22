@@ -56,7 +56,6 @@ public class AlignmentController {
 	
 	@RequestMapping(value="/showalignments", method=RequestMethod.GET)
 	public String showAlignments(Model model){
-		
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		CURRENTUSERNAME = user.getUsername(); //get logged in user name
 	    log.info("\nLogged in user is : "+CURRENTUSERNAME+" and his role is "+user.getAuthorities());

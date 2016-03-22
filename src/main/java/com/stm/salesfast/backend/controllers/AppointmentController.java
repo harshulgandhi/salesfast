@@ -1,5 +1,7 @@
 package com.stm.salesfast.backend.controllers;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.text.ParseException;
 import java.util.List;
 
@@ -21,13 +23,17 @@ import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.entity.AlignedPhysicianEntity;
 import com.stm.salesfast.backend.entity.AlignedPhysicianFollowUpEntity;
 import com.stm.salesfast.backend.entity.AppointmentEntity;
+import com.stm.salesfast.backend.entity.FollowupAppointmentUpdateEntity;
+import com.stm.salesfast.backend.entity.FutureAppointmentUpdateEntity;
 import com.stm.salesfast.backend.entity.MeetingExperienceEntity;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.MeetingExperienceService;
 import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
 import com.stm.salesfast.backend.services.specs.NotificationService;
+import com.stm.salesfast.backend.services.specs.ReminderService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
+import com.stm.salesfast.backend.utils.SalesFastUtilities;
 import com.stm.salesfast.backend.entity.MeetingUpdateEntity;
 import com.stm.salesfast.constant.ConstantValues;
 import com.stm.salesfast.constant.SessionConstants;
@@ -54,6 +60,9 @@ public class AppointmentController {
 	
 	@Autowired
 	NotificationService notificationService;
+	
+	@Autowired
+	ReminderService reminders;
 	
 	@RequestMapping(value="/showappointments", method=RequestMethod.GET)
 	public String showAppointments(Model model) throws ParseException{
@@ -97,12 +106,38 @@ public class AppointmentController {
 		
 	}
 	
-	@RequestMapping(value="/getfutureappointments",  headers="Accept=*/*", method=RequestMethod.GET, produces="appliation/json")
+	@RequestMapping(value="/getallappointments",  headers="Accept=*/*", method=RequestMethod.GET, produces="appliation/json")
 	@ResponseBody
 	public AppointmentEntity[] getAllQuestionsWithAnswers() throws ParseException{
-		log.info("Fetching all questions and answers!");
+		log.info("Fetching all appointments!");
 		List<AppointmentEntity> futureAppointmentsList = appointmentFetchService.getAllAppointmentToShow(SessionConstants.USER_ID);
 		return futureAppointmentsList.toArray(new AppointmentEntity[futureAppointmentsList.size()]);
+	}
+	
+	@RequestMapping(value="/cancelappointmentbysr", method=RequestMethod.POST)
+	@ResponseBody
+	public void cancelAppointmentBySR( @RequestParam(value="appointmentId") int appointmentId, @RequestParam(value="cancellationReason") String cancellationReason){
+		log.info("Cancellation request received from SALESREP for appointment "+appointmentId+" due to "+cancellationReason);
+		appointmentFetchService.cancelAppointmentBySR(appointmentId, cancellationReason);
+		
+	}
+	
+	@RequestMapping(value="/updatefutureappointment", method=RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@ResponseBody
+	public void updateFutureAppointments(@RequestBody FutureAppointmentUpdateEntity[] appointments) throws ParseException{
+		for (FutureAppointmentUpdateEntity appointmentUpdate : appointments){
+			log.info("Appointment Update by SalesRep = "+appointmentUpdate);
+			Time selectedTime = SalesFastUtilities.getTimeForStringTime(appointmentUpdate.getAppointmentTime(), "HH:mm");
+			Date selectedDate = SalesFastUtilities.getDateForStringTime(appointmentUpdate.getAppointmentDate(), "yyyy-MM-dd");
+			appointmentFetchService.updateFutureAppointmentStatus(selectedTime, selectedDate, 
+					appointmentUpdate.getAppointmentStatus(), 
+					appointmentUpdate.getAdditionalNotes(), 
+					appointmentUpdate.getAppointmentId());
+		}
+		
+		/* To set reminders in case any follow up appointment
+		 * was fixed for any time in next day*/
+		reminders.followUpCallReminders();
 	}
 }
 

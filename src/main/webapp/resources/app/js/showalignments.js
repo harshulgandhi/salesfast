@@ -99,7 +99,7 @@ $('.submit-selected-alignments').click(function(){
 var fixAppointments = function(physIds, appointTimeList, productIds, appointDateList, appointStatusList, additionalNotesList){
 	$.ajax({
 		type: 'GET',
-		url : '/getfutureappointments',
+		url : '/getallappointments',
 		dataType : 'json',
 		success : function(data){
 	    	console.log("Data received (Future appoinments): "+JSON.stringify(data));
@@ -176,7 +176,7 @@ var getFutureAppointments = function(){
 	var futureAppointments = [];
 	$.ajax({
 		type: 'GET',
-		url : '/getfutureappointments',
+		url : '/getallappointments',
 		dataType : 'json',
 		success : function(data){
 	    	console.log("Data received (Future appoinments): "+JSON.stringify(data));

@@ -254,9 +254,68 @@ public class AppointmentServiceImpl implements AppointmentService {
 	}
 	
 	@Override
-	public void updateFollowUpAppointmentStatus(Time time, Date date, String status, String additionalNotes, int appointmentId){
-		appointmentDao.updateFollowUps(time, date, status, additionalNotes, appointmentId);
+	public void cancelAppointmentBySR(int appointmentId, String reason){
+		appointmentDao.updateStatus(appointmentId,"CANCELLED", reason);
+		
+		AppointmentDto appointment = appointmentDao.getAppointmentById(appointmentId);
+		UserDto salesrep = userDetails.getUserDetails(appointment.getUserId());
+		PhysicianStgDto physician = physicianService.getPhysicianById(appointment.getPhysicianId());
+		
+		/*Send notification email to Physician*/
+		String physicianName = physician.getFirstName() + " "+ physician.getLastName();
+		String salesRepName = salesrep.getFirstName()+" "+salesrep.getLastName();
+		
+		String emailText = "BioPharma Sales Representative Mr. "+salesRepName+" had to "
+				+ "cancel the appointment he had fixed for "+appointment.getDate()+ " at "
+				+ appointment.getTime()+ " for following reason : "+reason+". Apologies "
+				+ "the inconvinience. He will get in touch with you again to book appointment "
+				+ "for some other time & day. Thanks!";
+		String emailSub = "Appointment cancelled by SalesRep."+salesRepName;
+		sendMail( emailSub, emailText, physician.getEmail());
+		
+		/*Notification for physician - if e-detailing*/
+		UserDto physAsUser = userDetails.getUserForPhysicianId(physician.getPhysicianId());
+		if (physAsUser!=null){
+			notificationService.insertNotificationAppointmentCancellationBySR(physAsUser.getUserId(), salesRepName, "CANCELLED APPOINTMENTS");
+		}
+		
+		/*Send cancellation confirmation to SalesRep*/
+		String emailText2 = "You have cancelled the appointment with Dr."+physicianName
+				+ ". To fix again, you can call him at "+physician.getContactNumber();
+		String emailSub2 = "Appointment cancelled";
+		sendMail( emailSub2, emailText2, salesrep.getEmail());
 	}
+	
+	@Override
+	public void updateFollowUpAppointmentStatus(Time time, Date date, String status, String additionalNotes, int appointmentId){
+		appointmentDao.updateAppointment(time, date, status, additionalNotes, appointmentId);
+	}
+	
+	@Override
+	public void updateFutureAppointmentStatus(Time time, Date date, String status, String additionalNotes, int appointmentId){
+		appointmentDao.updateAppointment(time, date, status, additionalNotes, appointmentId);
+		
+		AppointmentDto appointment = appointmentDao.getAppointmentById(appointmentId);
+		UserDto salesrep = userDetails.getUserDetails(appointment.getUserId());
+		PhysicianStgDto physician = physicianService.getPhysicianById(appointment.getPhysicianId());
+		
+		/*Send notification email to Physician*/
+		String salesRepName = salesrep.getFirstName()+" "+salesrep.getLastName();
+		
+		String emailText = "BioPharma Sales Representative Mr. "+salesRepName+" has "
+				+ "rescheduled an appointment for "+appointment.getDate()+ " at "
+				+ appointment.getTime() + ".";
+		String emailSub = "Appointment Rescheduled by SalesRep."+salesRepName;
+		sendMail( emailSub, emailText, physician.getEmail());
+		
+		/*Notification for physician - if e-detailing*/
+		UserDto physAsUser = userDetails.getUserForPhysicianId(physician.getPhysicianId());
+		if (physAsUser!=null){
+			notificationService.insertNotificationAppointmentReschedulingBySR(physAsUser.getUserId(), salesRepName, 
+					appointment.getDate().toString(), appointment.getTime().toString(),"RESCHEDULED APPOINTMENTS");
+		}
+	}
+	
 	
 	/**
 	 * Method to send email using send grid api

@@ -18,44 +18,68 @@
 					<table id="future-appointment-fixed-physician-table" class="table table-striped table-bordered">
 						<thead>
 							<tr>
-								<th style="display:none">Appointment Id</th>
-								<th style="display:none">Physician Id</th>
+								<th style="display:none" class="physician-id">Physician Id</th>
 								<th>Physician Name</th>
 								<th>Address</th>
 								<th>Contact</th>
 								<th>Email Id</th>
-								<th>Confirmation Status</th>
-								<th>Time of appointment</th>
-								<th>Date of appointment</th>
 								<th>Product</th>
-								<th style="display:none">Has Meeting Update</th>
-								<th style="display:none">Has Meeting Experience</th>
+								<th>Date of appointment</th>
+								<th>Time of appointment</th>
+								<th>Appointment Status</th>
+								<th>Notes</th>								
+								<th style="display:none" class="future-appointment-id">Appointment Id</th>
 							</tr>
 						</thead>
 						<tbody>
 							<tr th:each="eachAppointment : ${listOfFutureAppointments}">
-								<td style="display:none" th:text="${eachAppointment.appointmentId}"></td>
 								<td style="display:none" th:text="${eachAppointment.physicianId}"></td>
 								<td th:text="${eachAppointment.physicianName}"></td>
 								<td th:text="${eachAppointment.address}"></td>
 								<td th:text="${eachAppointment.contact}"></td>
 								<td th:text="${eachAppointment.emailId}"></td>
-								<td class="confirmation-status" th:text="${eachAppointment.confirmationStatus}"></td>
-								<td th:text="${eachAppointment.time}"></td>
-								<td th:text="${eachAppointment.date}"></td>
 								<td th:text="${eachAppointment.product}"></td>
-								<td style="display:none" th:text="${eachAppointment.hasMeetingUpdate}"></td>
-								<td style="display:none" th:text="${eachAppointment.hasMeetingExperience}"></td>
+								<td><input class="appointment-date future-appointment-paramaters" type="date"
+								 disabled="disabled" th:value="${eachAppointment.date}"/></td>
+								<td><input class="appointment-time future-appointment-paramaters" type="time"
+								 disabled="disabled" th:value="${eachAppointment.time}"/></td>
+								<td th:switch="${eachAppointment.confirmationStatus}">
+									<div th:case="CANCELLED" th:text="${eachAppointment.confirmationStatus}" th:class="cancelled-appointment-status"></div>
+									<div th:case="*" class="col-xs-5">
+										<select class="appointment-status-selector validate-ele future-appointment-paramaters"
+										 name="appointmentstatus" disabled="disabled" th:default="${eachAppointment.confirmationStatus}"> 
+											<option value="CONFIRMED">Confirmed</option>
+											<option value="FOLLOW UP">Follow Up</option>
+											<option value="NOT INTERESTED">Not Interested</option>
+										</select>
+									</div>
+								</td>
+								<td>
+									<textarea name="additional-notes" class="form-control appointment-notes-class future-appointment-paramaters" 
+									id="appointment-notes-id" placeholder="Additional notes" rows="2" required="required" 
+									disabled="disabled" th:value="${eachAppointment.additionalUpdate}">
+									</textarea>
+								</td>
+								<td class="future-appointmentid" style="display:none" th:text="${eachAppointment.appointmentId}"></td>
 							</tr>
 						</tbody>
 					</table>
+				</div>
+				<div class="row submit-future-appointment-update">
+					<button type="button" id="update-future-appointment" class="btn btn-primary update-selected-future-appointment future-appointment-change"
+					style="border-radius: 0px; margin-left: 2%; margin-top: 2%;" disabled="disabled">
+					Submit Update</button>
+					<button type="button" class="btn btn-danger cancel-selected-future-appointment future-appointment-change"
+					data-dismiss="modal" data-toggle="modal" data-target="#cancellation-reason"
+					style="border-radius: 0px; margin-left: 4%; margin-top: 2%;" disabled="disabled">
+					Cancel Appointment</button>
 				</div>
 			</div>
 			<div class="modal-footer">
 				<button id="futureappointment-close-button" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 			</div>
 		</div>
-	</div>	
+	</div>
 </div>
 </body>
 </html>

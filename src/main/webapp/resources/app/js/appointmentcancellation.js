@@ -18,6 +18,4 @@ $('#appointment-cancellation-button').click(function(){
 			location.reload(true);
 		}, 500);
 	}
-	
-	
 });

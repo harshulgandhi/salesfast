@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<div class="modal fade" id="cancellation-reason" role="dialog" data-edit-mode="false" th:fragment="appointment-cancellation-modal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content appointment-cancellation-reason">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="appointmentcancellation">Please provide reason for cancellation!</h4>
+			</div>
+			<div class="modal-body">
+				<div class="cancellation-reason-text">
+					<div class="form-group">
+						<label for="cancellation-reason-id">Cancellation Reason: </label> 
+						<textarea name="id" class="form-control cancellation-reason-class" id="cancellation-reason-id" placeholder="Cancellation Reason" rows="3" required="required"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button id="appointment-cancellation-button" type="button" class="btn btn-danger">Cancel Appointment</button>
+			</div>
+		</div>
+	</div>	
+</div>	
+</body>
+</html>

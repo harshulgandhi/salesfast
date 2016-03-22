@@ -25,7 +25,7 @@ public interface AppointmentDao {
 	
 	public List<AppointmentDto> getAppointmentByStatus(String confirmationStatus, int userId);
 	
-	public void updateFollowUps(Time time, Date date, String status,
+	public void updateAppointment(Time time, Date date, String status,
 			String additionalNotes, int appointmentId);
 	
 	List<AppointmentDto> getAppointmentForPhysician(String confirmationStatus1,

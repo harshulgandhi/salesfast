@@ -51,6 +51,11 @@ public interface AppointmentService {
 
 	public List<AppointmentEntity> getAllAppointmentToShow(int userId);
 
+	public void cancelAppointmentBySR(int appointmentId, String reason);
+
+	public void updateFutureAppointmentStatus(Time time, Date date, String status,
+			String additionalNotes, int appointmentId);
+
 
 	
 }

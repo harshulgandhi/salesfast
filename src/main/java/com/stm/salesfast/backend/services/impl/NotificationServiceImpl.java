@@ -54,7 +54,21 @@ public class NotificationServiceImpl implements NotificationService {
 		String notification = String.format(ConstantValues.FORMAT_APPOINTMENT_CANCELLATION, physicianName);
 		notificationDao.insertNotification(new NotificationsDto(notification, false, userId, notificationCategory));
 	}
+	
+	@Override
+	public void insertNotificationAppointmentCancellationBySR(int userId, String salesRepName, String notificationCategory) {
+		// TODO Auto-generated method stub
+		String notification = String.format(ConstantValues.FORMAT_APPOINTMENT_CANCELLATION_BY_SR, salesRepName);
+		notificationDao.insertNotification(new NotificationsDto(notification, false, userId, notificationCategory));
+	}
 
+	@Override
+	public void insertNotificationAppointmentReschedulingBySR(int userId, String salesRepName, String date, String time, String notificationCategory) {
+		// TODO Auto-generated method stub
+		String notification = String.format(ConstantValues.FORMAT_APPOINTMENT_RESCHEDULING_BY_SR, salesRepName, date, time);
+		notificationDao.insertNotification(new NotificationsDto(notification, false, userId, notificationCategory));
+	}
+	
 	@Override
 	public List<NotificationEntity> getNotificationsForUser(int userId) {
 		// TODO Auto-generated method stub

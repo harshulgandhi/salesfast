@@ -28,5 +28,10 @@ public interface NotificationService {
 	public void insertNotificationQuestionAnswered(String answeredByName, int userId,
 			String notificationCategory);
 	public int getNotificationCountForUser(int userId);
+	public void insertNotificationAppointmentCancellationBySR(int userId,
+			String salesRepName, String notificationCategory);
+	public void insertNotificationAppointmentReschedulingBySR(int userId,
+			String salesRepName, String date, String time,
+			String notificationCategory);
 	
 }

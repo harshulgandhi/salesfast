@@ -67,7 +67,7 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 
 	/**
 	 * Method returns alignment specific details with fields that are to be
-	 * shown on the UI
+	 * shown on the UI - CANCELLED Appointments are shown as well
 	 * */
 	@Override
 	public List<AlignedPhysicianEntity> getAlignmentByUserIdToShow(int userId) {

@@ -74,6 +74,24 @@ h3{
     font-size: large;
 }
 
+.meeting-status-div{
+    padding-top: 2%;
+}
+
+div.future-appointment-div{
+    margin-right: -70px;
+    margin-left: -38px;
+}
+
+.cancelled-appointment-status {
+    font-style: italic;
+    font-weight: 600;
+    text-align: center;
+    margin-top: 13%;
+}
+
+
+
 /**
 Menu on left hand side
 */

@@ -48,7 +48,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
 												+ "WHERE appointmentId = ?";
 	private static final String FETCH_APPOINTMENT_BY_STATUS = "SELECT * FROM appointment WHERE confirmationStatus = ? AND userId = ?";
 	
-	private static final String UPDATE_FOLLOWUP_APPOINTMENT = "UPDATE appointment SET time = ?, "
+	private static final String UPDATE_APPOINTMENT = "UPDATE appointment SET time = ?, "
 															+ "date = ?, "
 															+ "confirmationStatus = ?, "
 															+ "additionalNotes = ? "
@@ -130,10 +130,10 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	}
 	
 	@Override
-	public void updateFollowUps(Time time, Date date,  String status,  String additionalNotes,int appointmentId) {
+	public void updateAppointment(Time time, Date date,  String status,  String additionalNotes,int appointmentId) {
 		// TODO Auto-generated method stub
 		try{
-			jdbcTemplate.update(UPDATE_FOLLOWUP_APPOINTMENT, (ps)->{
+			jdbcTemplate.update(UPDATE_APPOINTMENT, (ps)->{
 				ps.setTime(1, time);
 				ps.setDate(2, date);
 				ps.setString(3, status);

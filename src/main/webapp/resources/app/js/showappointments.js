@@ -16,11 +16,7 @@ $(document).ready(function() {
 		   $(val).css('background-color','mistyrose');
 	   }
    })
-   $('#future-appointment-fixed-physician-table').find('tr').each(function(i, val){
-	   if($(val).find('.confirmation-status').html() == 'CANCELLED'){
-		   $(val).css('background-color','mistyrose');
-	   }
-   })
+
    
    $('td.physician-name-td').append(
 		   '<span class="warning-meeting-update top" title="Double click to submit meeting update"'+
@@ -192,8 +188,9 @@ $('.submit-selected-alignments').click(function(){
 	var productIds = [];
 	var appointStatusList = [];
 	var additionalNotesList = [];
+	var isDataInvalid = false; 
 	
-	$('#aligned-vicinity-physician-table selected').each(function(i, val){
+	$('#aligned-vicinity-physician-table .selected').each(function(i, val){
 		if ($(val).find('.appointment-time').length != 0 ) {
 			var appointDate = $(val).find('.appointment-date').val();
 			var appointTime = $(val).find('.appointment-time').val();
@@ -201,6 +198,7 @@ $('.submit-selected-alignments').click(function(){
 			var additionalNotes = $(val).find('.appointment-notes-class').val();
 			if((appointTime == '' || appointDate == '') && appointStatus != "NOT INTERESTED"){		//Check if user entered time for all selected physicians
 				alert("Please mention time and date both for all selected physicians");
+				isDataInvalid = true;
 				return;
 			}
 			else{
@@ -216,20 +214,99 @@ $('.submit-selected-alignments').click(function(){
 				if(idx == 10) productIds.push($(valTD).html());		//Picking product for selected alignments
 			});
 	});
-	var fixedAppointmentDetails = createJson(physIds, appointTimeList, productIds, appointDateList, appointStatusList, additionalNotesList);
-	console.log("Json : "+JSON.stringify(fixedAppointmentDetails));
+	
+	if(!isDataInvalid){
+		fixAppointments(physIds, appointTimeList, productIds, appointDateList, appointStatusList, additionalNotesList);
+	}
+	
+	/*var fixedAppointmentDetails = createJson(physIds, appointTimeList, productIds, appointDateList, appointStatusList, additionalNotesList);
+	console.log("Vicinity alignment Json : "+JSON.stringify(fixedAppointmentDetails));
 	$.ajax({
 		type : 'POST',
 		url : "/fixappointments",
 		data : JSON.stringify(fixedAppointmentDetails),
-		contentType : "application/json; charset=utf-8",
-	    dataType : 'json',
+		contentType : "application/json",
 	    success : function() {
 	        location.reload(true);
 	    }
-	});
+	});*/
 });
 
+
+var fixAppointments = function(physIds, appointTimeList, productIds, appointDateList, appointStatusList, additionalNotesList){
+	$.ajax({
+		type: 'GET',
+		url : '/getallappointments',
+		dataType : 'json',
+		success : function(data){
+	    	console.log("Data received (Future appoinments): "+JSON.stringify(data));
+	    	var fixedAppointmentDetails = createJson(physIds, appointTimeList, productIds, appointDateList, appointStatusList, additionalNotesList);
+	    	console.log("Json : "+JSON.stringify(fixedAppointmentDetails));
+	    	if(checkFutureAppointmentOverlap(data, fixedAppointmentDetails) && checkTodaysAppointmentOverlap(fixedAppointmentDetails)){
+		    	$.ajax({
+		    		type : 'POST',
+		    		url : "/fixappointments",
+		    		data : JSON.stringify(fixedAppointmentDetails),
+		    		contentType : "application/json; charset=utf-8",
+		    		success: function(){
+		    			location.reload(true);
+		    		}
+		    	});
+	    	}
+		},
+		error : function(e){
+			console.log("Error : "+JSON.stringify(e));
+		}
+	});
+	
+}
+
+
+var checkFutureAppointmentOverlap = function(futureAppointments, currentAppointments){
+	console.log("Checking for overlapping appointments ");
+	console.log("Future appointments : "+JSON.stringify(futureAppointments));
+	console.log("Current appointments : "+JSON.stringify(currentAppointments));
+	for(var i = 0; i<currentAppointments.length; i++){
+		for(var j = 0; j<futureAppointments.length; j++){
+			if(currentAppointments[i]["appointmentDate"] == futureAppointments[j]["date"] ){
+				var time_1 = (new Date (new Date().toDateString() + ' ' + currentAppointments[i]["appointmentTime"]));
+				var time_2 = (new Date (new Date().toDateString() + ' ' + futureAppointments[j]["time"]));
+				var diff = Math.abs(time_1 - time_2);
+				console.log("Diff : "+diff);
+				if(Math.floor((diff/1000)/60) <= 15){
+					alert("One of the appointments you are booking overlaps (lies within 15 minutes) with already confirmed appointment with Dr. " +
+							futureAppointments[j]["physicianName"]+" on "+ futureAppointments[j]["date"]+ " at "+ futureAppointments[j]["time"]+". Please" +
+							" try to reschedule this appointment.");
+					return false;
+				}
+			}
+		}
+	}
+	return true;
+}
+
+var checkTodaysAppointmentOverlap = function(currentAppointments){
+	console.log("Checking for overlapping in today's appointments ");
+	console.log("Current appointments : "+JSON.stringify(currentAppointments));
+	for(var i = 0; i<currentAppointments.length; i++){
+		for(var j = i; j<currentAppointments.length; j++){
+			if(currentAppointments[i]["appointmentDate"] == currentAppointments[j]["appointmentDate"] &&
+					currentAppointments[i]["physicianId"] != currentAppointments[j]["physicianId"]){
+				var time_1 = (new Date (new Date().toDateString() + ' ' + currentAppointments[i]["appointmentTime"]));
+				var time_2 = (new Date (new Date().toDateString() + ' ' + currentAppointments[j]["appointmentTime"]));
+				var diff = Math.abs(time_1 - time_2);
+				console.log("Diff : "+diff);
+				if(Math.floor((diff/1000)/60) <= 15){
+					alert('Two of the appointments you are trying to fix, for '+currentAppointments[i]["appointmentDate"]+' @ '
+							+currentAppointments[i]["appointmentTime"]+', overlap (lie within 15 minutes) with each other.'
+							+'Try to rechedule either of these to be able to submit all appointments.');
+					return false;
+				}
+			}
+		}
+	}
+	return true;
+}
 
 /**
  * On click of submit button, DOM is traversed 
@@ -285,6 +362,8 @@ $('.submit-selected-followup-alignments').click(function(){
 	    success : function() {
 	        location.reload(true);
 	    }
+	}).done(function(){
+		location.reload(true);
 	});
 });
 

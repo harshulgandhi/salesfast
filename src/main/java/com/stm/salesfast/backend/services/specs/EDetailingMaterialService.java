@@ -16,4 +16,6 @@ public interface EDetailingMaterialService {
 	public List<EDetailingMaterialEntity> getEDetailingMaterialForUI(int physicianId);
 
 	List<Integer> getPhysiciansInEdetailingForMedicalField(String medicalFieldId);
+
+	public String getDetailingFileName(int productId);
 }

@@ -20,4 +20,6 @@ public interface TrainingMaterialService {
 	public List<VirtualLearningEntity> getAllDocumentsPath(int userId);
 
 	public void insert(TrainingMaterialDto trainingMat);
+
+	public String getTrainingMaterialUrlForProduct(int productId);
 }

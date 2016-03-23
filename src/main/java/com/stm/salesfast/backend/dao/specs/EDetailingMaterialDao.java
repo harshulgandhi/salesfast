@@ -13,5 +13,7 @@ public interface EDetailingMaterialDao {
 	public void insert(EDetailingMaterialDto eDetailing);
 
 	List<Integer> getPhysicians(String medicalFieldId);
+
+	public String getDetailingFileName(int productId);
 	
 }

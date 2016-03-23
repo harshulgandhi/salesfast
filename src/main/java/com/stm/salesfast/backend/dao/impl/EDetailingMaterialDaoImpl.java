@@ -23,6 +23,8 @@ public class EDetailingMaterialDaoImpl implements EDetailingMaterialDao {
 			+ "(detailingFileName, physicianId, medicalFieldId, productid) "
 			+ "VALUES (?,?,?,?)";
 	private static final String FETCH_ALL_PHYS = "SELECT physicianId FROM edetailing_material WHERE medicalFieldId = ? GROUP BY physicianId";
+	private static final String FETCH_FILE_NAME_PRODUCT = "SELECT detailingFileName FROM edetailing_material "
+			+ "WHERE productId = ? GROUP BY detailingFileName";
 	
 	@Autowired
 	JdbcTemplate jdbcTemplate;
@@ -39,6 +41,18 @@ public class EDetailingMaterialDaoImpl implements EDetailingMaterialDao {
 		return null;
 	}
 
+	@Override
+	public String getDetailingFileName(int productId) {
+		try{
+			return jdbcTemplate.queryForObject(FETCH_FILE_NAME_PRODUCT, (rs, rownnum)->{
+				return rs.getString(1);
+			}, productId);
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	@Override
 	public List<EDetailingMaterialDto> getByPhysicianId(int physicianId) {
 		try{

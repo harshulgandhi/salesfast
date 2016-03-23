@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.stm.salesfast.backend.entity.ManagerProductViewEntity;
 import com.stm.salesfast.backend.entity.MedicalFieldEntity;
 import com.stm.salesfast.backend.entity.NewProductEntity;
 import com.stm.salesfast.backend.services.specs.AddNewProductService;
+import com.stm.salesfast.backend.services.specs.ManagerViewProductService;
 import com.stm.salesfast.backend.services.specs.MedicalFieldService;
 import com.stm.salesfast.backend.services.specs.ProductFetchService;
 
@@ -35,6 +37,9 @@ public class ProductsController {
 	
 	@Autowired
 	AddNewProductService addProdService;
+	
+	@Autowired
+	ManagerViewProductService managerProdService;
 	
 	@RequestMapping(value="/addproductspage", method=RequestMethod.GET)
 	public String addProductsPage(Model model){
@@ -69,4 +74,12 @@ public class ProductsController {
 	public String allProductsPage(Model model){
 		return "products";
 	}
+
+	@RequestMapping(value = "/getproductdocuments",method=RequestMethod.GET, produces="application/json")
+	@ResponseBody
+	public ManagerProductViewEntity[] getProductDocument(@RequestParam(value="productId") int productId) {
+		List<ManagerProductViewEntity> allDocsDetails = managerProdService.getDocuments(productId);
+		return allDocsDetails.toArray(new ManagerProductViewEntity[allDocsDetails.size()]);
+	}
+	
 }

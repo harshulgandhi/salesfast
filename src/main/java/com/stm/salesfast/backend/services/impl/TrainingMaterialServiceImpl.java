@@ -64,12 +64,17 @@ public class TrainingMaterialServiceImpl implements TrainingMaterialService{
 	}
 	
 	@Override
+	public String getTrainingMaterialUrlForProduct(int productId){
+		return trainingMaterialDao.getTrainingMaterialForProduct(productId);
+	}
+	
+	@Override
 	public List<VirtualLearningEntity> getAllDocumentsPath(int userId){
 		List<VirtualLearningEntity> allDocumentPaths = new ArrayList<>();
 		List<String> trainingMaterial = getUrlsForUser(userId);
 		int i = 0;
 		for(String eachFile : trainingMaterial){
-			allDocumentPaths.add(new VirtualLearningEntity(ConstantValues.TRAINING_MATERIAL_PATH+eachFile, "Medicine "+(++i)+" "+eachFile.replace(".pdf", "")));
+			allDocumentPaths.add(new VirtualLearningEntity(ConstantValues.TRAINING_MATERIAL_PATH + eachFile, "Medicine "+(++i)+" "+eachFile.replace(".pdf", "")));
 		}
 		allDocumentPaths.add(new VirtualLearningEntity(ConstantValues.ORGANISATIONAL_DOCS_PATH+ConstantValues.CODE_OF_CONDUCT_FILE,
 				"Code of Conduct"));

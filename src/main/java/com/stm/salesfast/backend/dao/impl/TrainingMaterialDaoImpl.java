@@ -27,6 +27,8 @@ public class TrainingMaterialDaoImpl implements TrainingMaterialDao{
 	private static final String INSERT = "INSERT INTO training_material (trainingMaterialUrl, userId, medicalFieldId, productId)"
 			+ " VALUES (?,?,?,?)";
 	
+	private static final String FETCH_TRAININGFILE_PRODUCT = "SELECT trainingMaterialUrl FROM training_material "
+			+ "WHERE productId = ? GROUP BY trainingMaterialUrl";
 	
 	@Override
 	public TrainingMaterialDto getBy(int trainingMaterialId) {
@@ -36,6 +38,20 @@ public class TrainingMaterialDaoImpl implements TrainingMaterialDao{
 					FETCH_BY_ID, (rs, rownum) -> {
 						return new TrainingMaterialDto(trainingMaterialId, rs.getString("trainingMaterialUrl"), rs.getInt("userId"),rs.getString("medicalFieldId"), rs.getInt("productId"));}
 					, trainingMaterialId);
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;	
+	}
+	
+	@Override
+	public String getTrainingMaterialForProduct(int productId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.queryForObject(
+					FETCH_TRAININGFILE_PRODUCT, (rs, rownum) -> {
+						return rs.getString(1);
+			}, productId);
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}

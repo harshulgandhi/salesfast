@@ -52,11 +52,15 @@ public class EDetailingMaterialServiceImpl implements EDetailingMaterialService 
 	public void insert(EDetailingMaterialDto eDetailing) {
 		eDetailingDao.insert(eDetailing);
 	}
-
+	
+	@Override
+	public String getDetailingFileName(int productId){
+		return eDetailingDao.getDetailingFileName(productId);
+	}
+	
 	@Override
 	public List<EDetailingMaterialEntity> getEDetailingMaterialForUI(
 			int userId) {
-		// TODO Auto-generated method stub
 		int physicianId = physicianService.getPhysicianByHisUserId(userId).getPhysicianId();
 		List<EDetailingMaterialDto> eDetailingDto = getEDetailingByPhysicianId(physicianId);
 		List<EDetailingMaterialEntity> eDetailingMat = new ArrayList<>();

@@ -22,7 +22,8 @@ public class AppointmentEntity {
 	private String contact;
 	private String emailId;
 	private String confirmationStatus;
-	private Time time;
+	private Time startTime;
+	private Time endTime;
 	private Date date;
 	private String product;
 	private boolean hasMeetingUpdate;

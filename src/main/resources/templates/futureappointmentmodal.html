@@ -41,8 +41,12 @@
 								<td th:text="${eachAppointment.product}"></td>
 								<td><input class="appointment-date future-appointment-paramaters" type="date"
 								 disabled="disabled" th:value="${eachAppointment.date}"/></td>
-								<td><input class="appointment-time future-appointment-paramaters" type="time"
-								 disabled="disabled" th:value="${eachAppointment.time}"/></td>
+								<td class="appointment-time-td">
+									<span class="time-label">Start@</span><input class="appointment-start-time future-appointment-paramaters top time-entry" title="Enter start time of meeting"
+			   							data-original-title="Enter start time of meeting" type="time" th:value="${eachAppointment.startTime}" disabled="disabled"/>
+									<span class="time-label">End@</span><input class="appointment-end-time future-appointment-paramaters top time-entry" title="Enter end time of meeting"
+			   							data-original-title="Enter end time of meeting" type="time" th:value="${eachAppointment.endTime}" disabled="disabled"/>
+								</td>
 								<td th:switch="${eachAppointment.confirmationStatus}">
 									<div th:case="CANCELLED" th:text="${eachAppointment.confirmationStatus}" th:class="cancelled-appointment-status"></div>
 									<div th:case="*" class="col-xs-5">

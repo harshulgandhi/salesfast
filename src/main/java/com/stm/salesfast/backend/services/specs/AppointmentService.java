@@ -23,19 +23,11 @@ public interface AppointmentService {
 	
 	public void cancelAppointment(int appointmentId, String reason);
 
-	public void addAppointment(int physId, Time time, Date date,
-			String confirmationStatus, int productId, String additionalNotes)
-			throws ParseException;
-
-
 	public List<AppointmentDto> getFollowUpAppointments(int userId);
 
 	public void sendMail(String subject, String body, String toEmailId);
 
 	List<AlignedPhysicianFollowUpEntity> followUpAppointmentsToShow() throws ParseException;
-
-	public void updateFollowUpAppointmentStatus(Time time, Date date, String status,
-			String additionalNotes, int appointmentId);
 
 	List<AppointmentDto> getAppointmentsForPhysician(
 			String confirmationStatus1, String confirmationStatus2, int physicianId);
@@ -53,8 +45,15 @@ public interface AppointmentService {
 
 	public void cancelAppointmentBySR(int appointmentId, String reason);
 
-	public void updateFutureAppointmentStatus(Time time, Date date, String status,
-			String additionalNotes, int appointmentId);
+	public void updateFollowUpAppointmentStatus(Time startTime, Time endTime,
+			Date date, String status, String additionalNotes, int appointmentId);
+
+	public void updateFutureAppointmentStatus(Time startTime, Time endTime, Date date,
+			String status, String additionalNotes, int appointmentId);
+
+	public void addAppointment(int physId, Time startTime, Time endTime, Date date,
+			String confirmationStatus, int productId, String additionalNotes)
+			throws ParseException;
 
 
 	

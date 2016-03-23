@@ -4,6 +4,7 @@
 var selectedAlignments = [];
 var tableAppointment = null;
 var currentSelectedAppointment = 0;
+var averageTravelTime = 30; //minutes
 $(document).ready(function() {
 	$('.slidedown-alignments').click(function(){
 		    $('.slidedown-alignments-show').slideToggle('fast');
@@ -183,7 +184,8 @@ var setRowColor = function(row){
  */
 $('.submit-selected-alignments').click(function(){
 	var physIds = [];
-	var appointTimeList = [];
+	var appointStartTimeList = [];
+	var appointEndTimeList = [];
 	var appointDateList = [];
 	var productIds = [];
 	var appointStatusList = [];
@@ -191,19 +193,21 @@ $('.submit-selected-alignments').click(function(){
 	var isDataInvalid = false; 
 	
 	$('#aligned-vicinity-physician-table .selected').each(function(i, val){
-		if ($(val).find('.appointment-time').length != 0 ) {
+		if ($(val).find('.appointment-start-time').length != 0 ) {
 			var appointDate = $(val).find('.appointment-date').val();
-			var appointTime = $(val).find('.appointment-time').val();
+			var appointStartTime = $(val).find('.appointment-start-time').val();
+			var appointEndTime = $(val).find('.appointment-end-time').val();
 			var appointStatus = $(val).find('.appointment-status-selector').val();
 			var additionalNotes = $(val).find('.appointment-notes-class').val();
-			if((appointTime == '' || appointDate == '') && appointStatus != "NOT INTERESTED"){		//Check if user entered time for all selected physicians
-				alert("Please mention time and date both for all selected physicians");
+			if((appointTime == '' || appointDate == '' || appointEndTime== '') && appointStatus != "NOT INTERESTED"){		//Check if user entered time for all selected physicians
+				alert("Please mention start time, end time and date both for all selected physicians");
 				isDataInvalid = true;
 				return;
 			}
 			else{
 				console.log("TIME " + appointTime+"; DATE "+appointDate);
-				appointTimeList.push(appointTime);
+				appointStartTimeList.push(appointStartTime);
+				appointEndTimeList.push(appointEndTime);
 				appointDateList.push(appointDate);
 				appointStatusList.push(appointStatus);
 				additionalNotesList.push(additionalNotes);
@@ -216,7 +220,7 @@ $('.submit-selected-alignments').click(function(){
 	});
 	
 	if(!isDataInvalid){
-		fixAppointments(physIds, appointTimeList, productIds, appointDateList, appointStatusList, additionalNotesList);
+		fixAppointments(physIds, appointStartTimeList, appointEndTimeList, productIds, appointDateList, appointStatusList, additionalNotesList);
 	}
 	
 	/*var fixedAppointmentDetails = createJson(physIds, appointTimeList, productIds, appointDateList, appointStatusList, additionalNotesList);
@@ -233,16 +237,16 @@ $('.submit-selected-alignments').click(function(){
 });
 
 
-var fixAppointments = function(physIds, appointTimeList, productIds, appointDateList, appointStatusList, additionalNotesList){
+var fixAppointments = function(physIds, appointStartTimeList, appointEndTimeList, productIds, appointDateList, appointStatusList, additionalNotesList){
 	$.ajax({
 		type: 'GET',
 		url : '/getallappointments',
 		dataType : 'json',
 		success : function(data){
 	    	console.log("Data received (Future appoinments): "+JSON.stringify(data));
-	    	var fixedAppointmentDetails = createJson(physIds, appointTimeList, productIds, appointDateList, appointStatusList, additionalNotesList);
-	    	console.log("Json : "+JSON.stringify(fixedAppointmentDetails));
-	    	if(checkFutureAppointmentOverlap(data, fixedAppointmentDetails) && checkTodaysAppointmentOverlap(fixedAppointmentDetails)){
+	    	var fixedAppointmentDetails = createJson(physIds, appointStartTimeList, appointEndTimeList, productIds, appointDateList, appointStatusList, additionalNotesList);
+	    	console.log("Appointment to be fixed : "+JSON.stringify(fixedAppointmentDetails));
+	    	if(checkFutureAppointmentOverlap(data, fixedAppointmentDetails) && checkTodaysAppointmentOverlap(fixedAppointmentDetails) && sanityCheck(fixedAppointmentDetails)){
 		    	$.ajax({
 		    		type : 'POST',
 		    		url : "/fixappointments",
@@ -261,6 +265,17 @@ var fixAppointments = function(physIds, appointTimeList, productIds, appointDate
 	
 }
 
+var sanityCheck = function(currentAppointments){
+	for(var i = 0; i<currentAppointments.length; i++){
+		if(currentAppointments[i]["appointmentStartTime"] >= currentAppointments[i]["appointmentEndTime"]){
+			alert("Appointment you are trying to book at "+currentAppointments[i]["appointmentStartTime"]
+			+" has Start Time after End Time. Please correct the time values and submit again");
+			return false; 
+		}
+	}
+	console.log("Sanity check : return true");
+	return true;
+} 
 
 var checkFutureAppointmentOverlap = function(futureAppointments, currentAppointments){
 	console.log("Checking for overlapping appointments ");
@@ -269,15 +284,32 @@ var checkFutureAppointmentOverlap = function(futureAppointments, currentAppointm
 	for(var i = 0; i<currentAppointments.length; i++){
 		for(var j = 0; j<futureAppointments.length; j++){
 			if(currentAppointments[i]["appointmentDate"] == futureAppointments[j]["date"] ){
-				var time_1 = (new Date (new Date().toDateString() + ' ' + currentAppointments[i]["appointmentTime"]));
-				var time_2 = (new Date (new Date().toDateString() + ' ' + futureAppointments[j]["time"]));
-				var diff = Math.abs(time_1 - time_2);
-				console.log("Diff : "+diff);
-				if(Math.floor((diff/1000)/60) <= 15){
-					alert("One of the appointments you are booking overlaps (lies within 15 minutes) with already confirmed appointment with Dr. " +
-							futureAppointments[j]["physicianName"]+" on "+ futureAppointments[j]["date"]+ " at "+ futureAppointments[j]["time"]+". Please" +
-							" try to reschedule this appointment.");
+				var startTime1 = (new Date (new Date().toDateString() + ' ' + currentAppointments[i]["appointmentStartTime"]));
+				var endTime1 = (new Date (new Date().toDateString() + ' ' + currentAppointments[i]["appointmentEndTime"]));
+				var startTime2 = (new Date (new Date().toDateString() + ' ' + futureAppointments[j]["startTime"]));
+				var endTime2 = (new Date (new Date().toDateString() + ' ' + futureAppointments[j]["endTime"]));
+				
+				if(startTime2 <= endTime1 && endTime2 >= startTime1){
+					alert("One of the appointments you are booking overlaps with already confirmed appointment with Dr. " +
+							futureAppointments[j]["physicianName"]+" on "+ futureAppointments[j]["date"]+ " at "+ futureAppointments[j]["startTime"]+". Please" +
+							" try to reschedule the appointment you are booking now.");
 					return false;
+				}
+				else if(endTime1 < startTime2){
+					if(getDiffInMinutes(startTime2, endTime1) < averageTravelTime){
+						alert("One of the appointments you are booking is very close with already confirmed appointment with Dr. " +
+								futureAppointments[j]["physicianName"]+" on "+ futureAppointments[j]["date"]+ " at "+ futureAppointments[j]["startTime"]+". Please" +
+								" try to reschedule the appointment you are booking now.");
+						return false;
+					}
+				}
+				else if(endTime2 < startTime1){
+					if(getDiffInMinutes(startTime1, endTime2) < averageTravelTime){
+						alert("One of the appointments you are booking is very close with already confirmed appointment with Dr. " +
+								futureAppointments[j]["physicianName"]+" on "+ futureAppointments[j]["date"]+ " at "+ futureAppointments[j]["startTime"]+". Please" +
+								" try to reschedule the appointment you are booking now.");
+						return false;
+					}
 				}
 			}
 		}
@@ -292,15 +324,32 @@ var checkTodaysAppointmentOverlap = function(currentAppointments){
 		for(var j = i; j<currentAppointments.length; j++){
 			if(currentAppointments[i]["appointmentDate"] == currentAppointments[j]["appointmentDate"] &&
 					currentAppointments[i]["physicianId"] != currentAppointments[j]["physicianId"]){
-				var time_1 = (new Date (new Date().toDateString() + ' ' + currentAppointments[i]["appointmentTime"]));
-				var time_2 = (new Date (new Date().toDateString() + ' ' + currentAppointments[j]["appointmentTime"]));
-				var diff = Math.abs(time_1 - time_2);
-				console.log("Diff : "+diff);
-				if(Math.floor((diff/1000)/60) <= 15){
+				var startTime1 = (new Date (new Date().toDateString() + ' ' + currentAppointments[i]["appointmentStartTime"]));
+				var endTime1 = (new Date (new Date().toDateString() + ' ' + currentAppointments[i]["appointmentEndTime"]));
+				var startTime2 = (new Date (new Date().toDateString() + ' ' + currentAppointments[j]["appointmentStartTime"]));
+				var endTime2 = (new Date (new Date().toDateString() + ' ' + currentAppointments[j]["appointmentEndTime"]));
+				
+				if(startTime2 <= endTime1 && endTime2 >= startTime1){
 					alert('Two of the appointments you are trying to fix, for '+currentAppointments[i]["appointmentDate"]+' @ '
-							+currentAppointments[i]["appointmentTime"]+', overlap (lie within 15 minutes) with each other.'
-							+'Try to rechedule either of these to be able to submit all appointments.');
+							+startTime1+' and '+startTime2+', overlap with each other.'
+							+'Try to rechedule either of these to be able to submit appointments.');
 					return false;
+				}
+				else if(endTime1 < startTime2){
+					if(getDiffInMinutes(startTime2, endTime1) < averageTravelTime){
+						alert('Two of the appointments you are trying to fix now, @ '
+							+startTime1+' and @ '+startTime2+', are very close to each other.'
+							+'Try to rechedule either of these to be able to submit appointments.');
+						return false;
+					}
+				}
+				else if(endTime2 < startTime1){
+					if(getDiffInMinutes(startTime1, endTime2) < averageTravelTime){
+						alert('Two of the appointments you are trying to fix now, @ '
+								+startTime1+' and @ '+startTime2+', are very close to each other.'
+								+'Try to rechedule either of these to be able to submit appointments.');
+						return false;
+					}
 				}
 			}
 		}
@@ -318,28 +367,31 @@ var checkTodaysAppointmentOverlap = function(currentAppointments){
  */
 $('.submit-selected-followup-alignments').click(function(){
 	var physIds = [];
-	var appointTimeList = [];
+	var appointStartTimeList = [];
+	var appointEndTimeList = [];
 	var appointDateList = [];
 	var productIds = [];
 	var appointStatusList = [];
 	var additionalNotesList = [];
 	var appointmentIdList = [];
-	
+	var isDataInvalid = false; 
 	$('#followup-appointments-table').find('.selected').each(function(i, val){
-		if ($(val).find('.appointment-time').length != 0 ) {
+		if ($(val).find('.appointment-start-time').length != 0 ) {
 			var appointDate = $(val).find('.appointment-date').val();
-			var appointTime = $(val).find('.appointment-time').val();
+			var appointStartTime = $(val).find('.appointment-start-time').val();
+			var appointEndTime = $(val).find('.appointment-end-time').val();
 			var appointStatus = $(val).find('.appointment-status-selector').val();
 			var additionalNotes = $(val).find('.appointment-notes-class').val();
 			var appointId = $(val).find('.followup-appointmentid').html();
 			console.log("appointId : "+appointId);
-			if((appointTime == '' || appointDate == '') && appointStatus != "NOT INTERESTED"){		//Check if user entered time for all selected physicians
-				alert("Please mention time and date both for all selected physicians");
+			if((appointStartTime == '' || appointDate == '' || appointEndTime== '') && appointStatus != "NOT INTERESTED"){		//Check if user entered time for all selected physicians
+				confirm("Please mention start time, end time and date for all selected physicians");
+				isDataInvalid = true;
 				return;
 			}
 			else{
-				console.log("TIME " + appointTime+"; DATE "+appointDate);
-				appointTimeList.push(appointTime);
+				appointStartTimeList.push(appointStartTime);
+				appointEndTimeList.push(appointEndTime);
 				appointDateList.push(appointDate);
 				appointStatusList.push(appointStatus);
 				additionalNotesList.push(additionalNotes);
@@ -351,7 +403,12 @@ $('.submit-selected-followup-alignments').click(function(){
 				if(idx == 10) productIds.push($(valTD).html());		//Picking product for selected alignments
 			});
 	});
-	var fixedAppointmentDetails = createJsonFollowupAppointment(physIds, appointTimeList, productIds, appointDateList, appointStatusList, additionalNotesList, appointmentIdList);
+	
+	if(!isDataInvalid){
+		fixFollowupAppointments(physIds, appointStartTimeList,appointEndTimeList, productIds, appointDateList, appointStatusList, additionalNotesList, appointmentIdList);
+	}
+	
+	/*var fixedAppointmentDetails = createJsonFollowupAppointment(physIds, appointTimeList, productIds, appointDateList, appointStatusList, additionalNotesList, appointmentIdList);
 	console.log("Json : "+JSON.stringify(fixedAppointmentDetails));
 	$.ajax({
 		type : 'POST',
@@ -364,8 +421,39 @@ $('.submit-selected-followup-alignments').click(function(){
 	    }
 	}).done(function(){
 		location.reload(true);
-	});
+	});*/
 });
+
+/*
+ * To fix follow up appointments 
+ * */
+var fixFollowupAppointments = function(physIds, appointStartTimeList, appointEndTimeList, productIds, appointDateList, appointStatusList, additionalNotesList, appointmentIdList){
+	$.ajax({
+		type: 'GET',
+		url : '/getallappointments',
+		dataType : 'json',
+		success : function(data){
+	    	console.log("Data received (Future appoinments): "+JSON.stringify(data));
+	    	var fixedAppointmentDetails = createJsonFollowupAppointment(physIds, appointStartTimeList, appointEndTimeList, productIds, appointDateList, appointStatusList, additionalNotesList, appointmentIdList);
+	    	console.log("Appointment to be fixed : "+JSON.stringify(fixedAppointmentDetails));
+	    	if(checkFutureAppointmentOverlap(data, fixedAppointmentDetails) && checkTodaysAppointmentOverlap(fixedAppointmentDetails) && sanityCheck(fixedAppointmentDetails)){
+		    	$.ajax({
+		    		type : 'POST',
+		    		url : "/updatefollowupappointment",
+		    		data : JSON.stringify(fixedAppointmentDetails),
+		    		contentType : "application/json; charset=utf-8",
+		    		success: function(){
+		    			location.reload(true);
+		    		}
+		    	});
+	    	}
+		},
+		error : function(e){
+			console.log("Error : "+JSON.stringify(e));
+		}
+	});
+	
+}
 
 
 var addMeetingUpdate = function(){
@@ -429,19 +517,28 @@ var toggleMeetingUpdateButtons = function(hasMeetingUpdate, hasMeetingExperience
 	else if (hasMeetingUpdate === 'true' && hasMeetingExperience === 'false') $('.add-meeting-experience-btn').prop("disabled",false);
 }
 
+/*var startTime = (new Date (new Date().toDateString() + ' ' + appointTime[i]));
+var endTime = new Date(startTime.getTime() + appointDurationList[i]*60000);*/
+var getDiffInMinutes = function (t1, t2){
+	var diff = Math.abs(t1 - t2);
+	return Math.floor((diff/1000)/60);
+}
+
+
 //Function to create JSON to store physician Ids and corresponding 
 //appointment time
-var createJson = function(physIds, appointTime, productIds,appointDate, appointStatusList, additionalNotesList){
+var createJson = function(physIds, appointStartTime, appointEndTime, productIds,appointDate, appointStatusList, additionalNotesList){
 	var appointmentJson = {"appointments":[]};
 	var appointJsonList = [];
 	for( var i = 0; i<physIds.length;i++){
 		appointJsonList.push(
 				{
-					"physicianId":parseInt(physIds[i][0]), 
+					"physicianId":parseInt(physIds[i][0]),
 					"productId":parseInt(productIds[i][0]),
-					"appointmentTime":appointTime[i],
+					"appointmentStartTime":appointStartTime[i],
+					"appointmentEndTime": appointEndTime[i], 
 					"appointmentDate":appointDate[i],
-					"appointmentStatus":appointStatusList[i],
+					"appointmentStatus":appointStatusList[i],	
 					"additionalNotes":additionalNotesList[i]
 				});
 	}
@@ -450,7 +547,7 @@ var createJson = function(physIds, appointTime, productIds,appointDate, appointS
 
 //Function to create JSON of data captured from
 //follow up appointments table
-var createJsonFollowupAppointment = function(physIds, appointTime, productIds,appointDate, appointStatusList, additionalNotesList, appointmentIdList){
+var createJsonFollowupAppointment = function(physIds, appointStartTimeList, appointEndTimeList, productIds, appointDateList, appointStatusList, additionalNotesList, appointmentIdList){
 	var appointmentJson = {"appointments":[]};
 	var appointJsonList = [];
 	for( var i = 0; i<physIds.length;i++){
@@ -458,8 +555,9 @@ var createJsonFollowupAppointment = function(physIds, appointTime, productIds,ap
 				{
 					"physicianId":parseInt(physIds[i][0]), 
 					"productId":parseInt(productIds[i][0]),
-					"appointmentTime":appointTime[i],
-					"appointmentDate":appointDate[i],
+					"appointmentStartTime":appointStartTimeList[i],
+					"appointmentEndTime": appointEndTimeList[i],
+					"appointmentDate":appointDateList[i],
 					"appointmentStatus":appointStatusList[i],
 					"additionalNotes":additionalNotesList[i],
 					"appointmentId":appointmentIdList[i]

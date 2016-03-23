@@ -55,7 +55,7 @@ public class PhysicianFetchServiceImpl implements PhysicianFetchService {
 		int userId = appointmentDto.getUserId();
 		String salesRepName = userDetailService.getUserDetails(userId).getFirstName() + " " +userDetailService.getUserDetails(userId).getLastName();
 		ProductDto product = productService.getProductById(appointmentDto.getProductId());
-		return new PhysicianAppointmentCancellationEntity(appointmentId, salesRepName, ConstantValues.organisation, product.getProductName(), appointmentDto.getTime().toString(), appointmentDto.getConfirmationStatus());
+		return new PhysicianAppointmentCancellationEntity(appointmentId, salesRepName, ConstantValues.organisation, product.getProductName(), appointmentDto.getStartTime().toString(), appointmentDto.getEndTime().toString(), appointmentDto.getConfirmationStatus());
 		
 	}
 

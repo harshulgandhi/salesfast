@@ -17,7 +17,8 @@ public class FollowupAppointmentUpdateEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private int physicianId;
 	private int productId;
-	private String appointmentTime;
+	private String appointmentStartTime;
+	private String appointmentEndTime;
 	private String appointmentDate;
 	private String appointmentStatus;
 	private String additionalNotes;

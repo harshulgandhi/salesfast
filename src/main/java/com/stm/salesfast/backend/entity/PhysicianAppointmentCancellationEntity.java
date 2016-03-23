@@ -16,6 +16,7 @@ public class PhysicianAppointmentCancellationEntity {
 	private String salesRepName;
 	private String organisationName;
 	private String product;
-	private String time;
+	private String startTime;
+	private String endTime;
 	private String status;
 }

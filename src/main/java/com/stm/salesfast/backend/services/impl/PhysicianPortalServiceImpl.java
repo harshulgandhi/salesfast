@@ -63,7 +63,8 @@ public class PhysicianPortalServiceImpl implements PhysicianPortalService {
 					salesRep,
 					user.getContactNumber(),
 					eachMeeting.getStatus(),
-					appointmentService.getById(eachMeeting.getAppointmentId()).getTime(),	
+					appointmentService.getById(eachMeeting.getAppointmentId()).getStartTime(),
+					appointmentService.getById(eachMeeting.getAppointmentId()).getEndTime(),
 					eachMeeting.getDate(),
 					productService.getProductById(eachMeeting.getProductId()).getProductName(),
 					appointmentService.getById(eachMeeting.getAppointmentId()).isHasMeetingExperienceFromPH()

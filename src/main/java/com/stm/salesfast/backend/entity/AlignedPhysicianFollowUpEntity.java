@@ -32,5 +32,6 @@ public class AlignedPhysicianFollowUpEntity {
 	private double importanceFactor;
 	private Date followUpDate;
 	private Time  followUpTime;
+	private Time followUpEndTime;
 	private String additionalNotes;
 }

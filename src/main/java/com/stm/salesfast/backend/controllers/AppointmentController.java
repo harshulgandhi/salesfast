@@ -127,9 +127,10 @@ public class AppointmentController {
 	public void updateFutureAppointments(@RequestBody FutureAppointmentUpdateEntity[] appointments) throws ParseException{
 		for (FutureAppointmentUpdateEntity appointmentUpdate : appointments){
 			log.info("Appointment Update by SalesRep = "+appointmentUpdate);
-			Time selectedTime = SalesFastUtilities.getTimeForStringTime(appointmentUpdate.getAppointmentTime(), "HH:mm");
+			Time selectedStartTime = SalesFastUtilities.getTimeForStringTime(appointmentUpdate.getAppointmentStartTime(), "HH:mm");
+			Time selectedEndTime = SalesFastUtilities.getTimeForStringTime(appointmentUpdate.getAppointmentEndTime(), "HH:mm");
 			Date selectedDate = SalesFastUtilities.getDateForStringTime(appointmentUpdate.getAppointmentDate(), "yyyy-MM-dd");
-			appointmentFetchService.updateFutureAppointmentStatus(selectedTime, selectedDate, 
+			appointmentFetchService.updateFutureAppointmentStatus(selectedStartTime, selectedEndTime, selectedDate, 
 					appointmentUpdate.getAppointmentStatus(), 
 					appointmentUpdate.getAdditionalNotes(), 
 					appointmentUpdate.getAppointmentId());

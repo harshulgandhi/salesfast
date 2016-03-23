@@ -64,20 +64,20 @@ public class AppointmentServiceImpl implements AppointmentService {
 	NotificationService notificationService;
 	
 	@Override
-	public void addAppointment(int physId, Time time, Date date,  String confirmationStatus, int productId, String additionalNotes) throws ParseException {
+	public void addAppointment(int physId, Time startTime, Time endTime, Date date,  String confirmationStatus, int productId, String additionalNotes) throws ParseException {
 		// TODO Auto-generated method stub
 		User user = (User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		CURRENTUSERNAME = user.getUsername(); //get logged in user name
 		int userId = userAccountService.getUserIdByUserName(CURRENTUSERNAME);
 		UserDto userDetail = userDetails.getUserDetails(userId);
 		String zip = physicianService.getPhysicianZipById(physId);
-		appointmentDao.insertAppointment(new AppointmentDto(time, date, physId, userId, productId,confirmationStatus, zip, new String(""), additionalNotes, false, false, false));
+		appointmentDao.insertAppointment(new AppointmentDto(startTime, endTime, date, physId, userId, productId,confirmationStatus, zip, new String(""), additionalNotes, false, false, false));
 		
 		/* Send confirmation email to physician */
 		int appointmentId = appointmentDao.getIdByPhysIdUserIdProductId(physId, userId, productId);
 		if(confirmationStatus.equals("CONFIRMED")){ 
 			String emailText = "Your appointment has been fixed with "+(userDetails.getUserDetails(userId).getFirstName() + " " +userDetails.getUserDetails(userId).getLastName())+" at "
-					+time+" on "+ date + ". If you wish to cancel, please visit following link: \n "
+					+startTime+" on "+ date + ". If you wish to cancel, please visit following link: \n "
 					+ "http://127.0.0.1:8080/yourappointment?id="+appointmentId;
 			String emailSub = "Your appointment has been confirmed";
 			sendMail( emailSub, emailText, userDetail.getEmail());
@@ -108,7 +108,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 						physicianDto.getContactNumber(), 
 						physicianDto.getEmail(), 
 						eachAppointment.getConfirmationStatus(),
-						eachAppointment.getTime(),
+						eachAppointment.getStartTime(),
+						eachAppointment.getEndTime(),
 						eachAppointment.getDate(),
 						productDto.getProductName(),
 						eachAppointment.isHasMeetingUpdate(),
@@ -142,7 +143,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 						physicianDto.getContactNumber(), 
 						physicianDto.getEmail(), 
 						eachAppointment.getConfirmationStatus(),
-						eachAppointment.getTime(),
+						eachAppointment.getStartTime(),
+						eachAppointment.getEndTime(),
 						eachAppointment.getDate(),
 						productDto.getProductName(),
 						eachAppointment.isHasMeetingUpdate(),
@@ -174,7 +176,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 						physicianDto.getContactNumber(), 
 						physicianDto.getEmail(), 
 						eachAppointment.getConfirmationStatus(),
-						eachAppointment.getTime(),
+						eachAppointment.getStartTime(),
+						eachAppointment.getEndTime(),
 						eachAppointment.getDate(),
 						productDto.getProductName(),
 						eachAppointment.isHasMeetingUpdate(),
@@ -238,7 +241,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 		PhysicianStgDto physician = physicianService.getPhysicianById(physicianId); 
 		String physicianName = physician.getFirstName() + " "+ physician.getLastName();
 		
-		String emailText = "Physician "+ physicianName +" cancelled the appointment at "+appointment.getTime()+" on "
+		String emailText = "Physician "+ physicianName +" cancelled the appointment at "+appointment.getStartTime()+" on "
 						+ appointment.getDate()+". The reason for cancellation is - "+reason+". Call him at "+physician.getContactNumber()
 						+ " to confirm.";
 		String emailSub = "Appointment cancelled by Dr."+physicianName;
@@ -267,7 +270,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 		
 		String emailText = "BioPharma Sales Representative Mr. "+salesRepName+" had to "
 				+ "cancel the appointment he had fixed for "+appointment.getDate()+ " at "
-				+ appointment.getTime()+ " for following reason : "+reason+". Apologies "
+				+ appointment.getStartTime()+ " for following reason : "+reason+". Apologies "
 				+ "the inconvinience. He will get in touch with you again to book appointment "
 				+ "for some other time & day. Thanks!";
 		String emailSub = "Appointment cancelled by SalesRep."+salesRepName;
@@ -287,13 +290,13 @@ public class AppointmentServiceImpl implements AppointmentService {
 	}
 	
 	@Override
-	public void updateFollowUpAppointmentStatus(Time time, Date date, String status, String additionalNotes, int appointmentId){
-		appointmentDao.updateAppointment(time, date, status, additionalNotes, appointmentId);
+	public void updateFollowUpAppointmentStatus(Time startTime, Time endTime, Date date, String status, String additionalNotes, int appointmentId){
+		appointmentDao.updateAppointment(startTime, endTime, date, status, additionalNotes, appointmentId);
 	}
 	
 	@Override
-	public void updateFutureAppointmentStatus(Time time, Date date, String status, String additionalNotes, int appointmentId){
-		appointmentDao.updateAppointment(time, date, status, additionalNotes, appointmentId);
+	public void updateFutureAppointmentStatus(Time startTime, Time endTime, Date date, String status, String additionalNotes, int appointmentId){
+		appointmentDao.updateAppointment(startTime, endTime, date, status, additionalNotes, appointmentId);
 		
 		AppointmentDto appointment = appointmentDao.getAppointmentById(appointmentId);
 		UserDto salesrep = userDetails.getUserDetails(appointment.getUserId());
@@ -304,7 +307,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 		
 		String emailText = "BioPharma Sales Representative Mr. "+salesRepName+" has "
 				+ "rescheduled an appointment for "+appointment.getDate()+ " at "
-				+ appointment.getTime() + ".";
+				+ appointment.getStartTime() + ".";
 		String emailSub = "Appointment Rescheduled by SalesRep."+salesRepName;
 		sendMail( emailSub, emailText, physician.getEmail());
 		
@@ -312,7 +315,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 		UserDto physAsUser = userDetails.getUserForPhysicianId(physician.getPhysicianId());
 		if (physAsUser!=null){
 			notificationService.insertNotificationAppointmentReschedulingBySR(physAsUser.getUserId(), salesRepName, 
-					appointment.getDate().toString(), appointment.getTime().toString(),"RESCHEDULED APPOINTMENTS");
+					appointment.getDate().toString(), appointment.getStartTime().toString(),"RESCHEDULED APPOINTMENTS");
 		}
 	}
 	
@@ -360,7 +363,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 						productFetchService.getProductById(appointment.getProductId()).getProductName(),
 						physician.getImportanceFactor(),
 						appointment.getDate(),
-						appointment.getTime(),
+						appointment.getStartTime(),
+						appointment.getEndTime(),
 						appointment.getAdditionalNotes()
 				));
 				

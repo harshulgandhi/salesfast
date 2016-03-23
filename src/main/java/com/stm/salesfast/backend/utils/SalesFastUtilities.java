@@ -66,6 +66,14 @@ public class SalesFastUtilities {
 		int longerLength = longer.length();
 		return (longerLength - StringUtils.getLevenshteinDistance(longer, shorter)) / (double) longerLength;
 	}
+	
+	public static int getDiffInMinutes(Time startTime, Time endTime){
+		long startTimeMilli = startTime.getTime();
+		long endTimeMilli = endTime.getTime();
+		return (int) (Math.abs(endTimeMilli-startTimeMilli)/(60*1000));
+	}
+	
+	
 /*
 	public static void main(String[] args) {
 		System.out.println("distance : "+SalesFastUtilities.checkSimilarQuestions(""));

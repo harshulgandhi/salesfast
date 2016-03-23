@@ -89,3 +89,24 @@ div.future-appointment-div{
     text-align: center;
     margin-top: 13%;
 }
+
+span.time-label {
+    font-size: smaller;
+}
+
+td.appointment-time-td{
+	width: 1%;
+}
+
+.appointment-start-time{
+	margin-left: 3px;
+    margin-bottom: 3px;
+}
+
+.appointment-end-time{
+	margin-left: 7px;
+}
+
+.appointment-start-time, .appointment-end-time, .appointment-date{
+	color: black;
+}

@@ -53,7 +53,12 @@
 							<td th:unless="${eachAlignment.isNew}" th:text="NO"></td>
 							<td th:if="${eachAlignment.isNew}" th:text="YES"></td>
 							<td><input class="appointment-date appointment-paramaters" type="date" disabled="disabled"/></td>
-							<td><input class="appointment-time appointment-paramaters" type="time" disabled="disabled"/></td>
+							<td class="appointment-time-td">
+								<span class="time-label">Start@</span><input class="appointment-start-time appointment-paramaters top time-entry" title="Enter start time of meeting"
+		   							data-original-title="Enter start time of meeting" type="time" disabled="disabled"/>
+								<span class="time-label">End@</span><input class="appointment-end-time appointment-paramaters top time-entry" title="Enter end time of meeting"
+		   							data-original-title="Enter end time of meeting" type="time" disabled="disabled"/>
+							</td>
 							<td>
 								<div class="col-xs-5">
 									<select class="appointment-status-selector validate-ele appointment-paramaters" name="appointmentstatus" disabled="disabled"> <!-- multiple="multiple"> -->

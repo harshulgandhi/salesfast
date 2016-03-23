@@ -25,9 +25,6 @@ public interface AppointmentDao {
 	
 	public List<AppointmentDto> getAppointmentByStatus(String confirmationStatus, int userId);
 	
-	public void updateAppointment(Time time, Date date, String status,
-			String additionalNotes, int appointmentId);
-	
 	List<AppointmentDto> getAppointmentForPhysician(String confirmationStatus1,
 			String confirmationStatus2, int physicianId);
 	
@@ -36,5 +33,8 @@ public interface AppointmentDao {
 	public void setMeetinExperienceFlagFromPH(int appointmentId, int meetingExpFromPH);
 
 	public List<Integer> getNotInterestedPhysicians(int userId);
+
+	public void updateAppointment(Time startTime, Time endTime, Date date,
+			String status, String additionalNotes, int appointmentId);
 	
 }

@@ -19,7 +19,8 @@ public class AppointmentForPhysEntity {
 		private String salesRepName;
 		private String contact;
 		private String status;
-		private Time time;
+		private Time startTime;
+		private Time endTime;
 		private Date date;
 		private String product;
 		private boolean hasMeetingExperienceFromPH;

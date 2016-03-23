@@ -35,7 +35,7 @@ import com.stm.salesfast.backend.utils.SalesFastUtilities;
 
 @Controller
 public class AlignmentController {
-	private Logger log = LoggerFactory.getLogger(LoginController.class.getName());
+	private Logger log = LoggerFactory.getLogger(AlignmentController.class.getName());
 	String CURRENTUSERNAME = "";
 	
 	@Autowired
@@ -76,9 +76,10 @@ public class AlignmentController {
 	public void fixAppointment(@RequestBody AjaxRequestListMapper[] appointments) throws ParseException{
 		for (AjaxRequestListMapper appointmentList : appointments){
 			log.info("Appointment fixed for physician = "+appointmentList);
-			Time selectedTime = SalesFastUtilities.getTimeForStringTime(appointmentList.getAppointmentTime(), "HH:mm");
+			Time selectedStartTime = SalesFastUtilities.getTimeForStringTime(appointmentList.getAppointmentStartTime(), "HH:mm");
+			Time selectedEndTime = SalesFastUtilities.getTimeForStringTime(appointmentList.getAppointmentEndTime(), "HH:mm");
 			Date selectedDate = SalesFastUtilities.getDateForStringTime(appointmentList.getAppointmentDate(), "yyyy-MM-dd"); 
-			appointmentService.addAppointment(appointmentList.getPhysicianId(), selectedTime, selectedDate, appointmentList.getAppointmentStatus(), appointmentList.getProductId(), appointmentList.getAdditionalNotes());
+			appointmentService.addAppointment(appointmentList.getPhysicianId(), selectedStartTime, selectedEndTime, selectedDate, appointmentList.getAppointmentStatus(), appointmentList.getProductId(), appointmentList.getAdditionalNotes());
 		}
 		/* To set reminders in case any follow up appointment
 		 * was fixed for any time in next day*/
@@ -91,9 +92,10 @@ public class AlignmentController {
 	public void updateFollowUpAppointments(@RequestBody FollowupAppointmentUpdateEntity[] appointments) throws ParseException{
 		for (FollowupAppointmentUpdateEntity appointmentUpdate : appointments){
 			log.info("Appointment fixed for physician = "+appointmentUpdate);
-			Time selectedTime = SalesFastUtilities.getTimeForStringTime(appointmentUpdate.getAppointmentTime(), "HH:mm");
+			Time selectedStartTime = SalesFastUtilities.getTimeForStringTime(appointmentUpdate.getAppointmentStartTime(), "HH:mm");
+			Time selectedEndTime = SalesFastUtilities.getTimeForStringTime(appointmentUpdate.getAppointmentEndTime(), "HH:mm");
 			Date selectedDate = SalesFastUtilities.getDateForStringTime(appointmentUpdate.getAppointmentDate(), "yyyy-MM-dd");
-			appointmentService.updateFollowUpAppointmentStatus(selectedTime, selectedDate, 
+			appointmentService.updateFollowUpAppointmentStatus(selectedStartTime, selectedEndTime, selectedDate, 
 					appointmentUpdate.getAppointmentStatus(), 
 					appointmentUpdate.getAdditionalNotes(), 
 					appointmentUpdate.getAppointmentId());

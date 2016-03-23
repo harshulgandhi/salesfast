@@ -14,7 +14,8 @@ import lombok.ToString;
 @ToString
 public class AppointmentDto {
 	private int appointmnetId;
-	private Time time;
+	private Time startTime;
+	private Time endTime;
 	private Date date;
 	private int physicianId;
 	private int userId;
@@ -28,10 +29,11 @@ public class AppointmentDto {
 	private boolean hasMeetingExperienceFromPH;
 	
 
-	public AppointmentDto(Time time2, Date currentDate, int physId,
+	public AppointmentDto(Time startTime, Time endTime, Date currentDate, int physId,
 			int userId2, int productId2, String confirmationStatus2, String zip, String cancellationReason, String additionalNotes, boolean hasMeetingExperienceFromSR, boolean hasMeetingUpdate, boolean hasMeetingExperienceFromPH) {
 		// TODO Auto-generated constructor stub
-		this.time = time2;
+		this.startTime = startTime;
+		this.endTime = endTime;
 		this.date = currentDate;
 		this.physicianId = physId;
 		this.userId = userId2;

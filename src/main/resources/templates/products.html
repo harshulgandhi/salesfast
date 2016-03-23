@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Header to include css -->
+<div th:replace="fragments/header :: commonhead"></div>
+<link rel="stylesheet" type="text/css" href="resources/app/css/products.css"/>
+<meta charset="UTF-8" />
+<title>View Products</title>
+</head>
+<body>
+
+	<!-- Common header -->
+	<div th:replace="fragments/header :: header"></div>
+	
+	<div class="outer-container">
+		<div class="left-nav" id='cssmenu'>
+			<ul class="left-menu-ul">
+				<li class='active view-products' ><a href='/allproducts'><span>VIEW PRODUCTS</span></a></li>
+				<li class='last add-products'><a href='/addproductspage'><span>ADD PRODUCTS</span></a></li>
+			</ul>
+		</div>
+		<div class="container" id="layout">
+			<div class="row row-header page-header"><h3>BioPharma Products</h3></div>
+			
+			
+		</div>
+	</div>
+
+<!-- Common footer -->
+<div th:replace="fragments/footer :: footer"></div>
+<script type="text/javascript" src="resources/app/js/products.js"></script>
+</body>
+</html>

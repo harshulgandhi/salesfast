@@ -64,4 +64,9 @@ public class ProductsController {
 		log.info("New Product received  : "+newProduct);
 		addProdService.addNewProduct(newProduct);
 	}
+	
+	@RequestMapping(value="/allproducts", method=RequestMethod.GET)
+	public String allProductsPage(Model model){
+		return "products";
+	}
 }

@@ -4,6 +4,9 @@
 
 
 $(document).ready(function () {
+
+	$('li.left-menu-selected').removeClass('left-menu-selected');
+	$('li.add-products').addClass('left-menu-selected');
 	
 	$.ajax({
 		type: 'GET',

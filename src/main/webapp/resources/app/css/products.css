@@ -7,17 +7,21 @@
     padding-bottom: 0%;
 }
 
+.row {
+    width: 120%;
+}
+
 .row.product-selector-div {
     display: -webkit-inline-box;
 }
 
 div.product-description {
 	border-style: solid;
-	border-width: thin;
-	padding: 3%;
-	margin-left: 36%;
-	background-color: antiquewhite;
-	width : 60%;
+    border-width: thin;
+    padding: 1%;
+    margin-left: 16%;
+    background-color: antiquewhite;
+    width: 20%;
 }
 
 span.select2.select2-container.select2-container--default.select2-container--below {
@@ -35,6 +39,55 @@ span.select2.select2-container.select2-container--default.select2-container--bel
 .label-med-field{
 	padding-right: 10px;	
 }
+
 .label-release-date{
 	padding-right: 14px;	
+}
+
+
+.btn-left-panel{
+	padding-right:20px; 
+	/*border-right: 1px solid #ccc;  */
+	width: 18%;
+}
+.doc-middle-panel{
+	border-left: 2px solid #ccc;
+	border-right: 2px solid #ccc;
+	width: 64%;
+    height: 100%;
+    margin-top: 2%;
+}
+.update-right-panel{
+	width: 18%;
+}
+
+.show-doc{
+	border-radius: 0px;
+}
+
+button.btn.btn-default.btn-md.show-doc.form-control {
+    margin-top: 11%;
+	white-space: normal;
+    height: 0%;
+}
+
+.row-custom-style{
+	border-style: solid;
+    border-width: thin;
+    padding-bottom: 8%;
+    margin-top: 3%;
+    height: 723px;	
+}
+
+.pdf-doc-object{
+	width: 100%;
+    height: 100%;
+}
+
+.form-group{
+	margin-top: 15%;
+}
+
+.btn-container{
+	margin-top: 7%;
 }

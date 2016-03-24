@@ -82,4 +82,15 @@ public class ProductsController {
 		return allDocsDetails.toArray(new ManagerProductViewEntity[allDocsDetails.size()]);
 	}
 	
+	@RequestMapping(value = "/updateproductfile", method = RequestMethod.POST) 
+    public String updateProductDocument(@RequestParam("productdocument") MultipartFile productdocument, 
+    		@RequestParam("selectedProductId") int selectedProductId,
+    		@RequestParam("typeOfDocument") String typeOfDocument) throws IllegalStateException, IOException { 
+		log.info("File UPDATE received ! ");
+		log.info("File  : "+productdocument.getOriginalFilename()+"["+productdocument.getContentType()+"]"+"\nFor Product : "+selectedProductId+"\nType of file udpted : "+typeOfDocument);
+//		addProdService.saveUploadedFiles(virtualTrainingFile, eDetailingFile);
+		managerProdService.updateFile(productdocument, selectedProductId, typeOfDocument);
+		return "products";
+    }
+	
 }

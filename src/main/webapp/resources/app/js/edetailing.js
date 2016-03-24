@@ -39,7 +39,6 @@ var createEDetailingEnvironment = function(data){
 	    var str = $(this).find('.button-value').html();
 	    str = str.replace(/\s+/g, '-').toLowerCase();   // Removing space from name
 	    str = str.replace('\'', '').toLowerCase();		// Removing apostrophe
-	    console.log("str : "+str);
 	    if($('.row-custom-style').find('#'+str).length == 0){		//To check if Object already exists then don't append, otherwise do.
 			$('.row-custom-style').append(
 					'<div class="col-lg-6 doc-middle-panel" id="'+str+'" style="display: none;">'+

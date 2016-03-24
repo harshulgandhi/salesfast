@@ -11,5 +11,14 @@ public interface ManagerViewProductService {
 	public List<ManagerProductViewEntity> getDocuments(int productId);
 
 	public void updateFile(MultipartFile productFile, int productId, String fileType)
-			throws IllegalStateException, IOException; 
+			throws IllegalStateException, IOException;
+
+	public void updatesAboutDocUpdateToPhysicians(List<Integer> physiciansToBeUpdated,
+			int productId);
+
+	public void updatesAboutDocUpdateToSalesReps(List<Integer> salesrepsToBeUpdated,
+			int productId);
+
+	public void sendNewProductNotificationEmails(String subject, String body,
+			String toEmailId); 
 }

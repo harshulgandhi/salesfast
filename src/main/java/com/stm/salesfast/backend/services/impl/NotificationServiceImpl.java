@@ -105,8 +105,20 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 	
 	@Override
+	public void insertNotificationDocUpdatePhysician(int userId, String productName, String notificationCategory){
+		String notification = String.format(ConstantValues.FORMAT_EDETAILING_DOC_UPDATE, productName);
+		notificationDao.insertNotification(new NotificationsDto(notification, false, userId, notificationCategory));
+	}
+	
+	@Override
 	public void insertNotificationNewProductSalesRep(int userId, String productName, String physicianName, String notificationCategory){
 		String notification = String.format(ConstantValues.FORMAT_FOLLOWUP_CUSTGROWTH_LOST, productName, physicianName);
+		notificationDao.insertNotification(new NotificationsDto(notification, false, userId, notificationCategory));
+	}
+	
+	@Override
+	public void insertNotificationDocUpdateSalesRep(int userId, String productName, String physicianName, String notificationCategory){
+		String notification = String.format(ConstantValues.FORMAT_TRAINING_DOC_UPDATE, productName, physicianName);
 		notificationDao.insertNotification(new NotificationsDto(notification, false, userId, notificationCategory));
 	}
 	

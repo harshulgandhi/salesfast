@@ -33,5 +33,9 @@ public interface NotificationService {
 	public void insertNotificationAppointmentReschedulingBySR(int userId,
 			String salesRepName, String date, String time,
 			String notificationCategory);
+	public void insertNotificationDocUpdatePhysician(int userId, String productName,
+			String notificationCategory);
+	public void insertNotificationDocUpdateSalesRep(int userId, String productName,
+			String physicianName, String notificationCategory);
 	
 }

@@ -11,5 +11,6 @@ public interface ProductsDao {
 	public List<ProductDto> getProductForMedicalField(String medicalFieldId);
 	public void insert(ProductDto product);
 	public List<ProductDto> getAll();
+	public String getMedicalField(int productId);
 	
 }

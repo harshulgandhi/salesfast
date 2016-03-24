@@ -27,6 +27,8 @@ public class ProductsDaoImpl implements ProductsDao{
 	private static final String INSERT = "INSERT INTO products (productName, releaseDate, medicalFieldId) "
 			+ "VALUES (?,?,?)";
 	private static final String FETCH_ALL = "SELECT * FROM products";
+	private static final String FETCH_MEDICAL_FIELD = "SELECT medicalFieldId FROM products WHERE productId = ?";
+	
 	
 	@Override
 	public ProductDto getProduct(int productId) {
@@ -56,6 +58,21 @@ public class ProductsDaoImpl implements ProductsDao{
 		}
 		return null;	
 	}
+	
+	@Override
+	public String getMedicalField(int productId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.queryForObject(
+					FETCH_MEDICAL_FIELD, (rs, rownum) -> {
+						return rs.getString(1);}
+					, productId);
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;	
+	}
+	
 
 	@Override
 	public List<ProductDto> getProductForMedicalField(String medicalFieldId) {

@@ -66,4 +66,9 @@ public class ProductFetchServiceImpl implements ProductFetchService {
 		return allProducts;
 	}
 	
+	@Override
+	public String getMedicalFieldForProduct(int productId){
+		return productDao.getMedicalField(productId);
+	}
+	
 }

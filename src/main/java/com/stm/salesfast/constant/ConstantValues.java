@@ -23,6 +23,10 @@ public final class ConstantValues {
 	
 	public static final String FORMAT_QUESTION_ANSWERED = "Mr. %s just answered a question you asked during one of your meetings with a physician.";
 	
+	public static final String FORMAT_TRAINING_DOC_UPDATE = "Virtual training document for medicine %s was updated by your manager. Take a look!";
+	
+	public static final String FORMAT_EDETAILING_DOC_UPDATE = "Online Detailing document for medicine %s. Please visit e-Detailing page to go through it.";
+	
 	public static final String TRAINING_MATERIAL_PATH = "resources/docs/virtuallearning/";
 	
 	public static final String ORGANISATIONAL_DOCS_PATH = "resources/docs/organisational/";

@@ -21,4 +21,6 @@ public interface ProductFetchService {
 			List<MedicalFieldEntity> medicalFields);
 
 	public List<ProductEntity> getAllProducts();
+
+	public String getMedicalFieldForProduct(int productId);
 }

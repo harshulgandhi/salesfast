@@ -71,7 +71,7 @@ public class SampleFeedbackAnalysisServiceImpl implements SampleFeedbackAnalysis
 		}
 		
 		for(ProductDto eachProduct : productsDto){
-			products.add(new ProductEntity(eachProduct.getProductId(), eachProduct.getProductName(), eachProduct.getMedicalFieldId()));
+			products.add(new ProductEntity(eachProduct.getProductId(), eachProduct.getProductName(), eachProduct.getMedicalFieldId(), eachProduct.getReleaseDate()));
 		}
 		
 		return products;

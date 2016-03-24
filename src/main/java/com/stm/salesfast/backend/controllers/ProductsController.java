@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.util.List;
 
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.stm.salesfast.backend.entity.ManagerProductViewEntity;
 import com.stm.salesfast.backend.entity.MedicalFieldEntity;
 import com.stm.salesfast.backend.entity.NewProductEntity;
+import com.stm.salesfast.backend.entity.ProductEntity;
 import com.stm.salesfast.backend.services.specs.AddNewProductService;
 import com.stm.salesfast.backend.services.specs.ManagerViewProductService;
 import com.stm.salesfast.backend.services.specs.MedicalFieldService;
@@ -73,6 +75,13 @@ public class ProductsController {
 	@RequestMapping(value="/allproducts", method=RequestMethod.GET)
 	public String allProductsPage(Model model){
 		return "products";
+	}
+	
+	@RequestMapping(value="/getallproducts", method=RequestMethod.GET)
+	@ResponseBody
+	public ProductEntity[] getAllProducts(){
+		List<ProductEntity> allProducts = productService.getAllProducts();
+		return allProducts.toArray(new ProductEntity[allProducts.size()]);
 	}
 
 	@RequestMapping(value = "/getproductdocuments",method=RequestMethod.GET, produces="application/json")

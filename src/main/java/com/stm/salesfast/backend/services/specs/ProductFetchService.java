@@ -5,6 +5,7 @@ import java.util.List;
 import com.stm.salesfast.backend.dto.ProductDto;
 import com.stm.salesfast.backend.entity.MedicalFieldEntity;
 import com.stm.salesfast.backend.entity.NewProductEntity;
+import com.stm.salesfast.backend.entity.ProductEntity;
 
 public interface ProductFetchService {
 	
@@ -18,4 +19,6 @@ public interface ProductFetchService {
 
 	public List<ProductDto> getProductByMedicalField(
 			List<MedicalFieldEntity> medicalFields);
+
+	public List<ProductEntity> getAllProducts();
 }

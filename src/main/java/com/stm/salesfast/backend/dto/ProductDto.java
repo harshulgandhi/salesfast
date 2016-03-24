@@ -13,13 +13,14 @@ import lombok.ToString;
 @Data
 @ToString
 public class ProductDto {
+	private int productId;
+	private String productName;
+	private Date releaseDate;
+	private String medicalFieldId;		
+	
 	public ProductDto(String productName2, Date releaseDate2, String medicalFieldId2) {
 		this.productName = productName2;
 		this.releaseDate = releaseDate2;
 		this.medicalFieldId = medicalFieldId2;
 	}
-	private int productId;
-	private String productName;
-	private Date releaseDate;
-	private String medicalFieldId;		
 }

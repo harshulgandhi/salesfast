@@ -71,7 +71,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 				new AntPathRequestMatcher("/updatefutureappointment"),
 				new AntPathRequestMatcher("/allproducts"),
 				new AntPathRequestMatcher("/getproductdocuments"),
-				new AntPathRequestMatcher("/updateproductfile")
+				new AntPathRequestMatcher("/updateproductfile"),
+				new AntPathRequestMatcher("/getallproducts")
 				};
 
 		@Override

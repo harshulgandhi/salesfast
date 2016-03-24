@@ -10,6 +10,7 @@ import com.stm.salesfast.backend.dao.specs.ProductsDao;
 import com.stm.salesfast.backend.dto.ProductDto;
 import com.stm.salesfast.backend.entity.MedicalFieldEntity;
 import com.stm.salesfast.backend.entity.NewProductEntity;
+import com.stm.salesfast.backend.entity.ProductEntity;
 import com.stm.salesfast.backend.services.specs.ProductFetchService;
 
 @Service
@@ -50,4 +51,19 @@ public class ProductFetchServiceImpl implements ProductFetchService {
 				newProduct.getMedicalFieldId()
 				));
 	}
+	
+	@Override
+	public List<ProductEntity> getAllProducts(){
+		List<ProductDto> products = productDao.getAll();
+		List<ProductEntity> allProducts = new ArrayList<>();
+		for(ProductDto product : products){
+			allProducts.add(new ProductEntity(
+					product.getProductId(),
+					product.getProductName(),
+					product.getMedicalFieldId(),
+					product.getReleaseDate()));
+		}
+		return allProducts;
+	}
+	
 }

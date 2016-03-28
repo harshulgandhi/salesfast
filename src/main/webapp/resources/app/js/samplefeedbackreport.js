@@ -169,9 +169,8 @@ var createBarChart = function(containerName, data, productName,productId){
 	        },
 	        yAxis: {
 	            title: {
-	                text: 'Percentage of total feedbacks'
+	                text: 'Percentage out of all feedbacks'
 	            }
-
 	        },
 	        legend: {
 	            enabled: false

@@ -57,11 +57,13 @@
 									<th class="meeting-update-flag" style="display:none">Has Meeting Update</th>
 									<th class="meeting-exp-flag" style="display:none">Has Meeting Experience</th>
 									<th>Notes</th>
+									<th style="display:none">Has Pitch</th>
+									<th>Your Pitches</th>
 								</tr>
 							</thead>
 							<tbody>
 								<tr th:each="eachAppointment : ${listOfTodaysAppointments}">
-									<td class="appointment-id"  style="display:none" th:text="${eachAppointment.appointmentId}"></td>
+									<td class="appointment-id" style="display:none" th:text="${eachAppointment.appointmentId}"></td>
 									<td style="display:none" th:text="${eachAppointment.physicianId}"></td>
 									<td class="physician-name-td" th:text="${eachAppointment.physicianName}"></td>
 									<td th:text="${eachAppointment.address}"></td>
@@ -78,6 +80,11 @@
 									<td class="meeting-update-flag" style="display:none" th:text="${eachAppointment.hasMeetingUpdate}"></td>
 									<td class="meeting-exp-flag" style="display:none" th:text="${eachAppointment.hasMeetingExperience}"></td>
 									<td th:text="${eachAppointment.additionalUpdate}"></td>
+									<td class="has-pitch-td" text="true" style="display:none"></td>
+									<td class="my-pitch-button-td">
+									<button type="button" class="btn btn-primary my-pitch-buttons"
+										style="border-radius: 0px; margin-left: 2%; margin-top: 2%;">My Pitch</button>
+									</td>
 								</tr>
 							</tbody>
 						</table>
@@ -241,6 +248,12 @@
 	
 							<!-- Modal for viewing future appointments -->
 	<div th:replace="futureappointmentmodal :: futureappointmentmodal"></div>
+	
+							<!-- Modal for UPLOADING meeting pitch-->
+	<div th:replace="uploadpitchmodal :: upload-meeting-pitch-modal"></div>
+	
+							<!-- Modal for VIEWING meeting pitch-->
+	<!-- <div th:replace="viewpitchmodal :: view-meeting-pitch-modal"></div> -->
 	
 							<!-- Modal for entering cancellation reason -->
 	<div th:replace="appointmentcancelmodal :: appointment-cancellation-modal"></div>

@@ -8,6 +8,9 @@
 	text-align: -webkit-auto;
     width: 100%;
     border-radius: 0px;
+    font: 91.5% "Lucida Sans Unicode", "Bitstream Vera Sans", "Trebuchet Unicode MS", "Lucida Grande", Verdana, Helvetica, sans-serif;
+    font-size: inherit;
+    text-transform: uppercase;
 }
 
 .submit-for-appointments {

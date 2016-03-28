@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<div class="modal fade" id="add-meeting-pitch-modal" role="dialog" data-edit-mode="false" th:fragment="upload-meeting-pitch-modal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="uploadpitchlabel">Upload your pitch for this meeting</h4>
+			</div>
+			<div class="modal-body modal-body">
+				<form id="upload-pitch-form" class="form-horizontal" action="/uploadmeetingpitch" method="post" enctype="multipart/form-data">
+					<div class="form-group" id="appointment-id" style="display:none">
+						<label class="col-xs-3 control-label" id="id-label">Appointment ID</label>
+						<div class="col-xs-7">
+							<input type="hidden" name="appointmentId" id="appointment-id-onmodal" class="form-control validate-ele"> </input> 
+						</div>
+					</div>
+					<div class="form-group upload-doc-div">
+						<label class="col-xs-5 control-label" id="upload-pitch">Upload the pitch you have prepared</label>
+						<div class="col-xs-5">
+							<input name="pitchdocument" type="file" class="form-control validate-ele" id="pitch-upload"/>
+						</div>
+					</div>
+				</form>
+			</div>
+			
+			<div class="modal-footer">
+				<button id="pitchupload-cancel-button" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<button id="pitchdoc-upload-button" type="button" class="btn btn-primary">Upload</button>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

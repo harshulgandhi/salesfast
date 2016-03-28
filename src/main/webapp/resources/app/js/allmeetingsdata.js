@@ -79,7 +79,7 @@ createChart=function(containerName, title, data){
         },
         yAxis: {
             title: {
-                text: 'Percentage of responses'
+                text: 'Percentage out of all responses'
             }
         },
         legend: {

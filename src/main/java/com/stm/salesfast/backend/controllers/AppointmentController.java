@@ -1,5 +1,6 @@
 package com.stm.salesfast.backend.controllers;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.Time;
 import java.text.ParseException;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.entity.AlignedPhysicianEntity;
@@ -140,6 +142,16 @@ public class AppointmentController {
 		 * was fixed for any time in next day*/
 		reminders.followUpCallReminders();
 	}
+	
+	@RequestMapping(value = "/uploadmeetingpitch", method = RequestMethod.POST) 
+    public String uploadMeetingPitch(@RequestParam("pitchdocument") MultipartFile pitchdocument, 
+    		@RequestParam("appointmentId") int appointmentId, Model model) throws IllegalStateException, IOException, ParseException { 
+		log.info("Meeting pitch received! ");
+		log.info("File  : "+pitchdocument.getOriginalFilename()+"["+pitchdocument.getContentType()+"]"+"\nFor Meeting : "+appointmentId);
+//		addProdService.saveUploadedFiles(virtualTrainingFile, eDetailingFile);
+//		managerProdService.updateFile(productdocument, selectedProductId, typeOfDocument);
+		return "redirect:/showappointments";
+    }
 }
 
 

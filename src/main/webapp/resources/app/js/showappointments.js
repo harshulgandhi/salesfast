@@ -74,6 +74,7 @@ $(document).ready(function() {
 	        }
     	}
     });
+    
 
 	/**
     * Toggles between selected and de-selected rows of the follow up
@@ -109,13 +110,13 @@ $(document).ready(function() {
     tableAppointment = $('#appointment-fixed-physician-table').DataTable({
  	   order: [[7, "asc"]]
     });
-    var defaultColor;
-    /*$('#appointment-fixed-physician-table tbody').on( 'click', 'tr', function (e) {
+    
+ /* //ON Single click of row, my pitch button appears
+    var defaultColor_;
+    $('#appointment-fixed-physician-table tbody').on( 'click', 'tr', function (e) {
     	var cell = $(e.target).get(0);	
-    	if ( $(this).hasClass('selected') ) {
+    	if ($(this).hasClass('selected-pitch') ) {
     		$(this).removeClass('selected');
-    		$('.add-meeting-update-btn').prop("disabled",true);
-    		$('.add-meeting-experience-btn').prop("disabled",true)
     		$(this).css('background-color', defaultColor);
     		
         }else{
@@ -125,21 +126,13 @@ $(document).ready(function() {
             defaultColor = $(this).css('background-color');
             $(this).addClass('selected');
             $(this).css('background-color','#08C');
-            var len = tableAppointment.row('.selected').data().length;					
             
-            //To toggle meeting update and experience buttons based on database flag for that appointment
-            var hasMeetingUpdate = tableAppointment.row('.selected').data()[len-3];		
-            var hasMeetingExperience = tableAppointment.row('.selected').data()[len-2];
-            toggleMeetingUpdateButtons(hasMeetingUpdate, hasMeetingExperience);
         }
-    		
-    	
-    	
-     	$('#meetingupdate-add-button').click(addMeetingUpdate);
-     	$('#meetingexperience-add-button').click(addMeetingExperience);
     });*/
     
+    
     //ON Double click of row, modal opens
+    var defaultColor;
     $('#appointment-fixed-physician-table tbody').on( 'dblclick', 'tr', function (e) {
     	if ( $(this).hasClass('selected') ) {
     		$(this).removeClass('selected');
@@ -156,7 +149,25 @@ $(document).ready(function() {
     	
     	$(".phys-status-selector").select2();
     });
+    
+    
 });	
+
+
+$(document).on('click','.my-pitch-buttons',function(){
+	var $row = $(this).parent()  
+	                  .parent(); 
+	var appointmentId = $row.find('.appointment-id').text();
+	$('input[name="appointmentId"]').val(appointmentId+'');
+	console.log($('input[name="appointmentId"]').val());
+	$('#add-meeting-pitch-modal').modal('show');
+});
+
+$(document).on('click','button#pitchdoc-upload-button', function(){
+	console.log("Uploading pitch document");
+	$('#upload-pitch-form').submit();
+	$('#add-meeting-pitch-modal').modal('hide');
+});
 
 $(document).on('click','button#meetingupdate-add-button',function(){
 	//addMeetingExperience(); called inside addMeetingUpdate();
@@ -509,6 +520,8 @@ var addMeetingExperience = function(){
         location.reload(true);
     });
 }
+
+
 
 
 var toggleMeetingUpdateButtons = function(hasMeetingUpdate, hasMeetingExperience){

@@ -81,7 +81,6 @@ var populateProductSelector = function(products){
 					'<td class="descr-value release-date">'+products[i]["releasedOn"]+'</td>'+
 				'</tr>'
 		);
-		
 	}
 }
 
@@ -101,8 +100,6 @@ var createDocsViewEnvironment = function(data){
 		}
 	attachClickEvent(currentProductId);
 	}
-	
-	
 }
 
 var attachClickEvent = function(productId){

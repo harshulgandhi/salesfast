@@ -158,10 +158,12 @@ $(document).on('click','.my-pitch-buttons',function(){
 	var $row = $(this).parent()  
 	                  .parent(); 
 	var appointmentId = $row.find('.appointment-id').text();
-//	var hasPitch = 
-	$('input[name="appointmentId"]').val(appointmentId+'');
-	console.log($('input[name="appointmentId"]').val());
-	$('#add-meeting-pitch-modal').modal('show');
+	var hasPitch = $row.find('.has-pitch-td').html();
+	if(hasPitch == 'false'){
+		$('input[name="appointmentId"]').val(appointmentId+'');
+		console.log($('input[name="appointmentId"]').val());
+		$('#add-meeting-pitch-modal').modal('show');
+	}
 });
 
 $(document).on('click','button#pitchdoc-upload-button', function(){

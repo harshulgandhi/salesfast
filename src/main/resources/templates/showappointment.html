@@ -12,9 +12,9 @@
 	<!-- Common header -->
 	<div th:replace="fragments/header :: header"></div>
 	<div class="outer-container">
-		<div class="left-nav" id='cssmenu'>
+		<div class="left-nav" id="cssmenu">
 			<ul class="left-menu-ul">
-				<li class='active today-appointment-li' ><a href='#'><span>TODAY's APPOINMENTS</span></a></li>
+				<li class='active today-appointment-li' ><a href='#'><span>TODAY's APPOINTMENTS</span></a></li>
 				<li class='last future-appointment-li'><a href='#'><span>FUTURE APPOINTMENTS</span></a></li>
 			</ul>
 		</div>
@@ -80,7 +80,7 @@
 									<td class="meeting-update-flag" style="display:none" th:text="${eachAppointment.hasMeetingUpdate}"></td>
 									<td class="meeting-exp-flag" style="display:none" th:text="${eachAppointment.hasMeetingExperience}"></td>
 									<td th:text="${eachAppointment.additionalUpdate}"></td>
-									<td class="has-pitch-td" text="true" style="display:none"></td>
+									<td class="has-pitch-td" style="display:none">false</td>
 									<td class="my-pitch-button-td">
 									<button type="button" class="btn btn-primary my-pitch-buttons"
 										style="border-radius: 0px; margin-left: 2%; margin-top: 2%;">My Pitch</button>

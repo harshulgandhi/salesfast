@@ -25,7 +25,7 @@ public final class ConstantValues {
 	
 	public static final String FORMAT_TRAINING_DOC_UPDATE = "Virtual training document for medicine %s was updated by your manager. Take a look!";
 	
-	public static final String FORMAT_EDETAILING_DOC_UPDATE = "Online Detailing document for medicine %s. Please visit e-Detailing page to go through it.";
+	public static final String FORMAT_EDETAILING_DOC_UPDATE = "Online Detailing document for medicine %s has been update. Please visit e-Detailing page to go through it.";
 	
 	public static final String TRAINING_MATERIAL_PATH = "resources/docs/virtuallearning/";
 	

@@ -30,6 +30,10 @@ $(document).ready(function(){
 
 
 $(document).on('click','button.show-analysis',function(){
+	
+	$('button.show-analysis-button-clicked').removeClass('show-analysis-button-clicked');
+	$(this).addClass('show-analysis-button-clicked');
+	
 	$('.analysis-right-panel').css('display','none');
 	var btnId = $(this).attr('id');
 	var rightPanelId = '#analysis-right-panel-'+btnId;
@@ -89,6 +93,7 @@ var addButtons = function(productList){
 		getAnalysisData(productList[i]["productId"], containerId, productList[i]["productName"]);
 		
 	}
+	
 	//Triggering click event to show first graph
 	var list = $('button.show-analysis');
 	var btn = list[0];

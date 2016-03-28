@@ -11,3 +11,10 @@
 	margin-bottom: 15px;
     margin-top: 10px;
 }
+
+.warning-meeting-update{
+	color: orange;
+    float: left;
+    margin-left: -28%;
+    font-size: large;
+}

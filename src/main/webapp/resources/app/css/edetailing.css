@@ -49,3 +49,7 @@ td#value{
     font-family: initial;
     font-weight: 600;
 }
+
+.edetail-button-clicked{
+    background-color: lightsteelblue;
+}

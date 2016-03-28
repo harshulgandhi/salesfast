@@ -4,6 +4,8 @@
 var virtualLearningData = [];
 $(document).ready(function () {
 	
+	$('button.edetail-button-clicked').removeClass('edetail-button-clicked');
+	
 	$.ajax({
 		type: 'GET',
 		url : '/getedetailingdata',
@@ -23,10 +25,16 @@ $(document).ready(function () {
 	updateNotificationCounter();
 });
 
+$(document).on('click','button.show-doc-edetail',function(){
+	$('button.edetail-button-clicked').removeClass('edetail-button-clicked');
+	$(this).addClass('edetail-button-clicked');
+});
+
+
 var createEDetailingEnvironment = function(data){
 	for(var i = 0; i<data.length; i++){
 		$('.btn-left-panel').append(
-				'<button type="button" class="btn btn-default btn-md show-doc-edetail" >'+
+				'<button type="button" class="btn btn-default btn-md show-doc-edetail" id="'+i+'">'+
 				'	<span class="button-value">'+data[i]["productName"]+'</span> '+
 				'	<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> '+
 				'</button><br/>'
@@ -71,4 +79,14 @@ var createEDetailingEnvironment = function(data){
 		$(id).slideToggle('fast');
 		$(id_salesrep_info).slideToggle('fast');
 	});
+	
+	//Triggering click event to show first graph
+	var list = $('button.show-doc-edetail');
+	var btn = list[0];
+	$('#'+btn.id).trigger( "click" );
+	$(window).resize();
+	
 }
+
+
+

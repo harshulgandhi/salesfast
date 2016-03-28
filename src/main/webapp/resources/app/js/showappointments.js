@@ -35,6 +35,7 @@ $(document).ready(function() {
 	$(".left").tooltip({
 	    placement: "left"
 	});
+	
    updateNotificationCounter();
    
    $('.today-appointment-li').on('click', function(){

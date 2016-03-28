@@ -182,6 +182,17 @@ $(document).on('click', 'button.get-filtered-rows', function get_filtered_datata
 
 var populateSimilarQuestions = function(questions){
 	
+	if(questions.length == 0){
+		$('#similar-question-answer-table tbody').append(
+				'<tr class="question-tr no-question-row" style="font-style: italic;">'+
+					'<td style="width: 8%;"><div class="ques-ans-label-td">'+
+					'</div></td>'+
+					'<td style="font-weight: 600;"><div class="no-quest-avail">'+
+						'<div class="no-question">No suggestions available. Please submit the question to get answers!</div>'+
+					'</div></td>'+
+				'</tr>'	
+			);
+	}	
 	for(var i = 0; i<questions.length; i++){
 		if(i % 2 == 0){
 			$('#similar-question-answer-table tbody').append(
@@ -211,7 +222,9 @@ var populateSimilarQuestions = function(questions){
 			);
 		}
 	}
-	var table = $('#similar-question-answer-table').dataTable({
-		"bSort": false
-	});
+	if(questions.length != 0){
+		var table = $('#similar-question-answer-table').dataTable({
+			"bSort": false
+		});
+	}
 }

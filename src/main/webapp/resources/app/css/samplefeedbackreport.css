@@ -10,7 +10,11 @@
 	border-bottom: 2px solid #1910A2;
 	padding-top: 1%;
     padding-bottom: 0%;
-} 
+}
+ 
+button.show-analysis-button-clicked{
+	background-color: lightsteelblue;
+}
 
 button.btn.btn-default.btn-md.show-analysis.form-control {
     margin-bottom: 5%;
@@ -43,3 +47,9 @@ button.btn.btn-default.btn-md.show-analysis.form-control {
     padding: 3px 0px 0px 5px;
     margin: 0px 17px 0px 0px;
 }
+
+ 
+button.btn.btn-default.btn-md.show-analysis.form-control.show-analysis-button-clicked{
+	background-color: lightsteelblue;
+}
+

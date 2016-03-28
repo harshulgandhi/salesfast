@@ -75,3 +75,6 @@ button.btn.btn-primary.submit-question-post-suggest-btn {
 .suggestion-header{
 	display: -webkit-box;
 }
+.no-question-row{
+	background-color: #F7D9D9;
+}

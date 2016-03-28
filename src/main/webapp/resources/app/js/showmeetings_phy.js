@@ -31,7 +31,28 @@ $(document).ready(function() {
     	
     	$('#meetingexperience-add-phy-button').click(addMeetingExperienceFromPhy);
     });*/
+	$('td.has-meetingexp-flag').each(function(){
+		if($(this).html() === "false"){
+			$(this).parent('tr').find('td.appointment-time-td').append(
+						   '<span class="warning-meeting-update top" title="Double click to share your experience"'+
+						   'data-original-title="Double click to share your experience" style="color:orange;">&#9888;</span>'
+						   );
+		}
+	});
 	
+	   $(".top").tooltip({
+		    placement: "top"
+		});
+		$(".right").tooltip({
+		    placement: "right"
+		});
+		$(".bottom").tooltip({
+		    placement: "bottom"
+		});
+		$(".left").tooltip({
+		    placement: "left"
+		});
+		
 	$('#detailed-meeting-table tbody').on( 'dblclick', 'tr', function (e) {
 		if ( $(this).hasClass('selected') ) {
     		$(this).removeClass('selected');

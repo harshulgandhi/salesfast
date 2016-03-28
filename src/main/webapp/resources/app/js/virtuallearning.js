@@ -26,8 +26,7 @@ $(document).ready(function () {
 var createLearningEnvironment = function(data){
 	for(var i = 0; i<data.length; i++){
 		$('.btn-left-panel').append(
-//					'<button type="button" class="form-control btn btn-default show-doc" value="'+	data[i]["labelToShow"]+'" /><br/>'
-					'<button type="button" class="btn btn-default btn-md show-doc form-control" >'+
+					'<button type="button" class="btn btn-default btn-md show-doc form-control" id="'+i+'">'+
 					'	<span class="button-value">'+data[i]["labelToShow"]+'</span> '+
 					'	<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span> '+
 					'</button><br/>'
@@ -36,6 +35,9 @@ var createLearningEnvironment = function(data){
 	$('.btn-left-panel').find('button').on('click',function(){
 		$('.doc-right-panel').css('display','none');
 	    var idx = $('.btn-left-panel').find('.show-doc').index(this);
+	    $('button.training-button-clicked').removeClass('training-button-clicked');
+		$(this).addClass('training-button-clicked');
+		
 	    var str = $(this).find('.button-value').html();
 	    str = str.replace(/\s+/g, '-').toLowerCase();   // Removing space from name
 	    str = str.replace('\'', '').toLowerCase();		// Removing apostrophe
@@ -52,4 +54,10 @@ var createLearningEnvironment = function(data){
 		var id = '#'+str;
 		$(id).slideToggle('fast');
 	});
+	
+	//Triggering click event to show first graph
+	var list = $('button.show-doc');
+	var btn = list[0];
+	$('#'+btn.id).trigger( "click" );
+	$(window).resize();
 }

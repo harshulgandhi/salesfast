@@ -38,5 +38,13 @@ public interface AppointmentDao {
 			String status, String additionalNotes, int appointmentId);
 
 	public void updatePitchFlagTrue(int appointmentId);
+
+	public List<AppointmentDto> getAppointmentByMedicalField(String medicalFieldId);
+
+	public List<AppointmentDto> getAppointmentByProduct(int productId);
+
+	public List<AppointmentDto> getAppointmentBySalesRep(int userId);
+
+	public List<AppointmentDto> getAppointmentByPhysician(int physicianId);
 	
 }

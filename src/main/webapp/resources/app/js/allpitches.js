@@ -3,7 +3,11 @@
  */
 
 $(document).ready(function(){
+	$('li.left-menu-selected').removeClass('left-menu-selected');
+	$('li.all-pitches-li').addClass('left-menu-selected');
 	$('.filter-selectors').select2();
+	
+	updateNotificationCounter();
 	
 });
 

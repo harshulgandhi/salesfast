@@ -403,7 +403,23 @@ public class AppointmentServiceImpl implements AppointmentService {
 		return appointmentDao.getNotInterestedPhysicians(userId);
 	}
 	
+	@Override
+	public List<AppointmentDto> getAppointmentsByMedicalField(String medicalFieldId){
+		return appointmentDao.getAppointmentByMedicalField(medicalFieldId);
+	}
 	
+	@Override
+	public List<AppointmentDto> getAppointmentsByProduct(int productId){
+		return appointmentDao.getAppointmentByProduct(productId);
+	}
+	@Override
+	public List<AppointmentDto> getAppointmentsBySalesRep(int userId){
+		return appointmentDao.getAppointmentBySalesRep(userId);
+	}
+	@Override
+	public List<AppointmentDto> getAppointmentsByPhysician(int physicianId){
+		return appointmentDao.getAppointmentByPhysician(physicianId);
+	}
 }
 
 

@@ -57,6 +57,14 @@ public interface AppointmentService {
 
 	public void setHasPitchFlag(int appointmentId);
 
+	public List<AppointmentDto> getAppointmentsByMedicalField(String medicalFieldId);
+
+	List<AppointmentDto> getAppointmentsByProduct(int productId);
+
+	List<AppointmentDto> getAppointmentsBySalesRep(int userId);
+
+	List<AppointmentDto> getAppointmentsByPhysician(int physicianId);
+
 
 	
 }

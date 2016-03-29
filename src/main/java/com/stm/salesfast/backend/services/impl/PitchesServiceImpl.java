@@ -2,17 +2,25 @@ package com.stm.salesfast.backend.services.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.stm.salesfast.backend.controllers.LiveMeetingController;
 import com.stm.salesfast.backend.dao.specs.PitchesDao;
+import com.stm.salesfast.backend.dto.AppointmentDto;
 import com.stm.salesfast.backend.dto.MeetingUpdateDto;
 import com.stm.salesfast.backend.dto.PitchesDto;
 import com.stm.salesfast.backend.entity.PitchViewEntity;
+import com.stm.salesfast.backend.entity.ViewAllPitchEntity;
+import com.stm.salesfast.backend.entity.ViewPitchFilterParamEntity;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
 import com.stm.salesfast.backend.services.specs.PitchesService;
@@ -21,6 +29,8 @@ import com.stm.salesfast.constant.ConstantValues;
 @Service
 public class PitchesServiceImpl implements PitchesService{
 	
+	private Logger log = LoggerFactory.getLogger(PitchesServiceImpl.class.getName());
+
 	@Autowired
     private HttpServletRequest request;
 	
@@ -86,5 +96,74 @@ public class PitchesServiceImpl implements PitchesService{
 		return new PitchViewEntity(pitchDto.getAppointmentId(), pitchDto.getMeetingStatus(), fileLocation, pitchDto.getPitchScore());
 	}
 	
+	@Override
+	public List<ViewAllPitchEntity> getAllPitchesForFilter(ViewPitchFilterParamEntity filterForPitch){
+		List<ViewAllPitchEntity> allPitches = new ArrayList<>();
+		List<AppointmentDto> allAppointments = new ArrayList<>();
+		
+		//Get initial list of appointments based on top most available filter.
+		//After this, the appointment list is further filtered.
+		if(filterForPitch.getMedicalFieldId() != null){
+			allAppointments = appointmentServ.getAppointmentsByMedicalField(filterForPitch.getMedicalFieldId());
+		}else if(filterForPitch.getMedicalFieldId() == null && filterForPitch.getProductId() != 0){
+			allAppointments = appointmentServ.getAppointmentsByProduct(filterForPitch.getProductId());
+		}else if(filterForPitch.getProductId() == 0 && filterForPitch.getUserId() != 0){
+			allAppointments = appointmentServ.getAppointmentsBySalesRep(filterForPitch.getUserId());
+		}else if(filterForPitch.getUserId() == 0 && filterForPitch.getPhysicianId() != 0){
+			allAppointments = appointmentServ.getAppointmentsByPhysician(filterForPitch.getPhysicianId());
+		}
+		List<AppointmentDto> filteredAppointments = applyFurtherFilter(allAppointments, filterForPitch);
+		for(AppointmentDto eachAppointment : filteredAppointments) log.info("FILTERED "+eachAppointment);
+		return allPitches;
+	}
+	
+	@Override
+	public List<AppointmentDto> applyFurtherFilter(List<AppointmentDto> appointments, ViewPitchFilterParamEntity filterEntity){
+		if(filterEntity.getMedicalFieldId() != null){
+			List<AppointmentDto> toRemove = new ArrayList<>();
+			for(AppointmentDto eachAppointment : appointments){
+				if(filterEntity.getProductId() != 0 && eachAppointment.getProductId() != filterEntity.getProductId()){
+					toRemove.add(eachAppointment);
+				}
+			}
+			appointments.removeAll(toRemove);
+			for(AppointmentDto eachAppointment : appointments){
+				if(filterEntity.getUserId() !=0 && eachAppointment.getUserId() != filterEntity.getUserId()){
+					toRemove.add(eachAppointment);
+				}
+			}
+			appointments.removeAll(toRemove);
+			for(AppointmentDto eachAppointment : appointments){
+				if(filterEntity.getPhysicianId() !=0 && eachAppointment.getPhysicianId() != filterEntity.getPhysicianId()){
+					toRemove.add(eachAppointment);
+				}
+			}
+			appointments.removeAll(toRemove);
+		}else if(filterEntity.getProductId() != 0){
+			List<AppointmentDto> toRemove = new ArrayList<>();
+			for(AppointmentDto eachAppointment : appointments){
+				if(filterEntity.getUserId() !=0 && eachAppointment.getUserId() != filterEntity.getUserId()){
+					toRemove.add(eachAppointment);
+				}
+			}
+			appointments.removeAll(toRemove);
+			for(AppointmentDto eachAppointment : appointments){
+				if(filterEntity.getPhysicianId() !=0 && eachAppointment.getPhysicianId() != filterEntity.getPhysicianId()){
+					toRemove.add(eachAppointment);
+				}
+			}
+			appointments.removeAll(toRemove);
+		}else if(filterEntity.getPhysicianId() != 0){
+			List<AppointmentDto> toRemove = new ArrayList<>();
+			for(AppointmentDto eachAppointment : appointments){
+				if(filterEntity.getPhysicianId() !=0 && eachAppointment.getPhysicianId() != filterEntity.getPhysicianId()){
+					toRemove.add(eachAppointment);
+				}
+			}
+			appointments.removeAll(toRemove);
+		}
+		
+		return appointments;
+	}
 	
 }

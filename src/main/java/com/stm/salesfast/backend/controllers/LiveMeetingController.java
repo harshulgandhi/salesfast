@@ -18,6 +18,7 @@ import com.stm.salesfast.backend.entity.LiveMeetingQnAEntity;
 import com.stm.salesfast.backend.entity.NewQuestionEntity;
 import com.stm.salesfast.backend.entity.ViewPitchFilterParamEntity;
 import com.stm.salesfast.backend.services.specs.LiveMeetingQuestionService;
+import com.stm.salesfast.backend.services.specs.PitchesService;
 
 
 @Controller
@@ -29,6 +30,9 @@ public class LiveMeetingController {
 	
 	@Autowired
 	LiveMeetingQuestionService liveMeetingService;
+	
+	@Autowired
+	PitchesService pitchService;
 	
 	@RequestMapping(value="/livemeetingquestions", method=RequestMethod.GET)
 	public String liveMeetingQuestionnAnswer(){
@@ -104,5 +108,6 @@ public class LiveMeetingController {
 	@RequestMapping(value="/filterparameters", method=RequestMethod.POST, consumes = "application/json")
 	public void applyFilterForAllPitches(@RequestBody ViewPitchFilterParamEntity filterEntity){
 		log.info("Filter Parameters received : "+filterEntity);
+		pitchService.getAllPitchesForFilter(filterEntity);
 	}
 }

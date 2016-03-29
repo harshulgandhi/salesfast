@@ -61,6 +61,17 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	
 	private static final String UPDATE_HAS_PITCH = "UPDATE appointment SET hasPitch = 1 WHERE appointmentId = ?";
 	
+	private static final String FETCH_FOR_MED_FIELD = "SELECT * FROM appointment "
+			+ "WHERE productId in ( "
+			+ "SELECT productId FROM products WHERE "
+			+ "medicalFieldId = ?) AND hasPitch = 1";
+	private static final String FETCH_FOR_PRODUCT = "SELECT * FROM appointment "
+			+ "WHERE productId = ? AND hasPitch = 1";
+	private static final String FETCH_FOR_SALESREP= "SELECT * FROM appointment "
+			+ "WHERE userId = ? AND hasPitch = 1";
+	private static final String FETCH_FOR_PHYS = "SELECT * FROM appointment "
+			+ "WHERE physicianId = ? AND hasPitch = 1";
+	
 	@Override
 	public AppointmentDto getAppointmentById(int appointmentId) {
 		// TODO Auto-generated method stub
@@ -73,7 +84,66 @@ public class AppointmentDaoImpl implements AppointmentDao {
 		}
 		return null;
 	}
-
+	
+	/**
+	 * For fetching all pitches*/
+	@Override
+	public List<AppointmentDto> getAppointmentByMedicalField(String medicalFieldId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_FOR_MED_FIELD, (rs, rownnum)->{
+				return new AppointmentDto(rs.getInt("appointmentId"), rs.getTime("startTime"), rs.getTime("endTime"),  rs.getDate("date"), rs.getInt("physicianId"), rs.getInt("userId"), rs.getInt("productId"), rs.getString("confirmationStatus"), rs.getString("zip"), rs.getString("cancellationReason"), rs.getString("additionalNotes"), rs.getBoolean("hasMeetingUpdate"),rs.getBoolean("hasMeetingExperienceFromSR"),rs.getBoolean("hasMeetingExperienceFromPH"), rs.getBoolean("hasPitch"));
+			}, medicalFieldId);
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * For fetching all pitches*/
+	@Override
+	public List<AppointmentDto> getAppointmentByProduct(int productId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_FOR_PRODUCT, (rs, rownnum)->{
+				return new AppointmentDto(rs.getInt("appointmentId"), rs.getTime("startTime"), rs.getTime("endTime"),  rs.getDate("date"), rs.getInt("physicianId"), rs.getInt("userId"), rs.getInt("productId"), rs.getString("confirmationStatus"), rs.getString("zip"), rs.getString("cancellationReason"), rs.getString("additionalNotes"), rs.getBoolean("hasMeetingUpdate"),rs.getBoolean("hasMeetingExperienceFromSR"),rs.getBoolean("hasMeetingExperienceFromPH"), rs.getBoolean("hasPitch"));
+			}, productId);
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * For fetching all pitches*/
+	@Override
+	public List<AppointmentDto> getAppointmentBySalesRep(int userId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_FOR_SALESREP, (rs, rownnum)->{
+				return new AppointmentDto(rs.getInt("appointmentId"), rs.getTime("startTime"), rs.getTime("endTime"),  rs.getDate("date"), rs.getInt("physicianId"), rs.getInt("userId"), rs.getInt("productId"), rs.getString("confirmationStatus"), rs.getString("zip"), rs.getString("cancellationReason"), rs.getString("additionalNotes"), rs.getBoolean("hasMeetingUpdate"),rs.getBoolean("hasMeetingExperienceFromSR"),rs.getBoolean("hasMeetingExperienceFromPH"), rs.getBoolean("hasPitch"));
+			}, userId);
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * For fetching all pitches*/
+	@Override
+	public List<AppointmentDto> getAppointmentByPhysician(int physicianId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_FOR_PHYS, (rs, rownnum)->{
+				return new AppointmentDto(rs.getInt("appointmentId"), rs.getTime("startTime"), rs.getTime("endTime"),  rs.getDate("date"), rs.getInt("physicianId"), rs.getInt("userId"), rs.getInt("productId"), rs.getString("confirmationStatus"), rs.getString("zip"), rs.getString("cancellationReason"), rs.getString("additionalNotes"), rs.getBoolean("hasMeetingUpdate"),rs.getBoolean("hasMeetingExperienceFromSR"),rs.getBoolean("hasMeetingExperienceFromPH"), rs.getBoolean("hasPitch"));
+			}, physicianId);
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	/**
 	 * This method returns appointments of a user based on whether
@@ -277,4 +347,5 @@ public class AppointmentDaoImpl implements AppointmentDao {
 		}
 		return null;
 	}
+
 }

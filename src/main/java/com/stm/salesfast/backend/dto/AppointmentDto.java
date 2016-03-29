@@ -27,10 +27,10 @@ public class AppointmentDto {
 	private boolean hasMeetingUpdate;
 	private boolean hasMeetingExperienceFromSR;
 	private boolean hasMeetingExperienceFromPH;
-	
+	private boolean hasPitch;
 
 	public AppointmentDto(Time startTime, Time endTime, Date currentDate, int physId,
-			int userId2, int productId2, String confirmationStatus2, String zip, String cancellationReason, String additionalNotes, boolean hasMeetingExperienceFromSR, boolean hasMeetingUpdate, boolean hasMeetingExperienceFromPH) {
+			int userId2, int productId2, String confirmationStatus2, String zip, String cancellationReason, String additionalNotes, boolean hasMeetingExperienceFromSR, boolean hasMeetingUpdate, boolean hasMeetingExperienceFromPH, boolean hasPitch) {
 		// TODO Auto-generated constructor stub
 		this.startTime = startTime;
 		this.endTime = endTime;
@@ -45,5 +45,6 @@ public class AppointmentDto {
 		this.hasMeetingExperienceFromSR = false;
 		this.hasMeetingUpdate = false;
 		this.hasMeetingExperienceFromPH = false;
+		this.hasPitch = hasPitch;
 	}
 }

@@ -113,3 +113,21 @@ td.appointment-time-td{
 .appointment-start-time, .appointment-end-time, .appointment-date{
 	color: black;
 }
+
+.form-group.update-doc-btn{
+	text-align: center;
+}
+
+button#pitchdoc-update-button {
+    border-radius: 0px;
+    width: 24%;
+}
+
+.form-group.view-pitch-div {
+    height: 350px;
+}
+
+object.pdf-doc-object.pdf-doc-object-slidedown {
+    height: 100%;
+    width: 100%;
+}	

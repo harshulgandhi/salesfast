@@ -28,11 +28,13 @@ import com.stm.salesfast.backend.entity.AppointmentEntity;
 import com.stm.salesfast.backend.entity.FollowupAppointmentUpdateEntity;
 import com.stm.salesfast.backend.entity.FutureAppointmentUpdateEntity;
 import com.stm.salesfast.backend.entity.MeetingExperienceEntity;
+import com.stm.salesfast.backend.entity.PitchViewEntity;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.MeetingExperienceService;
 import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
 import com.stm.salesfast.backend.services.specs.NotificationService;
+import com.stm.salesfast.backend.services.specs.PitchesService;
 import com.stm.salesfast.backend.services.specs.ReminderService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
 import com.stm.salesfast.backend.utils.SalesFastUtilities;
@@ -65,6 +67,9 @@ public class AppointmentController {
 	
 	@Autowired
 	ReminderService reminders;
+	
+	@Autowired
+	PitchesService pitchService;
 	
 	@RequestMapping(value="/showappointments", method=RequestMethod.GET)
 	public String showAppointments(Model model) throws ParseException{
@@ -145,13 +150,32 @@ public class AppointmentController {
 	
 	@RequestMapping(value = "/uploadmeetingpitch", method = RequestMethod.POST) 
     public String uploadMeetingPitch(@RequestParam("pitchdocument") MultipartFile pitchdocument, 
-    		@RequestParam("appointmentId") int appointmentId, Model model) throws IllegalStateException, IOException, ParseException { 
+    		@RequestParam("uploadModalAppointmentId") int appointmentId) throws IllegalStateException, IOException, ParseException { 
 		log.info("Meeting pitch received! ");
 		log.info("File  : "+pitchdocument.getOriginalFilename()+"["+pitchdocument.getContentType()+"]"+"\nFor Meeting : "+appointmentId);
-//		addProdService.saveUploadedFiles(virtualTrainingFile, eDetailingFile);
-//		managerProdService.updateFile(productdocument, selectedProductId, typeOfDocument);
+		pitchService.insertNewPitch(appointmentId, pitchdocument);
 		return "redirect:/showappointments";
     }
+	
+	@RequestMapping(value = "/updatemeetingpitch", method = RequestMethod.POST) 
+    public String updateExistingMeetingPitch(@RequestParam("updatedpitchdocument") MultipartFile pitchdocument, 
+    		@RequestParam("viewModalAppointmentId") int appointmentId) throws IllegalStateException, IOException, ParseException { 
+		log.info("Meeting pitch UPDATE received! ");
+		log.info("File  : "+pitchdocument.getOriginalFilename()+"["+pitchdocument.getContentType()+"]"+"\nFor Meeting : "+appointmentId);
+		pitchService.updatePitchFile(appointmentId, pitchdocument);
+		return "redirect:/showappointments";
+    }
+	
+	
+	@RequestMapping(value="/getpitchforappointment", method=RequestMethod.GET,produces = "application/json")
+	@ResponseBody
+	public PitchViewEntity getMeetingPitch(@RequestParam(value="appointmentId") int appointmentId){
+		PitchViewEntity pitchEntity = pitchService.getPitchForAppointment(appointmentId);
+		log.info("Pitch entity fetched : "+pitchEntity);
+		return pitchEntity;
+	}
+	
+	
 }
 
 

@@ -71,7 +71,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 		int userId = userAccountService.getUserIdByUserName(CURRENTUSERNAME);
 		UserDto userDetail = userDetails.getUserDetails(userId);
 		String zip = physicianService.getPhysicianZipById(physId);
-		appointmentDao.insertAppointment(new AppointmentDto(startTime, endTime, date, physId, userId, productId,confirmationStatus, zip, new String(""), additionalNotes, false, false, false));
+		appointmentDao.insertAppointment(new AppointmentDto(startTime, endTime, date, physId, userId, productId,confirmationStatus, zip, new String(""), additionalNotes, false, false, false, false));
 		
 		/* Send confirmation email to physician */
 		int appointmentId = appointmentDao.getIdByPhysIdUserIdProductId(physId, userId, productId);
@@ -115,7 +115,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 						eachAppointment.isHasMeetingUpdate(),
 						eachAppointment.isHasMeetingExperienceFromSR(),
 						eachAppointment.getCancellationReason(),
-						eachAppointment.getAdditionalNotes()));
+						eachAppointment.getAdditionalNotes(),
+						eachAppointment.isHasPitch()));
 			}
 		}
 		log.info("Appointment fetched are : \n");
@@ -150,7 +151,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 						eachAppointment.isHasMeetingUpdate(),
 						eachAppointment.isHasMeetingExperienceFromSR(),
 						eachAppointment.getCancellationReason(),
-						eachAppointment.getAdditionalNotes()));
+						eachAppointment.getAdditionalNotes(),
+						eachAppointment.isHasPitch()));
 			}
 		}
 		return futureAppointmentEntitiesList;
@@ -183,7 +185,8 @@ public class AppointmentServiceImpl implements AppointmentService {
 						eachAppointment.isHasMeetingUpdate(),
 						eachAppointment.isHasMeetingExperienceFromSR(),
 						eachAppointment.getCancellationReason(),
-						eachAppointment.getAdditionalNotes()));
+						eachAppointment.getAdditionalNotes(),
+						eachAppointment.isHasPitch()));
 		}
 		return futureAppointmentEntitiesList;
 	}
@@ -222,6 +225,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 	@Override
 	public void setHasMeetingExperienceFlagFromPH(int appointmentId,  int isPhyEntry) {
 		appointmentDao.setMeetinExperienceFlagFromPH(appointmentId, isPhyEntry);
+	}
+	
+	@Override
+	public void setHasPitchFlag(int appointmentId) {
+		appointmentDao.updatePitchFlagTrue(appointmentId);
 	}
 	
 	@Override

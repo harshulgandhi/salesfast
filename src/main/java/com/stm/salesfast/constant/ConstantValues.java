@@ -33,6 +33,8 @@ public final class ConstantValues {
 	
 	public static final String EDETAILING_DOCS_PATH = "resources/docs/edetailing/";
 	
+	public static final String PITCH_DOCS_PATH = "resources/docs/meetingpitch/";
+	
 	public static final String CODE_OF_CONDUCT_FILE = "Code_Of_Conduct.pdf";
 	
 	public static final String GENERAL_GUIDELINES_FILE = "General_Guidelines.pdf";

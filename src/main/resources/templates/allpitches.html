@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Header to include css -->
+<div th:replace="fragments/header :: commonhead"></div>
+<link rel="stylesheet" type="text/css" href="resources/app/css/allpitches.css"/>
+<meta charset="UTF-8" />
+<title>View Products</title>
+</head>
+<body>
+
+	<!-- Common header -->
+	<div th:replace="fragments/header :: header"></div>
+	
+	<div class="outer-container">
+		<div class="left-nav" id='cssmenu'>
+			<ul class="left-menu-ul">
+				<li class='active live-meeting-qna-li' ><a href='/livemeetingquestions'><span>LIVE MEETING QnA</span></a></li>
+				<li class='submit-answer-li'><a href='/unansweredques'><span>ANSWER A QUESTION</span></a></li>
+				<li class='sample-med-li'><a href='/samplefeedbackreport'><span>MEDICINE FEEDBACKs</span></a></li>
+				<li class='last all-pitches-li'><a href='/allpitches'><span>VIEW ALL PITCHES</span></a></li>
+			</ul>
+		</div>
+		<div class="container" id="layout">
+			<div class="row row-header page-header"><h3>Pitch shared by all SalesReps</h3></div>
+			<div class="row filter-selector-div">
+				<div class="med-field-selection-div paramter-selection-div">
+					<div class="med-field-selector-label filter-selector-label">SELECT A MEDICAL FIELD.</div>
+					<select class="med-field-selector filter-selectors validate-ele" name="medifcalField">
+						<option disabled="disabled" selected="selected" value="none"> -- select med field -- </option>
+						<option value="ONC">ONCOLOGY</option>
+						<option value="DIAB">DIABETES</option>
+					</select>
+				</div>
+				<div class="product-selection-div paramter-selection-div">
+					<div class="product-selector-label filter-selector-label">SELECT A PRODUCT.</div>
+					<select class="product-selector filter-selectors validate-ele" name="product">
+						<option disabled="disabled" selected="selected" value="none"> -- select med product -- </option>
+						<option value="3">O_Med_1</option>
+						<option value="4">O_Med_2</option>
+						<option value="5">O_Med_3</option>
+					</select>
+				</div>
+				<div class="salesrep-selection-div paramter-selection-div">
+					<div class="salesrep-selector-label filter-selector-label">SELECT A SALES REP.</div>
+					<select class="salesrep-selector filter-selectors validate-ele" name="salesrep">
+						<option disabled="disabled" selected="selected" value="none"> -- select Sales Rep -- </option>
+						<option value="1">Johny Dep</option>
+					</select>
+				</div>
+				<div class="physician-selection-div paramter-selection-div">
+					<div class="physician-selector-label filter-selector-label">SELECT PHYSICIAN.</div>
+					<select class="physician-selector filter-selectors validate-ele" name="physician">
+						<option disabled="disabled" selected="selected" value="none"> -- select physician -- </option>
+						<option value="1">Christopher Nolan</option>
+						<option value="2">Alfred Hitchcock</option>
+						<option value="4">Clint Eastwood</option>
+						<option value="5">Quentin Tarantino</option>
+					</select>
+				</div>
+			</div>
+			<div class="row row-custom-style">
+				<div class="col-lg-3 btn-left-panel">
+				
+				</div>
+	        </div>
+		</div>
+	</div>
+
+<!-- Common footer -->
+<div th:replace="fragments/footer :: footer"></div>
+<script type="text/javascript" src="resources/app/js/allpitches.js"></script>
+</body>
+</html>

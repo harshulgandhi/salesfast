@@ -55,6 +55,8 @@ public interface AppointmentService {
 			String confirmationStatus, int productId, String additionalNotes)
 			throws ParseException;
 
+	public void setHasPitchFlag(int appointmentId);
+
 
 	
 }

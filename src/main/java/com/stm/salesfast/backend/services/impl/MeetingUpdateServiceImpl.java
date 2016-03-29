@@ -24,6 +24,7 @@ import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.EDetailingMaterialService;
 import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
 import com.stm.salesfast.backend.services.specs.PhysicianFetchService;
+import com.stm.salesfast.backend.services.specs.PitchesService;
 import com.stm.salesfast.backend.services.specs.ProductFetchService;
 import com.stm.salesfast.backend.services.specs.RoleService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
@@ -64,6 +65,9 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 	@Autowired
 	EDetailingMaterialService eDetailingMatService;
 	
+	@Autowired
+	PitchesService pitchService;
+	
 	/**
 	 * Method to add meeting update to db, also updates
 	 * has hasMeetingUpdate flag and physician status
@@ -83,6 +87,7 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 		
 		appointmentService.setHasMeetingUpdateFlag(meetingUpdateEntity.getAppointmentId(), 1);
 		physicianService.updatePhysicianStatus(meetingUpdateEntity.getPhysicianId(), meetingUpdateEntity.getMeetingStatus());
+		pitchService.updateStatus(meetingUpdateEntity.getMeetingStatus(), meetingUpdateEntity.getAppointmentId());
 		setupEDetailing(meetingUpdateEntity);
 	}
 	

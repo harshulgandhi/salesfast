@@ -80,9 +80,9 @@
 									<td class="meeting-update-flag" style="display:none" th:text="${eachAppointment.hasMeetingUpdate}"></td>
 									<td class="meeting-exp-flag" style="display:none" th:text="${eachAppointment.hasMeetingExperience}"></td>
 									<td th:text="${eachAppointment.additionalUpdate}"></td>
-									<td class="has-pitch-td" style="display:none">false</td>
+									<td class="has-pitch-td" style="display:none" th:text="${eachAppointment.hasPitch}"></td>
 									<td class="my-pitch-button-td">
-									<button type="button" class="btn btn-primary my-pitch-buttons"
+									<button type="button" id="${eachAppointment.physicianId}" class="btn btn-primary my-pitch-buttons"
 										style="border-radius: 0px; margin-left: 2%; margin-top: 2%;">My Pitch</button>
 									</td>
 								</tr>
@@ -253,7 +253,7 @@
 	<div th:replace="uploadpitchmodal :: upload-meeting-pitch-modal"></div>
 	
 							<!-- Modal for VIEWING meeting pitch-->
-	<!-- <div th:replace="viewpitchmodal :: view-meeting-pitch-modal"></div> -->
+	<div th:replace="viewpitchmodal :: view-meeting-pitch-modal"></div>
 	
 							<!-- Modal for entering cancellation reason -->
 	<div th:replace="appointmentcancelmodal :: appointment-cancellation-modal"></div>

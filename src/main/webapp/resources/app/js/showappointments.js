@@ -160,9 +160,14 @@ $(document).on('click','.my-pitch-buttons',function(){
 	var appointmentId = $row.find('.appointment-id').text();
 	var hasPitch = $row.find('.has-pitch-td').html();
 	if(hasPitch == 'false'){
-		$('input[name="appointmentId"]').val(appointmentId+'');
-		console.log($('input[name="appointmentId"]').val());
+		$('input[name="uploadModalAppointmentId"]').val(appointmentId);
+		console.log($('input[name="uploadModalAppointmentId"]').val());
 		$('#add-meeting-pitch-modal').modal('show');
+	}else if(hasPitch = 'true'){
+		$('input[name="viewModalAppointmentId"]').val(appointmentId);
+		console.log($('input[name="viewModalAppointmentId"]').val());
+		getPitchFile(appointmentId);
+//		$('#view-meeting-pitch-modal').modal('show');
 	}
 });
 
@@ -172,11 +177,52 @@ $(document).on('click','button#pitchdoc-upload-button', function(){
 	$('#add-meeting-pitch-modal').modal('hide');
 });
 
+$(document).on('click','button#pitchdoc-update-button', function(){
+	console.log("UPDATING pitch document");
+	$('#view-pitch-form').submit();
+	$('#view-meeting-pitch-modal').modal('hide');
+});
+
+var getPitchFile = function(appointmentId){
+	$.ajax({
+		type : 'GET',
+		url : '/getpitchforappointment?appointmentId='+appointmentId,
+		dataType : 'json',
+		success : function(data){
+			console.log("Pitch received "+JSON.stringify(data));
+			attachObjectToView(data);
+		},
+		error: function(e){
+			console.log("Error : "+JSON.stringify(e));
+		}
+	}).done(function(){
+		
+	});
+}
+
+var attachObjectToView = function(pitchEntity){
+	if($('#pitch-'+pitchEntity["appointmentId"]).length == 0){
+		$('div.view-pitch-modal-body').append(
+			'<div class="form-group view-pitch-div" id="pitch-'+pitchEntity["appointmentId"]+'"  style="display: none;">'+
+				'<label class="control-label" id="view-pitch-label">Your pitch</label>'+
+				'<object class="pdf-doc-object pdf-doc-object-slidedown" data="'+pitchEntity["fileLocation"]+'" type="application/pdf"">'+
+					'<embed src="'+pitchEntity["fileLocation"]+'" alt="pdf" pluginspage="http://www.adobe.com/products/acrobat/readstep2.html">'+
+					'</embed>'+
+				'</object>'+
+			'</div>'
+		);
+	}
+		$('#view-meeting-pitch-modal').modal('show');
+		$('div.view-pitch-div').css('display','none');
+		$('#pitch-'+pitchEntity["appointmentId"]).css('display','block');
+	
+}
+
+
 $(document).on('click','button#meetingupdate-add-button',function(){
 	//addMeetingExperience(); called inside addMeetingUpdate();
 	addMeetingUpdate();
 });
-
 
 /**
  * Set color of the row based on the 

@@ -3,7 +3,7 @@
 <head>
 </head>
 <body>
-<div class="modal fade" id="add-meeting-pitch-modal" role="dialog" data-edit-mode="false" th:fragment="upload-meeting-pitch-modal">
+<div class="modal fade" id="view-meeting-pitch-modal" role="dialog" data-edit-mode="false" th:fragment="view-meeting-pitch-modal">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -11,28 +11,38 @@
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
-				<h4 class="modal-title" id="uploadpitchlabel">Upload your pitch for this meeting</h4>
+				<h4 class="modal-title" id="uploadpitchlabel">Your pitch for this meeting</h4>
 			</div>
-			<div class="modal-body modal-body">
-				<form id="upload-pitch-form" class="form-horizontal" action="/uploadmeetingpitch" method="post" enctype="multipart/form-data">
+			<div class="modal-body modal-body view-pitch-modal-body">
+				<form id="view-pitch-form" class="form-horizontal" action="/updatemeetingpitch" method="post" enctype="multipart/form-data">
 					<div class="form-group" id="appointment-id" style="display:none">
 						<label class="col-xs-3 control-label" id="id-label">Appointment ID</label>
 						<div class="col-xs-7">
-							<input type="hidden" name="appointmentId" id="appointment-id-onmodal" class="form-control validate-ele"> </input> 
+							<input type="hidden" name="viewModalAppointmentId" id="appointment-id-onmodal" class="form-control validate-ele"> </input> 
 						</div>
 					</div>
-					<div class="form-group upload-doc-div">
-						<label class="col-xs-5 control-label" id="upload-pitch">Upload the pitch you have prepared</label>
+					<div class="form-group update-doc-div">
+						<label class="col-xs-5 control-label" id="upload-pitch">Update this pitch</label>
 						<div class="col-xs-5">
-							<input name="pitchdocument" type="file" class="form-control validate-ele" id="pitch-upload"/>
+							<input name="updatedpitchdocument" type="file" class="form-control validate-ele" id="pitch-upload"/>
 						</div>
+					</div>
+					<div class="form-group update-doc-btn">
+						<button id="pitchdoc-update-button" type="button" class="btn btn-primary">Update</button>
 					</div>
 				</form>
+				<!-- <div class="form-group view-pitch-div">
+					<label class="control-label" id="view-pitch-label">Your pitch</label>
+					<object class="pdf-doc-object pdf-doc-object-slidedown" data="resources/docs/perfecting-your-pitch.pdf" type="application/pdf" >
+						<embed src="resources/docs/perfecting-your-pitch.pdf" alt="pdf" pluginspage="http://www.adobe.com/products/acrobat/readstep2.html">
+						</embed>
+					</object>
+				</div> -->
 			</div>
 			
 			<div class="modal-footer">
-				<button id="pitchupload-cancel-button" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-				<button id="pitchdoc-upload-button" type="button" class="btn btn-primary">Upload</button>
+			<!-- 	<button id="pitchupload-cancel-button" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<button id="pitchdoc-upload-button" type="button" class="btn btn-primary">Upload</button> -->
 			</div>
 		</div>
 	</div>

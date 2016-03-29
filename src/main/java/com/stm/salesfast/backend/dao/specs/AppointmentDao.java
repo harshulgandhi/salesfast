@@ -36,5 +36,7 @@ public interface AppointmentDao {
 
 	public void updateAppointment(Time startTime, Time endTime, Date date,
 			String status, String additionalNotes, int appointmentId);
+
+	public void updatePitchFlagTrue(int appointmentId);
 	
 }

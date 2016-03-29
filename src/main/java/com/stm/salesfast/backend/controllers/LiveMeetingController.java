@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.stm.salesfast.backend.entity.LiveMeetingQnAEntity;
 import com.stm.salesfast.backend.entity.NewQuestionEntity;
+import com.stm.salesfast.backend.entity.ViewPitchFilterParamEntity;
 import com.stm.salesfast.backend.services.specs.LiveMeetingQuestionService;
 
 
@@ -93,5 +94,15 @@ public class LiveMeetingController {
 	public  void submitAnswer(@RequestBody LiveMeetingQnAEntity answer) throws ParseException {
 		log.info("New Answer received  : "+answer);
 		liveMeetingService.insertAnswerToAQuestion(answer);
+	}
+	
+	@RequestMapping(value="/allpitches", method=RequestMethod.GET)
+	public String allPitchesPage(){
+		return "allpitches";
+	}
+	
+	@RequestMapping(value="/filterparameters", method=RequestMethod.POST, consumes = "application/json")
+	public void applyFilterForAllPitches(@RequestBody ViewPitchFilterParamEntity filterEntity){
+		log.info("Filter Parameters received : "+filterEntity);
 	}
 }

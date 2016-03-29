@@ -30,5 +30,6 @@ public class AppointmentEntity {
 	private boolean hasMeetingExperience;
 	private String cancellationReason;
 	private String additionalUpdate;
+	private boolean hasPitch;
 	
 }

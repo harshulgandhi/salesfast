@@ -31,4 +31,7 @@ public interface PitchesService {
 	public List<ViewAllPitchEntity> getAllPitchesForFilter(ViewPitchFilterParamEntity filterForPitch);
 
 	List<AppointmentDto> applyFurtherFilter(List<AppointmentDto> appointments, ViewPitchFilterParamEntity filterEntity);
+
+	List<ViewAllPitchEntity> getPitchViewEntityFields(
+			List<AppointmentDto> filteredAppointments);
 }

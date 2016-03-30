@@ -12,6 +12,7 @@ import lombok.ToString;
 @Data
 @ToString
 public class PitchViewEntity {
+	private int pitchId;
 	private int appointmentId;
 	private String meetingStatus;
 	private String fileLocation;

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.stm.salesfast.backend.entity.LiveMeetingQnAEntity;
 import com.stm.salesfast.backend.entity.NewQuestionEntity;
+import com.stm.salesfast.backend.entity.ViewAllPitchEntity;
 import com.stm.salesfast.backend.entity.ViewPitchFilterParamEntity;
 import com.stm.salesfast.backend.services.specs.LiveMeetingQuestionService;
 import com.stm.salesfast.backend.services.specs.PitchesService;
@@ -105,9 +106,16 @@ public class LiveMeetingController {
 		return "allpitches";
 	}
 	
-	@RequestMapping(value="/filterparameters", method=RequestMethod.POST, consumes = "application/json")
-	public void applyFilterForAllPitches(@RequestBody ViewPitchFilterParamEntity filterEntity){
+	@RequestMapping(value="/filterparameters", method=RequestMethod.POST, consumes = "application/json", produces = "application/json")
+	@ResponseBody
+	public ViewAllPitchEntity[] applyFilterForAllPitches(@RequestBody ViewPitchFilterParamEntity filterEntity){
 		log.info("Filter Parameters received : "+filterEntity);
-		pitchService.getAllPitchesForFilter(filterEntity);
+		if(filterEntity.getMedicalFieldId().equals("none")) {
+			log.info("Medical field id is none");
+			filterEntity.setMedicalFieldId(null);
+		}
+		log.info("Filter Parameters received : "+filterEntity);
+		List<ViewAllPitchEntity> allPitchesToShow =  pitchService.getAllPitchesForFilter(filterEntity);
+		return allPitchesToShow.toArray(new ViewAllPitchEntity[allPitchesToShow.size()]);
 	}
 }

@@ -23,7 +23,10 @@ import com.stm.salesfast.backend.entity.ViewAllPitchEntity;
 import com.stm.salesfast.backend.entity.ViewPitchFilterParamEntity;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
+import com.stm.salesfast.backend.services.specs.PhysicianFetchService;
 import com.stm.salesfast.backend.services.specs.PitchesService;
+import com.stm.salesfast.backend.services.specs.ProductFetchService;
+import com.stm.salesfast.backend.services.specs.UserDetailService;
 import com.stm.salesfast.constant.ConstantValues;
 
 @Service
@@ -42,6 +45,15 @@ public class PitchesServiceImpl implements PitchesService{
 	
 	@Autowired
 	AppointmentService appointmentServ; 
+	
+	@Autowired
+	UserDetailService userService;
+	
+	@Autowired
+	PhysicianFetchService physService;
+	
+	@Autowired
+	ProductFetchService prodService;
 	
 	@Override
 	public void insertPitch(PitchesDto pitch) {
@@ -93,12 +105,11 @@ public class PitchesServiceImpl implements PitchesService{
 	public PitchViewEntity getPitchForAppointment(int appointmentId){
 		PitchesDto pitchDto = pitchDao.getPitchByAppointmentId(appointmentId);
 		String fileLocation = ConstantValues.PITCH_DOCS_PATH+pitchDto.getFileName();
-		return new PitchViewEntity(pitchDto.getAppointmentId(), pitchDto.getMeetingStatus(), fileLocation, pitchDto.getPitchScore());
+		return new PitchViewEntity(pitchDto.getPitchesId(), pitchDto.getAppointmentId(), pitchDto.getMeetingStatus(), fileLocation, pitchDto.getPitchScore());
 	}
 	
 	@Override
 	public List<ViewAllPitchEntity> getAllPitchesForFilter(ViewPitchFilterParamEntity filterForPitch){
-		List<ViewAllPitchEntity> allPitches = new ArrayList<>();
 		List<AppointmentDto> allAppointments = new ArrayList<>();
 		
 		//Get initial list of appointments based on top most available filter.
@@ -114,7 +125,34 @@ public class PitchesServiceImpl implements PitchesService{
 		}
 		List<AppointmentDto> filteredAppointments = applyFurtherFilter(allAppointments, filterForPitch);
 		for(AppointmentDto eachAppointment : filteredAppointments) log.info("FILTERED "+eachAppointment);
-		return allPitches;
+		return getPitchViewEntityFields(filteredAppointments);
+	}
+	
+	@Override
+	public List<ViewAllPitchEntity> getPitchViewEntityFields(List<AppointmentDto> filteredAppointments){
+		List<ViewAllPitchEntity> allPitchView = new ArrayList<>();
+		
+		for(AppointmentDto eachApp : filteredAppointments){
+			PitchViewEntity pitch  = getPitchForAppointment(eachApp.getAppointmnetId());
+			String salesRepName = userService.getUserCompleteName(appointmentServ.getById(pitch.getAppointmentId()).getUserId());
+			String physicianName = physService.getPhysicianName(appointmentServ.getById(pitch.getAppointmentId()).getPhysicianId());
+			String product = prodService.getProductById(appointmentServ.getById(pitch.getAppointmentId()).getProductId()).getProductName();
+			
+			allPitchView.add(new ViewAllPitchEntity(
+					pitch.getPitchId(),
+					pitch.getAppointmentId(),
+					pitch.getMeetingStatus(),
+					salesRepName,
+					physicianName,
+					eachApp.getDate(),
+					product,
+					pitch.getFileLocation(),
+					pitch.getPitchScore()
+					));
+			
+		}
+		
+		return allPitchView;
 	}
 	
 	@Override

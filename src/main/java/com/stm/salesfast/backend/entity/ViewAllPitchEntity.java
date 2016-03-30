@@ -19,4 +19,6 @@ public class ViewAllPitchEntity {
 	private String physicianName;
 	private Date date;
 	private String productName;
+	private String fileLocation;
+	private int pitchScore;
 }

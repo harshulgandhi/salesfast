@@ -27,7 +27,7 @@
 				<div class="med-field-selection-div paramter-selection-div">
 					<div class="med-field-selector-label filter-selector-label">SELECT A MEDICAL FIELD.</div>
 					<select class="med-field-selector filter-selectors validate-ele" name="medifcalField">
-						<option disabled="disabled" selected="selected" value="none"> -- select med field -- </option>
+						<option selected="selected" value="none"> -- remove this filter -- </option>
 						<option value="ONC">ONCOLOGY</option>
 						<option value="DIAB">DIABETES</option>
 					</select>
@@ -35,7 +35,7 @@
 				<div class="product-selection-div paramter-selection-div">
 					<div class="product-selector-label filter-selector-label">SELECT A PRODUCT.</div>
 					<select class="product-selector filter-selectors validate-ele" name="product">
-						<option disabled="disabled" selected="selected" value="none"> -- select med product -- </option>
+						<option selected="selected" value="0"> -- remove this filter -- </option>
 						<option value="3">O_Med_1</option>
 						<option value="4">O_Med_2</option>
 						<option value="5">O_Med_3</option>
@@ -44,14 +44,14 @@
 				<div class="salesrep-selection-div paramter-selection-div">
 					<div class="salesrep-selector-label filter-selector-label">SELECT A SALES REP.</div>
 					<select class="salesrep-selector filter-selectors validate-ele" name="salesrep">
-						<option disabled="disabled" selected="selected" value="none"> -- select Sales Rep -- </option>
+						<option selected="selected" value="0"> -- remove this filter -- </option>
 						<option value="1">Johny Dep</option>
 					</select>
 				</div>
 				<div class="physician-selection-div paramter-selection-div">
 					<div class="physician-selector-label filter-selector-label">SELECT PHYSICIAN.</div>
 					<select class="physician-selector filter-selectors validate-ele" name="physician">
-						<option disabled="disabled" selected="selected" value="none"> -- select physician -- </option>
+						<option selected="selected" value="0"> -- remove this filter -- </option>
 						<option value="1">Christopher Nolan</option>
 						<option value="2">Alfred Hitchcock</option>
 						<option value="4">Clint Eastwood</option>
@@ -59,9 +59,99 @@
 					</select>
 				</div>
 			</div>
-			<div class="row row-custom-style">
-				<div class="col-lg-3 btn-left-panel">
-				
+			<div class="row row-custom-style view-pitch-table-row">
+				<div class="table-div" >
+					<table id="view-pitch-table" class="table">
+						<thead>
+							<tr style="display: none;">
+								<th>Pitch Buttons </th>
+								<th>Pitch File View</th>
+								<th>Meeting Details</th>
+							</tr>
+						</thead>
+						<tbody>
+							<!-- <tr>
+								<td class="pitch-buttons">
+									<button type="button" class="btn btn-default btn-md show-pitch-doc form-control" id="0">
+										<span class="button-value">Pitch 1</span>
+										<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+									</button><br/>
+								</td>
+								<td class="view-pitch-doc-td">
+									<div class="pitch-doc-object-div" id="pitch-object-div-0" style="display: none;">
+										<object class="pdf-doc-object pdf-doc-object-slidedown" id="pitch-object-0" data="resources/docs/meetingpitch/perfecting-your-pitch-4.pdf" type="application/pdf">
+											<embed src="resources/docs/meetingpitch/perfecting-your-pitch-4.pdf" alt="pdf" pluginspage="http://www.adobe.com/products/acrobat/readstep2.html">
+											</embed>
+										</object>
+									</div>
+								</td>
+								<td class="view-meeting-details-td">
+									<div class="meeting-detail-div" id="pitch-detail-div-0" style="display: none;">
+										<div class="each-detail-row">
+											<span class="detail-lable">Uploaded By : </span>
+											<Span class="detail-value">Johny Dep</Span>
+										</div>
+										<div class="each-detail-row">
+											<span class="detail-lable">Meeting with : </span>
+											<span class="detail-value">Christopher Nolan</span>
+										</div>
+										<div class="each-detail-row">
+											<span class="detail-lable">Product detailed : </span>
+											<span class="detail-value">O_Med_3</span>
+										</div>
+										<div class="each-detail-row">
+											<span class="detail-lable">Discussed on : </span>
+											<span class="detail-value">2016-03-23</span>
+										</div>
+										<div class="each-detail-row">
+											<span class="detail-lable">Outcome of meeting was : </span>
+											<span class="detail-value">TO BE DETAILED</span>
+										</div>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td class="pitch-buttons">
+									<button type="button" class="btn btn-default btn-md show-pitch-doc form-control" id="1">
+										<span class="button-value">Pitch 2</span>
+										<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+									</button><br/>
+								</td>
+								<td class="view-pitch-doc-td">
+									<div class="pitch-doc-object-div" id="pitch-object-div-1" style="display: none;">
+										<object class="pdf-doc-object pdf-doc-object-slidedown" id="pitch-object-1" data="resources/docs/meetingpitch/perfecting-your-pitch-99.pdf" type="application/pdf">
+											<embed src="resources/docs/meetingpitch/perfecting-your-pitch-99.pdf" alt="pdf" pluginspage="http://www.adobe.com/products/acrobat/readstep2.html">
+											</embed>
+										</object>
+									</div>
+								</td>
+								<td class="view-meeting-details-td">
+									<div class="meeting-detail-div" id="pitch-detail-div-1" style="display: none;">
+										<div class="each-detail-row">
+											<span class="detail-lable">Uploaded By : </span>
+											<Span class="detail-value">Johny Dep</Span>
+										</div>
+										<div class="each-detail-row">
+											<span class="detail-lable">Meeting with : </span>
+											<span class="detail-value">Quentin Tarantino</span>
+										</div>
+										<div class="each-detail-row">
+											<span class="detail-lable">Product detailed : </span>
+											<span class="detail-value">O_Med_1</span>
+										</div>
+										<div class="each-detail-row">
+											<span class="detail-lable">Discussed on : </span>
+											<span class="detail-value">2016-03-24</span>
+										</div>
+										<div class="each-detail-row">
+											<span class="detail-lable">Outcome of meeting was : </span>
+											<span class="detail-value">TO BE DETAILED</span>
+										</div>
+									</div>
+								</td>
+							</tr> -->
+						</tbody>
+					</table>
 				</div>
 	        </div>
 		</div>

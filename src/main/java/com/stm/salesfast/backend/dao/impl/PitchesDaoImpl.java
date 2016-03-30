@@ -30,6 +30,7 @@ public class PitchesDaoImpl implements PitchesDao{
 				ps.setInt(1, pitch.getAppointmentId());
 				ps.setString(2, pitch.getMeetingStatus());
 				ps.setString(3, pitch.getFileName());
+				ps.setInt(4, pitch.getPitchScore());
 			});
 		}catch(DataAccessException e){
 			e.printStackTrace();

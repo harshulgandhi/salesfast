@@ -25,3 +25,45 @@
 .paramter-selection-div {
     margin-right: 10%;
 }
+
+td.pitch-buttons {
+    width: 16%;
+}
+
+.row.row-custom-style.view-pitch-table-row {
+    margin-top: 3%;
+}
+
+span.detail-lable {
+    font-family: serif;
+    font-style: italic;
+}
+span.detail-value {
+    font: 91.5% "Lucida Sans Unicode", "Bitstream Vera Sans", "Trebuchet Unicode MS", "Lucida Grande", Verdana, Helvetica, sans-serif;
+    font-weight: 600;
+}
+td.view-meeting-details-td {
+    width: 29%;
+}
+div.meeting-detail-div {
+    border: solid thin;
+    padding: 6%;
+    background: #EAFFE9;
+    margin-top: 2%;
+}
+object.pdf-doc-object{
+    width: 100%;
+    height: 100%;
+}
+div.pitch-doc-object-div {
+    height: 400px;
+}
+
+button.pitch-button-clicked{
+	background-color: lightsteelblue;
+}
+
+button.btn.btn-default.btn-md.show-pitch-doc.form-control{
+	width: 98%;
+	border-radius: 0px;
+}

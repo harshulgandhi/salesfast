@@ -22,6 +22,7 @@ import com.stm.salesfast.backend.entity.PitchViewEntity;
 import com.stm.salesfast.backend.entity.ViewAllPitchEntity;
 import com.stm.salesfast.backend.entity.ViewPitchFilterParamEntity;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
+import com.stm.salesfast.backend.services.specs.MedicalFieldService;
 import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
 import com.stm.salesfast.backend.services.specs.PhysicianFetchService;
 import com.stm.salesfast.backend.services.specs.PitchesService;
@@ -54,6 +55,9 @@ public class PitchesServiceImpl implements PitchesService{
 	
 	@Autowired
 	ProductFetchService prodService;
+	
+	@Autowired
+	MedicalFieldService medService;
 	
 	@Override
 	public void insertPitch(PitchesDto pitch) {
@@ -122,6 +126,9 @@ public class PitchesServiceImpl implements PitchesService{
 			allAppointments = appointmentServ.getAppointmentsBySalesRep(filterForPitch.getUserId());
 		}else if(filterForPitch.getUserId() == 0 && filterForPitch.getPhysicianId() != 0){
 			allAppointments = appointmentServ.getAppointmentsByPhysician(filterForPitch.getPhysicianId());
+		}else if(filterForPitch.getPhysicianId() == 0){
+			//get all appointments having pitch
+			allAppointments = appointmentServ.getAllAppointmentsHavingPitch();
 		}
 		List<AppointmentDto> filteredAppointments = applyFurtherFilter(allAppointments, filterForPitch);
 		for(AppointmentDto eachAppointment : filteredAppointments) log.info("FILTERED "+eachAppointment);
@@ -134,18 +141,28 @@ public class PitchesServiceImpl implements PitchesService{
 		
 		for(AppointmentDto eachApp : filteredAppointments){
 			PitchViewEntity pitch  = getPitchForAppointment(eachApp.getAppointmnetId());
-			String salesRepName = userService.getUserCompleteName(appointmentServ.getById(pitch.getAppointmentId()).getUserId());
-			String physicianName = physService.getPhysicianName(appointmentServ.getById(pitch.getAppointmentId()).getPhysicianId());
-			String product = prodService.getProductById(appointmentServ.getById(pitch.getAppointmentId()).getProductId()).getProductName();
+			int salesRepId = appointmentServ.getById(pitch.getAppointmentId()).getUserId();
+			String salesRepName = userService.getUserCompleteName(salesRepId);
+			int physicianId = appointmentServ.getById(pitch.getAppointmentId()).getPhysicianId();
+			String physicianName = physService.getPhysicianName(physicianId);
+			int productId = appointmentServ.getById(pitch.getAppointmentId()).getProductId();
+			String product = prodService.getProductById(productId).getProductName();
+			String medicalFieldId = prodService.getMedicalFieldForProduct(productId);
+			String medicalFieldName = medService.getByMedicalField(medicalFieldId).getMedicalFieldName();
 			
 			allPitchView.add(new ViewAllPitchEntity(
 					pitch.getPitchId(),
 					pitch.getAppointmentId(),
 					pitch.getMeetingStatus(),
+					salesRepId,
 					salesRepName,
+					physicianId,
 					physicianName,
 					eachApp.getDate(),
+					productId,
 					product,
+					medicalFieldId,
+					medicalFieldName,
 					pitch.getFileLocation(),
 					pitch.getPitchScore()
 					));

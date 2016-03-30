@@ -15,10 +15,15 @@ public class ViewAllPitchEntity {
 	private int pitchId;
 	private int appointmentId;
 	private String meetingStatus;
+	private int salesRepId;
 	private String salesRepName;
+	private int physicianId;
 	private String physicianName;
 	private Date date;
+	private int productId;
 	private String productName;
+	private String medicalFieldId;
+	private String medicalFieldName;
 	private String fileLocation;
 	private int pitchScore;
 }

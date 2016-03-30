@@ -71,6 +71,9 @@ public class AppointmentDaoImpl implements AppointmentDao {
 			+ "WHERE userId = ? AND hasPitch = 1";
 	private static final String FETCH_FOR_PHYS = "SELECT * FROM appointment "
 			+ "WHERE physicianId = ? AND hasPitch = 1";
+	private static final String FETCH_ALL_HAVING_PITCH = "SELECT * FROM appointment "
+			+ "WHERE hasPitch = 1";
+	
 	
 	@Override
 	public AppointmentDto getAppointmentById(int appointmentId) {
@@ -144,6 +147,22 @@ public class AppointmentDaoImpl implements AppointmentDao {
 		}
 		return null;
 	}
+	
+	/**
+	 * For fetching all pitches*/
+	@Override
+	public List<AppointmentDto> getAllAppointmentHavingPitch() {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_ALL_HAVING_PITCH, (rs, rownnum)->{
+				return new AppointmentDto(rs.getInt("appointmentId"), rs.getTime("startTime"), rs.getTime("endTime"),  rs.getDate("date"), rs.getInt("physicianId"), rs.getInt("userId"), rs.getInt("productId"), rs.getString("confirmationStatus"), rs.getString("zip"), rs.getString("cancellationReason"), rs.getString("additionalNotes"), rs.getBoolean("hasMeetingUpdate"),rs.getBoolean("hasMeetingExperienceFromSR"),rs.getBoolean("hasMeetingExperienceFromPH"), rs.getBoolean("hasPitch"));
+			});
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	
 	/**
 	 * This method returns appointments of a user based on whether

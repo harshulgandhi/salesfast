@@ -65,6 +65,6 @@ public interface AppointmentService {
 
 	List<AppointmentDto> getAppointmentsByPhysician(int physicianId);
 
-
+	List<AppointmentDto> getAllAppointmentsHavingPitch();
 	
 }

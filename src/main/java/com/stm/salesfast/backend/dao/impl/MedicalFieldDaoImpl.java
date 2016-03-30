@@ -19,7 +19,7 @@ public class MedicalFieldDaoImpl implements MedicalFieldDao{
 	@Autowired
 	JdbcTemplate jdbcTemplate;
 	
-	private static final String  FETCH_BY_ID = "SELECT * FROM medical_fields WHERE productId = ?";
+	private static final String  FETCH_BY_ID = "SELECT * FROM medical_fields WHERE medicalFieldId = ?";
 	private static final String  FETCH_ALL = "SELECT * FROM medical_fields";
 	
 	@Override

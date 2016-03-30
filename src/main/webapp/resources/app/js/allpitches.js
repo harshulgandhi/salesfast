@@ -2,12 +2,14 @@
  * 
  */
 
+var allPitches = [];
 $(document).ready(function(){
 	$('li.left-menu-selected').removeClass('left-menu-selected');
 	$('li.all-pitches-li').addClass('left-menu-selected');
 	$('.filter-selectors').select2();
 	
 	updateNotificationCounter();
+	getInitialPitchList();
 });
 
 $(document).on('change','select.filter-selectors',function(){
@@ -16,30 +18,8 @@ $(document).on('change','select.filter-selectors',function(){
 	$('.filter-selectors').each(function(){
 		console.log($(this).val());
 	});
-	var data = {};
-	data["medicalFieldId"] = $('.med-field-selector').val();
-	data["productId"] = $('.product-selector').val();
-	data["userId"]= $('.salesrep-selector').val();
-	data["physicianId"] = $('.physician-selector').val();
-	console.log("Filter created : "+JSON.stringify(data));
 	
-	$("#view-pitch-table > tbody").html("");
-	
-	$.ajax({
-		type : 'POST',
-		url : '/filterparameters',
-		data : JSON.stringify(data),
-		contentType : 'application/json',
-		success : function(data){
-			console.log("Pitch to be shown : "+JSON.stringify(data));
-			createPitchEnvironment(data);
-		},
-		error : function(e){
-			console.log("Error : "+JSON.stringify(e));
-		}
-	}).done(function(){
-		console.log("Sent all pitch paramaters");
-	});
+	getPitchList();
 	
 });
 
@@ -56,6 +36,106 @@ $(document).on('click','button.show-pitch-doc',function(){
 	$('#pitch-detail-div-'+id).slideToggle('fast');
 	
 });
+
+var getInitialPitchList = function(){
+	var data = {};
+	data["medicalFieldId"] = $('.med-field-selector').val();
+	data["productId"] = $('.product-selector').val();
+	data["userId"]= $('.salesrep-selector').val();
+	data["physicianId"] = $('.physician-selector').val();
+	console.log("Filter created : "+JSON.stringify(data));
+	
+	$("#view-pitch-table > tbody").html("");
+	
+	$.ajax({
+		type : 'POST',
+		url : '/filterparameters',
+		data : JSON.stringify(data),
+		contentType : 'application/json',
+		success : function(data){
+//			console.log("Pitch to be shown : "+JSON.stringify(data));
+			populateDropDowns(data);
+			allPitches = data;
+			createPitchEnvironment(data);
+		},
+		error : function(e){
+			console.log("Error : "+JSON.stringify(e));
+		}
+	}).done(function(){
+		console.log("Sent all pitch paramaters");
+	});
+}
+
+
+var getPitchList = function(){
+	var data = {};
+	data["medicalFieldId"] = $('.med-field-selector').val();
+	data["productId"] = $('.product-selector').val();
+	data["userId"]= $('.salesrep-selector').val();
+	data["physicianId"] = $('.physician-selector').val();
+	console.log("Filter created : "+JSON.stringify(data));
+	
+	$("#view-pitch-table > tbody").html("");
+	
+	$.ajax({
+		type : 'POST',
+		url : '/filterparameters',
+		data : JSON.stringify(data),
+		contentType : 'application/json',
+		success : function(data){
+//			console.log("Pitch to be shown : "+JSON.stringify(data));
+//			populateDropDowns(data);
+			createPitchEnvironment(data);
+		},
+		error : function(e){
+			console.log("Error : "+JSON.stringify(e));
+		}
+	}).done(function(){
+		console.log("Sent all pitch paramaters");
+	});
+}
+
+var populateDropDowns = function(pitchList){
+	var medicalFieldList = {};
+	var productList = {};
+	var salesRepList = {};
+	var physicianList = {};
+	
+	for(var i = 0; i < pitchList.length ; i++){
+		medicalFieldList[pitchList[i]["medicalFieldId"]] = pitchList[i]["medicalFieldName"];
+		productList[pitchList[i]["productId"]] = pitchList[i]["productName"];
+		salesRepList[pitchList[i]["salesRepId"]] = pitchList[i]["salesRepName"];
+		physicianList[pitchList[i]["physicianId"]] = pitchList[i]["physicianName"];
+	}
+	console.log(""+JSON.stringify(productList));
+	
+	for(key in medicalFieldList){
+		$('select.med-field-selector').append(
+				'<option value="'+key+'">'+medicalFieldList[key]+'</option>'
+		);
+	}
+	
+	for(key in productList){
+		$('select.product-selector').append(
+				'<option value="'+key+'">'+productList[key]+'</option>'
+		);
+	}
+	
+	for(key in salesRepList){
+		$('select.salesrep-selector').append(
+				'<option value="'+key+'">'+salesRepList[key]+'</option>'
+		);
+	}
+	
+	for(key in physicianList){
+		$('select.physician-selector').append(
+				'<option value="'+key+'">'+physicianList[key]+'</option>'
+		);
+	}
+	
+	
+}
+
 
 var createPitchEnvironment = function(pitchList){
 	if(pitchList.length == 0){

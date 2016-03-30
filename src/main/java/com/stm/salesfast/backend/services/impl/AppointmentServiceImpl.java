@@ -420,6 +420,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 	public List<AppointmentDto> getAppointmentsByPhysician(int physicianId){
 		return appointmentDao.getAppointmentByPhysician(physicianId);
 	}
+	@Override
+	public List<AppointmentDto> getAllAppointmentsHavingPitch(){
+		return appointmentDao.getAllAppointmentHavingPitch();
+	}
+	
 }
 
 

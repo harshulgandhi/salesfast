@@ -46,5 +46,7 @@ public interface AppointmentDao {
 	public List<AppointmentDto> getAppointmentBySalesRep(int userId);
 
 	public List<AppointmentDto> getAppointmentByPhysician(int physicianId);
+
+	List<AppointmentDto> getAllAppointmentHavingPitch();
 	
 }

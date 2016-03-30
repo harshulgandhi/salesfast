@@ -118,4 +118,4 @@ public class LiveMeetingController {
 		List<ViewAllPitchEntity> allPitchesToShow =  pitchService.getAllPitchesForFilter(filterEntity);
 		return allPitchesToShow.toArray(new ViewAllPitchEntity[allPitchesToShow.size()]);
 	}
-}
+}	

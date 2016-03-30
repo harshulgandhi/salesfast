@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<!-- Header to include css -->
+<div th:replace="fragments/header :: commonhead"></div>
+<link rel="stylesheet" type="text/css" href="resources/app/css/pastappointments.css"/>
+<link rel="stylesheet" type="text/css" href="resources/app/css/toggleyesnoswitch.css"/>
+<meta charset="ISO-8859-1" />
+<title>SalesFast Home</title>
+</head>
+<body>
+	<!-- Common header -->
+	<div th:replace="fragments/header :: header"></div>
+	<div class="outer-container">
+		<div class="left-nav" id="cssmenu">
+			<ul class="left-menu-ul">
+				<li class='active today-appointment-li' ><a href='/showappointments'><span>TODAY's APPOINTMENTS</span></a></li>
+				<li class='last future-appointment-li'><a href='#'><span>FUTURE APPOINTMENTS</span></a></li>
+				<li class='last past-appointment-li'><a href='/pastappointments'><span>PAST APPOINTMENTS</span></a></li>
+			</ul>
+		</div>
+		<div class="container" id="layout">
+			<div class="row row-header page-header"><h3>Your past appointments</h3></div>
+			<div class="future-appointment-div" style="display: none;">
+				<div class="row row-header page-header"><h3>Future Appointments!</h3></div>
+				<div class="row future-appointment-div"><div th:replace="futureappointmentmodal :: futureappointmentmodal-body"></div></div>
+			</div>
+		</div>
+	</div>
+	
+							<!-- Modal for viewing future appointments -->
+	<div th:replace="futureappointmentmodal :: futureappointmentmodal"></div>
+	
+
+<!-- Common footer -->
+<div th:replace="fragments/footer :: footer"></div>
+<script  type="text/javascript" src="resources/app/js/pastappointment.js"></script>
+</body>
+</html>

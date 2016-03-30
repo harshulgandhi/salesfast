@@ -175,6 +175,10 @@ public class AppointmentController {
 		return pitchEntity;
 	}
 	
+	@RequestMapping(value="/pastappointments", method=RequestMethod.GET)
+	public String showPastAppointments(){
+		return "pastappointment";
+	}
 	
 }
 

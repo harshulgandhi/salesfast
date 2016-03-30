@@ -41,7 +41,7 @@ CREATE TABLE `alignments` (
   CONSTRAINT `fk_Alignments_Physicians_Staging1` FOREIGN KEY (`physicianId`) REFERENCES `physicians_staging` (`physicianId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Alignments_Product1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Alignments_User1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=449 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=705 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -84,7 +84,7 @@ CREATE TABLE `appointment` (
   CONSTRAINT `fk_Appointment_Physicians_Staging1` FOREIGN KEY (`physicianId`) REFERENCES `physicians_staging` (`physicianId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Appointment_Products1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Appointment_User1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=213 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=214 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -93,7 +93,7 @@ CREATE TABLE `appointment` (
 
 LOCK TABLES `appointment` WRITE;
 /*!40000 ALTER TABLE `appointment` DISABLE KEYS */;
-INSERT INTO `appointment` VALUES (192,'14:59:00','00:00:00','2016-03-22',1,1,3,'CONFIRMED','11001','','',1,1,1,0),(206,'14:00:00','14:30:00','2016-03-23',1,1,4,'CONFIRMED','11001','','',1,1,1,0),(207,'13:00:00','13:30:00','2016-03-23',1,1,5,'CONFIRMED','11001','','',0,0,0,0),(208,'15:00:00','15:30:00','2016-03-24',5,1,3,'CONFIRMED','11001','','',0,0,0,0),(209,'17:15:00','17:45:00','2016-03-24',5,1,4,'FOLLOW UP','11001','','',0,0,0,0),(210,'00:00:00','00:01:00','2016-03-23',5,1,5,'CONFIRMED','11001','','',0,0,0,1),(211,'15:00:00','15:30:00','2016-03-25',2,1,3,'CONFIRMED','11001','','',0,0,0,1),(212,'16:00:00','16:40:00','2016-03-25',2,1,4,'CONFIRMED','11001','','									',0,0,0,0);
+INSERT INTO `appointment` VALUES (192,'14:59:00','00:00:00','2016-03-22',1,1,3,'CONFIRMED','11001','','',1,1,1,0),(206,'14:00:00','14:30:00','2016-03-23',1,1,4,'CONFIRMED','11001','','',1,1,1,0),(207,'13:00:00','13:30:00','2016-03-23',1,1,5,'CONFIRMED','11001','','',0,0,0,1),(208,'15:00:00','15:30:00','2016-03-24',5,1,3,'CONFIRMED','11001','','',0,0,0,1),(209,'17:15:00','17:45:00','2016-03-24',5,1,4,'FOLLOW UP','11001','','',0,0,0,0),(210,'00:00:00','00:01:00','2016-03-23',5,1,5,'CONFIRMED','11001','','',0,0,0,1),(211,'15:00:00','15:30:00','2016-03-25',2,1,3,'CONFIRMED','11001','','',0,0,0,1),(212,'16:00:00','16:40:00','2016-03-25',2,1,4,'CONFIRMED','11001','','									',0,0,0,1),(213,'14:00:00','15:00:00','2016-04-02',2,1,5,'CONFIRMED','11001','','',0,0,0,0);
 /*!40000 ALTER TABLE `appointment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -519,7 +519,7 @@ CREATE TABLE `pitches` (
   PRIMARY KEY (`pitchesId`),
   KEY `fk_Appointment_Pitches_idx` (`appointmentId`),
   CONSTRAINT `fk_Appointment_Pitches` FOREIGN KEY (`appointmentId`) REFERENCES `appointment` (`appointmentId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -528,7 +528,7 @@ CREATE TABLE `pitches` (
 
 LOCK TABLES `pitches` WRITE;
 /*!40000 ALTER TABLE `pitches` DISABLE KEYS */;
-INSERT INTO `pitches` VALUES (1,210,'TO BE DETAILED','perfecting-your-pitch-3.pdf',1),(2,211,'TO BE DETAILED','perfecting-your-pitch-2.pdf',1);
+INSERT INTO `pitches` VALUES (1,210,'TO BE DETAILED','perfecting-your-pitch-3.pdf',1),(2,211,'TO BE DETAILED','perfecting-your-pitch-2.pdf',1),(3,207,'TO BE DETAILED','perfecting-your-pitch-4.pdf',1),(4,208,'TO BE DETAILED','perfecting-your-pitch-99.pdf',1),(5,212,'TO BE DETAILED','perfecting-your-pitch-71.pdf',1);
 /*!40000 ALTER TABLE `pitches` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -872,4 +872,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-03-29 19:10:56
+-- Dump completed on 2016-03-30 19:09:24

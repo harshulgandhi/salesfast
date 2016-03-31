@@ -15,12 +15,12 @@
 		<div class="left-nav" id="cssmenu">
 			<ul class="left-menu-ul">
 				<li class='active today-appointment-li'><a href='/showappointments'><span>TODAY's APPOINTMENTS</span></a></li>
-				<li class='future-appointment-li'><a href='#'><span>FUTURE APPOINTMENTS</span></a></li>
+				<li class='future-appointment-li'><a href='/showfutureappointments'><span>FUTURE APPOINTMENTS</span></a></li>
 				<li class='last past-appointment-li'><a href='/pastappointments'><span>PAST APPOINTMENTS</span></a></li>
 			</ul>
 		</div>
 		<div class="container" id="layout">
-			<div class="today-appointment-div" style="display: none;">
+			<div class="today-appointment-div">
 				<div class="row row-header page-header"><h3>Your Appointments For Today</h3></div>
 				<div class="row update-buttons-row">
 					<div class="col-lg-12 col-sm-12 table-buttons">
@@ -54,7 +54,7 @@
 									<th>Email Id</th>
 									<th class="confirmation-status-head">Confirmation Status</th>
 									<th>Time of appointment</th>
-									<th>Product</th>
+									<th class="product-name">Product</th>
 									<th class="meeting-update-flag" style="display:none">Has Meeting Update</th>
 									<th class="meeting-exp-flag" style="display:none">Has Meeting Experience</th>
 									<th>Notes</th>
@@ -77,7 +77,7 @@
 										<span class="time-label">Ends &nbsp;@ </span>
 										<span  th:text="${eachAppointment.endTime}" class="appointment-end-time-span"></span>
 									</td>
-									<td th:text="${eachAppointment.product}"></td>
+									<td class="product-name-td" th:text="${eachAppointment.product}"></td>
 									<td class="meeting-update-flag" style="display:none" th:text="${eachAppointment.hasMeetingUpdate}"></td>
 									<td class="meeting-exp-flag" style="display:none" th:text="${eachAppointment.hasMeetingExperience}"></td>
 									<td th:text="${eachAppointment.additionalUpdate}"></td>
@@ -247,8 +247,8 @@
 							<!-- Modal for adding meeting updates -->
 	<div th:replace="addmeetingupdatemodal :: addmeetingupdatemodal"></div>
 	
-							<!-- Modal for viewing future appointments -->
-	<div th:replace="futureappointmentmodal :: futureappointmentmodal"></div>
+							<!-- Modal for viewing future appointments 
+	<div th:replace="futureappointmentmodal :: futureappointmentmodal"></div> -->
 	
 							<!-- Modal for UPLOADING meeting pitch-->
 	<div th:replace="uploadpitchmodal :: upload-meeting-pitch-modal"></div>
@@ -262,6 +262,6 @@
 <!-- Common footer -->
 <div th:replace="fragments/footer :: footer"></div>
 <script  type="text/javascript" src="resources/app/js/showappointments.js"></script>
-<script  type="text/javascript" src="resources/app/js/futureappointment.js"></script>
+<!-- <script  type="text/javascript" src="resources/app/js/futureappointment.js"></script> -->
 </body>
 </html>

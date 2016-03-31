@@ -6,6 +6,9 @@ var tableAppointment = null;
 var currentSelectedAppointment = 0;
 var averageTravelTime = 30; //minutes
 $(document).ready(function() {
+	$('li.left-menu-selected').removeClass('left-menu-selected');
+	$('li.today-appointment-li').addClass('left-menu-selected');
+	
 	$('.slidedown-alignments').click(function(){
 		    $('.slidedown-alignments-show').slideToggle('fast');
 	});
@@ -38,23 +41,23 @@ $(document).ready(function() {
 	
    updateNotificationCounter();
    
-   $('.today-appointment-li').on('click', function(){
-	   $('.future-appointment-div').css('display','none');
-	   $('.today-appointment-div').css('display','block');
-   });
-   
-   $('.future-appointment-li').on('click', function(){
-	   $('.today-appointment-div').css('display','none');
-	   $('.future-appointment-div').css('display','block');
-   });
-   
-   $('.left-menu-ul').on('click','li',function(){
-	   $('li.left-menu-selected').removeClass('left-menu-selected');
-	   $(this).addClass('left-menu-selected');
-	   $(this).find('a').addClass('left-menu-selected-anchor');
-   });
-   
-   $( ".today-appointment-li" ).trigger( "click" );
+//   $('.today-appointment-li').on('click', function(){
+//	   $('.future-appointment-div').css('display','none');
+//	   $('.today-appointment-div').css('display','block');
+//   });
+//   
+//   $('.future-appointment-li').on('click', function(){
+//	   $('.today-appointment-div').css('display','none');
+//	   $('.future-appointment-div').css('display','block');
+//   });
+//   
+//   $('.left-menu-ul').on('click','li',function(){
+//	   $('li.left-menu-selected').removeClass('left-menu-selected');
+//	   $(this).addClass('left-menu-selected');
+//	   $(this).find('a').addClass('left-menu-selected-anchor');
+//   });
+//   
+//   $( ".today-appointment-li" ).trigger( "click" );
 	   
    /**
     * Toggles between selected and de-selected rows of the table
@@ -521,7 +524,9 @@ var addMeetingUpdate = function(){
 	
 	var appointmentId = currentSelectedAppointment;//tableAppointment.row('.selected').data()[0];												//Getting Appointment id
 	var physicianId = tableAppointment.row('.selected').data()[1];													//Getting Physician id
-	var productName = tableAppointment.row('.selected').data()[tableAppointment.row('.selected').data().length-4];	//Getting product name
+	var product_td = $('table#appointment-fixed-physician-table').find('tr.selected').find('td.product-name-td')[0]
+	var productName =  product_td.textContent;
+		//tableAppointment.row('.selected').data()[tableAppointment.row('.selected').data().length-4];	//Getting product name
 	
 	var formData = {};
 	

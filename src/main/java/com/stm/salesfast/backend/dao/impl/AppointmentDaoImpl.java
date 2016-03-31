@@ -73,7 +73,10 @@ public class AppointmentDaoImpl implements AppointmentDao {
 			+ "WHERE physicianId = ? AND hasPitch = 1";
 	private static final String FETCH_ALL_HAVING_PITCH = "SELECT * FROM appointment "
 			+ "WHERE hasPitch = 1";
-	
+	private static final String FETCH_PAST_APPOINTMENTS = "SELECT * FROM appointment "
+			+ "WHERE userId = ? AND "
+			+ "date < DATE_SUB(NOW(),INTERVAL 0 YEAR) "
+			+ "ORDER BY date desc";
 	
 	@Override
 	public AppointmentDto getAppointmentById(int appointmentId) {
@@ -173,6 +176,23 @@ public class AppointmentDaoImpl implements AppointmentDao {
 		// TODO Auto-generated method stub
 		try{
 			return jdbcTemplate.query(FETCH_BY_USERID_wMeetingUpdateExperienceCheck, (rs, rownnum)->{
+				return new AppointmentDto(rs.getInt("appointmentId"), rs.getTime("startTime"), rs.getTime("endTime"), rs.getDate("date"), rs.getInt("physicianId"), userId, rs.getInt("productId"), rs.getString("confirmationStatus"), rs.getString("zip"),rs.getString("cancellationReason"), rs.getString("additionalNotes"), rs.getBoolean("hasMeetingUpdate"),rs.getBoolean("hasMeetingExperienceFromSR"),rs.getBoolean("hasMeetingExperienceFromPH"), rs.getBoolean("hasPitch"));
+			}, userId);
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * This method returns appointments of a user based on whether
+	 * he/she has entered meeting update or meeting experience details 
+	 * */
+	@Override
+	public List<AppointmentDto> getPastAppointmentByUserId(int userId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_PAST_APPOINTMENTS, (rs, rownnum)->{
 				return new AppointmentDto(rs.getInt("appointmentId"), rs.getTime("startTime"), rs.getTime("endTime"), rs.getDate("date"), rs.getInt("physicianId"), userId, rs.getInt("productId"), rs.getString("confirmationStatus"), rs.getString("zip"),rs.getString("cancellationReason"), rs.getString("additionalNotes"), rs.getBoolean("hasMeetingUpdate"),rs.getBoolean("hasMeetingExperienceFromSR"),rs.getBoolean("hasMeetingExperienceFromPH"), rs.getBoolean("hasPitch"));
 			}, userId);
 		}catch(DataAccessException e){

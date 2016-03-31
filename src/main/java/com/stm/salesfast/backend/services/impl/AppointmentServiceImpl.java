@@ -17,15 +17,21 @@ import com.stm.salesfast.backend.controllers.LoginController;
 import com.stm.salesfast.backend.dao.specs.AlignmentsDao;
 import com.stm.salesfast.backend.dao.specs.AppointmentDao;
 import com.stm.salesfast.backend.dto.AppointmentDto;
+import com.stm.salesfast.backend.dto.MeetingUpdateDto;
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.dto.ProductDto;
 import com.stm.salesfast.backend.dto.UserDto;
 import com.stm.salesfast.backend.entity.AlignedPhysicianFollowUpEntity;
 import com.stm.salesfast.backend.entity.AppointmentEntity;
+import com.stm.salesfast.backend.entity.PastAppointmentEntity;
+import com.stm.salesfast.backend.entity.PitchViewEntity;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
+import com.stm.salesfast.backend.services.specs.MeetingExperienceService;
+import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
 import com.stm.salesfast.backend.services.specs.NotificationService;
 import com.stm.salesfast.backend.services.specs.PhysicianFetchService;
+import com.stm.salesfast.backend.services.specs.PitchesService;
 import com.stm.salesfast.backend.services.specs.ProductFetchService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
 import com.stm.salesfast.backend.services.specs.UserDetailService;
@@ -62,6 +68,15 @@ public class AppointmentServiceImpl implements AppointmentService {
 
 	@Autowired
 	NotificationService notificationService;
+	
+	@Autowired
+	MeetingUpdateService meetingUpdate;
+
+	@Autowired
+	MeetingExperienceService meetingExp;
+
+	@Autowired
+	PitchesService pitch;
 	
 	@Override
 	public void addAppointment(int physId, Time startTime, Time endTime, Date date,  String confirmationStatus, int productId, String additionalNotes) throws ParseException {
@@ -100,7 +115,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 		for(AppointmentDto eachAppointment : appointmentDtos){
 			PhysicianStgDto physicianDto = physicianService.getPhysicianById(eachAppointment.getPhysicianId());
 			ProductDto productDto = productFetchService.getProductById(eachAppointment.getProductId());
-			if(eachAppointment.getDate().getTime() <= SalesFastUtilities.getCurrentDate().getTime()){
+			if(eachAppointment.getDate().getTime() == SalesFastUtilities.getCurrentDate().getTime()){
 				todaysAppointmentEntitiesList.add(new AppointmentEntity(eachAppointment.getAppointmnetId(),
 						physicianDto.getPhysicianId(),
 						physicianDto.getFirstName()+" "+physicianDto.getLastName(), 
@@ -156,6 +171,35 @@ public class AppointmentServiceImpl implements AppointmentService {
 			}
 		}
 		return futureAppointmentEntitiesList;
+	}
+
+	/**
+	 * This method returns PAST DATE's appointments of a user based  
+	 * @throws ParseException 
+	 * */
+	@Override
+	public List<PastAppointmentEntity> getPastAppointmentToShow(int userId) throws ParseException {
+		// TODO Auto-generated method stub
+		List<AppointmentDto> appointmentDtos = appointmentDao.getPastAppointmentByUserId(userId);
+		List<PastAppointmentEntity> pastAppointmentEntitiesList = new ArrayList<>();
+		for(AppointmentDto eachAppointment : appointmentDtos){
+			PhysicianStgDto physicianDto = physicianService.getPhysicianById(eachAppointment.getPhysicianId());
+			ProductDto productDto = productFetchService.getProductById(eachAppointment.getProductId());
+			MeetingUpdateDto meetingUpdateDto = meetingUpdate.getMeetingUpdateByAppointmentId(eachAppointment.getAppointmnetId());
+			String meetingStatus = (meetingUpdateDto == null) ? "STATUS NA" : meetingUpdateDto.getStatus();
+			pastAppointmentEntitiesList.add(new PastAppointmentEntity(
+						physicianDto.getPhysicianId(),
+						physicianDto.getFirstName()+" "+physicianDto.getLastName(),
+						productDto.getProductId(),
+						productDto.getProductName(),
+						eachAppointment.getDate(),
+						meetingStatus,
+						meetingExp.salesRepResponse(eachAppointment.getAppointmnetId()),
+						meetingExp.physicianResponse(eachAppointment.getAppointmnetId()),
+						pitch.getPitchForAppointment(eachAppointment.getAppointmnetId())
+					));
+		}
+		return pastAppointmentEntitiesList;
 	}
 	
 	/**

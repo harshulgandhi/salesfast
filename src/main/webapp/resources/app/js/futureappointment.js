@@ -5,6 +5,9 @@ var futureAppointmentTable;
 var averageTravelTime = 30; //minutes
 $(document).ready(function(){
 	
+	$('li.left-menu-selected').removeClass('left-menu-selected');
+	$('li.future-appointment-li').addClass('left-menu-selected');
+	
 	futureAppointmentTable = $('#future-appointment-fixed-physician-table').dataTable();
 	
 	$('#future-appointment-fixed-physician-table').find('tr').each(function(i, val){

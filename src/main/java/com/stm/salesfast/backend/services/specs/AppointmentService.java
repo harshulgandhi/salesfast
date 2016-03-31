@@ -8,6 +8,7 @@ import java.util.List;
 import com.stm.salesfast.backend.dto.AppointmentDto;
 import com.stm.salesfast.backend.entity.AlignedPhysicianFollowUpEntity;
 import com.stm.salesfast.backend.entity.AppointmentEntity;
+import com.stm.salesfast.backend.entity.PastAppointmentEntity;
 
 public interface AppointmentService {
 
@@ -66,5 +67,8 @@ public interface AppointmentService {
 	List<AppointmentDto> getAppointmentsByPhysician(int physicianId);
 
 	List<AppointmentDto> getAllAppointmentsHavingPitch();
+
+	List<PastAppointmentEntity> getPastAppointmentToShow(int userId)
+			throws ParseException;
 	
 }

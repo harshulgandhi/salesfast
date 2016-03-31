@@ -44,4 +44,8 @@ public interface MeetingExperienceService {
 	int getCountForRepsConfidence_Lost();
 
 	int getCountOrgReputation_Lost();
+
+	List<String> physicianResponse(int appointmentId);
+
+	List<String> salesRepResponse(int appointmentId);
 }

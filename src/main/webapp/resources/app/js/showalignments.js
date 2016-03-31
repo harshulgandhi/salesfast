@@ -10,8 +10,15 @@ var averageTravelTime = 30; //minutes
  */
 $(document).ready(function() {
    var table = $('#aligned-physician-table').DataTable({
-	   order: [[16, "desc"]]
+	   order: [[16, "desc"]],
+	   "oSearch": {"sSearch": "O_Med_2"}
    });
+   console.log(document.referrer);
+   /*$('#aligned-physician-table').dataTable( {
+	    "oSearch": {"sSearch": "O_Med_3"}
+	  } );*/
+   
+   
     $('#aligned-physician-table tbody').on( 'click', 'tr', function (e) {
     	var cell = $(e.target).get(0);
     	console.log(cell.nodeName);

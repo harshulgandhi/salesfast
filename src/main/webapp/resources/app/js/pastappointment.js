@@ -4,7 +4,8 @@
 
 var table = null;
 var pastAppointments = []; 
-
+var isFromAlignmentPage = false;
+var physNameParamFromAlignments;
 $(document).ready(function() {
 
 	$('li.left-menu-selected').removeClass('left-menu-selected');
@@ -13,6 +14,18 @@ $(document).ready(function() {
 	updateNotificationCounter();
 	
 	getPastAppointments();
+	
+	//Physician name received and parsed for table search
+	var value;
+	if (window.location.search.split('?').length > 1) {
+        var params = window.location.search.split('?')[1].split('&');
+        for (var i = 0; i < params.length; i++) {
+            var key = params[i].split('=')[0];
+            physNameParamFromAlignments = decodeURIComponent(params[i].split('=')[1]);
+            console.log("Name : "+physNameParamFromAlignments);
+            isFromAlignmentPage = true;
+        }
+    }
 	
 });
    
@@ -155,4 +168,7 @@ var populatePastAppTable = function(appointments){
 		
 	}
 	table = $('table#past-appointments-table').DataTable();
+	if(isFromAlignmentPage){
+		table.search(physNameParamFromAlignments).draw();
+	}
 }

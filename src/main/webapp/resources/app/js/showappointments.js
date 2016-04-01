@@ -277,10 +277,8 @@ $('.submit-selected-alignments').click(function(){
 				additionalNotesList.push(additionalNotes);
 			}
 		}
-			$(this).find('td').each(function(idx, valTD){
-				if(idx == 0) physIds.push($(valTD).html());
-				if(idx == 10) productIds.push($(valTD).html());		//Picking product for selected alignments
-			});
+		physIds.push($(val).find('td.physician-id').html());
+		productIds.push($(val).find('td.product-id').html());
 	});
 	
 	if(!isDataInvalid){
@@ -462,10 +460,8 @@ $('.submit-selected-followup-alignments').click(function(){
 				appointmentIdList.push(appointId);
 			}
 		}
-			$(this).find('td').each(function(idx, valTD){
-				if(idx == 0) physIds.push($(valTD).html());
-				if(idx == 10) productIds.push($(valTD).html());		//Picking product for selected alignments
-			});
+		physIds.push($(val).find('td.physician-id').html());
+		productIds.push($(val).find('td.product-id').html());
 	});
 	
 	if(!isDataInvalid){
@@ -523,10 +519,9 @@ var fixFollowupAppointments = function(physIds, appointStartTimeList, appointEnd
 var addMeetingUpdate = function(){
 	
 	var appointmentId = currentSelectedAppointment;//tableAppointment.row('.selected').data()[0];												//Getting Appointment id
-	var physicianId = tableAppointment.row('.selected').data()[1];													//Getting Physician id
+	var physicianId = $('tr.selected').find('td.physician-id').html();
 	var product_td = $('table#appointment-fixed-physician-table').find('tr.selected').find('td.product-name-td')[0]
 	var productName =  product_td.textContent;
-		//tableAppointment.row('.selected').data()[tableAppointment.row('.selected').data().length-4];	//Getting product name
 	
 	var formData = {};
 	

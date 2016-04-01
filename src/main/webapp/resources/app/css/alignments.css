@@ -33,7 +33,7 @@ td.appointment-time-td{
 }
 
 .appointment-end-time{
-	margin-left: 7px;
+	margin-left: 12px;
 }
 
 span.time-label {
@@ -41,4 +41,38 @@ span.time-label {
 }
 select.appointment-status-selector.validate-ele.appointment-paramaters {
     color: black;
+}
+
+table#aligned-physician-table{
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+button.btn.btn-default.btn-md.show-contact.form-control {
+    border-radius: 0px;
+        width: 100%;
+    height: 32px;
+    vertical-align: middle;
+}
+
+span.glyphicon.glyphicon-plus {
+    float: left;
+}
+
+.phys-address {
+    display: inline-flex;
+        padding: 0px;
+}
+
+span.contactdetail-label {
+    width: 27%;
+    font-style: italic;
+}
+
+span.contactdetail-content {
+    font-weight: 600;
+    width: 65%;
+}
+
+td.contact-details {
+    width: 19%;
 }

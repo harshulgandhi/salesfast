@@ -78,6 +78,7 @@ public class AppointmentDaoImpl implements AppointmentDao {
 			+ "date < DATE_SUB(NOW(),INTERVAL 0 YEAR) "
 			+ "ORDER BY date desc";
 	
+	
 	@Override
 	public AppointmentDto getAppointmentById(int appointmentId) {
 		// TODO Auto-generated method stub

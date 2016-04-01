@@ -75,6 +75,7 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 		List<AlignmentsDto> alignmentsByUserId = alignmentDao.getAlignmentByUserIdNotInAppointments(userId);
 		List<AlignedPhysicianEntity> alignedPhysicians = new ArrayList<AlignedPhysicianEntity>();
 		for(AlignmentsDto eachAlignment : alignmentsByUserId){
+			
 			PhysicianStgDto physicianDto = physicianDao.getBy(eachAlignment.getPhysicianId());
 			alignedPhysicians.add(new AlignedPhysicianEntity(physicianDto,
 					productService.getProductById(eachAlignment.getProductId()).getProductName(),

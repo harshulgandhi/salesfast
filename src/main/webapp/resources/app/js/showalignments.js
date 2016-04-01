@@ -10,15 +10,15 @@ var averageTravelTime = 30; //minutes
  */
 $(document).ready(function() {
    var table = $('#aligned-physician-table').DataTable({
-	   order: [[16, "desc"]],
-	   "oSearch": {"sSearch": "O_Med_2"}
+	   order: [[0, "desc"]]
    });
-   console.log(document.referrer);
-   
+   /*,
+	   "oSearch": {"sSearch": "O_Med_2"}
+   });*/
+   console.log("Alignment referrer : "+document.referrer);
    
     $('#aligned-physician-table tbody').on( 'click', 'tr', function (e) {
     	var cell = $(e.target).get(0);
-    	console.log(cell.nodeName);
     	if(cell.childElementCount < 1 && cell.nodeName != 'INPUT' && cell.nodeName != 'SPAN' && cell.nodeName != 'TEXTAREA' ){
 	    	$(this).toggleClass('selected');
 	    	if ( $(this).hasClass('selected') ) {
@@ -55,6 +55,20 @@ $(document).ready(function() {
     
     updateNotificationCounter();
 });	
+
+$(document).on('click','button.redirect-past-appointments',function(){
+	   var name = $(this).parent().parent().find('td.physician-name').html();
+	   window.location.replace("/pastappointments?param="+name);
+});
+	
+$('.show-contact').click(function(){
+	$(this).parent().parent().find('div.aligned-physician-contact').toggle();
+	if($(this).parent().parent().find('div.aligned-physician-contact').css('display') == 'none'){
+	    $(this).find('span.button-value').html("Show Contact");
+	}else if($(this).parent().parent().find('div.aligned-physician-contact').css('display') == 'block'){
+	    $(this).find('span.button-value').html("Hide Contact");
+	}
+});
 
 /**
  * Set color of the row based on the 
@@ -104,10 +118,8 @@ $('.submit-selected-alignments').click(function(){
 				additionalNotesList.push(additionalNotes);
 			}
 		}
-		$(this).find('td').each(function(idx, valTD){
-			if(idx == 0) physIds.push($(valTD).html());
-			if(idx == 10) productIds.push($(valTD).html());		//Picking product for selected alignments
-		});
+		physIds.push($(val).find('td.physician-id').html());
+		productIds.push($(val).find('td.product-id').html());
 	});
 	if(!isDataInvalid){
 		fixAppointments(physIds, appointStartTimeList,appointEndTimeList, productIds, appointDateList, appointStatusList, additionalNotesList);

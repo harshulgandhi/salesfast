@@ -34,6 +34,10 @@ public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
 													+ "(physicianId, productId) IN "
 													+ "(SELECT physicianId, productId from appointment "
 													+ " WHERE userId = ?)";
+	private static final String FETCH_STATUS_FOR_APPOINTMENTS = "SELECT status from meeting_update  "
+													+ "WHERE appointmentId in "
+													+ "(SELECT appointmentId from appointment "
+													+ "WHERE userId = ? AND physicianId = ?)";
 	
 	@Autowired
 	JdbcTemplate jdbcTemplate;
@@ -120,6 +124,20 @@ public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
 		try{
 			return jdbcTemplate.query(FETCH_PRESCRIBING_PHY, (rs, rownum) -> {
 					return rs.getInt("physicianId");
+				}, userId);
+			
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public List<String> getStatusesByAppointments(int userId, int physicianId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_STATUS_FOR_APPOINTMENTS, (rs, rownum) -> {
+					return rs.getString("status");
 				}, userId);
 			
 		}catch(DataAccessException e){

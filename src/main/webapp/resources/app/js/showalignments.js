@@ -14,9 +14,6 @@ $(document).ready(function() {
 	   "oSearch": {"sSearch": "O_Med_2"}
    });
    console.log(document.referrer);
-   /*$('#aligned-physician-table').dataTable( {
-	    "oSearch": {"sSearch": "O_Med_3"}
-	  } );*/
    
    
     $('#aligned-physician-table tbody').on( 'click', 'tr', function (e) {

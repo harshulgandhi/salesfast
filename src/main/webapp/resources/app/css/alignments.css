@@ -39,3 +39,6 @@ td.appointment-time-td{
 span.time-label {
     font-size: smaller;
 }
+select.appointment-status-selector.validate-ele.appointment-paramaters {
+    color: black;
+}

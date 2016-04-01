@@ -10,6 +10,8 @@ $(document).ready(function(){
 	
 	futureAppointmentTable = $('#future-appointment-fixed-physician-table').dataTable();
 	
+	$(".appointment-status-selector").select2();
+	
 	$('#future-appointment-fixed-physician-table').find('tr').each(function(i, val){
 		   if($(val).find('.cancelled-appointment-status').html() == 'CANCELLED'){
 			   $(val).css('background-color','mistyrose');

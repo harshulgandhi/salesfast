@@ -141,3 +141,10 @@ button.btn.btn-default.btn-md.show-doc.form-control {
     margin-bottom: 7px;
     border-bottom-width: thin;
 }
+button.btn.btn-default.btn-md.show-doc.form-control.product-doc-button-clicked {
+    background: #A4A5CC;
+}
+
+button.btn.btn-default.btn-md.show-doc.form-control {
+    background: white;
+}

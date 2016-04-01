@@ -11,7 +11,8 @@ $(document).ready(function(){
 	$('li.view-products').addClass('left-menu-selected');
 	
 	updateNotificationCounter();
-	$('.product-selector').select2();
+	
+//	$('.product-selector').select2();
 	
 	$.ajax({
 		type: 'GET',
@@ -49,7 +50,7 @@ $(document).ready(function(){
 			success : function(data){
 		    	productFiles = data;
 		    	console.log("Data received (Product Files): "+JSON.stringify(data));
-		    	createDocsViewEnvironment(data);
+		    	createDocsViewEnvironment(data, currentProductId);
 			},
 			error : function(e){
 				console.log("Error : "+JSON.stringify(e));
@@ -82,9 +83,10 @@ var populateProductSelector = function(products){
 				'</tr>'
 		);
 	}
+	$('#product-selector-id').select2().val('1').trigger("change");
 }
 
-var createDocsViewEnvironment = function(data){
+var createDocsViewEnvironment = function(data, productId){
 	if($('.btn-left-panel').find('.btn-for-product-'+currentProductId).length == 0){
 		$('.btn-left-panel').append(
 				'<div class="btn-container-div-product-'+currentProductId+' btn-container">'+
@@ -100,10 +102,14 @@ var createDocsViewEnvironment = function(data){
 		}
 	attachClickEvent(currentProductId);
 	}
+	var b = $('.btn-for-product-'+productId)[0];
+	$(b).click();
 }
 
 var attachClickEvent = function(productId){
 	$(document).on('click','button.btn-for-product-'+productId,function(){
+		$('button.show-doc').removeClass('product-doc-button-clicked');
+		$(this).addClass('product-doc-button-clicked');
 		$('.doc-middle-panel').css('display','none');
 		$('.update-right-panel').css('display','none');
 		$('.analysis-right-panel').css('display','none');

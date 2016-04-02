@@ -108,8 +108,11 @@ public class PitchesServiceImpl implements PitchesService{
 	@Override
 	public PitchViewEntity getPitchForAppointment(int appointmentId){
 		PitchesDto pitchDto = pitchDao.getPitchByAppointmentId(appointmentId);
-		String fileLocation = ConstantValues.PITCH_DOCS_PATH+pitchDto.getFileName();
-		return new PitchViewEntity(pitchDto.getPitchesId(), pitchDto.getAppointmentId(), pitchDto.getMeetingStatus(), fileLocation, pitchDto.getPitchScore());
+		if(pitchDto == null) return null;
+		else{
+			String fileLocation = ConstantValues.PITCH_DOCS_PATH+pitchDto.getFileName();
+			return new PitchViewEntity(pitchDto.getPitchesId(), pitchDto.getAppointmentId(), pitchDto.getMeetingStatus(), fileLocation, pitchDto.getPitchScore());
+		}
 	}
 	
 	@Override

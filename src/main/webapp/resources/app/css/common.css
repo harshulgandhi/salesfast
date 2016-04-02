@@ -1,12 +1,13 @@
 @CHARSET "ISO-8859-1";
 
-
+ 
 h1{
  	text-align: center; 
 	margin-bottom: 30px;
 	margin-top: 10%;
 }
-
+ 
+ 
 .select-bool-flag{
 	width : 40%;
 }
@@ -43,6 +44,12 @@ a.navbar-brand.navbar-menu-items{
 }
 
 .dropdown-menu>li>a:hover{
+	background-color: cadetblue;
+    font-weight: 600;
+    color: black;
+}
+
+li.navbar-menu-selected>a.navbar-menu-items{
 	background-color: cadetblue;
     font-weight: 600;
     color: black;

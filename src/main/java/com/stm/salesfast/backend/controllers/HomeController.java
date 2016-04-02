@@ -16,5 +16,7 @@ public class HomeController {
 	public String index(Model model, HttpSession session) {
 		model.addAttribute("appName", APP_NAME);
 		return "home";
+//		return "redirect:/showalignments";
+		
 	}
 }

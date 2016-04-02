@@ -33,9 +33,110 @@ td.appointment-time-td{
 }
 
 .appointment-end-time{
-	margin-left: 7px;
+	margin-left: 12px;
 }
 
 span.time-label {
     font-size: smaller;
 }
+select.appointment-status-selector.validate-ele.appointment-paramaters {
+    color: black;
+}
+
+table#aligned-physician-table{
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+
+button.btn.btn-default.btn-md.show-contact.form-control {
+    border-radius: 0px;
+        width: 100%;
+    height: 32px;
+    vertical-align: middle;
+}
+
+span.glyphicon.glyphicon-plus {
+    float: left;
+}
+
+.phys-address {
+    display: inline-flex;
+	padding: 0px;
+}
+
+span.contactdetail-label {
+    width: 27%;
+    font-style: italic;
+}
+
+span.contactdetail-content {
+    font-weight: 600;
+    width: 65%;
+}
+
+td.contact-details {
+    width: 19%;
+}
+
+.legend-ul{
+	list-style: none;
+}
+
+.legend-ul li { 
+	float: left; 
+	margin-right: 10px; 
+}
+.legend-ul span {
+    border: 1px solid #ccc;
+    float: left;
+    width: 16px;
+    height: 16px;
+    margin: 4px;
+    margin-right: 23px;
+}
+.page-heading.row {
+    display: -webkit-inline-box;
+    margin-top: 6%;
+}
+.heading {
+    margin-left: -15%;
+    margin-top: 3%;
+    width: 82%;
+}
+
+h2 {
+    border-bottom: solid 3px #0202A9;
+    padding-bottom: 9px;
+    font-size: 33px;
+}
+.table-legend {
+    width: 27%;
+    border: 1px solid;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    margin-left: 47%;
+    margin-bottom: 3%;
+    margin-top: 1%;
+}
+
+.legend-ul {
+    list-style: none;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: larger;
+}
+.legend-ul li {
+    float: left;
+    margin-right: 10px;
+}
+
+span.most-prospecting-span {
+    background-color: #4F9651;
+}
+
+span.prospecting-span {
+    background-color: #BAF3BB;
+}
+
+span.less-prospecting-span {
+    background-color: #D0F7D0;
+}
+

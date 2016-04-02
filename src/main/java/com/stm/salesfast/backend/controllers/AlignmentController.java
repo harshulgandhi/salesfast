@@ -61,6 +61,9 @@ public class AlignmentController {
 	    log.info("\nLogged in user is : "+CURRENTUSERNAME+" and his role is "+user.getAuthorities());
 		List<AlignedPhysicianEntity> alignedPhysician = alignmentFetchService.getAlignmentByUserIdToShow(
 				(userAccountService.getUserAccountByUserName(CURRENTUSERNAME)).getUserId());
+		log.info("Alignments Fetched : ");
+		for(AlignedPhysicianEntity eachEntity : alignedPhysician) log.info(""+eachEntity);
+		
 		model.addAttribute("listOfAlignedPhysician", alignedPhysician);
 		return "showalignments";
 	}

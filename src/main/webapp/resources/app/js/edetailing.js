@@ -5,6 +5,11 @@ var virtualLearningData = [];
 $(document).ready(function () {
 	
 	$('button.edetail-button-clicked').removeClass('edetail-button-clicked');
+	$('li.navbar-menu-selected').removeClass("navbar-menu-selected");
+	   
+	if(!$('li#nav-e-detail').hasClass("navbar-menu-selected")){
+		$('li#nav-e-detail').addClass("navbar-menu-selected")
+	}
 	
 	$.ajax({
 		type: 'GET',

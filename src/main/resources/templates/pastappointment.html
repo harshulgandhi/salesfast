@@ -3,7 +3,7 @@
 <head>
 <!-- Header to include css -->
 <div th:replace="fragments/header :: commonhead"></div>
-<link rel="stylesheet" type="text/css" href="resources/app/css/pastappointments.css"/>
+<link rel="stylesheet" type="text/css" href="resources/app/css/pastappointment.css"/>
 <link rel="stylesheet" type="text/css" href="resources/app/css/toggleyesnoswitch.css"/>
 <meta charset="ISO-8859-1" />
 <title>SalesFast Home</title>
@@ -15,23 +15,38 @@
 		<div class="left-nav" id="cssmenu">
 			<ul class="left-menu-ul">
 				<li class='active today-appointment-li' ><a href='/showappointments'><span>TODAY's APPOINTMENTS</span></a></li>
-				<li class='last future-appointment-li'><a href='#'><span>FUTURE APPOINTMENTS</span></a></li>
+				<li class='last future-appointment-li'><a href='/showfutureappointments'><span>FUTURE APPOINTMENTS</span></a></li>
 				<li class='last past-appointment-li'><a href='/pastappointments'><span>PAST APPOINTMENTS</span></a></li>
 			</ul>
 		</div>
 		<div class="container" id="layout">
 			<div class="row row-header page-header"><h3>Your past appointments</h3></div>
-			<div class="future-appointment-div" style="display: none;">
-				<div class="row row-header page-header"><h3>Future Appointments!</h3></div>
-				<div class="row future-appointment-div"><div th:replace="futureappointmentmodal :: futureappointmentmodal-body"></div></div>
+			<div class="row">
+				<div class="col-lg-12 col-sm-12">
+					<table id="past-appointments-table" class="table table-bordered past-appointment-table-class">
+						<thead>
+							<tr>
+								<th style="display:none" class="physician-id">Physician Id</th>
+								<th>Physician Name</th>
+								<th style="display:none" class="product-id">Product Id</th>
+								<th>Product</th>
+								<th>Date</th>
+								<th>Status</th>
+								<th>Further Details</th>				
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
 			</div>
+					
 		</div>
 	</div>
 	
-							<!-- Modal for viewing future appointments -->
-	<div th:replace="futureappointmentmodal :: futureappointmentmodal"></div>
 	
-
+			<!-- Modal for VIEWING PAST APPOINTMENT DETAILS-->
+	<div th:replace="pastappointmentdetailmodal :: past-appointment-details-modal"></div>
 <!-- Common footer -->
 <div th:replace="fragments/footer :: footer"></div>
 <script  type="text/javascript" src="resources/app/js/pastappointment.js"></script>

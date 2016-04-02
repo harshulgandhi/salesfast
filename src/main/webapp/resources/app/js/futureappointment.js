@@ -5,7 +5,18 @@ var futureAppointmentTable;
 var averageTravelTime = 30; //minutes
 $(document).ready(function(){
 	
+	$('li.left-menu-selected').removeClass('left-menu-selected');
+	$('li.future-appointment-li').addClass('left-menu-selected');
+	
+	$('li.navbar-menu-selected').removeClass("navbar-menu-selected");
+	   
+	if(!$('li#nav-appointment').hasClass("navbar-menu-selected")){
+		$('li#nav-appointment').addClass("navbar-menu-selected")
+	}
+	
 	futureAppointmentTable = $('#future-appointment-fixed-physician-table').dataTable();
+	
+	$(".appointment-status-selector").select2();
 	
 	$('#future-appointment-fixed-physician-table').find('tr').each(function(i, val){
 		   if($(val).find('.cancelled-appointment-status').html() == 'CANCELLED'){

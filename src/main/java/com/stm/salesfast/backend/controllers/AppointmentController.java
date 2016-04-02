@@ -28,6 +28,7 @@ import com.stm.salesfast.backend.entity.AppointmentEntity;
 import com.stm.salesfast.backend.entity.FollowupAppointmentUpdateEntity;
 import com.stm.salesfast.backend.entity.FutureAppointmentUpdateEntity;
 import com.stm.salesfast.backend.entity.MeetingExperienceEntity;
+import com.stm.salesfast.backend.entity.PastAppointmentEntity;
 import com.stm.salesfast.backend.entity.PitchViewEntity;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
@@ -90,6 +91,13 @@ public class AppointmentController {
 		return "showappointment";
 	}
 	
+	@RequestMapping(value="/showfutureappointments", method=RequestMethod.GET)
+	public String showFutureAppointments(Model model) throws ParseException{
+		List<AppointmentEntity> futureAppointmentsList = appointmentFetchService.getFutureAppointmentToShow(SessionConstants.USER_ID);
+		
+		model.addAttribute("listOfFutureAppointments", futureAppointmentsList);
+		return "showfutureappointment";
+	}
 	
 	@RequestMapping(value="/addmeetingupdate", method=RequestMethod.POST, consumes = "application/json")
 	@ResponseBody
@@ -180,6 +188,13 @@ public class AppointmentController {
 		return "pastappointment";
 	}
 	
+	@RequestMapping(value="/getpastappointments", method=RequestMethod.GET)
+	@ResponseBody
+	public PastAppointmentEntity[] getPastAppointments() throws ParseException{
+		List<PastAppointmentEntity> pastAppointments = appointmentFetchService.getPastAppointmentToShow(SessionConstants.USER_ID);
+		for(PastAppointmentEntity eachPastApp : pastAppointments) log.info("Past Appointments : "+eachPastApp);
+		return pastAppointments.toArray(new PastAppointmentEntity[pastAppointments.size()]);
+	}
 }
 
 

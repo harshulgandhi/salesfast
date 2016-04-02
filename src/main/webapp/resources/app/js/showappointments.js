@@ -6,6 +6,15 @@ var tableAppointment = null;
 var currentSelectedAppointment = 0;
 var averageTravelTime = 30; //minutes
 $(document).ready(function() {
+	$('li.left-menu-selected').removeClass('left-menu-selected');
+	$('li.today-appointment-li').addClass('left-menu-selected');
+	
+	$('li.navbar-menu-selected').removeClass("navbar-menu-selected");
+	   
+	if(!$('li#nav-appointment').hasClass("navbar-menu-selected")){
+		$('li#nav-appointment').addClass("navbar-menu-selected")
+	}
+	
 	$('.slidedown-alignments').click(function(){
 		    $('.slidedown-alignments-show').slideToggle('fast');
 	});
@@ -38,23 +47,23 @@ $(document).ready(function() {
 	
    updateNotificationCounter();
    
-   $('.today-appointment-li').on('click', function(){
-	   $('.future-appointment-div').css('display','none');
-	   $('.today-appointment-div').css('display','block');
-   });
-   
-   $('.future-appointment-li').on('click', function(){
-	   $('.today-appointment-div').css('display','none');
-	   $('.future-appointment-div').css('display','block');
-   });
-   
-   $('.left-menu-ul').on('click','li',function(){
-	   $('li.left-menu-selected').removeClass('left-menu-selected');
-	   $(this).addClass('left-menu-selected');
-	   $(this).find('a').addClass('left-menu-selected-anchor');
-   });
-   
-   $( ".today-appointment-li" ).trigger( "click" );
+//   $('.today-appointment-li').on('click', function(){
+//	   $('.future-appointment-div').css('display','none');
+//	   $('.today-appointment-div').css('display','block');
+//   });
+//   
+//   $('.future-appointment-li').on('click', function(){
+//	   $('.today-appointment-div').css('display','none');
+//	   $('.future-appointment-div').css('display','block');
+//   });
+//   
+//   $('.left-menu-ul').on('click','li',function(){
+//	   $('li.left-menu-selected').removeClass('left-menu-selected');
+//	   $(this).addClass('left-menu-selected');
+//	   $(this).find('a').addClass('left-menu-selected-anchor');
+//   });
+//   
+//   $( ".today-appointment-li" ).trigger( "click" );
 	   
    /**
     * Toggles between selected and de-selected rows of the table
@@ -274,10 +283,8 @@ $('.submit-selected-alignments').click(function(){
 				additionalNotesList.push(additionalNotes);
 			}
 		}
-			$(this).find('td').each(function(idx, valTD){
-				if(idx == 0) physIds.push($(valTD).html());
-				if(idx == 10) productIds.push($(valTD).html());		//Picking product for selected alignments
-			});
+		physIds.push($(val).find('td.physician-id').html());
+		productIds.push($(val).find('td.product-id').html());
 	});
 	
 	if(!isDataInvalid){
@@ -459,10 +466,8 @@ $('.submit-selected-followup-alignments').click(function(){
 				appointmentIdList.push(appointId);
 			}
 		}
-			$(this).find('td').each(function(idx, valTD){
-				if(idx == 0) physIds.push($(valTD).html());
-				if(idx == 10) productIds.push($(valTD).html());		//Picking product for selected alignments
-			});
+		physIds.push($(val).find('td.physician-id').html());
+		productIds.push($(val).find('td.product-id').html());
 	});
 	
 	if(!isDataInvalid){
@@ -520,8 +525,9 @@ var fixFollowupAppointments = function(physIds, appointStartTimeList, appointEnd
 var addMeetingUpdate = function(){
 	
 	var appointmentId = currentSelectedAppointment;//tableAppointment.row('.selected').data()[0];												//Getting Appointment id
-	var physicianId = tableAppointment.row('.selected').data()[1];													//Getting Physician id
-	var productName = tableAppointment.row('.selected').data()[tableAppointment.row('.selected').data().length-4];	//Getting product name
+	var physicianId = $('tr.selected').find('td.physician-id').html();
+	var product_td = $('table#appointment-fixed-physician-table').find('tr.selected').find('td.product-name-td')[0]
+	var productName =  product_td.textContent;
 	
 	var formData = {};
 	

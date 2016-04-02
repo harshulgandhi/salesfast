@@ -13,6 +13,11 @@ $(document).ready(function() {
 	
 	$('li.left-menu-selected').removeClass('left-menu-selected');
 	$('li.live-meeting-qna-li').addClass('left-menu-selected');
+	$('li.navbar-menu-selected').removeClass("navbar-menu-selected");
+	   
+	if(!$('li#nav-quick-assist').hasClass("navbar-menu-selected")){
+		$('li#nav-quick-assist').addClass("navbar-menu-selected")
+	}
 	
 	getAllQuestions();
 	getAllQuestionsAskedBySelf();

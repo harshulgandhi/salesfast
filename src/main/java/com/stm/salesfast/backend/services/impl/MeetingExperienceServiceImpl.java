@@ -1,5 +1,6 @@
 package com.stm.salesfast.backend.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -76,6 +77,54 @@ public class MeetingExperienceServiceImpl implements MeetingExperienceService {
 	public List<MeetingExperienceDto> fetchAll() {
 		// TODO Auto-generated method stub
 		return meetingExperienceDao.getAll();
+	}
+	
+	@Override
+	public List<String> salesRepResponse(int appointmentId){
+		List<String> salesRepResponse = new ArrayList<>();
+		List<MeetingExperienceDto> meetingExp =  fetchMeetingExperienceByAppointmentId(appointmentId);
+		for(MeetingExperienceDto eachMeetingExp : meetingExp){
+			if(eachMeetingExp.isSalesRepEntry()){
+				if(eachMeetingExp.isLikedTheProduct()) salesRepResponse.add("Physician liked the product.");
+				else salesRepResponse.add("Physician did not liked the product.");
+				if(eachMeetingExp.isLikedPriceAffordability()) salesRepResponse.add("Physician liked the fact that medicine was affordable.");
+				else salesRepResponse.add("Physician did not find medicine affordable.");
+				if(eachMeetingExp.isLikedPresentation()) salesRepResponse.add("Physician liked the presentation.");
+				else salesRepResponse.add("Physician did not like the presentation.");
+				if(eachMeetingExp.isImpressiveCompanyReputation()) salesRepResponse.add("Physician was impressed by company's reputation.");
+				else salesRepResponse.add("Physician was not impressed by company's reputation.");
+				if(eachMeetingExp.isImpressiveLessSideEffects()) salesRepResponse.add("Physician liked that medicine has less side effects.");
+				else salesRepResponse.add("Physician was not impressed beacuse he thinks medicine has many side effects.");
+				if(eachMeetingExp.isSalesRepConfidence()) salesRepResponse.add("Physician liked your confidence during presentation.");
+				else salesRepResponse.add("You need to be more confident while pitching.");
+			}
+		}
+		
+		return salesRepResponse;
+	}
+	
+	@Override
+	public List<String> physicianResponse(int appointmentId){
+		List<String> physicianResponse = new ArrayList<>();
+		List<MeetingExperienceDto> meetingExp =  fetchMeetingExperienceByAppointmentId(appointmentId);
+		for(MeetingExperienceDto eachMeetingExp : meetingExp){
+			if(eachMeetingExp.isPhysicianEntry()){
+				if(eachMeetingExp.isLikedTheProduct()) physicianResponse.add("Physician liked the product.");
+				else physicianResponse.add("Physician did not liked the product.");
+				if(eachMeetingExp.isLikedPriceAffordability()) physicianResponse.add("Physician liked the fact that medicine was affordable.");
+				else physicianResponse.add("Physician did not find medicine affordable.");
+				if(eachMeetingExp.isLikedPresentation()) physicianResponse.add("Physician liked the presentation.");
+				else physicianResponse.add("Physician did not like the presentation.");
+				if(eachMeetingExp.isImpressiveCompanyReputation()) physicianResponse.add("Physician was impressed by company's reputation.");
+				else physicianResponse.add("Physician was not impressed by company's reputation.");
+				if(eachMeetingExp.isImpressiveLessSideEffects()) physicianResponse.add("Physician liked that medicine has less side effects.");
+				else physicianResponse.add("Physician was not impressed beacuse he thinks medicine has many side effects.");
+				if(eachMeetingExp.isSalesRepConfidence()) physicianResponse.add("Physician liked your confidence during presentation.");
+				else physicianResponse.add("You need to be more confident while pitching.");
+			}
+		}
+		
+		return physicianResponse;
 	}
 	
 	@Override

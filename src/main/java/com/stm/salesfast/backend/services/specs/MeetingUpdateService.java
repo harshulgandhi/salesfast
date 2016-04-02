@@ -26,4 +26,6 @@ public interface MeetingUpdateService {
 	public List<Integer> getLostPhysiciansForAUser(int userId);
 
 	public List<Integer> getPrescribingPhysiciansForAUser(int userId);
+
+	public List<String> getStatusForAllAppointments(int userId, int physicianId);
 }

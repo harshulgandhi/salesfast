@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.List;
+
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
 
 @AllArgsConstructor
@@ -29,9 +31,10 @@ public class AlignedPhysicianEntity implements Comparable<AlignedPhysicianEntity
 	private int productId;
 	private String productName;
 	private double importanceFactor;
+	private String updateStatuses;
 	
 	public AlignedPhysicianEntity(PhysicianStgDto physicianDto,
-			String productName2, int productId) {
+			String productName2, int productId, String updateStatuses ) {
 		// TODO Auto-generated constructor stub
 		this.physicianId = physicianDto.getPhysicianId();
 		this.firstName = physicianDto.getFirstName();
@@ -49,6 +52,7 @@ public class AlignedPhysicianEntity implements Comparable<AlignedPhysicianEntity
 		this.importanceFactor = physicianDto.getImportanceFactor();
 		this.productName = productName2;
 		this.productId = productId;
+		this.updateStatuses = updateStatuses;
 		
 	}
 

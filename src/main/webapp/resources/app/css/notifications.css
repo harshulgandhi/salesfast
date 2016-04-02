@@ -1,1 +1,14 @@
 @CHARSET "ISO-8859-1";
+
+.notification-manipulation-td{
+	width : 20%;
+}
+
+.notification-td{
+	width : 80%;
+}
+
+button.btn.btn-default.btn-sm.btn-warning.remove-notification {
+    margin-left: 8%;
+    margin-right: 9%;
+}

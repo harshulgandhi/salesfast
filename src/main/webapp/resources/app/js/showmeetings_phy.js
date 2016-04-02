@@ -10,6 +10,13 @@ $(document).ready(function() {
 	tableAppointment = $('#detailed-meeting-table').DataTable({
 		   order: [[0, "desc"]]
 	   });
+	
+	$('li.navbar-menu-selected').removeClass("navbar-menu-selected");
+	   
+	if(!$('li#nav-meeting-phys').hasClass("navbar-menu-selected")){
+		$('li#nav-meeting-phys').addClass("navbar-menu-selected")
+	}
+	
 	var defaultColor = "";
 	/*$('#detailed-meeting-table tbody').on( 'click', 'tr', function (e) {
     	var cell = $(e.target).get(0);	

@@ -15,13 +15,11 @@ public interface NotificationService {
 	public void insertNotificationFollowupReminder(int userId, String physicianName, String productName, String notificationCategory);
 	public void insertNotificationNewProductPhysician(int userId, String productName,
 			String notificationCategory);
-	public void insertNotificationNewProductSalesRep(int userId, String productName,
-			String physicianName, String notificationCategory);
+	public void insertNotificationNewProductSalesRep(int userId, String productName, String notificationCategory);
 	public void insertNotificationSalesRepPhysNotInterest(int userId,
-			String productName, String physicianName,
-			String notificationCategory);
+			String productName, String physicianName, String notificationCategory);
 	public void insertNotificationSalesRepPhysPrescribing(int userId,
-			String productName, String physicianName,
+			String productName,
 			String notificationCategory);
 	public void insertNotificationLiveMeetingQuestion(String salesRepName, int userId,
 			String notificationCategory);

@@ -3,7 +3,12 @@
  */
 $(document).ready(function() {
 	var table = $('#notifications-table').DataTable();
-	 
+	
+	$('li.navbar-menu-selected').removeClass("navbar-menu-selected");
+	   
+	if(!$('li#nav-notification').hasClass("navbar-menu-selected")){
+		$('li#nav-notification').addClass("navbar-menu-selected")
+	}
 	
 	$('#notifications-table tbody').on( 'click', '.remove-notification', function () {
 		var r_ = $(this).parents('tr');
@@ -25,7 +30,12 @@ $(document).ready(function() {
 			window.location.replace("/unansweredques")
 		}else if(r_.find('.notification-category').html() == "QUESTION WAS ANSWERED"){
 			window.location.replace("/livemeetingquestions")
+		}else if(r_.find('.notification-category').html() == "NEW PRODUCT LOST PHYSICIAN"){
+			window.location.replace("/showalignments?status="+"LOST");
+		}else if(r_.find('.notification-category').html() == "NEW PRODUCT PRESCRIBING PHYSICIAN"){
+			window.location.replace("/showalignments?status="+"PRESCRIBING");
 		}
+		
 		
 		
 	});

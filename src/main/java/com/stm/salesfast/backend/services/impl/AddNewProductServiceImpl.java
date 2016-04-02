@@ -158,7 +158,7 @@ public class AddNewProductServiceImpl implements AddNewProductService {
 			List<Integer> lostPhysicians = meetingUpdate.getLostPhysiciansForAUser(eachUserId);
 			UserDto user = userService.getUserDetails(eachUserId);
 			for(Integer eachPhysicianId : lostPhysicians){
-				notification.insertNotificationNewProductSalesRep(eachUserId, newProduct.getProductName(), physService.getPhysicianName(eachPhysicianId), "NEW PRODUCT");
+//				notification.insertNotificationNewProductSalesRep(eachUserId, newProduct.getProductName(), physService.getPhysicianName(eachPhysicianId), "NEW PRODUCT");
 				
 				//send email to sales rep
 				String emailBody = "We have released new product "+newProduct.getProductName()+". Dr. "+physService.getPhysicianName(eachPhysicianId)
@@ -167,6 +167,7 @@ public class AddNewProductServiceImpl implements AddNewProductService {
 				String subject = "New product - detail lost physicians";
 				sendNewProductNotificationEmails(subject, emailBody, user.getEmail());
 			}
+			notification.insertNotificationNewProductSalesRep(eachUserId, newProduct.getProductName(), "NEW PRODUCT LOST PHYSICIAN");
 			
 			//for all not interested physicians - before appointment
 			List<Integer> notInterestedPhysicians = appointmentService.getPhysiciansNotInterestedBeforeDetailing(eachUserId);
@@ -184,7 +185,7 @@ public class AddNewProductServiceImpl implements AddNewProductService {
 			//for all prescribing physicians
 			List<Integer> prescribingPhysicians = meetingUpdate.getPrescribingPhysiciansForAUser(eachUserId);
 			for(Integer eachPhysicianId : prescribingPhysicians){
-				notification.insertNotificationSalesRepPhysPrescribing(eachUserId, newProduct.getProductName(), physService.getPhysicianName(eachPhysicianId), "NEW PRODUCT");
+//				notification.insertNotificationSalesRepPhysPrescribing(eachUserId, newProduct.getProductName(), physService.getPhysicianName(eachPhysicianId), "NEW PRODUCT");
 				
 				//send email to sales rep
 				String emailBody = "We have released new product "+newProduct.getProductName()+". Dr. "+physService.getPhysicianName(eachPhysicianId)
@@ -193,7 +194,7 @@ public class AddNewProductServiceImpl implements AddNewProductService {
 				String subject = "New product - detail prescribing physicians";
 				sendNewProductNotificationEmails(subject, emailBody, user.getEmail());
 			}
-			
+			notification.insertNotificationSalesRepPhysPrescribing(eachUserId, newProduct.getProductName(), "NEW PRODUCT PRESCRIBING PHYSICIAN");
 			
 		}
 	}

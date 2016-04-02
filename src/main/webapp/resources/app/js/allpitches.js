@@ -15,6 +15,12 @@ $(document).ready(function(){
 $(document).on('change','select.filter-selectors',function(){
 	updateNotificationCounter();
 	
+	$('li.navbar-menu-selected').removeClass("navbar-menu-selected");
+	   
+	if(!$('li#nav-quick-assist').hasClass("navbar-menu-selected")){
+		$('li#nav-quick-assist').addClass("navbar-menu-selected")
+	}
+	   
 	$('.filter-selectors').each(function(){
 		console.log($(this).val());
 	});

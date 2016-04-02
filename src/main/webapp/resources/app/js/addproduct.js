@@ -7,7 +7,12 @@ $(document).ready(function () {
 
 	$('li.left-menu-selected').removeClass('left-menu-selected');
 	$('li.add-products').addClass('left-menu-selected');
-	
+   $('li.navbar-menu-selected').removeClass("navbar-menu-selected");
+   
+   if(!$('li#nav-products').hasClass("navbar-menu-selected")){
+	   $('li#nav-products').addClass("navbar-menu-selected")
+   }
+	   
 	$.ajax({
 		type: 'GET',
 		url : '/getmedicalfields',

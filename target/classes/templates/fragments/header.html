@@ -51,11 +51,11 @@
 	            <li id="nav-virtual-learning"><a class="navbar-menu-items" href="./virtuallearning" th:if="${session.roles.contains('SalesRep')}">Virtual Learning</a></li>
 	            
 	          
-	            <li id="nav-appointment"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('DM')}">View Alignments</a></li>
+	            <!-- <li id="nav-appointment"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('DM')}">View Alignments</a></li> -->
 	            
 	            <li id="nav-e-detail"><a class="navbar-menu-items" href="./edetailing" th:if="${session.roles.contains('PH')}">e-Detailing</a></li>
 	            
-	            
+	            <!-- <li id="nav-loggedin-user"><span class="loggedin-user-span"></span></li> -->
 	            <li id="nav-logout"><a class="navbar-menu-items" href="/logout" >Logout</a></li>
 	          </ul>
 	        </nav>

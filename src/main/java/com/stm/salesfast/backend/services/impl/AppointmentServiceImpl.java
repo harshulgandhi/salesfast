@@ -299,7 +299,7 @@ public class AppointmentServiceImpl implements AppointmentService {
 		String emailSub = "Appointment cancelled by Dr."+physicianName;
 		sendMail( emailSub, emailText, salesrep.getEmail());
 		/*Notification for sales rep*/
-		notificationService.insertNotificationAppointmentCancellation(appointment.getUserId(), physicianName, "CANCELLED APPOINTMENTS");
+		notificationService.insertNotificationAppointmentCancellation(appointment.getUserId(), physicianName, "CANCELLED APPOINTMENTS BY PHYS");
 		
 		/*Send cancellation confirmation to physician*/
 		String emailText2 = "You have cancelled the appointment with "+salesrep.getFirstName()+" "+salesrep.getLastName()

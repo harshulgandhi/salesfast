@@ -104,6 +104,7 @@ public class NotificationServiceImpl implements NotificationService {
 		notificationDao.insertNotification(new NotificationsDto(notification, false, userId, notificationCategory));
 	}
 	
+	/*Detail button redirection not handled for all below notifications - rest (above this) are handled*/
 	@Override
 	public void insertNotificationDocUpdatePhysician(int userId, String productName, String notificationCategory){
 		String notification = String.format(ConstantValues.FORMAT_EDETAILING_DOC_UPDATE, productName);

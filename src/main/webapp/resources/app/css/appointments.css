@@ -161,3 +161,23 @@ td.contact-details {
 table#aligned-vicinity-physician-table {
     width: 112%;
 }
+
+.no-followup-message-div{
+	margin-right: -373%;
+   	text-align: center;
+	border: 1px solid #ddd;
+	height: 33px;
+	margin-top: -2px;
+	background: #ECC4B3;
+	font:  100.5% "Lucida Sans Unicode", "Bitstream Vera Sans", "Trebuchet Unicode MS", "Lucida Grande", Verdana, Helvetica, sans-serif;;
+}
+
+span.no-followups-message-span{
+	vertical-align: -webkit-baseline-middle;
+	
+}
+
+td.no-followup-td{
+	border: none;
+	padding: 0px;
+}

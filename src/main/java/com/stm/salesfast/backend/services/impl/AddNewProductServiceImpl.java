@@ -73,14 +73,15 @@ public class AddNewProductServiceImpl implements AddNewProductService {
 	public void saveUploadedFiles(MultipartFile virtualTrainingFile, MultipartFile eDetailingFile) throws IllegalStateException, IOException {
 		//Saving training material file
 		String realPathtoUploads =   request.getServletContext().getRealPath("/resources/");
-		String orgName = "docs\\virtuallearning\\"+virtualTrainingFile.getOriginalFilename();
+		String orgName = "docs/virtuallearning/"+virtualTrainingFile.getOriginalFilename();
         String filePath = realPathtoUploads + orgName;
         File dest = new File(filePath);
+        log.info("Saving virtual training file : "+dest.getAbsolutePath()+"; orgName : "+orgName+" filePath : "+filePath);
         virtualTrainingFile.transferTo(dest);
         
         //Saving training material file
 		String realPathtoUploads2 =  request.getServletContext().getRealPath("/resources/");
-		String orgName2 = "docs\\edetailing\\"+virtualTrainingFile.getOriginalFilename();
+		String orgName2 = "docs/edetailing/"+virtualTrainingFile.getOriginalFilename();
 		String filePath2 = realPathtoUploads2 + orgName2;
 		File dest2 = new File(filePath2);
 		eDetailingFile.transferTo(dest2);
@@ -126,7 +127,7 @@ public class AddNewProductServiceImpl implements AddNewProductService {
 			
 			//insert into notifications for physician
 			UserDto physicianAsAUser = userService.getUserForPhysicianId(eachPhysicianId);
-			notification.insertNotificationNewProductPhysician(physicianAsAUser.getUserId(), newProduct.getProductName(), "NEW PRODUCT");
+			notification.insertNotificationNewProductPhysician(physicianAsAUser.getUserId(), newProduct.getProductName(), "NEW PRODUCT TO PHYS");
 			
 			//send email to physician
 			String emailBody = "We have released new product "+newProduct.getProductName()+" which might interest you. Please visit your eDetailing "

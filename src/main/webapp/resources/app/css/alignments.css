@@ -100,9 +100,9 @@ td.contact-details {
 .heading {
     margin-left: -15%;
     margin-top: 3%;
-    width: 82%;
+    width: 53%;
+    margin-bottom: 2%;
 }
-
 h2 {
     border-bottom: solid 3px #0202A9;
     padding-bottom: 9px;
@@ -113,7 +113,7 @@ h2 {
     border: 1px solid;
     padding-top: 6px;
     padding-bottom: 6px;
-    margin-left: 47%;
+    margin-left: 76%;
     margin-bottom: 3%;
     margin-top: 1%;
 }
@@ -122,6 +122,8 @@ h2 {
     list-style: none;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     font-size: larger;
+    margin-top: 4%;
+    margin-left: -5%;
 }
 .legend-ul li {
     float: left;
@@ -139,4 +141,13 @@ span.prospecting-span {
 span.less-prospecting-span {
     background-color: #D0F7D0;
 }
+.page-heading.row {
+    display: -webkit-inline-box;
+    margin-top: 6%;
+}
 
+span.alignment-table-desc {
+    font-style: italic;
+    font-size: 15px;
+    color: red;
+}

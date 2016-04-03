@@ -19,7 +19,7 @@ public final class ConstantValues {
 	public static final String FORMAT_FOLLOWUP_CUSTRETENTION = "%s was just released. Call the physicians who are already prescribing some of BioPharma's medicines  "
 															+ "from this medical field. Click on \"Detail\" button to know all PRESCRIBING physicians.";
 	
-	public static final String FORMAT_PHYSICIAN_NEW_PRODUCT = "We just release a new product %s. Visit your e-detailing page for more details.";
+	public static final String FORMAT_PHYSICIAN_NEW_PRODUCT = "We just release a new product %s. Click on \"Detail\" to check out your e-detailing page for more details.";
 	
 	public static final String FORMAT_NEW_QUESTION = "Sales Representative %s has a question that needs answering.";
 	

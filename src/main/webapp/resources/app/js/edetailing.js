@@ -2,6 +2,7 @@
  * 
  */
 var virtualLearningData = [];
+var isFromNotificationsPage=false;
 $(document).ready(function () {
 	
 	$('button.edetail-button-clicked').removeClass('edetail-button-clicked');
@@ -28,6 +29,7 @@ $(document).ready(function () {
 	});
 	
 	updateNotificationCounter();
+	
 });
 
 $(document).on('click','button.show-doc-edetail',function(){
@@ -90,6 +92,24 @@ var createEDetailingEnvironment = function(data){
 	var btn = list[0];
 	$('#'+btn.id).trigger( "click" );
 	$(window).resize();
+	
+	var value;
+	if (window.location.search.split('?').length > 1) {
+        var params = window.location.search.split('?')[1].split('&');
+        for (var i = 0; i < params.length; i++) {
+            var key = params[i].split('=')[0];
+            statusParam= decodeURIComponent(params[i].split('=')[1]);
+            console.log("Product : "+statusParam);
+            isFromNotificationsPage = true;
+        }
+    }
+	
+	if(isFromNotificationsPage){
+		var newProductButtons = $('button.show-doc-edetail');
+		var len = $(newProductButtons).length;
+		var lastBtn = $(newProductButtons)[len-1];
+		$(lastBtn).click();
+	}
 	
 }
 

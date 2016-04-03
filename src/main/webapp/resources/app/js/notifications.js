@@ -18,11 +18,12 @@ $(document).ready(function() {
 		table.row( $(this).parents('tr') ).remove().draw();
 		$.ajax({
 			type: 'POST',
-			url: '/deletenotification?notificationId='+notificationId,
-			contentType: 'application/json; charset=utf-8',
-			dataType: 'json'
+			url: '/deletenotification?notificationId='+notificationId
+		}).done(function(){
+			console.log()
+			updateNotificationCounter();
 		});
-		updateNotificationCounter();
+		
 	});
 	$('#notifications-table tbody').on( 'click', '.detail-notification', function () {
 		var r_ = $(this).parents('tr');
@@ -34,8 +35,13 @@ $(document).ready(function() {
 			window.location.replace("/showalignments?status="+"LOST");
 		}else if(r_.find('.notification-category').html() == "NEW PRODUCT PRESCRIBING PHYSICIAN"){
 			window.location.replace("/showalignments?status="+"PRESCRIBING");
+		}else if(r_.find('.notification-category').html() == "CANCELLED APPOINTMENTS BY PHYS"){
+			window.location.replace("/showappointments");
+		}else if(r_.find('.notification-category').html() == "FOLLOW UP"){
+			window.location.replace("/showappointments#followup-appointments-table");
+		}else if(r_.find('.notification-category').html() == "NEW PRODUCT TO PHYS"){
+			window.location.replace("/edetailing?param="+"NEW_PRODUCT");
 		}
-		
 		
 		
 	});

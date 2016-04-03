@@ -103,4 +103,18 @@ nav.navbar-collapse ul li:hover,nav.navbar-collapse ul li ul:hover,nav.navbar-co
     color: #fff;
     padding-bottom: 8px;
 }
+li#nav-logout {
+	margin-left: 2%;
+}
+ul#salesfast-navbar {
+    width: 91%;
+}
 
+li#nav-loggedin-user {
+    margin-top: 16px;
+    color: #E6E1E1;
+}
+
+span.loggedin-user-span {
+	margin-left: 147px;
+}

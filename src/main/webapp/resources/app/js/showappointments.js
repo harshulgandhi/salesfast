@@ -159,6 +159,30 @@ $(document).ready(function() {
     	$(".phys-status-selector").select2();
     });
     
+//    if( $('#meetingupdate-add-modal').css('display') == 'none' ){
+//    	var row = $('#appointment-fixed-physician-table').find('tr.selected')[0];
+//    	$(row).removeClass('selected');
+//    	$(row).css('background-color',defaultColor);
+//    }
+    
+    
+    if( $('table#followup-appointments-table tbody tr').length == 0){
+    	 $('table#followup-appointments-table tbody').append(
+	    	   '<tr style="background-color: white;">'+
+	    	   		'<td class="no-followup-td" style="border: none;padding: 0px;">'+
+	    	   			'<div class="no-followup-message-div">'+ 
+	    	   				'<span class="no-followups-message-span" style="vertical-align: -webkit-baseline-middle;">NO FOLLOW UPs FOR TODAY</span>'+
+	    	   			'</div>'+
+	    	   		'</td>'+
+	    	   	'</tr>'
+    	 	);
+    	 $('table#followup-appointments-table').css('border','none');
+    	 $('table#followup-appointments-table').css('border-top','solid 1px #ddd');
+    	 
+    	}
+    
+    
+    
     
 });	
 

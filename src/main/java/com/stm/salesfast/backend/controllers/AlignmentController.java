@@ -32,6 +32,7 @@ import com.stm.salesfast.backend.services.specs.ReminderService;
 import com.stm.salesfast.backend.services.specs.UserAccountService;
 import com.stm.salesfast.backend.utils.AjaxRequestListMapper;
 import com.stm.salesfast.backend.utils.SalesFastUtilities;
+import com.stm.salesfast.constant.SessionConstants;
 
 @Controller
 public class AlignmentController {

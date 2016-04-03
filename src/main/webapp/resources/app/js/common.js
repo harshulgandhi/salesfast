@@ -24,11 +24,3 @@ var updateNotificationCounter = function(){
 	});
 }
 
-//$(document).on('click','ul#salesfast-navbar li',function(){
-//	if(!$(this).hasClass("navbar-menu-selected")){
-//		$(this).addClass("navbar-menu-selected");
-//	}
-//});
-
-//For updating the notification counter
-//document.getElementById("myspan").textContent="newtext";

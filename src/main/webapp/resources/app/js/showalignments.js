@@ -86,9 +86,9 @@ $(document).on('click','button.redirect-past-appointments',function(){
 $('.show-contact').click(function(){
 	$(this).parent().parent().find('div.aligned-physician-contact').toggle();
 	if($(this).parent().parent().find('div.aligned-physician-contact').css('display') == 'none'){
-	    $(this).find('span.button-value').html("Show Contact");
+	    $(this).find('span.button-value').html("Show Contact Details");
 	}else if($(this).parent().parent().find('div.aligned-physician-contact').css('display') == 'block'){
-	    $(this).find('span.button-value').html("Hide Contact");
+	    $(this).find('span.button-value').html("Hide Contact Details");
 	}
 });
 

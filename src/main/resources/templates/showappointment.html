@@ -108,9 +108,10 @@
 									<tr>
 										<th class="physician-id" style="display:none">Physician Id</th>
 										<th>Physician Name</th>
-										<th>Email Id</th>
-										<th>Contact</th>
-										<th>Address</th>
+										<th>Contact Details</th>
+										<th style="display:none">Email Id</th>
+										<th style="display:none">Contact</th>
+										<th style="display:none">Address</th>
 										<th style="display:none">City</th>
 										<th style="display:none">State</th>
 										<th style="display:none">ZIP</th>
@@ -127,11 +128,29 @@
 								</thead>
 								<tbody>
 									<tr th:each="eachVicinityAlignment : ${listOfPhysInVicinity}">
-										<td class="product-id" style="display:none" th:text="${eachVicinityAlignment.physicianId}"></td>
+										<td class="physician-id" style="display:none" th:text="${eachVicinityAlignment.physicianId}"></td>
 										<td th:text="${eachVicinityAlignment.firstName} + ' '+${eachVicinityAlignment.lastName}"></td>
-										<td th:text="${eachVicinityAlignment.email}"></td>
-										<td th:text="${eachVicinityAlignment.contactNumber}"></td>
-										<td th:text="${eachVicinityAlignment.addressLineOne} +' '+ ${eachVicinityAlignment.addressLineTwo}+' '+${eachVicinityAlignment.city}+' '+${eachVicinityAlignment.zip}"></td>
+										<td class="contact-details">
+											<div class="aligned-phys-contact-td">
+												<div class="phys-contact-detail-btn">
+													<button type="button" class="btn btn-default btn-md show-contact form-control">
+														<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+														<span class="button-value">Show Contact Details</span>
+													</button>
+												</div>
+												<div class="aligned-physician-contact"  style="display: none">
+													<div class="phys-address"><span class="contactdetail-label">Address : </span><span class="contactdetail-content" 
+													th:text="${eachVicinityAlignment.addressLineOne} +' '+ ${eachVicinityAlignment.addressLineTwo}+' '+${eachVicinityAlignment.city}+' '+${eachVicinityAlignment.zip}"></span></div>
+													<div class="phys-phone"><span class="contactdetail-label">Phone : </span><span class="contactdetail-content" 
+													th:text="${eachVicinityAlignment.contactNumber}"></span></div>
+													<div class="phys-email"><span class="contactdetail-label">Email : </span><span class="contactdetail-content" 
+													th:text="${eachVicinityAlignment.email}"></span></div>
+												</div>
+											</div>
+										</td>
+										<td style="display:none" th:text="${eachVicinityAlignment.email}"></td>
+										<td style="display:none" th:text="${eachVicinityAlignment.contactNumber}"></td>
+										<td style="display:none" th:text="${eachVicinityAlignment.addressLineOne} +' '+ ${eachVicinityAlignment.addressLineTwo}+' '+${eachVicinityAlignment.city}+' '+${eachVicinityAlignment.zip}"></td>
 										<td style="display:none" th:text="${eachVicinityAlignment.city}"></td>
 										<td style="display:none" th:text="${eachVicinityAlignment.state}"></td>
 										<td style="display:none" th:text="${eachVicinityAlignment.zip}"></td>

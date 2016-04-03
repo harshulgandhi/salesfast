@@ -19,7 +19,7 @@ $(document).ready(function() {
 		    $('.slidedown-alignments-show').slideToggle('fast');
 	});
    var table = $('#aligned-vicinity-physician-table').DataTable({
-	   order: [[16, "desc"]]
+	   order: [[17, "desc"]]
    });
    $('#appointment-fixed-physician-table').find('tr').each(function(i, val){
 	   if($(val).find('.confirmation-status').html() == 'CANCELLED'){
@@ -162,6 +162,15 @@ $(document).ready(function() {
     
 });	
 
+$('.show-contact').click(function(){
+	$(this).parent().parent().find('div.aligned-physician-contact').toggle();
+	if($(this).parent().parent().find('div.aligned-physician-contact').css('display') == 'none'){
+	    $(this).find('span.button-value').html("Show Contact Details");
+	}else if($(this).parent().parent().find('div.aligned-physician-contact').css('display') == 'block'){
+	    $(this).find('span.button-value').html("Hide Contact Details");
+	}
+});
+
 
 $(document).on('click','.my-pitch-buttons',function(){
 	var $row = $(this).parent()  
@@ -262,20 +271,19 @@ $('.submit-selected-alignments').click(function(){
 	var additionalNotesList = [];
 	var isDataInvalid = false; 
 	
-	$('#aligned-vicinity-physician-table .selected').each(function(i, val){
+	$('#aligned-vicinity-physician-table').find('.selected').each(function(i, val){
 		if ($(val).find('.appointment-start-time').length != 0 ) {
 			var appointDate = $(val).find('.appointment-date').val();
 			var appointStartTime = $(val).find('.appointment-start-time').val();
 			var appointEndTime = $(val).find('.appointment-end-time').val();
 			var appointStatus = $(val).find('.appointment-status-selector').val();
 			var additionalNotes = $(val).find('.appointment-notes-class').val();
-			if((appointTime == '' || appointDate == '' || appointEndTime== '') && appointStatus != "NOT INTERESTED"){		//Check if user entered time for all selected physicians
+			if((appointStartTime == '' || appointDate == '' || appointEndTime== '') && appointStatus != "NOT INTERESTED"){		//Check if user entered time for all selected physicians
 				alert("Please mention start time, end time and date both for all selected physicians");
 				isDataInvalid = true;
 				return;
 			}
 			else{
-				console.log("TIME " + appointTime+"; DATE "+appointDate);
 				appointStartTimeList.push(appointStartTime);
 				appointEndTimeList.push(appointEndTime);
 				appointDateList.push(appointDate);
@@ -598,6 +606,7 @@ var getDiffInMinutes = function (t1, t2){
 //appointment time
 var createJson = function(physIds, appointStartTime, appointEndTime, productIds,appointDate, appointStatusList, additionalNotesList){
 	var appointmentJson = {"appointments":[]};
+	console.log("physIds : "+physIds);
 	var appointJsonList = [];
 	for( var i = 0; i<physIds.length;i++){
 		appointJsonList.push(

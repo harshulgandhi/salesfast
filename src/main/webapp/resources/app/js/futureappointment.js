@@ -14,7 +14,9 @@ $(document).ready(function(){
 		$('li#nav-appointment').addClass("navbar-menu-selected")
 	}
 	
-	futureAppointmentTable = $('#future-appointment-fixed-physician-table').dataTable();
+	futureAppointmentTable = $('#future-appointment-fixed-physician-table').dataTable({
+		   "searching": true
+	   });
 	
 	$(".appointment-status-selector").select2();
 	

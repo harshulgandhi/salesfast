@@ -135,7 +135,8 @@ var populateAllQuestions = function(questions){
 		}
 	}
 	var table = $('#question-answer-table').dataTable({
-		"bSort": false
+		"bSort": false,
+		"searching": true
 	});
 }
 
@@ -173,7 +174,8 @@ var populateAllQuestionsAskedBySelf = function(questions){
 	}
 	
 	var table = $('#self-question-answer-table').dataTable({
-		"bSort": false
+		"bSort": false,
+	   "searching": true
 	});
 }
 

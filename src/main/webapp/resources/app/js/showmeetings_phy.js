@@ -8,7 +8,8 @@ var currentSelectedAppointment = 0;
 
 $(document).ready(function() {
 	tableAppointment = $('#detailed-meeting-table').DataTable({
-		   order: [[0, "desc"]]
+		   order: [[0, "desc"]],
+		   "searching": true
 	   });
 	
 	$('li.navbar-menu-selected').removeClass("navbar-menu-selected");

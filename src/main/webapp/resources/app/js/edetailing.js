@@ -62,7 +62,7 @@ var createEDetailingEnvironment = function(data){
 							'</embed>'+
 						'</object>'+
 					'</div>'+
-					'<div class="col-lg-3 info-right-panel" id="'+str+'-salesrep-info" style="display: none;>'+
+					'<div class="col-lg-3 info-right-panel" id="'+str+'-salesrep-info" style="display: none;">'+
 						'<span class="salesrep-info-span">Contact our Sales Representative in case you need answers to any questions.</span>'+
 						'<table id="salesrep-info-table" class="table">'+
 							'<thead>'+

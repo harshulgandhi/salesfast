@@ -19,7 +19,8 @@ $(document).ready(function() {
 		    $('.slidedown-alignments-show').slideToggle('fast');
 	});
    var table = $('#aligned-vicinity-physician-table').DataTable({
-	   order: [[17, "desc"]]
+	   order: [[17, "desc"]],
+	   "searching": true
    });
    $('#appointment-fixed-physician-table').find('tr').each(function(i, val){
 	   if($(val).find('.confirmation-status').html() == 'CANCELLED'){
@@ -635,8 +636,8 @@ var createJson = function(physIds, appointStartTime, appointEndTime, productIds,
 	for( var i = 0; i<physIds.length;i++){
 		appointJsonList.push(
 				{
-					"physicianId":parseInt(physIds[i][0]),
-					"productId":parseInt(productIds[i][0]),
+					"physicianId":parseInt(physIds[i]),
+					"productId":parseInt(productIds[i]),
 					"appointmentStartTime":appointStartTime[i],
 					"appointmentEndTime": appointEndTime[i], 
 					"appointmentDate":appointDate[i],
@@ -655,8 +656,8 @@ var createJsonFollowupAppointment = function(physIds, appointStartTimeList, appo
 	for( var i = 0; i<physIds.length;i++){
 		appointJsonList.push(
 				{
-					"physicianId":parseInt(physIds[i][0]), 
-					"productId":parseInt(productIds[i][0]),
+					"physicianId":parseInt(physIds[i]), 
+					"productId":parseInt(productIds[i]),
 					"appointmentStartTime":appointStartTimeList[i],
 					"appointmentEndTime": appointEndTimeList[i],
 					"appointmentDate":appointDateList[i],

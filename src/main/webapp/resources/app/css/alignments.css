@@ -98,7 +98,7 @@ td.contact-details {
     margin-top: 6%;
 }
 .heading {
-    margin-left: -15%;
+	margin-left: -13%;
     margin-top: 3%;
     width: 53%;
     margin-bottom: 2%;
@@ -113,7 +113,7 @@ h2 {
     border: 1px solid;
     padding-top: 6px;
     padding-bottom: 6px;
-    margin-left: 76%;
+	margin-left: 54%;
     margin-bottom: 3%;
     margin-top: 1%;
 }
@@ -135,11 +135,11 @@ span.most-prospecting-span {
 }
 
 span.prospecting-span {
-    background-color: #BAF3BB;
+    background-color: #A6DAA8;
 }
 
 span.less-prospecting-span {
-    background-color: #D0F7D0;
+    background-color: #ECFBEC;
 }
 .page-heading.row {
     display: -webkit-inline-box;

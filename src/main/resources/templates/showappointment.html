@@ -139,8 +139,12 @@
 													</button>
 												</div>
 												<div class="aligned-physician-contact"  style="display: none">
-													<div class="phys-address"><span class="contactdetail-label">Address : </span><span class="contactdetail-content" 
-													th:text="${eachVicinityAlignment.addressLineOne} +' '+ ${eachVicinityAlignment.addressLineTwo}+' '+${eachVicinityAlignment.city}+' '+${eachVicinityAlignment.zip}"></span></div>
+													<div class="phys-address"><span class="contactdetail-label">Address : </span>
+													<span class="contactdetail-content" 
+													th:unless="${eachVicinityAlignment.addressLineTwo == null}" th:text="${eachVicinityAlignment.addressLineOne} +' '+ ${eachVicinityAlignment.addressLineTwo}+' '+${eachVicinityAlignment.city}+' '+${eachVicinityAlignment.zip}"></span>
+													<span class="contactdetail-content" 
+													th:if="${eachVicinityAlignment.addressLineTwo == null}" th:text="${eachVicinityAlignment.addressLineOne} +' '+${eachVicinityAlignment.city}+' '+${eachVicinityAlignment.zip}"></span>
+													</div>
 													<div class="phys-phone"><span class="contactdetail-label">Phone : </span><span class="contactdetail-content" 
 													th:text="${eachVicinityAlignment.contactNumber}"></span></div>
 													<div class="phys-email"><span class="contactdetail-label">Email : </span><span class="contactdetail-content" 

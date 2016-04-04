@@ -205,6 +205,8 @@ var createPitchEnvironment = function(pitchList){
 			);
 		}
 	}
-	var table = $('#view-pitch-table').dataTable();
+	var table = $('#view-pitch-table').dataTable({
+		   "searching": true
+	   });
 	$('#0').trigger("click");
 }

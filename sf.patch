@@ -1,0 +1,4387 @@
+diff --git a/src/main/java/com/stm/salesfast/backend/SecurityConfig.java b/src/main/java/com/stm/salesfast/backend/SecurityConfig.java
+index 7e8146b..c314ea4 100644
+--- a/src/main/java/com/stm/salesfast/backend/SecurityConfig.java
++++ b/src/main/java/com/stm/salesfast/backend/SecurityConfig.java
+@@ -77,7 +77,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
+ 				new AntPathRequestMatcher("/allpitches"),
+ 				new AntPathRequestMatcher("/getpitchforappointment"),
+ 				new AntPathRequestMatcher("/updatemeetingpitch"),
+-				new AntPathRequestMatcher("/filterparameters")
++				new AntPathRequestMatcher("/filterparameters"),
++				new AntPathRequestMatcher("/getpastappointments")
+ 				};
+ 
+ 		@Override
+diff --git a/src/main/java/com/stm/salesfast/backend/controllers/AppointmentController.java b/src/main/java/com/stm/salesfast/backend/controllers/AppointmentController.java
+index a764e3f..4115664 100644
+--- a/src/main/java/com/stm/salesfast/backend/controllers/AppointmentController.java
++++ b/src/main/java/com/stm/salesfast/backend/controllers/AppointmentController.java
+@@ -28,6 +28,7 @@ import com.stm.salesfast.backend.entity.AppointmentEntity;
+ import com.stm.salesfast.backend.entity.FollowupAppointmentUpdateEntity;
+ import com.stm.salesfast.backend.entity.FutureAppointmentUpdateEntity;
+ import com.stm.salesfast.backend.entity.MeetingExperienceEntity;
++import com.stm.salesfast.backend.entity.PastAppointmentEntity;
+ import com.stm.salesfast.backend.entity.PitchViewEntity;
+ import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
+ import com.stm.salesfast.backend.services.specs.AppointmentService;
+@@ -90,6 +91,13 @@ public class AppointmentController {
+ 		return "showappointment";
+ 	}
+ 	
++	@RequestMapping(value="/showfutureappointments", method=RequestMethod.GET)
++	public String showFutureAppointments(Model model) throws ParseException{
++		List<AppointmentEntity> futureAppointmentsList = appointmentFetchService.getFutureAppointmentToShow(SessionConstants.USER_ID);
++		
++		model.addAttribute("listOfFutureAppointments", futureAppointmentsList);
++		return "showfutureappointment";
++	}
+ 	
+ 	@RequestMapping(value="/addmeetingupdate", method=RequestMethod.POST, consumes = "application/json")
+ 	@ResponseBody
+@@ -180,6 +188,13 @@ public class AppointmentController {
+ 		return "pastappointment";
+ 	}
+ 	
++	@RequestMapping(value="/getpastappointments", method=RequestMethod.GET)
++	@ResponseBody
++	public PastAppointmentEntity[] getPastAppointments() throws ParseException{
++		List<PastAppointmentEntity> pastAppointments = appointmentFetchService.getPastAppointmentToShow(SessionConstants.USER_ID);
++		for(PastAppointmentEntity eachPastApp : pastAppointments) log.info("Past Appointments : "+eachPastApp);
++		return pastAppointments.toArray(new PastAppointmentEntity[pastAppointments.size()]);
++	}
+ }
+ 
+ 
+diff --git a/src/main/java/com/stm/salesfast/backend/dao/impl/AppointmentDaoImpl.java b/src/main/java/com/stm/salesfast/backend/dao/impl/AppointmentDaoImpl.java
+index 7827252..a8f9ccc 100644
+--- a/src/main/java/com/stm/salesfast/backend/dao/impl/AppointmentDaoImpl.java
++++ b/src/main/java/com/stm/salesfast/backend/dao/impl/AppointmentDaoImpl.java
+@@ -73,6 +73,10 @@ public class AppointmentDaoImpl implements AppointmentDao {
+ 			+ "WHERE physicianId = ? AND hasPitch = 1";
+ 	private static final String FETCH_ALL_HAVING_PITCH = "SELECT * FROM appointment "
+ 			+ "WHERE hasPitch = 1";
++	private static final String FETCH_PAST_APPOINTMENTS = "SELECT * FROM appointment "
++			+ "WHERE userId = ? AND "
++			+ "date < DATE_SUB(NOW(),INTERVAL 0 YEAR) "
++			+ "ORDER BY date desc";
+ 	
+ 	
+ 	@Override
+@@ -180,6 +184,23 @@ public class AppointmentDaoImpl implements AppointmentDao {
+ 		}
+ 		return null;
+ 	}
++	
++	/**
++	 * This method returns appointments of a user based on whether
++	 * he/she has entered meeting update or meeting experience details 
++	 * */
++	@Override
++	public List<AppointmentDto> getPastAppointmentByUserId(int userId) {
++		// TODO Auto-generated method stub
++		try{
++			return jdbcTemplate.query(FETCH_PAST_APPOINTMENTS, (rs, rownnum)->{
++				return new AppointmentDto(rs.getInt("appointmentId"), rs.getTime("startTime"), rs.getTime("endTime"), rs.getDate("date"), rs.getInt("physicianId"), userId, rs.getInt("productId"), rs.getString("confirmationStatus"), rs.getString("zip"),rs.getString("cancellationReason"), rs.getString("additionalNotes"), rs.getBoolean("hasMeetingUpdate"),rs.getBoolean("hasMeetingExperienceFromSR"),rs.getBoolean("hasMeetingExperienceFromPH"), rs.getBoolean("hasPitch"));
++			}, userId);
++		}catch(DataAccessException e){
++			e.printStackTrace();
++		}
++		return null;
++	}
+ 
+ 	@Override
+ 	public AppointmentDto getAppointmentByPhysicianId(int physicianId) {
+diff --git a/src/main/java/com/stm/salesfast/backend/dao/impl/MeetingUpdateDaoImpl.java b/src/main/java/com/stm/salesfast/backend/dao/impl/MeetingUpdateDaoImpl.java
+index b37061b..14d8c4e 100644
+--- a/src/main/java/com/stm/salesfast/backend/dao/impl/MeetingUpdateDaoImpl.java
++++ b/src/main/java/com/stm/salesfast/backend/dao/impl/MeetingUpdateDaoImpl.java
+@@ -34,6 +34,10 @@ public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
+ 													+ "(physicianId, productId) IN "
+ 													+ "(SELECT physicianId, productId from appointment "
+ 													+ " WHERE userId = ?)";
++	private static final String FETCH_STATUS_FOR_APPOINTMENTS = "SELECT status from meeting_update  "
++													+ "WHERE appointmentId in "
++													+ "(SELECT appointmentId from appointment "
++													+ "WHERE userId = ? AND physicianId = ?)";
+ 	
+ 	@Autowired
+ 	JdbcTemplate jdbcTemplate;
+@@ -128,5 +132,19 @@ public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
+ 		return null;
+ 	}
+ 	
++	@Override
++	public List<String> getStatusesByAppointments(int userId, int physicianId) {
++		// TODO Auto-generated method stub
++		try{
++			return jdbcTemplate.query(FETCH_STATUS_FOR_APPOINTMENTS, (rs, rownum) -> {
++					return rs.getString("status");
++				}, userId);
++			
++		}catch(DataAccessException e){
++			e.printStackTrace();
++		}
++		return null;
++	}
++	
+ 	
+ }
+diff --git a/src/main/java/com/stm/salesfast/backend/dao/specs/AppointmentDao.java b/src/main/java/com/stm/salesfast/backend/dao/specs/AppointmentDao.java
+index c97273c..aac175d 100644
+--- a/src/main/java/com/stm/salesfast/backend/dao/specs/AppointmentDao.java
++++ b/src/main/java/com/stm/salesfast/backend/dao/specs/AppointmentDao.java
+@@ -47,6 +47,8 @@ public interface AppointmentDao {
+ 
+ 	public List<AppointmentDto> getAppointmentByPhysician(int physicianId);
+ 
+-	List<AppointmentDto> getAllAppointmentHavingPitch();
++	public List<AppointmentDto> getAllAppointmentHavingPitch();
++
++	public List<AppointmentDto> getPastAppointmentByUserId(int userId);
+ 	
+ }
+diff --git a/src/main/java/com/stm/salesfast/backend/entity/PastAppointmentEntity.java b/src/main/java/com/stm/salesfast/backend/entity/PastAppointmentEntity.java
+new file mode 100644
+index 0000000..6c842de
+--- /dev/null
++++ b/src/main/java/com/stm/salesfast/backend/entity/PastAppointmentEntity.java
+@@ -0,0 +1,25 @@
++package com.stm.salesfast.backend.entity;
++
++import java.sql.Date;
++import java.util.List;
++
++import lombok.AllArgsConstructor;
++import lombok.Data;
++import lombok.NoArgsConstructor;
++import lombok.ToString;
++
++@AllArgsConstructor
++@NoArgsConstructor
++@Data
++@ToString
++public class PastAppointmentEntity {
++	private int physicianId;
++	private String physicianName;
++	private int productId;
++	private String productName;
++	private Date date;
++	private String meetingStatus;
++	private List<String> reasonsBySalesRep;
++	private List<String> reasonsByPhysician;
++	private PitchViewEntity pitch;
++}
+diff --git a/src/main/java/com/stm/salesfast/backend/services/impl/AlignmentFetchServiceImpl.java b/src/main/java/com/stm/salesfast/backend/services/impl/AlignmentFetchServiceImpl.java
+index 5de5369..80b7ee4 100644
+--- a/src/main/java/com/stm/salesfast/backend/services/impl/AlignmentFetchServiceImpl.java
++++ b/src/main/java/com/stm/salesfast/backend/services/impl/AlignmentFetchServiceImpl.java
+@@ -75,6 +75,7 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
+ 		List<AlignmentsDto> alignmentsByUserId = alignmentDao.getAlignmentByUserIdNotInAppointments(userId);
+ 		List<AlignedPhysicianEntity> alignedPhysicians = new ArrayList<AlignedPhysicianEntity>();
+ 		for(AlignmentsDto eachAlignment : alignmentsByUserId){
++			
+ 			PhysicianStgDto physicianDto = physicianDao.getBy(eachAlignment.getPhysicianId());
+ 			alignedPhysicians.add(new AlignedPhysicianEntity(physicianDto,
+ 					productService.getProductById(eachAlignment.getProductId()).getProductName(),
+diff --git a/src/main/java/com/stm/salesfast/backend/services/impl/AppointmentServiceImpl.java b/src/main/java/com/stm/salesfast/backend/services/impl/AppointmentServiceImpl.java
+index f2f0454..e474fff 100644
+--- a/src/main/java/com/stm/salesfast/backend/services/impl/AppointmentServiceImpl.java
++++ b/src/main/java/com/stm/salesfast/backend/services/impl/AppointmentServiceImpl.java
+@@ -17,15 +17,21 @@ import com.stm.salesfast.backend.controllers.LoginController;
+ import com.stm.salesfast.backend.dao.specs.AlignmentsDao;
+ import com.stm.salesfast.backend.dao.specs.AppointmentDao;
+ import com.stm.salesfast.backend.dto.AppointmentDto;
++import com.stm.salesfast.backend.dto.MeetingUpdateDto;
+ import com.stm.salesfast.backend.dto.PhysicianStgDto;
+ import com.stm.salesfast.backend.dto.ProductDto;
+ import com.stm.salesfast.backend.dto.UserDto;
+ import com.stm.salesfast.backend.entity.AlignedPhysicianFollowUpEntity;
+ import com.stm.salesfast.backend.entity.AppointmentEntity;
++import com.stm.salesfast.backend.entity.PastAppointmentEntity;
++import com.stm.salesfast.backend.entity.PitchViewEntity;
+ import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
+ import com.stm.salesfast.backend.services.specs.AppointmentService;
++import com.stm.salesfast.backend.services.specs.MeetingExperienceService;
++import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
+ import com.stm.salesfast.backend.services.specs.NotificationService;
+ import com.stm.salesfast.backend.services.specs.PhysicianFetchService;
++import com.stm.salesfast.backend.services.specs.PitchesService;
+ import com.stm.salesfast.backend.services.specs.ProductFetchService;
+ import com.stm.salesfast.backend.services.specs.UserAccountService;
+ import com.stm.salesfast.backend.services.specs.UserDetailService;
+@@ -63,6 +69,15 @@ public class AppointmentServiceImpl implements AppointmentService {
+ 	@Autowired
+ 	NotificationService notificationService;
+ 	
++	@Autowired
++	MeetingUpdateService meetingUpdate;
++
++	@Autowired
++	MeetingExperienceService meetingExp;
++
++	@Autowired
++	PitchesService pitch;
++	
+ 	@Override
+ 	public void addAppointment(int physId, Time startTime, Time endTime, Date date,  String confirmationStatus, int productId, String additionalNotes) throws ParseException {
+ 		// TODO Auto-generated method stub
+@@ -100,7 +115,7 @@ public class AppointmentServiceImpl implements AppointmentService {
+ 		for(AppointmentDto eachAppointment : appointmentDtos){
+ 			PhysicianStgDto physicianDto = physicianService.getPhysicianById(eachAppointment.getPhysicianId());
+ 			ProductDto productDto = productFetchService.getProductById(eachAppointment.getProductId());
+-			if(eachAppointment.getDate().getTime() <= SalesFastUtilities.getCurrentDate().getTime()){
++			if(eachAppointment.getDate().getTime() == SalesFastUtilities.getCurrentDate().getTime()){
+ 				todaysAppointmentEntitiesList.add(new AppointmentEntity(eachAppointment.getAppointmnetId(),
+ 						physicianDto.getPhysicianId(),
+ 						physicianDto.getFirstName()+" "+physicianDto.getLastName(), 
+@@ -157,6 +172,35 @@ public class AppointmentServiceImpl implements AppointmentService {
+ 		}
+ 		return futureAppointmentEntitiesList;
+ 	}
++
++	/**
++	 * This method returns PAST DATE's appointments of a user based  
++	 * @throws ParseException 
++	 * */
++	@Override
++	public List<PastAppointmentEntity> getPastAppointmentToShow(int userId) throws ParseException {
++		// TODO Auto-generated method stub
++		List<AppointmentDto> appointmentDtos = appointmentDao.getPastAppointmentByUserId(userId);
++		List<PastAppointmentEntity> pastAppointmentEntitiesList = new ArrayList<>();
++		for(AppointmentDto eachAppointment : appointmentDtos){
++			PhysicianStgDto physicianDto = physicianService.getPhysicianById(eachAppointment.getPhysicianId());
++			ProductDto productDto = productFetchService.getProductById(eachAppointment.getProductId());
++			MeetingUpdateDto meetingUpdateDto = meetingUpdate.getMeetingUpdateByAppointmentId(eachAppointment.getAppointmnetId());
++			String meetingStatus = (meetingUpdateDto == null) ? "STATUS NA" : meetingUpdateDto.getStatus();
++			pastAppointmentEntitiesList.add(new PastAppointmentEntity(
++						physicianDto.getPhysicianId(),
++						physicianDto.getFirstName()+" "+physicianDto.getLastName(),
++						productDto.getProductId(),
++						productDto.getProductName(),
++						eachAppointment.getDate(),
++						meetingStatus,
++						meetingExp.salesRepResponse(eachAppointment.getAppointmnetId()),
++						meetingExp.physicianResponse(eachAppointment.getAppointmnetId()),
++						pitch.getPitchForAppointment(eachAppointment.getAppointmnetId())
++					));
++		}
++		return pastAppointmentEntitiesList;
++	}
+ 	
+ 	/**
+ 	 * This method returns ALL appointments of a user based on whether
+diff --git a/src/main/java/com/stm/salesfast/backend/services/impl/MeetingExperienceServiceImpl.java b/src/main/java/com/stm/salesfast/backend/services/impl/MeetingExperienceServiceImpl.java
+index 19bd793..5f59ada 100644
+--- a/src/main/java/com/stm/salesfast/backend/services/impl/MeetingExperienceServiceImpl.java
++++ b/src/main/java/com/stm/salesfast/backend/services/impl/MeetingExperienceServiceImpl.java
+@@ -1,5 +1,6 @@
+ package com.stm.salesfast.backend.services.impl;
+ 
++import java.util.ArrayList;
+ import java.util.List;
+ 
+ import org.slf4j.Logger;
+@@ -79,6 +80,54 @@ public class MeetingExperienceServiceImpl implements MeetingExperienceService {
+ 	}
+ 	
+ 	@Override
++	public List<String> salesRepResponse(int appointmentId){
++		List<String> salesRepResponse = new ArrayList<>();
++		List<MeetingExperienceDto> meetingExp =  fetchMeetingExperienceByAppointmentId(appointmentId);
++		for(MeetingExperienceDto eachMeetingExp : meetingExp){
++			if(eachMeetingExp.isSalesRepEntry()){
++				if(eachMeetingExp.isLikedTheProduct()) salesRepResponse.add("Physician liked the product.");
++				else salesRepResponse.add("Physician did not liked the product.");
++				if(eachMeetingExp.isLikedPriceAffordability()) salesRepResponse.add("Physician liked the fact that medicine was affordable.");
++				else salesRepResponse.add("Physician did not find medicine affordable.");
++				if(eachMeetingExp.isLikedPresentation()) salesRepResponse.add("Physician liked the presentation.");
++				else salesRepResponse.add("Physician did not like the presentation.");
++				if(eachMeetingExp.isImpressiveCompanyReputation()) salesRepResponse.add("Physician was impressed by company's reputation.");
++				else salesRepResponse.add("Physician was not impressed by company's reputation.");
++				if(eachMeetingExp.isImpressiveLessSideEffects()) salesRepResponse.add("Physician liked that medicine has less side effects.");
++				else salesRepResponse.add("Physician was not impressed beacuse he thinks medicine has many side effects.");
++				if(eachMeetingExp.isSalesRepConfidence()) salesRepResponse.add("Physician liked your confidence during presentation.");
++				else salesRepResponse.add("You need to be more confident while pitching.");
++			}
++		}
++		
++		return salesRepResponse;
++	}
++	
++	@Override
++	public List<String> physicianResponse(int appointmentId){
++		List<String> physicianResponse = new ArrayList<>();
++		List<MeetingExperienceDto> meetingExp =  fetchMeetingExperienceByAppointmentId(appointmentId);
++		for(MeetingExperienceDto eachMeetingExp : meetingExp){
++			if(eachMeetingExp.isPhysicianEntry()){
++				if(eachMeetingExp.isLikedTheProduct()) physicianResponse.add("Physician liked the product.");
++				else physicianResponse.add("Physician did not liked the product.");
++				if(eachMeetingExp.isLikedPriceAffordability()) physicianResponse.add("Physician liked the fact that medicine was affordable.");
++				else physicianResponse.add("Physician did not find medicine affordable.");
++				if(eachMeetingExp.isLikedPresentation()) physicianResponse.add("Physician liked the presentation.");
++				else physicianResponse.add("Physician did not like the presentation.");
++				if(eachMeetingExp.isImpressiveCompanyReputation()) physicianResponse.add("Physician was impressed by company's reputation.");
++				else physicianResponse.add("Physician was not impressed by company's reputation.");
++				if(eachMeetingExp.isImpressiveLessSideEffects()) physicianResponse.add("Physician liked that medicine has less side effects.");
++				else physicianResponse.add("Physician was not impressed beacuse he thinks medicine has many side effects.");
++				if(eachMeetingExp.isSalesRepConfidence()) physicianResponse.add("Physician liked your confidence during presentation.");
++				else physicianResponse.add("You need to be more confident while pitching.");
++			}
++		}
++		
++		return physicianResponse;
++	}
++	
++	@Override
+ 	public int countOfRecords(boolean forPhysicianEntries, boolean forSalesRepEntries){
+ 		if(forPhysicianEntries && forSalesRepEntries) return meetingExperienceDao.countAll();
+ 		else if(forPhysicianEntries) return meetingExperienceDao.countAllPhy();
+diff --git a/src/main/java/com/stm/salesfast/backend/services/impl/PitchesServiceImpl.java b/src/main/java/com/stm/salesfast/backend/services/impl/PitchesServiceImpl.java
+index 6385eb2..01018f7 100644
+--- a/src/main/java/com/stm/salesfast/backend/services/impl/PitchesServiceImpl.java
++++ b/src/main/java/com/stm/salesfast/backend/services/impl/PitchesServiceImpl.java
+@@ -108,8 +108,11 @@ public class PitchesServiceImpl implements PitchesService{
+ 	@Override
+ 	public PitchViewEntity getPitchForAppointment(int appointmentId){
+ 		PitchesDto pitchDto = pitchDao.getPitchByAppointmentId(appointmentId);
+-		String fileLocation = ConstantValues.PITCH_DOCS_PATH+pitchDto.getFileName();
+-		return new PitchViewEntity(pitchDto.getPitchesId(), pitchDto.getAppointmentId(), pitchDto.getMeetingStatus(), fileLocation, pitchDto.getPitchScore());
++		if(pitchDto == null) return null;
++		else{
++			String fileLocation = ConstantValues.PITCH_DOCS_PATH+pitchDto.getFileName();
++			return new PitchViewEntity(pitchDto.getPitchesId(), pitchDto.getAppointmentId(), pitchDto.getMeetingStatus(), fileLocation, pitchDto.getPitchScore());
++		}
+ 	}
+ 	
+ 	@Override
+diff --git a/src/main/java/com/stm/salesfast/backend/services/specs/AppointmentService.java b/src/main/java/com/stm/salesfast/backend/services/specs/AppointmentService.java
+index 4a844b7..ecb5591 100644
+--- a/src/main/java/com/stm/salesfast/backend/services/specs/AppointmentService.java
++++ b/src/main/java/com/stm/salesfast/backend/services/specs/AppointmentService.java
+@@ -8,6 +8,7 @@ import java.util.List;
+ import com.stm.salesfast.backend.dto.AppointmentDto;
+ import com.stm.salesfast.backend.entity.AlignedPhysicianFollowUpEntity;
+ import com.stm.salesfast.backend.entity.AppointmentEntity;
++import com.stm.salesfast.backend.entity.PastAppointmentEntity;
+ 
+ public interface AppointmentService {
+ 
+@@ -66,5 +67,8 @@ public interface AppointmentService {
+ 	List<AppointmentDto> getAppointmentsByPhysician(int physicianId);
+ 
+ 	List<AppointmentDto> getAllAppointmentsHavingPitch();
++
++	List<PastAppointmentEntity> getPastAppointmentToShow(int userId)
++			throws ParseException;
+ 	
+ }
+diff --git a/src/main/java/com/stm/salesfast/backend/services/specs/MeetingExperienceService.java b/src/main/java/com/stm/salesfast/backend/services/specs/MeetingExperienceService.java
+index 5ddab10..2a37fd3 100644
+--- a/src/main/java/com/stm/salesfast/backend/services/specs/MeetingExperienceService.java
++++ b/src/main/java/com/stm/salesfast/backend/services/specs/MeetingExperienceService.java
+@@ -44,4 +44,8 @@ public interface MeetingExperienceService {
+ 	int getCountForRepsConfidence_Lost();
+ 
+ 	int getCountOrgReputation_Lost();
++
++	List<String> physicianResponse(int appointmentId);
++
++	List<String> salesRepResponse(int appointmentId);
+ }
+diff --git a/src/main/resources/templates/pastappointment.html b/src/main/resources/templates/pastappointment.html
+index 7625ccc..3cb4379 100644
+--- a/src/main/resources/templates/pastappointment.html
++++ b/src/main/resources/templates/pastappointment.html
+@@ -3,7 +3,7 @@
+ <head>
+ <!-- Header to include css -->
+ <div th:replace="fragments/header :: commonhead"></div>
+-<link rel="stylesheet" type="text/css" href="resources/app/css/pastappointments.css"/>
++<link rel="stylesheet" type="text/css" href="resources/app/css/pastappointment.css"/>
+ <link rel="stylesheet" type="text/css" href="resources/app/css/toggleyesnoswitch.css"/>
+ <meta charset="ISO-8859-1" />
+ <title>SalesFast Home</title>
+@@ -15,23 +15,38 @@
+ 		<div class="left-nav" id="cssmenu">
+ 			<ul class="left-menu-ul">
+ 				<li class='active today-appointment-li' ><a href='/showappointments'><span>TODAY's APPOINTMENTS</span></a></li>
+-				<li class='last future-appointment-li'><a href='#'><span>FUTURE APPOINTMENTS</span></a></li>
++				<li class='last future-appointment-li'><a href='/showfutureappointments'><span>FUTURE APPOINTMENTS</span></a></li>
+ 				<li class='last past-appointment-li'><a href='/pastappointments'><span>PAST APPOINTMENTS</span></a></li>
+ 			</ul>
+ 		</div>
+ 		<div class="container" id="layout">
+ 			<div class="row row-header page-header"><h3>Your past appointments</h3></div>
+-			<div class="future-appointment-div" style="display: none;">
+-				<div class="row row-header page-header"><h3>Future Appointments!</h3></div>
+-				<div class="row future-appointment-div"><div th:replace="futureappointmentmodal :: futureappointmentmodal-body"></div></div>
++			<div class="row">
++				<div class="col-lg-12 col-sm-12">
++					<table id="past-appointments-table" class="table table-bordered past-appointment-table-class">
++						<thead>
++							<tr>
++								<th style="display:none" class="physician-id">Physician Id</th>
++								<th>Physician Name</th>
++								<th style="display:none" class="product-id">Product Id</th>
++								<th>Product</th>
++								<th>Date</th>
++								<th>Status</th>
++								<th>Further Details</th>				
++							</tr>
++						</thead>
++						<tbody>
++						</tbody>
++					</table>
++				</div>
+ 			</div>
++					
+ 		</div>
+ 	</div>
+ 	
+-							<!-- Modal for viewing future appointments -->
+-	<div th:replace="futureappointmentmodal :: futureappointmentmodal"></div>
+ 	
+-
++			<!-- Modal for VIEWING PAST APPOINTMENT DETAILS-->
++	<div th:replace="pastappointmentdetailmodal :: past-appointment-details-modal"></div>
+ <!-- Common footer -->
+ <div th:replace="fragments/footer :: footer"></div>
+ <script  type="text/javascript" src="resources/app/js/pastappointment.js"></script>
+diff --git a/src/main/resources/templates/pastappointmentdetailmodal.html b/src/main/resources/templates/pastappointmentdetailmodal.html
+new file mode 100644
+index 0000000..0124786
+--- /dev/null
++++ b/src/main/resources/templates/pastappointmentdetailmodal.html
+@@ -0,0 +1,47 @@
++<!DOCTYPE html>
++<html>
++<head>
++</head>
++<body>
++	<div class="modal fade" id="pastappointment-details-modal" role="dialog" data-edit-mode="false" th:fragment="past-appointment-details-modal">
++		<div class="modal-dialog" role="document">
++			<div class="modal-content">
++				<div class="modal-header">
++					<button type="button" class="close" data-dismiss="modal"
++						aria-label="Close">
++						<span aria-hidden="true">&times;</span>
++					</button>
++					<h4 class="modal-title" id="furtherdetailmodal">Further Details</h4>
++				</div>
++				<div class="modal-custom-header-1 modal-header further-detail-modal-header">
++					<h5 class="modal-title">Your experience about meeting</h5>
++				</div>
++				<div class="modal-body modal-body-1 meeting-exp-modal-body">
++					<ul class="salesrep-response">
++						
++					</ul>
++				</div>
++				<div class="modal-custom-header-2 modal-header further-detail-modal-header">
++					<h5 class="modal-title">Physician's experience about meeting</h5>
++				</div>
++				<div class="modal-body modal-body-2  meeting-exp-modal-body">
++					<ul class="physician-response">
++						
++					</ul>
++				</div>
++				<div class="modal-custom-header-3 modal-header further-detail-modal-header">
++					<h5 class="modal-title">Your pitch for the meeting</h5>
++				</div>
++				<div class="modal-body modal-body-3">
++					
++				</div>
++				
++				
++				<div class="modal-footer">
++					<button id="further-detail-cancel-button" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
++				</div>
++			</div>
++		</div>
++	</div>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/src/main/resources/templates/products.html b/src/main/resources/templates/products.html
+index 42b73f8..81fb0bc 100644
+--- a/src/main/resources/templates/products.html
++++ b/src/main/resources/templates/products.html
+@@ -24,7 +24,7 @@
+ 			<div class="row product-selector-div">
+ 				<div class="product-selection-div">
+ 					<div class="product-selector-label">SELECT A PRODUCT.</div>
+-					<select class="product-selector validate-ele" name="product">
++					<select class="product-selector validate-ele" id="product-selector-id" name="product">
+ 						<option disabled="disabled" selected="selected" value="none"> -- select a product-- </option>
+ 					</select>
+ 				</div>
+diff --git a/src/main/resources/templates/showalignments.html b/src/main/resources/templates/showalignments.html
+index 7b18d40..d4a8ab0 100644
+--- a/src/main/resources/templates/showalignments.html
++++ b/src/main/resources/templates/showalignments.html
+@@ -18,38 +18,59 @@
+ 				<table id="aligned-physician-table" class="table table-striped table-bordered">
+ 					<thead>
+ 						<tr>
+-							<th style="display:none">Physician Id</th>
++							<th style="display:none">Importance Factor</th>
++							<th class="physician-id" style="display:none">Physician Id</th>
+ 							<th>Physician Name</th>
+-							<th>Email Id</th>
+-							<th>Contact</th>
+-							<th>Address</th>
++							<th>Contact Details</th>
++							<th style="display:none">Email Id</th>
++							<th style="display:none">Contact</th>
++							<th style="display:none">Address</th>
+ 							<th style="display:none">City</th>
+ 							<th style="display:none">State</th>
+ 							<th style="display:none">ZIP</th>
+ 							<th style="display:none">Medical Field</th>
+ 							<th>Product</th>
+-							<th style="display:none">Product Id</th>
++							<th class="product-id" style="display:none">Product Id</th>
+ 							<th>Is a new Physician?</th>
+ 							<th>Date</th>
+ 							<th>Time</th>
+ 							<th>Appointment Status</th>
+ 							<th>Notes</th>
+-							<th style="display:none">Importance Factor</th>
++							<th>Past Meetings</th>
+ 						</tr>
+ 					</thead>
+ 					<tbody>
+ 						<tr th:each="eachAlignment : ${listOfAlignedPhysician}">
+-							<td style="display:none" th:text="${eachAlignment.physicianId}"></td>
++							<td class="importance-factor" style="display:none" th:text="${eachAlignment.importanceFactor}"></td>
++							<td class="physician-id" style="display:none" th:text="${eachAlignment.physicianId}"></td>
+ 							<td class="physician-name" th:text="${eachAlignment.firstName} + ' '+${eachAlignment.lastName}"></td>
+-							<td th:text="${eachAlignment.email}"></td>
+-							<td th:text="${eachAlignment.contactNumber}"></td>
+-							<td th:text="${eachAlignment.addressLineOne} +' '+ ${eachAlignment.addressLineTwo}+' '+${eachAlignment.city}+' '+${eachAlignment.zip}"></td>
++							<td class="contact-details">
++								<div class="aligned-phys-contact-td">
++									<div class="phys-contact-detail-btn">
++										<button type="button" class="btn btn-default btn-md show-contact form-control">
++											<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
++											<span class="button-value">Show Contact Details</span>
++										</button>
++									</div>
++									<div class="aligned-physician-contact"  style="display: none">
++										<div class="phys-address"><span class="contactdetail-label">Address : </span><span class="contactdetail-content" 
++										th:text="${eachAlignment.addressLineOne} +' '+ ${eachAlignment.addressLineTwo}+' '+${eachAlignment.city}+' '+${eachAlignment.zip}"></span></div>
++										<div class="phys-phone"><span class="contactdetail-label">Phone : </span><span class="contactdetail-content" 
++										th:text="${eachAlignment.contactNumber}"></span></div>
++										<div class="phys-email"><span class="contactdetail-label">Email : </span><span class="contactdetail-content" 
++										th:text="${eachAlignment.email}"></span></div>
++									</div>
++								</div>
++							</td>
++							<td style="display:none" th:text="${eachAlignment.email}"></td>
++							<td style="display:none" th:text="${eachAlignment.contactNumber}"></td>
++							<td style="display:none" th:text="${eachAlignment.addressLineOne} +' '+ ${eachAlignment.addressLineTwo}+' '+${eachAlignment.city}+' '+${eachAlignment.zip}"></td>
+ 							<td style="display:none" th:text="${eachAlignment.city}"></td>
+ 							<td style="display:none" th:text="${eachAlignment.state}"></td>
+ 							<td style="display:none" th:text="${eachAlignment.zip}"></td>
+ 							<td style="display:none" th:text="${eachAlignment.medicalField}"></td>
+ 							<td th:text="${eachAlignment.productName}"></td>
+-							<td style="display:none" th:text="${eachAlignment.productId}"></td>
++							<td class="product-id" style="display:none" th:text="${eachAlignment.productId}"></td>
+ 							<td th:unless="${eachAlignment.isNew}" th:text="NO"></td>
+ 							<td th:if="${eachAlignment.isNew}" th:text="YES"></td>
+ 							<td><input class="appointment-date appointment-paramaters" type="date" disabled="disabled"/></td>
+@@ -69,8 +90,14 @@
+ 								</div>
+ 							</td>
+ 							<td><textarea name="id" class="form-control appointment-notes-class appointment-paramaters" 
+-							id="appointment-notes-id" placeholder="Additional notes" rows="2" required="required" disabled="disabled"></textarea></td>
+-							<td class="importance-factor" style="display:none" th:text="${eachAlignment.importanceFactor}"></td>
++								id="appointment-notes-id" placeholder="Additional notes" rows="2" required="required" disabled="disabled"></textarea>
++							</td>
++							<td class="past-appointment-redirect-td">
++								<button type="button" class="btn btn-default btn-md redirect-past-appointments form-control">
++									<span class="glyphicon" aria-hidden="true"></span>
++									<span class="button-value">Your past interactions</span>
++								</button>
++							</td>
+ 						</tr>
+ 					</tbody>
+ 				</table>
+diff --git a/src/main/resources/templates/showappointment.html b/src/main/resources/templates/showappointment.html
+index 5ab49bc..d4894ea 100644
+--- a/src/main/resources/templates/showappointment.html
++++ b/src/main/resources/templates/showappointment.html
+@@ -15,12 +15,12 @@
+ 		<div class="left-nav" id="cssmenu">
+ 			<ul class="left-menu-ul">
+ 				<li class='active today-appointment-li'><a href='/showappointments'><span>TODAY's APPOINTMENTS</span></a></li>
+-				<li class='future-appointment-li'><a href='#'><span>FUTURE APPOINTMENTS</span></a></li>
++				<li class='future-appointment-li'><a href='/showfutureappointments'><span>FUTURE APPOINTMENTS</span></a></li>
+ 				<li class='last past-appointment-li'><a href='/pastappointments'><span>PAST APPOINTMENTS</span></a></li>
+ 			</ul>
+ 		</div>
+ 		<div class="container" id="layout">
+-			<div class="today-appointment-div" style="display: none;">
++			<div class="today-appointment-div">
+ 				<div class="row row-header page-header"><h3>Your Appointments For Today</h3></div>
+ 				<div class="row update-buttons-row">
+ 					<div class="col-lg-12 col-sm-12 table-buttons">
+@@ -47,14 +47,14 @@
+ 							<thead>
+ 								<tr>
+ 									<th class="appointment-id" style="display:none">Appointment Id</th>
+-									<th style="display:none">Physician Id</th>
++									<th class="physician-id" style="display:none">Physician Id</th>
+ 									<th>Physician Name</th>
+ 									<th>Address</th>
+ 									<th>Contact</th>
+ 									<th>Email Id</th>
+ 									<th class="confirmation-status-head">Confirmation Status</th>
+ 									<th>Time of appointment</th>
+-									<th>Product</th>
++									<th class="product-name">Product</th>
+ 									<th class="meeting-update-flag" style="display:none">Has Meeting Update</th>
+ 									<th class="meeting-exp-flag" style="display:none">Has Meeting Experience</th>
+ 									<th>Notes</th>
+@@ -65,7 +65,7 @@
+ 							<tbody>
+ 								<tr th:each="eachAppointment : ${listOfTodaysAppointments}">
+ 									<td class="appointment-id" style="display:none" th:text="${eachAppointment.appointmentId}"></td>
+-									<td style="display:none" th:text="${eachAppointment.physicianId}"></td>
++									<td class="physician-id" style="display:none" th:text="${eachAppointment.physicianId}"></td>
+ 									<td class="physician-name-td" th:text="${eachAppointment.physicianName}"></td>
+ 									<td th:text="${eachAppointment.address}"></td>
+ 									<td th:text="${eachAppointment.contact}"></td>
+@@ -77,7 +77,7 @@
+ 										<span class="time-label">Ends &nbsp;@ </span>
+ 										<span  th:text="${eachAppointment.endTime}" class="appointment-end-time-span"></span>
+ 									</td>
+-									<td th:text="${eachAppointment.product}"></td>
++									<td class="product-name-td" th:text="${eachAppointment.product}"></td>
+ 									<td class="meeting-update-flag" style="display:none" th:text="${eachAppointment.hasMeetingUpdate}"></td>
+ 									<td class="meeting-exp-flag" style="display:none" th:text="${eachAppointment.hasMeetingExperience}"></td>
+ 									<td th:text="${eachAppointment.additionalUpdate}"></td>
+@@ -106,7 +106,7 @@
+ 							<table id="aligned-vicinity-physician-table" class="table table-striped table-bordered">
+ 								<thead>
+ 									<tr>
+-										<th style="display:none">Physician Id</th>
++										<th class="physician-id" style="display:none">Physician Id</th>
+ 										<th>Physician Name</th>
+ 										<th>Email Id</th>
+ 										<th>Contact</th>
+@@ -116,7 +116,7 @@
+ 										<th style="display:none">ZIP</th>
+ 										<th style="display:none">Medical Field</th>
+ 										<th>Product</th>
+-										<th style="display:none">Product Id</th>
++										<th class="product-id" style="display:none">Product Id</th>
+ 										<th>Is a new Physician?</th>
+ 										<th>Date</th>
+ 										<th>Time</th>
+@@ -127,7 +127,7 @@
+ 								</thead>
+ 								<tbody>
+ 									<tr th:each="eachVicinityAlignment : ${listOfPhysInVicinity}">
+-										<td style="display:none" th:text="${eachVicinityAlignment.physicianId}"></td>
++										<td class="product-id" style="display:none" th:text="${eachVicinityAlignment.physicianId}"></td>
+ 										<td th:text="${eachVicinityAlignment.firstName} + ' '+${eachVicinityAlignment.lastName}"></td>
+ 										<td th:text="${eachVicinityAlignment.email}"></td>
+ 										<td th:text="${eachVicinityAlignment.contactNumber}"></td>
+@@ -137,7 +137,7 @@
+ 										<td style="display:none" th:text="${eachVicinityAlignment.zip}"></td>
+ 										<td style="display:none" th:text="${eachVicinityAlignment.medicalField}"></td>
+ 										<td th:text="${eachVicinityAlignment.productName}"></td>
+-										<td style="display:none" th:text="${eachVicinityAlignment.productId}"></td>								
++										<td class="product-id" style="display:none" th:text="${eachVicinityAlignment.productId}"></td>								
+ 										<td th:unless="${eachVicinityAlignment.isNew}" th:text="NO"></td>
+ 										<td th:if="${eachVicinityAlignment.isNew}" th:text="YES"></td>
+ 										<td><input class="appointment-date appointment-paramaters" type="date" disabled="disabled"/></td>
+@@ -174,7 +174,7 @@
+ 						<table id="followup-appointments-table" class="table table-striped table-bordered">
+ 							<thead>
+ 								<tr>
+-									<th style="display:none">Physician Id</th>
++									<th class="physician-id" style="display:none">Physician Id</th>
+ 									<th>Physician Name</th>
+ 									<th>Email Id</th>
+ 									<th>Contact</th>
+@@ -184,7 +184,7 @@
+ 									<th style="display:none">ZIP</th>
+ 									<th style="display:none">Medical Field</th>
+ 									<th>Product</th>
+-									<th style="display:none">Product Id</th>
++									<th class="product-id" style="display:none">Product Id</th>
+ 									<th>Is a new Physician?</th>
+ 									<th>Date</th>
+ 									<th>Time</th>
+@@ -196,7 +196,7 @@
+ 							</thead>
+ 							<tbody>
+ 								<tr th:each="eachFollowUpAppointment : ${followUpAppointments}">
+-									<td style="display:none" th:text="${eachFollowUpAppointment.physicianId}"></td>
++									<td class="physician-id" style="display:none" th:text="${eachFollowUpAppointment.physicianId}"></td>
+ 									<td th:text="${eachFollowUpAppointment.firstName} + ' '+${eachFollowUpAppointment.lastName}"></td>
+ 									<td th:text="${eachFollowUpAppointment.email}"></td>
+ 									<td th:text="${eachFollowUpAppointment.contactNumber}"></td>
+@@ -206,7 +206,7 @@
+ 									<td style="display:none" th:text="${eachFollowUpAppointment.zip}"></td>
+ 									<td style="display:none" th:text="${eachFollowUpAppointment.medicalField}"></td>
+ 									<td th:text="${eachFollowUpAppointment.productName}"></td>
+-									<td style="display:none" th:text="${eachFollowUpAppointment.productId}"></td>								
++									<td class="product-id" style="display:none" th:text="${eachFollowUpAppointment.productId}"></td>								
+ 									<td th:unless="${eachFollowUpAppointment.isNew}" th:text="NO"></td>
+ 									<td th:if="${eachFollowUpAppointment.isNew}" th:text="YES"></td>
+ 									<td><input class="appointment-date followup-appointment-paramaters" type="date" disabled="disabled" th:value="${eachFollowUpAppointment.followUpDate}"/></td>
+@@ -247,8 +247,8 @@
+ 							<!-- Modal for adding meeting updates -->
+ 	<div th:replace="addmeetingupdatemodal :: addmeetingupdatemodal"></div>
+ 	
+-							<!-- Modal for viewing future appointments -->
+-	<div th:replace="futureappointmentmodal :: futureappointmentmodal"></div>
++							<!-- Modal for viewing future appointments 
++	<div th:replace="futureappointmentmodal :: futureappointmentmodal"></div> -->
+ 	
+ 							<!-- Modal for UPLOADING meeting pitch-->
+ 	<div th:replace="uploadpitchmodal :: upload-meeting-pitch-modal"></div>
+@@ -262,6 +262,6 @@
+ <!-- Common footer -->
+ <div th:replace="fragments/footer :: footer"></div>
+ <script  type="text/javascript" src="resources/app/js/showappointments.js"></script>
+-<script  type="text/javascript" src="resources/app/js/futureappointment.js"></script>
++<!-- <script  type="text/javascript" src="resources/app/js/futureappointment.js"></script> -->
+ </body>
+ </html>
+\ No newline at end of file
+diff --git a/src/main/resources/templates/showfutureappointment.html b/src/main/resources/templates/showfutureappointment.html
+new file mode 100644
+index 0000000..d00b052
+--- /dev/null
++++ b/src/main/resources/templates/showfutureappointment.html
+@@ -0,0 +1,47 @@
++<!DOCTYPE html>
++<html xmlns:th="http://www.thymeleaf.org">
++<head>
++<!-- Header to include css -->
++<div th:replace="fragments/header :: commonhead"></div>
++<link rel="stylesheet" type="text/css" href="resources/app/css/appointments.css"/>
++<link rel="stylesheet" type="text/css" href="resources/app/css/toggleyesnoswitch.css"/>
++<meta charset="ISO-8859-1" />
++<title>SalesFast Home</title>
++</head>
++<body>
++	<!-- Common header -->
++	<div th:replace="fragments/header :: header"></div>
++	<div class="outer-container">
++		<div class="left-nav" id="cssmenu">
++			<ul class="left-menu-ul">
++				<li class='active today-appointment-li' ><a href='/showappointments'><span>TODAY's APPOINTMENTS</span></a></li>
++				<li class='last future-appointment-li'><a href='/showfutureappointments'><span>FUTURE APPOINTMENTS</span></a></li>
++				<li class='last past-appointment-li'><a href='/pastappointments'><span>PAST APPOINTMENTS</span></a></li>
++			</ul>
++		</div>
++		<div class="container" id="layout">
++			<div class="future-appointment-div">
++				<div class="row row-header page-header"><h3>Future Appointments!</h3></div>
++				<div class="row future-appointment-div"><div th:replace="futureappointmentmodal :: futureappointmentmodal-body"></div></div>
++			</div>
++		</div>
++	</div>
++	
++							<!-- Modal for viewing future appointments -->
++	<div th:replace="futureappointmentmodal :: futureappointmentmodal"></div>
++	
++						<!-- Modal for UPLOADING meeting pitch-->
++	<div th:replace="uploadpitchmodal :: upload-meeting-pitch-modal"></div>
++	
++							<!-- Modal for VIEWING meeting pitch-->
++	<div th:replace="viewpitchmodal :: view-meeting-pitch-modal"></div>
++	
++							<!-- Modal for entering cancellation reason -->
++	<div th:replace="appointmentcancelmodal :: appointment-cancellation-modal"></div>
++	
++<!-- Common footer -->
++<div th:replace="fragments/footer :: footer"></div>
++<script  type="text/javascript" src="resources/app/js/showappointments.js"></script>
++<script  type="text/javascript" src="resources/app/js/futureappointment.js"></script>
++</body>
++</html>
+\ No newline at end of file
+diff --git a/src/main/webapp/resources/app/css/alignments.css b/src/main/webapp/resources/app/css/alignments.css
+index 8757f25..1cb5522 100644
+--- a/src/main/webapp/resources/app/css/alignments.css
++++ b/src/main/webapp/resources/app/css/alignments.css
+@@ -33,9 +33,46 @@ td.appointment-time-td{
+ }
+ 
+ .appointment-end-time{
+-	margin-left: 7px;
++	margin-left: 12px;
+ }
+ 
+ span.time-label {
+     font-size: smaller;
++}
++select.appointment-status-selector.validate-ele.appointment-paramaters {
++    color: black;
++}
++
++table#aligned-physician-table{
++	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
++}
++
++button.btn.btn-default.btn-md.show-contact.form-control {
++    border-radius: 0px;
++        width: 100%;
++    height: 32px;
++    vertical-align: middle;
++}
++
++span.glyphicon.glyphicon-plus {
++    float: left;
++}
++
++.phys-address {
++    display: inline-flex;
++        padding: 0px;
++}
++
++span.contactdetail-label {
++    width: 27%;
++    font-style: italic;
++}
++
++span.contactdetail-content {
++    font-weight: 600;
++    width: 65%;
++}
++
++td.contact-details {
++    width: 19%;
+ }
+\ No newline at end of file
+diff --git a/src/main/webapp/resources/app/css/appointments.css b/src/main/webapp/resources/app/css/appointments.css
+index cfab554..274e86c 100644
+--- a/src/main/webapp/resources/app/css/appointments.css
++++ b/src/main/webapp/resources/app/css/appointments.css
+@@ -1,8 +1,5 @@
+ @CHARSET "ISO-8859-1";
+ 
+-
+-
+-
+ .slidedown-alignments{
+     margin-left: 14px;
+ 	text-align: -webkit-auto;
+diff --git a/src/main/webapp/resources/app/css/pastappointment.css b/src/main/webapp/resources/app/css/pastappointment.css
+index c931ddc..f67cc06 100644
+--- a/src/main/webapp/resources/app/css/pastappointment.css
++++ b/src/main/webapp/resources/app/css/pastappointment.css
+@@ -5,4 +5,65 @@
+ 	border-bottom: 2px solid #1910A2;
+     padding-top: 1%;
+     padding-bottom: 0%;
+-} 
+\ No newline at end of file
++} 
++
++.past-appointment-table-class>tbody>tr.prescribing-appointment-tr{
++/* 	background-color: #B8EAB5; */
++}
++
++.past-appointment-table-class>tbody>tr.lost-appointment-tr{
++	/* background-color: #F5C9C9; */
++}
++
++table#past-appointments-table, .further-detail-btn-span{
++	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
++}
++
++span.further-detail-btn-span {
++    margin-left: 6%;
++}
++
++button.btn.btn-default.btn-md.past-appointment-detail-btn {
++    width: 80%;
++    border-radius: 0px;
++    margin-left: 11%;
++    height: 100%;
++}
++h5.modal-title {
++    font-size: large;
++}
++.modal-header.further-detail-modal-header {
++    border-bottom: 1px solid #000000;
++    padding-bottom: 4px;
++    font-family: serif;
++}
++.modal-body.meeting-exp-modal-body {
++    background: aliceblue;
++}
++.pitch-doc-div {
++    height: 400px;
++}
++object.pdf-doc-object.pdf-doc-object-slidedown {
++    width: 100%;
++    height: 102%;
++}
++
++
++div.modal-body>ul {
++    margin: 0.75em 0;
++    padding: 0 1em;
++    list-style: none;
++    margin-top: -8px;
++}
++div.modal-body>ul>li:before { 
++    content: "";
++    border-color: transparent #111;
++    border-style: solid;
++    border-width: 0.35em 0 0.35em 0.45em;
++    display: block;
++    height: 0;
++    width: 0;
++    left: -1em;
++    top: 0.9em;
++    position: relative;
++}
+\ No newline at end of file
+diff --git a/src/main/webapp/resources/app/css/products.css b/src/main/webapp/resources/app/css/products.css
+index 74aa379..b4e1b2c 100644
+--- a/src/main/webapp/resources/app/css/products.css
++++ b/src/main/webapp/resources/app/css/products.css
+@@ -140,4 +140,11 @@ button.btn.btn-default.btn-md.show-doc.form-control {
+     padding-bottom: 6px;
+     margin-bottom: 7px;
+     border-bottom-width: thin;
+-}
+\ No newline at end of file
++}
++button.btn.btn-default.btn-md.show-doc.form-control.product-doc-button-clicked {
++    background: #A4A5CC;
++}
++
++button.btn.btn-default.btn-md.show-doc.form-control {
++    background: white;
++}
+diff --git a/src/main/webapp/resources/app/js/futureappointment.js b/src/main/webapp/resources/app/js/futureappointment.js
+index 5334ebb..e1b72ca 100644
+--- a/src/main/webapp/resources/app/js/futureappointment.js
++++ b/src/main/webapp/resources/app/js/futureappointment.js
+@@ -5,8 +5,13 @@ var futureAppointmentTable;
+ var averageTravelTime = 30; //minutes
+ $(document).ready(function(){
+ 	
++	$('li.left-menu-selected').removeClass('left-menu-selected');
++	$('li.future-appointment-li').addClass('left-menu-selected');
++	
+ 	futureAppointmentTable = $('#future-appointment-fixed-physician-table').dataTable();
+ 	
++	$(".appointment-status-selector").select2();
++	
+ 	$('#future-appointment-fixed-physician-table').find('tr').each(function(i, val){
+ 		   if($(val).find('.cancelled-appointment-status').html() == 'CANCELLED'){
+ 			   $(val).css('background-color','mistyrose');
+diff --git a/src/main/webapp/resources/app/js/pastappointment.js b/src/main/webapp/resources/app/js/pastappointment.js
+index d5d95ff..d3f427b 100644
+--- a/src/main/webapp/resources/app/js/pastappointment.js
++++ b/src/main/webapp/resources/app/js/pastappointment.js
+@@ -1,16 +1,174 @@
+ /**
+  * 
+  */
++
++var table = null;
++var pastAppointments = []; 
++var isFromAlignmentPage = false;
++var physNameParamFromAlignments;
+ $(document).ready(function() {
+ 
+-	$('.past-appointment-li').on('click', function(){
+-		$('.future-appointment-div').css('display','none');
+-	});
++	$('li.left-menu-selected').removeClass('left-menu-selected');
++	$('li.past-appointment-li').addClass('left-menu-selected');
++	
++	updateNotificationCounter();
++	
++	getPastAppointments();
++	
++	//Physician name received and parsed for table search
++	var value;
++	if (window.location.search.split('?').length > 1) {
++        var params = window.location.search.split('?')[1].split('&');
++        for (var i = 0; i < params.length; i++) {
++            var key = params[i].split('=')[0];
++            physNameParamFromAlignments = decodeURIComponent(params[i].split('=')[1]);
++            console.log("Name : "+physNameParamFromAlignments);
++            isFromAlignmentPage = true;
++        }
++    }
++	
++});
+    
+-	$('.left-menu-ul').on('click','li',function(){
+-		$('li.left-menu-selected').removeClass('left-menu-selected');
+-		$(this).addClass('left-menu-selected');
+-		$(this).find('a').addClass('left-menu-selected-anchor');
++var getPastAppointments = function(){
++	console.log("Fetching similar questions");
++	$.ajax({
++		type : 'GET',
++		url : "/getpastappointments",
++		dataType : 'json',
++		success : function(data){
++	    	console.log("Data received (Past Appointments) : "+JSON.stringify(data));
++	    	populatePastAppTable(data);
++	    	pastAppointments =  data;
++		},
++		error : function(e){
++			console.log("Error : "+JSON.stringify(e));
++		}
++	}).done(function(){
++		console.log("ajax complete!");
+ 	});
+ }
+-   
+\ No newline at end of file
++
++$(document).on('click','button.past-appointment-detail-btn', function(){
++	$('#pastappointment-details-modal').modal('show');
++	var $row = $(this).parent().parent(); 
++	var idx = $(this).attr('id');
++	console.log(" idx : "+idx);
++	
++	$('ul.salesrep-response').html("");
++	$('ul.physician-response').html("");
++	$('div.modal-body-3').html("");
++	
++	if(pastAppointments[idx]["reasonsBySalesRep"].length == 0){
++		$('ul.salesrep-response').append('<li class="meetingexp-salesrep-empty">You did not submit your experience about this meeting</li>');
++		$('li.meetingexp-salesrep-empty').parent().parent().css('background','#EABEBE');
++	}else{
++		for( var i = 0; i< pastAppointments[idx]["reasonsBySalesRep"].length; i++){
++			$('ul.salesrep-response').append(
++					'<li class="sales-rep-response-pointers meeting-exp-li">'+pastAppointments[idx]["reasonsBySalesRep"][i]+'</li>'
++			);
++			
++		}
++		$('li.sales-rep-response-pointers').parent().parent().css('background','aliceblue');
++	}
++	
++	if(pastAppointments[idx]["reasonsByPhysician"].length == 0){
++		$('ul.physician-response').append('<li class="meetingexp-phys-empty">Physician did not submit experience about this meeting</li>');
++		$('li.meetingexp-phys-empty').parent().parent().css('background','#EABEBE');
++	}else{
++		for( var i = 0; i< pastAppointments[idx]["reasonsByPhysician"].length; i++){
++			$('ul.physician-response').append(
++					'<li class="physician-response-pointers meeting-exp-li">'+pastAppointments[idx]["reasonsByPhysician"][i]+'</li>'
++			);
++		}
++		$('li.physician-response-pointers').parent().parent().css('background','aliceblue');
++	}
++	
++	if(pastAppointments[idx]["pitch"] == null) {
++		$('div.modal-body-3').append('<span>You did not upload any pitch for this meeting</span>');
++		$('div.modal-body-3').css('background','#EABEBE');
++	}else{
++		$('div.modal-body-3').append(
++				'<div class="pitch-doc-div" style="display: none;">'+
++					'<object class="pdf-doc-object pdf-doc-object-slidedown" data="'+pastAppointments[idx]["pitch"]["fileLocation"]+'" type="application/pdf"">'+
++						'<embed src="'+pastAppointments[idx]["pitch"]["fileLocation"]+'" alt="pdf" pluginspage="http://www.adobe.com/products/acrobat/readstep2.html">'+
++						'</embed>'+
++					'</object>'+
++				'</div>'
++			);
++		$('div.pitch-doc-div').slideToggle('fast');
++		$('div.modal-body-3').css('background','white');
++	}
++	
++});
++
++var populatePastAppTable = function(appointments){
++	
++	for(var i = 0; i < appointments.length ; i++){
++		console.log(appointments[i]["meetingStatus"]);
++		if(appointments[i]["meetingStatus"] == "LOST"){
++			$('table#past-appointments-table tbody').append(
++					'<tr class="lost-appointment-tr danger">'+
++						'<td style="display:none" class="physician-id">'+appointments[i]["physicianId"]+'</td>'+
++						'<td>'+appointments[i]["physicianName"]+'</td>'+
++						'<td style="display:none" class="product-id">'+appointments[i]["productId"]+'</td>'+
++						'<td>'+appointments[i]["productName"]+'</td>'+
++						'<td>'+appointments[i]["date"]+'</td>'+
++						'<td>'+appointments[i]["meetingStatus"]+'</td>'+
++						'<td class="further-detail-btn">'+
++							'<div class="further-detail-click">'+
++								'<button type="button" id="'+i+'" class="btn btn-default btn-md past-appointment-detail-btn">'+
++									'<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>'+
++									'<span class="further-detail-btn-span">View Further Details</span>'+
++								'</button>'+
++							'</div>'+
++						'</td>'+				
++					'</tr>'
++			);
++		}
++		else if(appointments[i]["meetingStatus"] == "PRESCRIBING"){
++			$('table#past-appointments-table tbody').append(
++					'<tr class="prescribing-appointment-tr success">'+
++						'<td style="display:none" class="physician-id">'+appointments[i]["physicianId"]+'</td>'+
++						'<td>'+appointments[i]["physicianName"]+'</td>'+
++						'<td style="display:none" class="product-id">'+appointments[i]["productId"]+'</td>'+
++						'<td>'+appointments[i]["productName"]+'</td>'+
++						'<td>'+appointments[i]["date"]+'</td>'+
++						'<td>'+appointments[i]["meetingStatus"]+'</td>'+
++						'<td class="further-detail-btn">'+
++							'<div class="further-detail-click">'+
++								'<button type="button" id="'+i+'" class="btn btn-default btn-md past-appointment-detail-btn">'+
++									'<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>'+
++									'<span class="further-detail-btn-span">View Further Details</span>'+
++								'</button>'+
++							'</div>'+
++						'</td>'+				
++					'</tr>'
++			);
++		}
++		else{
++			$('table#past-appointments-table tbody').append(
++					'<tr class="other-appointment-tr">'+
++						'<td style="display:none" class="physician-id">'+appointments[i]["physicianId"]+'</td>'+
++						'<td>'+appointments[i]["physicianName"]+'</td>'+
++						'<td style="display:none" class="product-id">'+appointments[i]["productId"]+'</td>'+
++						'<td>'+appointments[i]["productName"]+'</td>'+
++						'<td>'+appointments[i]["date"]+'</td>'+
++						'<td>'+appointments[i]["meetingStatus"]+'</td>'+
++						'<td class="further-detail-btn">'+
++							'<div class="further-detail-click">'+
++								'<button type="button" id="'+i+'" class="btn btn-default btn-md past-appointment-detail-btn">'+
++									'<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>'+
++									'<span class="further-detail-btn-span">View Further Details</span>'+
++								'</button>'+
++							'</div>'+
++						'</td>'+				
++					'</tr>'
++			);
++		}
++		
++	}
++	table = $('table#past-appointments-table').DataTable();
++	if(isFromAlignmentPage){
++		table.search(physNameParamFromAlignments).draw();
++	}
++}
+\ No newline at end of file
+diff --git a/src/main/webapp/resources/app/js/products.js b/src/main/webapp/resources/app/js/products.js
+index 4f57324..ce1f2cb 100644
+--- a/src/main/webapp/resources/app/js/products.js
++++ b/src/main/webapp/resources/app/js/products.js
+@@ -11,7 +11,8 @@ $(document).ready(function(){
+ 	$('li.view-products').addClass('left-menu-selected');
+ 	
+ 	updateNotificationCounter();
+-	$('.product-selector').select2();
++	
++//	$('.product-selector').select2();
+ 	
+ 	$.ajax({
+ 		type: 'GET',
+@@ -49,7 +50,7 @@ $(document).ready(function(){
+ 			success : function(data){
+ 		    	productFiles = data;
+ 		    	console.log("Data received (Product Files): "+JSON.stringify(data));
+-		    	createDocsViewEnvironment(data);
++		    	createDocsViewEnvironment(data, currentProductId);
+ 			},
+ 			error : function(e){
+ 				console.log("Error : "+JSON.stringify(e));
+@@ -82,9 +83,10 @@ var populateProductSelector = function(products){
+ 				'</tr>'
+ 		);
+ 	}
++	$('#product-selector-id').select2().val('1').trigger("change");
+ }
+ 
+-var createDocsViewEnvironment = function(data){
++var createDocsViewEnvironment = function(data, productId){
+ 	if($('.btn-left-panel').find('.btn-for-product-'+currentProductId).length == 0){
+ 		$('.btn-left-panel').append(
+ 				'<div class="btn-container-div-product-'+currentProductId+' btn-container">'+
+@@ -100,10 +102,14 @@ var createDocsViewEnvironment = function(data){
+ 		}
+ 	attachClickEvent(currentProductId);
+ 	}
++	var b = $('.btn-for-product-'+productId)[0];
++	$(b).click();
+ }
+ 
+ var attachClickEvent = function(productId){
+ 	$(document).on('click','button.btn-for-product-'+productId,function(){
++		$('button.show-doc').removeClass('product-doc-button-clicked');
++		$(this).addClass('product-doc-button-clicked');
+ 		$('.doc-middle-panel').css('display','none');
+ 		$('.update-right-panel').css('display','none');
+ 		$('.analysis-right-panel').css('display','none');
+diff --git a/src/main/webapp/resources/app/js/showalignments.js b/src/main/webapp/resources/app/js/showalignments.js
+index aa8992c..7cf943f 100644
+--- a/src/main/webapp/resources/app/js/showalignments.js
++++ b/src/main/webapp/resources/app/js/showalignments.js
+@@ -10,11 +10,15 @@ var averageTravelTime = 30; //minutes
+  */
+ $(document).ready(function() {
+    var table = $('#aligned-physician-table').DataTable({
+-	   order: [[16, "desc"]]
++	   order: [[0, "desc"]]
+    });
++   /*,
++	   "oSearch": {"sSearch": "O_Med_2"}
++   });*/
++   console.log("Alignment referrer : "+document.referrer);
++   
+     $('#aligned-physician-table tbody').on( 'click', 'tr', function (e) {
+     	var cell = $(e.target).get(0);
+-    	console.log(cell.nodeName);
+     	if(cell.childElementCount < 1 && cell.nodeName != 'INPUT' && cell.nodeName != 'SPAN' && cell.nodeName != 'TEXTAREA' ){
+ 	    	$(this).toggleClass('selected');
+ 	    	if ( $(this).hasClass('selected') ) {
+@@ -52,6 +56,20 @@ $(document).ready(function() {
+     updateNotificationCounter();
+ });	
+ 
++$(document).on('click','button.redirect-past-appointments',function(){
++	   var name = $(this).parent().parent().find('td.physician-name').html();
++	   window.location.replace("/pastappointments?param="+name);
++});
++	
++$('.show-contact').click(function(){
++	$(this).parent().parent().find('div.aligned-physician-contact').toggle();
++	if($(this).parent().parent().find('div.aligned-physician-contact').css('display') == 'none'){
++	    $(this).find('span.button-value').html("Show Contact");
++	}else if($(this).parent().parent().find('div.aligned-physician-contact').css('display') == 'block'){
++	    $(this).find('span.button-value').html("Hide Contact");
++	}
++});
++
+ /**
+  * Set color of the row based on the 
+  * importance factor of corresponding physician
+@@ -100,10 +118,8 @@ $('.submit-selected-alignments').click(function(){
+ 				additionalNotesList.push(additionalNotes);
+ 			}
+ 		}
+-		$(this).find('td').each(function(idx, valTD){
+-			if(idx == 0) physIds.push($(valTD).html());
+-			if(idx == 10) productIds.push($(valTD).html());		//Picking product for selected alignments
+-		});
++		physIds.push($(val).find('td.physician-id').html());
++		productIds.push($(val).find('td.product-id').html());
+ 	});
+ 	if(!isDataInvalid){
+ 		fixAppointments(physIds, appointStartTimeList,appointEndTimeList, productIds, appointDateList, appointStatusList, additionalNotesList);
+diff --git a/src/main/webapp/resources/app/js/showappointments.js b/src/main/webapp/resources/app/js/showappointments.js
+index ab144de..36211e3 100644
+--- a/src/main/webapp/resources/app/js/showappointments.js
++++ b/src/main/webapp/resources/app/js/showappointments.js
+@@ -6,6 +6,9 @@ var tableAppointment = null;
+ var currentSelectedAppointment = 0;
+ var averageTravelTime = 30; //minutes
+ $(document).ready(function() {
++	$('li.left-menu-selected').removeClass('left-menu-selected');
++	$('li.today-appointment-li').addClass('left-menu-selected');
++	
+ 	$('.slidedown-alignments').click(function(){
+ 		    $('.slidedown-alignments-show').slideToggle('fast');
+ 	});
+@@ -38,23 +41,23 @@ $(document).ready(function() {
+ 	
+    updateNotificationCounter();
+    
+-   $('.today-appointment-li').on('click', function(){
+-	   $('.future-appointment-div').css('display','none');
+-	   $('.today-appointment-div').css('display','block');
+-   });
+-   
+-   $('.future-appointment-li').on('click', function(){
+-	   $('.today-appointment-div').css('display','none');
+-	   $('.future-appointment-div').css('display','block');
+-   });
+-   
+-   $('.left-menu-ul').on('click','li',function(){
+-	   $('li.left-menu-selected').removeClass('left-menu-selected');
+-	   $(this).addClass('left-menu-selected');
+-	   $(this).find('a').addClass('left-menu-selected-anchor');
+-   });
+-   
+-   $( ".today-appointment-li" ).trigger( "click" );
++//   $('.today-appointment-li').on('click', function(){
++//	   $('.future-appointment-div').css('display','none');
++//	   $('.today-appointment-div').css('display','block');
++//   });
++//   
++//   $('.future-appointment-li').on('click', function(){
++//	   $('.today-appointment-div').css('display','none');
++//	   $('.future-appointment-div').css('display','block');
++//   });
++//   
++//   $('.left-menu-ul').on('click','li',function(){
++//	   $('li.left-menu-selected').removeClass('left-menu-selected');
++//	   $(this).addClass('left-menu-selected');
++//	   $(this).find('a').addClass('left-menu-selected-anchor');
++//   });
++//   
++//   $( ".today-appointment-li" ).trigger( "click" );
+ 	   
+    /**
+     * Toggles between selected and de-selected rows of the table
+@@ -274,10 +277,8 @@ $('.submit-selected-alignments').click(function(){
+ 				additionalNotesList.push(additionalNotes);
+ 			}
+ 		}
+-			$(this).find('td').each(function(idx, valTD){
+-				if(idx == 0) physIds.push($(valTD).html());
+-				if(idx == 10) productIds.push($(valTD).html());		//Picking product for selected alignments
+-			});
++		physIds.push($(val).find('td.physician-id').html());
++		productIds.push($(val).find('td.product-id').html());
+ 	});
+ 	
+ 	if(!isDataInvalid){
+@@ -459,10 +460,8 @@ $('.submit-selected-followup-alignments').click(function(){
+ 				appointmentIdList.push(appointId);
+ 			}
+ 		}
+-			$(this).find('td').each(function(idx, valTD){
+-				if(idx == 0) physIds.push($(valTD).html());
+-				if(idx == 10) productIds.push($(valTD).html());		//Picking product for selected alignments
+-			});
++		physIds.push($(val).find('td.physician-id').html());
++		productIds.push($(val).find('td.product-id').html());
+ 	});
+ 	
+ 	if(!isDataInvalid){
+@@ -520,8 +519,9 @@ var fixFollowupAppointments = function(physIds, appointStartTimeList, appointEnd
+ var addMeetingUpdate = function(){
+ 	
+ 	var appointmentId = currentSelectedAppointment;//tableAppointment.row('.selected').data()[0];												//Getting Appointment id
+-	var physicianId = tableAppointment.row('.selected').data()[1];													//Getting Physician id
+-	var productName = tableAppointment.row('.selected').data()[tableAppointment.row('.selected').data().length-4];	//Getting product name
++	var physicianId = $('tr.selected').find('td.physician-id').html();
++	var product_td = $('table#appointment-fixed-physician-table').find('tr.selected').find('td.product-name-td')[0]
++	var productName =  product_td.textContent;
+ 	
+ 	var formData = {};
+ 	
+diff --git a/src/main/webapp/resources/docs/edetailing/D_Med_3.pdf b/src/main/webapp/resources/docs/edetailing/D_Med_3.pdf
+new file mode 100644
+index 0000000..2a183d5
+--- /dev/null
++++ b/src/main/webapp/resources/docs/edetailing/D_Med_3.pdf
+@@ -0,0 +1,1501 @@
++                                    CIH-1
++
++ADCETRIS™
++Brentuximab Vedotin
++
++CD30-Directed Therapy for
++Hodgkin Lymphoma
++
++Oncologic Drugs Advisory Committee
++
++July 14, 2011
++                                                                                           CIH-2
++
++Brentuximab Vedotin
++Hodgkin Lymphoma
++Introduction
++
++Elaine Waller, PharmD
++
++Senior Vice President of Regulatory Affairs
++Seattle Genetics
++                                                                                              CIH-3
++
++Brentuximab Vedotin Targets CD30 Antigen
++
++Transmembrane glycoprotein receptor,
++  member of TNF receptor superfamily
++
++Leads to transduction of biologic signals,
++  including cell proliferation
++
++Highly expressed on HL and ALCL cells
++Restricted distribution on normal cells:
++
++   – Expressed on activated lymphocytes
++      (B cell, T cell, NK cell)
++
++   – Weakly expressed on activated monocytes
++                                                                         CIH-4
++
++CD30+ Lymphomas
++
++                                 Lymphoma  Non-Hodgkin lymphoma
++Hodgkin lymphoma
++
++B-cell neoplasms                           T-cell & NK-cell neoplasms
++
++                  Peripheral T-cell lymphoma &                   Cutaneous TCL
++                  Natural killer T-cell lymphoma
++
++                                           PTCL not otherwise specified
++
++                                           Systemic anaplastic large cell lymphoma
++
++                                           Angio-immunoblastic TCL
++
++                                           Other PTCLs
++Comparison of Unconjugated CD30 mAb CIH-5
++With Brentuximab Vedotin
++Hodgkin Lymphoma
++
++Dose             CD30 mAb                                 Brentuximab vedotin
++               (unconjugated                              (conjugated cAC10)
++Patients, n
++Objective           cAC10)                                        1.8 mg/kg
++response rate  6 or 12 mg/kg                                  every 3 weeks
++Complete
++remissions          weekly                                            102
++                       38                                             75%
++                        —
++                                                                      34%
++                       —
++
++Forero-Torres A, et al. Br J Haematol. 2009;146:171-179.
++                                                                                                             CIH-6
++
++Brentuximab Vedotin Structure
++
++Antibody                             Linker                                      Drug
++
++cAC10 anti-CD30 Attachment                 Protease-                             MMAE
++                                                                           cytotoxic agent
++antibody  group                      cleavage site
++
++                                  O  O          H  O              O     H  O               N            HO
++          S                             N       N     N        ON       N     N  OCH3O                    N
++                                        H    O        H              O                                    H
++                              N
++                        O                                                                     OCH3O
++
++                                                        NH
++                                                   O
++
++                                                          NH2
++                                                                                              CIH-7
++
++Brentuximab Vedotin Is More Active Than
++MMAE Alone
++
++Tumor volume, mm3  1200
++
++                   1000
++
++                   800
++
++                   600
++
++                   400
++
++                   200
++
++                   0
++                      0 20 40 60 80 100 120
++
++                                                  Days
++
++Untreated (0/5 DR)        Control ADC 2 mg/kg (0/5 DR)
++MMAE 0.25 mg/kg (0/5 DR)  Brentuximab vedotin 2 mg/kg (4/5 DR)
++
++DR = Durable response.
++HL L428 subcutaneous xenograft model in NSG mice (n = 5 group), mean ± SD, q4dx3.
++                                                                                                         CIH-8
++
++Brentuximab Vedotin
++Mechanism of Action
++
++                                                        1. ADC binds to CD30
++
++2. ADC-CD30 complex is  CD30
++internalized and
++trafficks to lysosome
++
++3. MMAE is
++released
++
++                                                                              6. Apoptosis (cell death)
++
++4. MMAE binds           5. G2/M cell
++tubulin and             cycle arrest
++prevents microtubule
++assembly
++                         CIH-9
++
++Proposed Indication and
++Dosage Regimen
++
++Brentuximab vedotin is a CD30-directed
++  antibody-drug conjugate indicated for the
++  treatment of patients with relapsed or
++  refractory Hodgkin lymphoma
++
++Brentuximab vedotin 1.8 mg/kg administered
++  as an IV infusion over 30 minutes every
++  3 weeks
++
++Treat until disease progression or
++  unacceptable toxicity
++                                          CIH-10
++
++Brentuximab Vedotin in Patients With
++Hodgkin Lymphoma
++
++ Efficacy
++   – Clinically relevant objective
++      response rates
++   – Durable complete remissions
++   – Resolution of disease-related signs
++      and symptoms
++
++ Safety
++   – Most common AEs were grade 1 and 2
++   – Peripheral neuropathy is manageable
++                                                                                         CIH-11
++
++Clinical Trials Submitted in BLA
++
++   IND             EOP1 Phase 2 Clin Pharm        Clinical  BLA
++submitted        meeting SPA meeting              pre-BLA   submission
++                                                  meeting   Feb
++   Jun                Jul Jan Mar
++                                                       Nov
++
++2006       2007  2008          2009         2010            2011
++
++                 Phase 1 q3wk
++
++                               Phase 1 q1wk
++                                              Pivotal HL study
++
++                                             Pivotal ALCL study
++                                                                 QTc
++
++                                                           Excretion
++                                                              DDI
++                                                                    Special populations
++                                                                                            CIH-12
++
++Special Protocol Assessment
++
++ Agreements made with the FDA
++    – Primary endpoint
++
++          • ORR per independent review facility (IRF)
++          • 2007 Revised Response Criteria for Malignant Lymphoma
++
++    – ORR of 30% considered a meaningful response
++    – Supporting evidence
++
++          • Duration of response
++          • Complete remission
++          • B symptom resolution
++          • Investigator assessment vs IRF concordance
++
++ SPA remains in effect
++                                                                                            CIH-13
++
++AETHERA: Phase 3 HL Post-ASCT
++
++ Randomized, double-blind, placebo-controlled, multicenter,
++    phase 3 clinical trial
++
++ Patients randomized 1:1 to receive brentuximab vedotin or
++    placebo every three weeks
++
++ Efficacy endpoints
++     – Primary: Progression-free survival per IRF
++     – Key Secondary: Overall survival
++
++ Population (N = 322) includes at least one of the following
++     – Refractory to front-line therapy
++     – Relapsed within 12 months
++     – Extranodal disease
++
++ Stratified by response to frontline and salvage treatments
++                                 CIH-14
++
++Ongoing Clinical Development in
++Hodgkin Lymphoma
++
++ AETHERA - Phase 3 trial in patients at high risk
++   of residual HL following autologous SCT
++
++ Phase 1 trial in front-line HL
++
++ Expanded access program in relapsed or
++   refractory HL and systemic ALCL
++                                                        CIH-15
++
++Today’s Agenda
++
++Introduction          Elaine Waller, PharmD
++                      Seattle Genetics
++
++CD30-Directed Therapy for Joseph M. Connors, MD, FRCPC
++
++Hodgkin Lymphoma      British Columbia Cancer Agency
++
++Brentuximab Vedotin   Eric Sievers, MD
++Hodgkin Lymphoma      Seattle Genetics
++Efficacy Profile
++
++Brentuximab Vedotin   Tom Reynolds, MD, PhD
++Safety Profile        Seattle Genetics
++
++Hodgkin Lymphoma      Joseph M. Connors, MD, FRCPC
++Benefit:Risk Profile  British Columbia Cancer Agency
++                                                              CIH-16
++
++Consultants
++
++ David R. Cornblath, MD          J. Michael O’Neal, MD
++    Professor, Neurology             Chief Medical Officer
++    Johns Hopkins University         CoreLab Partners
++
++ L. Jeffrey Medeiros, MD         Barbara Pro, MD
++    Professor, Chair, Dept of        Associate Professor
++    Hematopathology                  Fox Chase Cancer Center
++    MD Anderson Cancer Center
++
++ Owen O’Connor, MD
++    Deputy Director of Clinical
++    Research and
++    Cancer Treatment
++    New York University Cancer
++    Institute
++                                                                                          CDH-1
++
++Brentuximab Vedotin
++CD30 Directed Therapy for
++Hodgkin Lymphoma
++
++Joseph M. Connors, MD, FRCPC
++
++Clinical Director, Centre for Lymphoid Cancer
++British Columbia Cancer Agency
++University of British Columbia
++                                                                                   CDH-2
++
++Disclosures
++
++                          Not-for-profit Sources               For-profit Sources
++
++Institutional       Canadian Cancer Society Research     Amgen              Bayer Healthcare
++research support    Institute                            Cephalon           Lilly
++including clinical  NCI of Canada Clinical Trials Group  Genentech          Merck
++trials              Terry Fox Foundation                 Hoffmann-La Roche  Roche Canada
++                    SWOG                                 Johnson & Johnson  Seattle Genetics
++Advisory
++Board/Committee     ASH                                  None
++                    ASCO
++Employee            Lymphoma Foundation Canada
++Speakers’ Bureau    Lymphoma Research Foundation (US)
++Honoraria           NCIC Canada
++Board member
++Paid consultant     British Columbia Cancer Agency       None
++Stockholder
++                    ASH                                  None
++
++                    ASH, ASCO                            None
++
++                    None                                 None
++
++                    None                                 None
++
++                    None                                 None
++
++                                                                            July 2011
++                                                                                            CDH-3
++
++CD30: Optimal Target for Antibody-Drug
++Conjugate Therapy
++
++Highly restricted normal cell surface
++  expression
++
++Defining marker for Hodgkin lymphoma—
++  malignant Hodgkin Reed-Sternberg cells
++
++Standard immunohistochemical test
++
++   – Widely available
++
++   – Reliable and reproducible
++                                                                                 CDH-4
++
++Hodgkin Reed-Sternberg Cells
++Strongly Express CD30
++
++                                                                       CD30+
++                                                                       HRS cell
++
++Cytokine receptor CD30 selectively
++         expressed in HRS cells
++                                                                                                 CDH-5
++
++  Hodgkin Lymphoma
++
++    2010 estimatesa
++       – 8490 new cases of HL were diagnosed
++       – 1320 patients would die from their disease
++
++    Median age at diagnosis is 38 yearsb
++       – 90% of patients < 60 years
++
++    Clinical presentation
++       – Painless, enlarged lymph nodes commonly in
++          the neck and thorax
++       – 15% of patients with B symptoms (fever,
++          night sweats, weight loss > 10%)
++
++a Jemal A, et al. CA Cancer J. 2010;60(5):277-300; b National Cancer Institute. 2010. Surveillance, Epidemiology, and
++End Results (SEER) Program SEER*Stat Database: Incidence. http://seer.cancer.gov/canques/incidence.html.
++Progression-Free Survival by                                                            CDH-6
++Decade of Diagnosis
++
++Hodgkin Lymphoma
++
++         1.0                                      N = 3216
++         0.8
++         0.6                 Cumulative survival  2000s  1990s, bone marrow transplantation
++         0.4
++         0.2                                                          1980s, ABVD
++
++            0                                                                        1970s, wide field
++               0                                                                     radiation and MOPP-
++                                                                                     type chemotherapy
++Data courtesy of Dr. Connors.
++                                                                                        1960s
++
++                                                  10 20 30                          40
++                                                  Progression-free survival, years
++                                                                                            CDH-7
++
++Treatment Algorithm for Advanced-Stage
++Hodgkin Lymphoma
++
++First-line   Multi-agent     ABVD or Stanford V or BEACOPP                           Current
++treatment   chemotherapy                                                           unmet need
++
++                  70% cured  ± RT                             30% Progressive
++                                                              disease or relapse
++Second-line                  Combination chemotherapy                              30%
++treatment                        (eg, DHAP, ICE, GVD)            30% < CR/PR
++(including ASCT)
++                                       70% CR/PR
++
++                                                              No standard of care
++
++                                 High-dose therapy with
++                             autologous stem cell transplant
++
++Post-ASCT         50% cured                                   50% Progressive      50%
++                                                              disease or relapse
++
++ASCT = Autologous stem cell transplant; CR = Complete remission; PR = Partial remission; RT = Radiation therapy.
++                                                                                                CDH-8
++
++Poor Survival in HL Patients Who
++Relapse After a Stem Cell Transplant
++
++Overall survival in patients who relapse post-ASCT (N = 756)
++   100
++
++                80
++
++Probability, %  60
++
++                                 Median = 2.4 yr
++
++                40
++
++                20
++
++                     0
++                        0 5 10 15 20
++
++                                                       Time from relapse, yr
++
++Horning et al. 10th International Conference on Malignant Lymphoma; Lugano, Switzerland; 2008.
++72% of Relapses After ASCT Occur in CDH-9
++the First 12 Months and Have a Very
++Poor Prognosis
++
++                100 1-yr mortality 40%
++
++                    TTR, mo N % Median OS, yr
++
++                80  > 12 214 28                                            4.6
++
++Probability, %      0 - 12 542 72                                          1.2
++
++                60
++
++                40 N = 756
++                                                                p < 0.001
++
++                20
++
++                     0
++
++                        0 5 10 15 20
++
++                                                       Time from relapse, yr
++
++TTR = Time to relapse.
++Horning et al. 10th International Conference on Malignant Lymphoma; Lugano, Switzerland; 2008.
++                                                                                           CDH-10
++
++Treatment Options After Failure of ASCT
++
++No reliably curative options
++   – Experimental allogeneic SCT
++       • Applicable to small minority
++       • Associated with marked toxicity
++   – Curative wide-field radiation applicable
++      to < 5%
++
++No approved treatment
++Pronounced unmet need
++                                                                              CDH-11
++
++Treatment of Relapsed or Refractory
++Hodgkin Lymphoma
++
++                               All patients               Post-ASCT patients
++
++Agent             Evaluable                                        Evaluable
++Vinblastinea      patients, n  ORR, n (%) CR, n (%) patients, n ORR, n (%) CR, n (%)
++Vinorelbinea
++Rituximaba        17           10 (59)       2 (12)  17   10 (59)             2 (12)
++Gemcitabinea
++Vinorelbine +     22           11 (50)       3 (14)
++Gemcitabinea
++Rituximab +       22           5 (23)        1 (5)   18   5 (23)              1 (5)
++Gemcitabinea
++Bortezomiba       27           6 (22)        0       16 5 (31) 0
++Bortezomiba
++Bortezomiba       8            6 (75)        4 (50)
++
++Gem, Vinor, Doxb  33           16 (48)       5 (15)  18   11 (61)
++Panobinostatc
++                  14           1 (7)         0       14   1 (7)                                                 0
++
++                  30 0 0 28
++
++                  12 0 0
++
++                  88           62 (70) 17 (19)       36   27 (75) 6 (17)
++
++                  129          35 (27)       5 (4)   129  35 (27)             5 (4)
++
++a Crump M. Hema Am Soc Hematol Educ Prog. 2008:326-333; b Bartlett NL, et al. Ann Oncol. 2007;18(6):1071-1079;
++c Sureda A, et al. 52nd ASH Annual Meeting and Exposition. 2010. Abstract 169.
++                                                                                           CDH-12
++
++Key Concepts for Patients With Relapsed
++or Refractory Hodgkin Lymphoma
++
++Background                                            Hodgkin
++• Malignant cells express CD30                       lymphoma
++Disease impact
++• Not cured with current standard treatments          ~ 100 %
++• Median OS
++                                                        ~ 25%
++  – After failure of autologous transplant
++  – Post-ASCT failure in < 1 year                       29 mo
++• Typical response to available treatment = partial     14 mo
++• Typical duration of response                       20% - 60%
++                                                      3 - 12 mo
++                                                                                          CEH-1
++
++Brentuximab Vedotin Treatment of
++Patients With Hodgkin Lymphoma
++
++Eric Sievers, MD
++
++Vice President of Clinical Affairs
++Seattle Genetics
++                                                                                    CEH-2
++
++Brentuximab Vedotin Clinical
++Development Program
++
++2006  2007  2008          2009  2010  2011
++
++            Phase 1 q3wk
++
++                          Phase 1 q1wk
++                                         Pivotal HL study
++
++                                        Pivotal ALCL study
++                                                            QTc
++
++                                                      Excretion
++                                                         DDI
++                                                               Special populations
++                                                                                                 CEH-3
++
++  Phase 1 First-in-Human Study
++
++      Phase 1 dose-escalation study of brentuximab vedotin in patients with
++         relapsed or refractory CD30+ hematological malignancies
++
++      N = 45 enrolled at 4 US sites
++           – Median age of 36 years
++           – HL (n = 42), sALCL (n = 2), and angioimmunoblastic T-cell
++               lymphoma (n = 1)
++           – Median 3 prior regimens; prior ASCT in 73%
++
++      Brentuximab vedotin was given intravenously every 3 weeks in
++         escalating doses ranging from 0.1 to 3.6 mg/kg in successive cohorts
++
++      1.8 mg/kg every 3 weeks
++           – Defined as MTD; also reasonably well-tolerated over months of
++               continued therapy
++           – Obtained durable complete remissions
++           – Employed in the subsequent, paired registrational trials
++
++a Younes A, et al. N Engl J Med. 2010;363(19):1812-1821.
++                                                    CEH-4
++
++Results
++
++Phase 1 Program—Hodgkin Lymphoma
++
++Overall response rate                 Q 3 week        Q 1 week
++    Complete remission rate               trial           trial
++
++Median, months (min - max)              n = 42          n = 38
++    Duration of overall response          36%             53%
++                                          21%             26%
++    Duration of complete remission
++                                           NE              4.8
++                                    (0.6 - 19.4+)   (0.5+ - 17.3+)
++
++                                           NE              5.1
++                                    (1.4+ - 19.4+)  (0.5+ - 17.3+)
++                                                                                    CEH-5
++
++Brentuximab Vedotin Clinical
++Development Program
++
++2006  2007  2008          2009  2010  2011
++
++            Phase 1 q3wk
++
++                          Phase 1 q1wk
++                                         Pivotal HL study
++
++                                        Pivotal ALCL study
++                                                            QTc
++
++                                                      Excretion
++                                                         DDI
++                                                               Special populations
++                                                                                                          CEH-6
++
++Phase 2 Pivotal, Multicenter,
++Open-Label Trial Endpoints
++
++ Primary: Overall objective response rate (CR + PR)
++
++– Independent review facility
++
++– Revised response criteria for malignant
++  lymphomaa
++
++ Secondary
++
++– Efficacy   – Safety
++
++• Duration of response • Adverse events
++
++• CR rate                      • Laboratory
++
++• PFS                          abnormalities
++
++• OS
++
++• B symptom resolution
++
++CR = Complete remission; PR = Partial remission; PFS = Progression-free survival; OS = Overall survival.
++a Cheson BD, et al. J Clin Oncol. 2007;25(5):579-586.
++                                                                                                 CEH-7
++
++2007 Revised Response Criteria for
++Malignant Lymphoma
++
++Response  Definition               Nodal lesions
++CR
++PR        Disappearance of all     Residual mass of any size
++          evidence of disease      permitted if PET-negative
++SD
++          Regression of            ≥ 50% decrease in SPD of index
++PD
++          measurable disease and lesions; 1 or more PET-positive at
++
++          no new sites             previously involved site
++
++          Failure to attain CR/PR  PET-positive at previously
++          or PD                    involved site and no new sites
++                                   of disease
++
++          Any new lesion or        Progression of existing non-index
++          increase by ≥ 50% of     lesions or ≥ 50% increase in SPD
++          previously involved      of index lesions or new lesion
++
++          sites from nadir         > 1.5 cm in any axis
++
++CR = Complete remission; PR = Partial remission; SD = Stable disease; PD = Progressive disease;
++SPD = Sum of the products of the diameters.
++Cheson BD, et al. J Clin Oncol. 2007;25(5):579-586.
++                                                                                             CEH-8
++
++Pivotal, Multicenter, Open-Label Trials of
++Brentuximab Vedotin
++
++     Brentuximab vedotin 1.8 mg/kg IV over 30 minutes every 3 weeks
++
++S  E Follow-up
++C
++R  N every
++E
++E  R 12 weeks
++N
++I  O
++N
++G  L
++
++   L 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
++   M
++   E  Cycle
++
++   N
++
++   T
++
++   CT scan between Days 15 and 21 of cycle
++   PET scan (no additional scans past Cycle 7 unless clinically indicated)
++                                           CEH-9
++
++Key Eligibility Criteria
++
++Hodgkin Lymphoma
++
++Relapsed or refractory, progressive HL
++CD30 expression confirmed centrally
++FDG-avid, CT-measurable disease ≥ 1.5 cm
++Prior ASCT was required
++Age ≥ 12 years
++ECOG performance status score 0 to 1
++                              CEH-10
++
++Statistical Considerations
++
++Hodgkin Lymphoma
++
++Trial and analyses conducted under Special
++  Protocol Assessment
++
++Primary statistical hypothesis: ORR 95% CI
++  lower bound > 20%
++
++   – Study size of 100 patients was chosen to
++      allow evaluation of primary hypothesis
++
++   – Observation of an ORR of 29% or greater
++      would exclude a lower bound of 20%
++
++ORR = Overall response rate.
++                             CEH-11
++
++Study Conduct and Oversight
++
++Hodgkin Lymphoma
++
++Study steering committee guided design,
++  conduct, and data interpretation
++
++Independent data monitoring committee
++  actively evaluated for safety signals
++
++Independent response assessments
++
++   – Prospectively rendered by central
++      radiology blinded to clinical data
++
++   – Overall assessment additionally integrated
++      clinical data
++Demographics and                                            CEH-12
++Baseline Characteristics
++                                                   N = 102
++ Hodgkin Lymphoma                               31 (15 - 77)
++                                                48 M / 54 F
++Median age, yr (range)
++Gender, n                                              41
++ECOG performance status score, %                       59
++                                                       71
++    0                                                  42
++    1                                           3.5 (1 - 13)
++Refractory to front-line therapy, %                    66
++Refractory to most recent treatment, %               100
++Median prior chemotherapy regimens, n (range)          71
++Prior radiation, %                              6.7 (0 - 131)
++Prior ASCT, %
++Relapsed ≤ 1 yr post-ASCT, %
++Median time from ASCT to first post-transplant
++relapse, months (range)
++  Response Results                                                                            CEH-13
++
++   Hodgkin Lymphoma                                                      N = 102
++                                                                       75 (65, 83)
++       Overall response rate, % (95% CI)                               34 (24, 44)
++           Complete remission, % (95% CI)
++           Partial remission, %                                              40
++
++       Median, months (95% CI)                                       6.7 (3.6, 14.8)
++           Duration of overall response                              20.5 (10.8, NE)
++           Duration of complete remission
++           Progression-free survival                                  5.6 (5.0, 9.0)
++           Overall survivala                                         22.4 (21.7, NE)
++
++       B-symptom resolution, % (n/N)                                   77% (27/35)
++
++NE = Not estimable.
++a 18-month overall survival estimated to be 80% (95% CI: 73%, 88%).
++                                                                          CEH-14
++
++Maximum Tumor Reduction
++
++Hodgkin Lymphoma
++
++94% (96 of 102)a of patients achieved tumor reduction
++
++a 4 patients not included in analysis (3, no measurable lesions per IRF;
++1, no post-baseline scans).
++                                                                                           CEH-15
++
++PFS by Best Clinical Response per IRF
++
++Hodgkin Lymphoma
++
++N Median, mo
++
++CR 35 21.7
++
++PR 41  5.1
++
++SD 22  3.5
++
++PD 3   1.2
++                                                                                           CEH-16
++
++CR Rate Was Similar in All Patient Subsets
++
++Hodgkin Lymphoma
++
++Subgroups                                      Overall CR rate = 34%  CR / N
++Overall                                                               35 / 102
++Primary refractory    Yes                                             26 / 72
++                      No
++Time to relapse       ≤ 1 yr                                            9 / 30
++post-ASCT             > 1 yr                                          18 / 72
++Baseline B symptoms   Yes                                             17 / 30
++present               No                                              10 / 35
++Baseline ECOG         0                                               25 / 67
++                      1                                               19 / 42
++Baseline SPD per IRF  ≤ 5 cm2                                         16 / 60
++                      > 5 and ≤ 10 cm2
++                      > 10 cm2                                          3 / 11
++                                                                        9 / 11
++                                                                      22 / 77
++Overall Survival                                            CEH-17
++                  89% estimated 12-month OS
++Hodgkin Lymphoma
++                                                                                           CEH-18
++
++Consistent Response Rates
++
++Pivotal Studies in Two CD30+ Lymphomas
++
++Treatment response                    HL patients  ALCL patients
++  Overall response rate, % (95% CI)     N = 102         N = 58
++
++ Complete remission, % (95% CI)             75             86
++                                         (65, 83)       (75, 94)
++  Median duration of response for CR
++  patients, mo (95% CI)                     34             57
++                                         (25, 44)       (43, 70)
++
++                                           20.5           13.2
++                                       (10.8, NE)     (10.8, NE)
++
++NE = Not estimable.
++Change in tumor size from baseline %                                                                                           CEH-19
++
++                                    Consistent Tumor Reduction
++
++                                    Pivotal Studies in Two CD30+ Lymphomas
++
++                                                                                                                                                       HL
++
++                                                                                                                                     Systemic ALCL
++                                                                                           CEH-20
++
++Durable Complete Remission Represents
++Clinical Benefit in CD30+ Lymphoma Patients
++
++                                      CD30+ lymphomas
++
++           Hodgkin                       Systemic ALCL
++          lymphoma
++
++Q3 week    Weekly        Pivotal study         Pivotal study
++  N = 42    N = 38           N = 102                N = 58
++          ORR 53%           ORR 75%
++ORR 36%    CR 26%            CR 34%,             ORR 86%
++ CR 21%                                           CR 57%,
++                    median CR = 20.5 mo  median CR = 13.2 mo
++                       CSH-1
++
++Brentuximab Vedotin
++Safety Profile
++
++Tom Reynolds, MD, PhD
++
++Chief Medical Officer
++Seattle Genetics
++                                             CSH-2
++
++Safety Profile of Brentuximab Vedotin
++
++        Phase 2
++Safety and efficacy
++
++HL pivotal  ALCL pivotal
++ (n = 102)     (n = 58)
++
++Total Phase 2: N = 160      Total number of
++                           patients exposed
++          Phase 1
++           Safety             in completed
++                                  studies
++Q 3 week    Q 1 week
++ (n = 45)    (n = 44)             N = 357
++
++Clinical pharmacology
++
++  QTc       DDI/excretion
++(n = 52)        (n = 56)
++                                                      CSH-3
++
++Brentuximab Vedotin Exposure
++
++Median treatment                     HL patients      Total patients
++Cycles, n (range)                       n = 102           N = 160
++Duration, mo (range)
++Relative dose intensity, % (range)    9.0 (1 - 16)      7.0 (1 - 16)
++                                    6.2 (0.7 - 12.9)  5.5 (0.7 - 12.9)
++                                    96.0 (69 - 107)   97.3 (47 - 115)
++                                                     CSH-4
++
++Dose Modifications
++
++ Dose modifications were prospectively defined in
++   study protocols
++
++ Patients could have their dose delayed up to
++   3 weeks or reduced to 1.2 mg/kg for AEs
++
++Per-protocol and unplanned                               Patients, %
++dose modifications                                      HL Total
++Dose reduction                                       n = 102 N = 160
++Dose delaya                                             11 10
++Dose adjustment due to an AE                            47 41
++                                                        12 8
++
++a Only 8% of total doses were delayed due to an AE.
++                                          CSH-5
++
++Patient Disposition
++
++                     HL patients, N  102
++Enrolled, n                          102
++Received ≥ 1 dose, n
++
++Reason for treatment discontinuation, %
++
++Completed treatment                  18
++
++Progressive disease                  44
++
++Adverse event                        20
++
++Investigator decision                12
++
++Patient decision, non-AE             7
++                                                                                             CSH-6
++
++Adverse Events of Any Relationship
++Occurring in ≥ 20% of Phase 2 Patients
++
++                                        Patients, %
++
++Preferred term                             HL     Total
++Peripheral sensory neuropathy           n = 102  N = 160
++Fatigue
++Nausea                                  47 44
++Diarrhea
++Pyrexia                                 46 42
++Upper respiratory tract infection
++Neutropenia                             42 41
++Vomiting
++                                        36 34
++
++                                        29 31
++
++                                        37 28
++
++                                        22 21
++
++                                        22 20
++
++a Only 8% of total doses were delayed.
++                                                                                             CSH-7
++
++Adverse Events Grade 3-4 Occurring in
++≥ 2% of Phase 2 Patients
++
++                    HL patients, %         Total patients, %
++                         n = 102                 N = 160
++
++Preferred term       Any                    Any
++Peripheral sensory  grade Grade 3 Grade 4  grade Grade 3 Grade 4
++neuropathy
++Fatigue             47 8            —      44 9  —
++Diarrhea
++Pyrexia             46 2            — 42   2     1
++Neutropenia         36 1                         —
++Thrombocytopenia    29 2            — 34   2     —
++Peripheral motor    22 14                        7
++neuropathy          86              — 31   2     3
++                    12 1                         —
++                                    6 21 13
++
++                                    2 10 7
++
++                                    —9 2
++
++Total patients with any ≥ Grade 3 event = 55%
++Summary of Deaths                                           CSH-8
++
++All deaths                           Patients, n
++   Related to disease               HL Total
++   Not related to disease        n = 102 N = 160
++   Disease relationship unknown     13 25
++                                    10 18
++Deaths < 30 days of last dose
++                                      25
++                                      12
++                                     —6
++                           CSH-9
++
++Special Safety Topics and
++Management of Toxicity
++                                                                           CSH-10
++
++Peripheral Neuropathy AEs
++
++                                                        HL patients, %  Total patients, %
++                                                             n = 102          N = 160
++
++                                                        Any grade Grade 3 Any grade Grade 3
++
++Any PN SMQ AEa                                          55 11 53 11
++
++Peripheral sensory neuropathy                           47  8 44           9
++
++Peripheral motor neuropathy                             12  1           9  2
++
++Paresthesia                                             4—4—
++
++Demyelinating polyneuropathy                            2   2           1  1
++
++Hypoesthesia                                            2—1—
++
++Muscular weakness                                       2111
++
++Neuralgia                                               —— 1 —
++
++SMQ = Standard MedDRA query.
++a Events of any relationship occurring in > 1 patient.
++                                                                                           CSH-11
++
++Characterization of Treatment-Emergent
++Peripheral Neuropathy
++
++Total Phase 2 Population
++
++                                          Weeks to onset
++0 12 24 36 48
++
++  Any PN       Grade 2 PN Grade 3 PN
++  (n = 84)
++   12 wk       (n = 41) (n = 18)
++(0.1 - 41.3)
++               24 wk  33 wk
++
++               (0.1 - 51.9) (6.0 - 57.1)
++
++ Median time to complete or partial resolution: 6.6 wk (0.3, 54.4)
++
++ Resolution:  62%
++
++– Complete:    31%
++
++– Partial:     31%
++Dose Modifications in Patients With  CSH-12
++Grade 2 Neuropathy Can Reduce
++Worsening of Neuropathy
++
++Of patients with grade 2 neuropathy
++
++   – 0/15 who had doses delayed had worsening
++
++   – 2/10 who had dose reduction had worsening
++
++   – 6/18 who had neither dose delays nor
++      reductions had worsening
++
++Both dose delays and dose reductions
++  appeared to be effective in reducing
++  progression of Grade 2 neuropathy
++                                                                                           CSH-13
++
++Management of Peripheral Neuropathy
++
++ Patients should be monitored for signs and
++   symptoms of PN
++
++ Neuropathy events
++    – Primarily sensory
++    – Appear to be associated with cumulative dosing
++    – Largely reversible
++
++ Patients experiencing new or worsening Grade 2 PN
++    – Hold dosing until resolution to Grade 1
++       or baseline
++    AND
++    – Reduce dose to 1.2 mg/kg
++                                                     CSH-14
++
++Neutropenia Experience
++
++Adverse event of neutropenia                  HL       Total
++≥ Grade 3                                  patients  patients
++                                           n = 102   N = 160
++   Median duration
++                                             20%        20%
++Grade 4                                     8 days    8 days
++   Median duration
++                                              6%        7%
++Any infections temporally associated with   4 days    6 days
++neutropenia/low neutrophils
++                                              33%      39%
++       Most < Grade 3, not serious          (7/21)    (14/36)
++Febrile neutropenia
++Discontinuation due to neutropenia             —         —
++                                               —         —
++                                                                                           CSH-15
++
++Management of Neutropenia
++
++Prolonged (≥ 1 wk) cases of Grade 4
++  neutropenia can occur
++
++CBC should be monitored with each dose
++If Grade 3 or 4 neutropenia develops,
++
++  manage according to institutional standards
++                                                                                           CSH-16
++
++Infusion-Related Reactions of Any
++Relationship Occurring in > 1 Patient
++
++                               Patients, %
++
++                               HL Total
++
++                               n = 102  N = 160
++
++Any infusion-related reaction  12 11
++     Chills
++     Nausea                    54
++     Dyspnea
++     Pruritus                  43
++     Cough
++     Dizziness                 43
++     Erythema
++     Flushing                  43
++     Pyrexia
++     Rash                      32
++     Throat tightness
++     Vomiting                  11
++
++                               21
++
++                               21
++
++                               11
++
++                               11
++
++                               21
++
++                               11
++                                CSH-17
++
++Management of Infusion-Related
++Reactions (IRR)
++
++Routine premedications not required
++In the event of IRR or anaphylaxis
++
++   – Stop infusion
++   – Institute appropriate medical management
++   – Restart infusion (at a slower rate)
++   – Premedication with subsequent infusions
++                                                                                           CSH-18
++
++Single-Event AEs
++
++ Stevens-Johnson Syndrome (SJS)
++     – HL patient receiving multiple medications including
++        naproxen
++     – Developed symptoms ~ 2 weeks after receiving his
++        second dose of brentuximab vedotin
++     – Patient discontinued treatment
++     – Event resolved in less than 1 month
++
++ Tumor Lysis Syndrome (TLS)
++     – ALCL patient with bulky disease
++     – Developed symptoms Day 1 of the Cycle 1 dose
++     – Event was considered resolved 5 days after onset
++     – Patient received a total of 8 cycles of treatment
++     – Patient had a CR and went on to allogeneic transplant
++                                                                                           CSH-19
++
++Brentuximab Vedotin Has a Manageable
++Safety Profile
++
++ Median duration of treatment: 6.2 months
++ No treatment-related deaths
++ Most common AE was peripheral neuropathy
++
++    – Primarily Grade 1 and 2 sensory
++
++    – Largely reversible
++ Grade 3/4 hematologic toxicity was limited
++ Low rate of infusion reactions observed
++
++   (Grade 1/2)
++ No evidence of cardiac, renal, or hepatic
++
++   toxicity signals
++                                                                                          CBH-1
++
++Brentuximab Vedotin
++Hodgkin Lymphoma Benefit:Risk Profile
++
++Joseph M. Connors, MD, FRCPC
++
++Clinical Director, Centre for Lymphoid Cancer
++British Columbia Cancer Agency
++University of British Columbia
++                                                                                                      CBH-2
++
++Benefit:
++Tumor Reduction
++
++94% (96 of 102)a of patients achieved tumor reduction
++
++a 4 patients not included in analysis (3, no measurable lesions per IRF; 1, no post-baseline scans).
++                                              CBH-3
++
++Benefit:
++Clinically Meaningful Results
++
++                             HL patients ALCL patients
++
++                             N = 102  N = 58
++
++Treatment response           75%      86%
++  Overall response rate      34%      57%
++  Complete remission (CR)    20.5     13.2
++  Median duration of CR, mo
++                              77%      82%
++Symptom resolution           N = 35   N = 17
++ B symptom resolution
++
++NE = Not estimable.
++                                                                                                      CBH-4
++
++Benefit:
++Population in Need: Post-transplant
++
++                100  TTR,  Median                                                               1-yr
++
++                     mo N % OS, yr mortality
++
++                80 > 12 214 28 4.6
++
++Probability, %       0 - 12 542 72 1.2                                                          > 40 %
++
++                60
++
++                40 N = 756
++
++                                                                   p < 0.001
++                20
++
++                     0
++
++                        0 5 10 15 20
++
++                                                       Time from relapse, yr
++
++TTR = Time to relapse.
++Horning et al. 10th International Conference on Malignant Lymphoma; Lugano, Switzerland; 2008.
++                                                                                CBH-5
++
++Treatment of Relapsed or Refractory
++Hodgkin Lymphoma
++
++                                All patients                Post-ASCT patients
++
++                     Evaluable                         Evaluable
++
++Agent                patients, n ORR, n (%) CR, n (%) patients, n ORR, n (%) CR, n (%)
++Vinblastinea
++Vinorelbinea         17         10 (59)       2 (12)   17         10 (59)       2 (12)
++Rituximaba
++Gemcitabinea         22         11 (50)       3 (14)
++Vinorelbine +
++Gemcitabinea         22         5 (23)        1 (5)    18         5 (23)        1 (5)
++Rituximab +
++Gemcitabinea         27         6 (22)        0        16 5 (31) 0
++Bortezomiba
++Bortezomiba          8          6 (75)        4 (50)
++Gem, Vinor, Doxb
++Panobinostatc        33         16 (48)       5 (15)   18         11 (61)
++
++Brentuximab vedotin  14         1 (7)         0        14         1 (7)                                         0
++
++                     30 0 0 28
++
++                     88         62 (70)       17 (19)  36         27 (75)       6 (17)
++
++                     129        35 (27)       5 (4)    129        35 (27)       5 (4)
++
++                     102        77 (75) 35 (34)        102        77 (75) 35 (34)
++
++a Crump M. Hema Am Soc Hematol Educ Prog. 2008:326-333; b Bartlett NL, et al. Ann Oncol. 2007;18(6):1071-1079;
++c Sureda A, et al. 52nd ASH Annual Meeting and Exposition. 2010. Abstract 169.
++                                                                                            CBH-6
++
++Benefit: Risk Ratio
++Relapsed/Refractory Hodgkin Lymphoma
++
++                                     Need
++
++ 50% relapse despite ASCT
++ 72% of relapses occur in less than 1 yr of ASCT
++
++       ~ 40% 1-yr mortality rate
++ All patients become markedly symptomatic
++ Available off-label remedies  short-term benefit in minority of patients
++ High-quality response  opportunity for potentially curative treatment
++
++             Risk                             Benefit
++
++ Peripheral neuropathy                 ORR           75%
++
++– Any grade              55%            CR            34%
++
++– Grade 3                11%            CR duration 20.5 months
++
++ Transient grade 3/4 neutropenia 20%   Potential to make eligible
++                                           for transplant
++ Infusion reactions     12%
++                   SS-1
++
++Supportive Slides
++                                    SS-2
++
++Statistical Methods—Stratification
++
++AETHERA
++
++ Best clinical response achieved after completion of
++   salvage therapy prior to ASCT
++    – CR
++    – PR
++    – SD
++
++ Prior disease status
++    – Refractory
++    – Relapsed < 12 months from the end of frontline therapy
++    – Relapsed ≥ 12 months from the end of frontline therapy
++                                                                                                   SS-3
++
++    Brentuximab Vedotin Studies Ongoing
++    and in Development
++
++Indication Study description                                               Ph 1 Ph 2 Ph 3
++
++              AETHERA—post-ASCT, high-risk HL (placebo controlled)                       X
++
++HL            Combination chemo + brentuximab vedotin in front-line HL     X
++
++              Combination chemo + brentuximab vedotin in front-line HL                   X
++
++ALCL          Combination chemo + brentuximab vedotin in front-line sALCL  X
++              Combination chemo + brentuximab vedotin in front-line sALCL
++                                                                                         X
++
++              Re-treatment                                                    X
++
++CD30+         Cardiac safety (primary data complete)                       X
++malignancies  Drug-drug interaction/Special populations                    X
++              CD30+ NHL
++                                                                                      X
++
++              CD30+ non-lymphomatous malignancies                             X
++
++CTCL          Single agent vs physicians choice in CD30+ CTCL                            X
++
++              Open          In Development
++Complete Remissions by Additional                         SS-4
++Subgroups—March 2011
++                                                       CR / N
++Hodgkin Lymphoma                                       35 / 102
++
++Subgroups                           Overall CRR = 34%   1 /1
++Overall                                                33 / 98
++Age                       12 - 17
++                          18 - 64                       1 /3
++Sex                       ≥ 65                         14 / 48
++                          Male                         21 / 54
++Baseline weight           Female                       29 / 91
++                          ≤ 100 kg
++Relapse                   > 100 kg                      6 / 11
++Refractory                                             21 / 59
++Bone marrow involvement   Present                      14 / 43
++                          Absent
++Baseline LDH              Normal                        0 /8
++                          High                         35 / 94
++Treatments post-ASCT      0                            25 / 65
++                          ≥1                           10 / 37
++Treatments prior to ASCT  ≤2                           17 / 45
++                          >2                           18 / 57
++Prior radiotherapy        Yes                          22 / 57
++                          No                           13 / 45
++                                                       22 / 67
++                                                       13 / 35
++PFSa: Brentuximab Vedotin vs Last                                                            SS-5
++
++Prior Post-ASCT Therapy—March 2011
++
++Hodgkin Lymphoma
++
++                                                                                              Median
++                                                                                             PFS , mo
++
++                  PFS per investigator                                                       7.8
++
++                  PFS most recent prior therapy 4.1
++
++                  HR = 0.41 (p < 0.001)
++
++a PFS as assessed by investigator in the subset of
++patients (n = 57) who received systemic therapy post-ASCT and prior to brentuximab vedotin.
++Combination of Brentuximab Vedotin SS-6
++With ABVD Provides Better Efficacy Than
++Either Agent Alone
++
++Tumor volume, mm3  1200                                                  Untreated
++                                                                         Brentuximab vedotin
++                   1000                                                  (1 mg/kg, q4dx3) ip (4/9 DRs)
++                                                                         ABVD (8/8 CRs / 0/8 DRs)
++                    800                                                  Brentuximab vedotin + ABVD
++                                                                         (9/9/DRs)
++                    600
++                                                                                   L540cy-70B
++                    400
++
++                    200
++
++                        0
++                           0 10 20 30 40 50 60 70 80 90
++
++                                                    Days
++
++ABVD = Doxorubicin (1 mg/kg, q4dx3) iv; bleomycin (7.5 u/kg, q4dx3) ip;
++vinblastine (0.015 mg/kg q4dx3) ip; dacarbazine (20 mg/kg, q3dx4) ip.
++                                                                                                    SS-7
++
++Best Clinical Response by Immunogenicity
++Status in Baseline Negative Patients
++
++Phase 2 Population
++
++                                                                        HL patients, n (%)
++                                                                                n = 96
++
++                                                                        Transient  Persistent
++                                                                                    positive
++                                     Negative positive                                n=7
++
++                                     n = 64                             n = 24
++
++Objective response rate (CR + PR)    49 (77)                            16 (67)             6 (86)
++Disease control rate (CR + PR + SD)
++                                     63 (98)                            22 (92)    7 (100)
++
++                                                                        ALCL patientsa, n (%)
++                                                                                  N = 54
++
++                                                                        Transient  Persistent
++                                                                                    positive
++                                     Negative positive                                n=3
++
++                                     n = 32                             n = 18
++
++Objective response rate (CR + PR)    28 (88)                            15 (83)    3 (100)
++Disease control rate (CR + PR + SD)
++                                     29 (91)                            16 (89)    3 (100)
++
++a Independent review facility assessment per Revised Response Criteria
++for Malignant Lymphoma.
++
+\ No newline at end of file
+diff --git a/src/main/webapp/resources/docs/virtuallearning/D_Med_3.pdf b/src/main/webapp/resources/docs/virtuallearning/D_Med_3.pdf
+new file mode 100644
+index 0000000..2a183d5
+--- /dev/null
++++ b/src/main/webapp/resources/docs/virtuallearning/D_Med_3.pdf
+@@ -0,0 +1,1501 @@
++                                    CIH-1
++
++ADCETRIS™
++Brentuximab Vedotin
++
++CD30-Directed Therapy for
++Hodgkin Lymphoma
++
++Oncologic Drugs Advisory Committee
++
++July 14, 2011
++                                                                                           CIH-2
++
++Brentuximab Vedotin
++Hodgkin Lymphoma
++Introduction
++
++Elaine Waller, PharmD
++
++Senior Vice President of Regulatory Affairs
++Seattle Genetics
++                                                                                              CIH-3
++
++Brentuximab Vedotin Targets CD30 Antigen
++
++Transmembrane glycoprotein receptor,
++  member of TNF receptor superfamily
++
++Leads to transduction of biologic signals,
++  including cell proliferation
++
++Highly expressed on HL and ALCL cells
++Restricted distribution on normal cells:
++
++   – Expressed on activated lymphocytes
++      (B cell, T cell, NK cell)
++
++   – Weakly expressed on activated monocytes
++                                                                         CIH-4
++
++CD30+ Lymphomas
++
++                                 Lymphoma  Non-Hodgkin lymphoma
++Hodgkin lymphoma
++
++B-cell neoplasms                           T-cell & NK-cell neoplasms
++
++                  Peripheral T-cell lymphoma &                   Cutaneous TCL
++                  Natural killer T-cell lymphoma
++
++                                           PTCL not otherwise specified
++
++                                           Systemic anaplastic large cell lymphoma
++
++                                           Angio-immunoblastic TCL
++
++                                           Other PTCLs
++Comparison of Unconjugated CD30 mAb CIH-5
++With Brentuximab Vedotin
++Hodgkin Lymphoma
++
++Dose             CD30 mAb                                 Brentuximab vedotin
++               (unconjugated                              (conjugated cAC10)
++Patients, n
++Objective           cAC10)                                        1.8 mg/kg
++response rate  6 or 12 mg/kg                                  every 3 weeks
++Complete
++remissions          weekly                                            102
++                       38                                             75%
++                        —
++                                                                      34%
++                       —
++
++Forero-Torres A, et al. Br J Haematol. 2009;146:171-179.
++                                                                                                             CIH-6
++
++Brentuximab Vedotin Structure
++
++Antibody                             Linker                                      Drug
++
++cAC10 anti-CD30 Attachment                 Protease-                             MMAE
++                                                                           cytotoxic agent
++antibody  group                      cleavage site
++
++                                  O  O          H  O              O     H  O               N            HO
++          S                             N       N     N        ON       N     N  OCH3O                    N
++                                        H    O        H              O                                    H
++                              N
++                        O                                                                     OCH3O
++
++                                                        NH
++                                                   O
++
++                                                          NH2
++                                                                                              CIH-7
++
++Brentuximab Vedotin Is More Active Than
++MMAE Alone
++
++Tumor volume, mm3  1200
++
++                   1000
++
++                   800
++
++                   600
++
++                   400
++
++                   200
++
++                   0
++                      0 20 40 60 80 100 120
++
++                                                  Days
++
++Untreated (0/5 DR)        Control ADC 2 mg/kg (0/5 DR)
++MMAE 0.25 mg/kg (0/5 DR)  Brentuximab vedotin 2 mg/kg (4/5 DR)
++
++DR = Durable response.
++HL L428 subcutaneous xenograft model in NSG mice (n = 5 group), mean ± SD, q4dx3.
++                                                                                                         CIH-8
++
++Brentuximab Vedotin
++Mechanism of Action
++
++                                                        1. ADC binds to CD30
++
++2. ADC-CD30 complex is  CD30
++internalized and
++trafficks to lysosome
++
++3. MMAE is
++released
++
++                                                                              6. Apoptosis (cell death)
++
++4. MMAE binds           5. G2/M cell
++tubulin and             cycle arrest
++prevents microtubule
++assembly
++                         CIH-9
++
++Proposed Indication and
++Dosage Regimen
++
++Brentuximab vedotin is a CD30-directed
++  antibody-drug conjugate indicated for the
++  treatment of patients with relapsed or
++  refractory Hodgkin lymphoma
++
++Brentuximab vedotin 1.8 mg/kg administered
++  as an IV infusion over 30 minutes every
++  3 weeks
++
++Treat until disease progression or
++  unacceptable toxicity
++                                          CIH-10
++
++Brentuximab Vedotin in Patients With
++Hodgkin Lymphoma
++
++ Efficacy
++   – Clinically relevant objective
++      response rates
++   – Durable complete remissions
++   – Resolution of disease-related signs
++      and symptoms
++
++ Safety
++   – Most common AEs were grade 1 and 2
++   – Peripheral neuropathy is manageable
++                                                                                         CIH-11
++
++Clinical Trials Submitted in BLA
++
++   IND             EOP1 Phase 2 Clin Pharm        Clinical  BLA
++submitted        meeting SPA meeting              pre-BLA   submission
++                                                  meeting   Feb
++   Jun                Jul Jan Mar
++                                                       Nov
++
++2006       2007  2008          2009         2010            2011
++
++                 Phase 1 q3wk
++
++                               Phase 1 q1wk
++                                              Pivotal HL study
++
++                                             Pivotal ALCL study
++                                                                 QTc
++
++                                                           Excretion
++                                                              DDI
++                                                                    Special populations
++                                                                                            CIH-12
++
++Special Protocol Assessment
++
++ Agreements made with the FDA
++    – Primary endpoint
++
++          • ORR per independent review facility (IRF)
++          • 2007 Revised Response Criteria for Malignant Lymphoma
++
++    – ORR of 30% considered a meaningful response
++    – Supporting evidence
++
++          • Duration of response
++          • Complete remission
++          • B symptom resolution
++          • Investigator assessment vs IRF concordance
++
++ SPA remains in effect
++                                                                                            CIH-13
++
++AETHERA: Phase 3 HL Post-ASCT
++
++ Randomized, double-blind, placebo-controlled, multicenter,
++    phase 3 clinical trial
++
++ Patients randomized 1:1 to receive brentuximab vedotin or
++    placebo every three weeks
++
++ Efficacy endpoints
++     – Primary: Progression-free survival per IRF
++     – Key Secondary: Overall survival
++
++ Population (N = 322) includes at least one of the following
++     – Refractory to front-line therapy
++     – Relapsed within 12 months
++     – Extranodal disease
++
++ Stratified by response to frontline and salvage treatments
++                                 CIH-14
++
++Ongoing Clinical Development in
++Hodgkin Lymphoma
++
++ AETHERA - Phase 3 trial in patients at high risk
++   of residual HL following autologous SCT
++
++ Phase 1 trial in front-line HL
++
++ Expanded access program in relapsed or
++   refractory HL and systemic ALCL
++                                                        CIH-15
++
++Today’s Agenda
++
++Introduction          Elaine Waller, PharmD
++                      Seattle Genetics
++
++CD30-Directed Therapy for Joseph M. Connors, MD, FRCPC
++
++Hodgkin Lymphoma      British Columbia Cancer Agency
++
++Brentuximab Vedotin   Eric Sievers, MD
++Hodgkin Lymphoma      Seattle Genetics
++Efficacy Profile
++
++Brentuximab Vedotin   Tom Reynolds, MD, PhD
++Safety Profile        Seattle Genetics
++
++Hodgkin Lymphoma      Joseph M. Connors, MD, FRCPC
++Benefit:Risk Profile  British Columbia Cancer Agency
++                                                              CIH-16
++
++Consultants
++
++ David R. Cornblath, MD          J. Michael O’Neal, MD
++    Professor, Neurology             Chief Medical Officer
++    Johns Hopkins University         CoreLab Partners
++
++ L. Jeffrey Medeiros, MD         Barbara Pro, MD
++    Professor, Chair, Dept of        Associate Professor
++    Hematopathology                  Fox Chase Cancer Center
++    MD Anderson Cancer Center
++
++ Owen O’Connor, MD
++    Deputy Director of Clinical
++    Research and
++    Cancer Treatment
++    New York University Cancer
++    Institute
++                                                                                          CDH-1
++
++Brentuximab Vedotin
++CD30 Directed Therapy for
++Hodgkin Lymphoma
++
++Joseph M. Connors, MD, FRCPC
++
++Clinical Director, Centre for Lymphoid Cancer
++British Columbia Cancer Agency
++University of British Columbia
++                                                                                   CDH-2
++
++Disclosures
++
++                          Not-for-profit Sources               For-profit Sources
++
++Institutional       Canadian Cancer Society Research     Amgen              Bayer Healthcare
++research support    Institute                            Cephalon           Lilly
++including clinical  NCI of Canada Clinical Trials Group  Genentech          Merck
++trials              Terry Fox Foundation                 Hoffmann-La Roche  Roche Canada
++                    SWOG                                 Johnson & Johnson  Seattle Genetics
++Advisory
++Board/Committee     ASH                                  None
++                    ASCO
++Employee            Lymphoma Foundation Canada
++Speakers’ Bureau    Lymphoma Research Foundation (US)
++Honoraria           NCIC Canada
++Board member
++Paid consultant     British Columbia Cancer Agency       None
++Stockholder
++                    ASH                                  None
++
++                    ASH, ASCO                            None
++
++                    None                                 None
++
++                    None                                 None
++
++                    None                                 None
++
++                                                                            July 2011
++                                                                                            CDH-3
++
++CD30: Optimal Target for Antibody-Drug
++Conjugate Therapy
++
++Highly restricted normal cell surface
++  expression
++
++Defining marker for Hodgkin lymphoma—
++  malignant Hodgkin Reed-Sternberg cells
++
++Standard immunohistochemical test
++
++   – Widely available
++
++   – Reliable and reproducible
++                                                                                 CDH-4
++
++Hodgkin Reed-Sternberg Cells
++Strongly Express CD30
++
++                                                                       CD30+
++                                                                       HRS cell
++
++Cytokine receptor CD30 selectively
++         expressed in HRS cells
++                                                                                                 CDH-5
++
++  Hodgkin Lymphoma
++
++    2010 estimatesa
++       – 8490 new cases of HL were diagnosed
++       – 1320 patients would die from their disease
++
++    Median age at diagnosis is 38 yearsb
++       – 90% of patients < 60 years
++
++    Clinical presentation
++       – Painless, enlarged lymph nodes commonly in
++          the neck and thorax
++       – 15% of patients with B symptoms (fever,
++          night sweats, weight loss > 10%)
++
++a Jemal A, et al. CA Cancer J. 2010;60(5):277-300; b National Cancer Institute. 2010. Surveillance, Epidemiology, and
++End Results (SEER) Program SEER*Stat Database: Incidence. http://seer.cancer.gov/canques/incidence.html.
++Progression-Free Survival by                                                            CDH-6
++Decade of Diagnosis
++
++Hodgkin Lymphoma
++
++         1.0                                      N = 3216
++         0.8
++         0.6                 Cumulative survival  2000s  1990s, bone marrow transplantation
++         0.4
++         0.2                                                          1980s, ABVD
++
++            0                                                                        1970s, wide field
++               0                                                                     radiation and MOPP-
++                                                                                     type chemotherapy
++Data courtesy of Dr. Connors.
++                                                                                        1960s
++
++                                                  10 20 30                          40
++                                                  Progression-free survival, years
++                                                                                            CDH-7
++
++Treatment Algorithm for Advanced-Stage
++Hodgkin Lymphoma
++
++First-line   Multi-agent     ABVD or Stanford V or BEACOPP                           Current
++treatment   chemotherapy                                                           unmet need
++
++                  70% cured  ± RT                             30% Progressive
++                                                              disease or relapse
++Second-line                  Combination chemotherapy                              30%
++treatment                        (eg, DHAP, ICE, GVD)            30% < CR/PR
++(including ASCT)
++                                       70% CR/PR
++
++                                                              No standard of care
++
++                                 High-dose therapy with
++                             autologous stem cell transplant
++
++Post-ASCT         50% cured                                   50% Progressive      50%
++                                                              disease or relapse
++
++ASCT = Autologous stem cell transplant; CR = Complete remission; PR = Partial remission; RT = Radiation therapy.
++                                                                                                CDH-8
++
++Poor Survival in HL Patients Who
++Relapse After a Stem Cell Transplant
++
++Overall survival in patients who relapse post-ASCT (N = 756)
++   100
++
++                80
++
++Probability, %  60
++
++                                 Median = 2.4 yr
++
++                40
++
++                20
++
++                     0
++                        0 5 10 15 20
++
++                                                       Time from relapse, yr
++
++Horning et al. 10th International Conference on Malignant Lymphoma; Lugano, Switzerland; 2008.
++72% of Relapses After ASCT Occur in CDH-9
++the First 12 Months and Have a Very
++Poor Prognosis
++
++                100 1-yr mortality 40%
++
++                    TTR, mo N % Median OS, yr
++
++                80  > 12 214 28                                            4.6
++
++Probability, %      0 - 12 542 72                                          1.2
++
++                60
++
++                40 N = 756
++                                                                p < 0.001
++
++                20
++
++                     0
++
++                        0 5 10 15 20
++
++                                                       Time from relapse, yr
++
++TTR = Time to relapse.
++Horning et al. 10th International Conference on Malignant Lymphoma; Lugano, Switzerland; 2008.
++                                                                                           CDH-10
++
++Treatment Options After Failure of ASCT
++
++No reliably curative options
++   – Experimental allogeneic SCT
++       • Applicable to small minority
++       • Associated with marked toxicity
++   – Curative wide-field radiation applicable
++      to < 5%
++
++No approved treatment
++Pronounced unmet need
++                                                                              CDH-11
++
++Treatment of Relapsed or Refractory
++Hodgkin Lymphoma
++
++                               All patients               Post-ASCT patients
++
++Agent             Evaluable                                        Evaluable
++Vinblastinea      patients, n  ORR, n (%) CR, n (%) patients, n ORR, n (%) CR, n (%)
++Vinorelbinea
++Rituximaba        17           10 (59)       2 (12)  17   10 (59)             2 (12)
++Gemcitabinea
++Vinorelbine +     22           11 (50)       3 (14)
++Gemcitabinea
++Rituximab +       22           5 (23)        1 (5)   18   5 (23)              1 (5)
++Gemcitabinea
++Bortezomiba       27           6 (22)        0       16 5 (31) 0
++Bortezomiba
++Bortezomiba       8            6 (75)        4 (50)
++
++Gem, Vinor, Doxb  33           16 (48)       5 (15)  18   11 (61)
++Panobinostatc
++                  14           1 (7)         0       14   1 (7)                                                 0
++
++                  30 0 0 28
++
++                  12 0 0
++
++                  88           62 (70) 17 (19)       36   27 (75) 6 (17)
++
++                  129          35 (27)       5 (4)   129  35 (27)             5 (4)
++
++a Crump M. Hema Am Soc Hematol Educ Prog. 2008:326-333; b Bartlett NL, et al. Ann Oncol. 2007;18(6):1071-1079;
++c Sureda A, et al. 52nd ASH Annual Meeting and Exposition. 2010. Abstract 169.
++                                                                                           CDH-12
++
++Key Concepts for Patients With Relapsed
++or Refractory Hodgkin Lymphoma
++
++Background                                            Hodgkin
++• Malignant cells express CD30                       lymphoma
++Disease impact
++• Not cured with current standard treatments          ~ 100 %
++• Median OS
++                                                        ~ 25%
++  – After failure of autologous transplant
++  – Post-ASCT failure in < 1 year                       29 mo
++• Typical response to available treatment = partial     14 mo
++• Typical duration of response                       20% - 60%
++                                                      3 - 12 mo
++                                                                                          CEH-1
++
++Brentuximab Vedotin Treatment of
++Patients With Hodgkin Lymphoma
++
++Eric Sievers, MD
++
++Vice President of Clinical Affairs
++Seattle Genetics
++                                                                                    CEH-2
++
++Brentuximab Vedotin Clinical
++Development Program
++
++2006  2007  2008          2009  2010  2011
++
++            Phase 1 q3wk
++
++                          Phase 1 q1wk
++                                         Pivotal HL study
++
++                                        Pivotal ALCL study
++                                                            QTc
++
++                                                      Excretion
++                                                         DDI
++                                                               Special populations
++                                                                                                 CEH-3
++
++  Phase 1 First-in-Human Study
++
++      Phase 1 dose-escalation study of brentuximab vedotin in patients with
++         relapsed or refractory CD30+ hematological malignancies
++
++      N = 45 enrolled at 4 US sites
++           – Median age of 36 years
++           – HL (n = 42), sALCL (n = 2), and angioimmunoblastic T-cell
++               lymphoma (n = 1)
++           – Median 3 prior regimens; prior ASCT in 73%
++
++      Brentuximab vedotin was given intravenously every 3 weeks in
++         escalating doses ranging from 0.1 to 3.6 mg/kg in successive cohorts
++
++      1.8 mg/kg every 3 weeks
++           – Defined as MTD; also reasonably well-tolerated over months of
++               continued therapy
++           – Obtained durable complete remissions
++           – Employed in the subsequent, paired registrational trials
++
++a Younes A, et al. N Engl J Med. 2010;363(19):1812-1821.
++                                                    CEH-4
++
++Results
++
++Phase 1 Program—Hodgkin Lymphoma
++
++Overall response rate                 Q 3 week        Q 1 week
++    Complete remission rate               trial           trial
++
++Median, months (min - max)              n = 42          n = 38
++    Duration of overall response          36%             53%
++                                          21%             26%
++    Duration of complete remission
++                                           NE              4.8
++                                    (0.6 - 19.4+)   (0.5+ - 17.3+)
++
++                                           NE              5.1
++                                    (1.4+ - 19.4+)  (0.5+ - 17.3+)
++                                                                                    CEH-5
++
++Brentuximab Vedotin Clinical
++Development Program
++
++2006  2007  2008          2009  2010  2011
++
++            Phase 1 q3wk
++
++                          Phase 1 q1wk
++                                         Pivotal HL study
++
++                                        Pivotal ALCL study
++                                                            QTc
++
++                                                      Excretion
++                                                         DDI
++                                                               Special populations
++                                                                                                          CEH-6
++
++Phase 2 Pivotal, Multicenter,
++Open-Label Trial Endpoints
++
++ Primary: Overall objective response rate (CR + PR)
++
++– Independent review facility
++
++– Revised response criteria for malignant
++  lymphomaa
++
++ Secondary
++
++– Efficacy   – Safety
++
++• Duration of response • Adverse events
++
++• CR rate                      • Laboratory
++
++• PFS                          abnormalities
++
++• OS
++
++• B symptom resolution
++
++CR = Complete remission; PR = Partial remission; PFS = Progression-free survival; OS = Overall survival.
++a Cheson BD, et al. J Clin Oncol. 2007;25(5):579-586.
++                                                                                                 CEH-7
++
++2007 Revised Response Criteria for
++Malignant Lymphoma
++
++Response  Definition               Nodal lesions
++CR
++PR        Disappearance of all     Residual mass of any size
++          evidence of disease      permitted if PET-negative
++SD
++          Regression of            ≥ 50% decrease in SPD of index
++PD
++          measurable disease and lesions; 1 or more PET-positive at
++
++          no new sites             previously involved site
++
++          Failure to attain CR/PR  PET-positive at previously
++          or PD                    involved site and no new sites
++                                   of disease
++
++          Any new lesion or        Progression of existing non-index
++          increase by ≥ 50% of     lesions or ≥ 50% increase in SPD
++          previously involved      of index lesions or new lesion
++
++          sites from nadir         > 1.5 cm in any axis
++
++CR = Complete remission; PR = Partial remission; SD = Stable disease; PD = Progressive disease;
++SPD = Sum of the products of the diameters.
++Cheson BD, et al. J Clin Oncol. 2007;25(5):579-586.
++                                                                                             CEH-8
++
++Pivotal, Multicenter, Open-Label Trials of
++Brentuximab Vedotin
++
++     Brentuximab vedotin 1.8 mg/kg IV over 30 minutes every 3 weeks
++
++S  E Follow-up
++C
++R  N every
++E
++E  R 12 weeks
++N
++I  O
++N
++G  L
++
++   L 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16
++   M
++   E  Cycle
++
++   N
++
++   T
++
++   CT scan between Days 15 and 21 of cycle
++   PET scan (no additional scans past Cycle 7 unless clinically indicated)
++                                           CEH-9
++
++Key Eligibility Criteria
++
++Hodgkin Lymphoma
++
++Relapsed or refractory, progressive HL
++CD30 expression confirmed centrally
++FDG-avid, CT-measurable disease ≥ 1.5 cm
++Prior ASCT was required
++Age ≥ 12 years
++ECOG performance status score 0 to 1
++                              CEH-10
++
++Statistical Considerations
++
++Hodgkin Lymphoma
++
++Trial and analyses conducted under Special
++  Protocol Assessment
++
++Primary statistical hypothesis: ORR 95% CI
++  lower bound > 20%
++
++   – Study size of 100 patients was chosen to
++      allow evaluation of primary hypothesis
++
++   – Observation of an ORR of 29% or greater
++      would exclude a lower bound of 20%
++
++ORR = Overall response rate.
++                             CEH-11
++
++Study Conduct and Oversight
++
++Hodgkin Lymphoma
++
++Study steering committee guided design,
++  conduct, and data interpretation
++
++Independent data monitoring committee
++  actively evaluated for safety signals
++
++Independent response assessments
++
++   – Prospectively rendered by central
++      radiology blinded to clinical data
++
++   – Overall assessment additionally integrated
++      clinical data
++Demographics and                                            CEH-12
++Baseline Characteristics
++                                                   N = 102
++ Hodgkin Lymphoma                               31 (15 - 77)
++                                                48 M / 54 F
++Median age, yr (range)
++Gender, n                                              41
++ECOG performance status score, %                       59
++                                                       71
++    0                                                  42
++    1                                           3.5 (1 - 13)
++Refractory to front-line therapy, %                    66
++Refractory to most recent treatment, %               100
++Median prior chemotherapy regimens, n (range)          71
++Prior radiation, %                              6.7 (0 - 131)
++Prior ASCT, %
++Relapsed ≤ 1 yr post-ASCT, %
++Median time from ASCT to first post-transplant
++relapse, months (range)
++  Response Results                                                                            CEH-13
++
++   Hodgkin Lymphoma                                                      N = 102
++                                                                       75 (65, 83)
++       Overall response rate, % (95% CI)                               34 (24, 44)
++           Complete remission, % (95% CI)
++           Partial remission, %                                              40
++
++       Median, months (95% CI)                                       6.7 (3.6, 14.8)
++           Duration of overall response                              20.5 (10.8, NE)
++           Duration of complete remission
++           Progression-free survival                                  5.6 (5.0, 9.0)
++           Overall survivala                                         22.4 (21.7, NE)
++
++       B-symptom resolution, % (n/N)                                   77% (27/35)
++
++NE = Not estimable.
++a 18-month overall survival estimated to be 80% (95% CI: 73%, 88%).
++                                                                          CEH-14
++
++Maximum Tumor Reduction
++
++Hodgkin Lymphoma
++
++94% (96 of 102)a of patients achieved tumor reduction
++
++a 4 patients not included in analysis (3, no measurable lesions per IRF;
++1, no post-baseline scans).
++                                                                                           CEH-15
++
++PFS by Best Clinical Response per IRF
++
++Hodgkin Lymphoma
++
++N Median, mo
++
++CR 35 21.7
++
++PR 41  5.1
++
++SD 22  3.5
++
++PD 3   1.2
++                                                                                           CEH-16
++
++CR Rate Was Similar in All Patient Subsets
++
++Hodgkin Lymphoma
++
++Subgroups                                      Overall CR rate = 34%  CR / N
++Overall                                                               35 / 102
++Primary refractory    Yes                                             26 / 72
++                      No
++Time to relapse       ≤ 1 yr                                            9 / 30
++post-ASCT             > 1 yr                                          18 / 72
++Baseline B symptoms   Yes                                             17 / 30
++present               No                                              10 / 35
++Baseline ECOG         0                                               25 / 67
++                      1                                               19 / 42
++Baseline SPD per IRF  ≤ 5 cm2                                         16 / 60
++                      > 5 and ≤ 10 cm2
++                      > 10 cm2                                          3 / 11
++                                                                        9 / 11
++                                                                      22 / 77
++Overall Survival                                            CEH-17
++                  89% estimated 12-month OS
++Hodgkin Lymphoma
++                                                                                           CEH-18
++
++Consistent Response Rates
++
++Pivotal Studies in Two CD30+ Lymphomas
++
++Treatment response                    HL patients  ALCL patients
++  Overall response rate, % (95% CI)     N = 102         N = 58
++
++ Complete remission, % (95% CI)             75             86
++                                         (65, 83)       (75, 94)
++  Median duration of response for CR
++  patients, mo (95% CI)                     34             57
++                                         (25, 44)       (43, 70)
++
++                                           20.5           13.2
++                                       (10.8, NE)     (10.8, NE)
++
++NE = Not estimable.
++Change in tumor size from baseline %                                                                                           CEH-19
++
++                                    Consistent Tumor Reduction
++
++                                    Pivotal Studies in Two CD30+ Lymphomas
++
++                                                                                                                                                       HL
++
++                                                                                                                                     Systemic ALCL
++                                                                                           CEH-20
++
++Durable Complete Remission Represents
++Clinical Benefit in CD30+ Lymphoma Patients
++
++                                      CD30+ lymphomas
++
++           Hodgkin                       Systemic ALCL
++          lymphoma
++
++Q3 week    Weekly        Pivotal study         Pivotal study
++  N = 42    N = 38           N = 102                N = 58
++          ORR 53%           ORR 75%
++ORR 36%    CR 26%            CR 34%,             ORR 86%
++ CR 21%                                           CR 57%,
++                    median CR = 20.5 mo  median CR = 13.2 mo
++                       CSH-1
++
++Brentuximab Vedotin
++Safety Profile
++
++Tom Reynolds, MD, PhD
++
++Chief Medical Officer
++Seattle Genetics
++                                             CSH-2
++
++Safety Profile of Brentuximab Vedotin
++
++        Phase 2
++Safety and efficacy
++
++HL pivotal  ALCL pivotal
++ (n = 102)     (n = 58)
++
++Total Phase 2: N = 160      Total number of
++                           patients exposed
++          Phase 1
++           Safety             in completed
++                                  studies
++Q 3 week    Q 1 week
++ (n = 45)    (n = 44)             N = 357
++
++Clinical pharmacology
++
++  QTc       DDI/excretion
++(n = 52)        (n = 56)
++                                                      CSH-3
++
++Brentuximab Vedotin Exposure
++
++Median treatment                     HL patients      Total patients
++Cycles, n (range)                       n = 102           N = 160
++Duration, mo (range)
++Relative dose intensity, % (range)    9.0 (1 - 16)      7.0 (1 - 16)
++                                    6.2 (0.7 - 12.9)  5.5 (0.7 - 12.9)
++                                    96.0 (69 - 107)   97.3 (47 - 115)
++                                                     CSH-4
++
++Dose Modifications
++
++ Dose modifications were prospectively defined in
++   study protocols
++
++ Patients could have their dose delayed up to
++   3 weeks or reduced to 1.2 mg/kg for AEs
++
++Per-protocol and unplanned                               Patients, %
++dose modifications                                      HL Total
++Dose reduction                                       n = 102 N = 160
++Dose delaya                                             11 10
++Dose adjustment due to an AE                            47 41
++                                                        12 8
++
++a Only 8% of total doses were delayed due to an AE.
++                                          CSH-5
++
++Patient Disposition
++
++                     HL patients, N  102
++Enrolled, n                          102
++Received ≥ 1 dose, n
++
++Reason for treatment discontinuation, %
++
++Completed treatment                  18
++
++Progressive disease                  44
++
++Adverse event                        20
++
++Investigator decision                12
++
++Patient decision, non-AE             7
++                                                                                             CSH-6
++
++Adverse Events of Any Relationship
++Occurring in ≥ 20% of Phase 2 Patients
++
++                                        Patients, %
++
++Preferred term                             HL     Total
++Peripheral sensory neuropathy           n = 102  N = 160
++Fatigue
++Nausea                                  47 44
++Diarrhea
++Pyrexia                                 46 42
++Upper respiratory tract infection
++Neutropenia                             42 41
++Vomiting
++                                        36 34
++
++                                        29 31
++
++                                        37 28
++
++                                        22 21
++
++                                        22 20
++
++a Only 8% of total doses were delayed.
++                                                                                             CSH-7
++
++Adverse Events Grade 3-4 Occurring in
++≥ 2% of Phase 2 Patients
++
++                    HL patients, %         Total patients, %
++                         n = 102                 N = 160
++
++Preferred term       Any                    Any
++Peripheral sensory  grade Grade 3 Grade 4  grade Grade 3 Grade 4
++neuropathy
++Fatigue             47 8            —      44 9  —
++Diarrhea
++Pyrexia             46 2            — 42   2     1
++Neutropenia         36 1                         —
++Thrombocytopenia    29 2            — 34   2     —
++Peripheral motor    22 14                        7
++neuropathy          86              — 31   2     3
++                    12 1                         —
++                                    6 21 13
++
++                                    2 10 7
++
++                                    —9 2
++
++Total patients with any ≥ Grade 3 event = 55%
++Summary of Deaths                                           CSH-8
++
++All deaths                           Patients, n
++   Related to disease               HL Total
++   Not related to disease        n = 102 N = 160
++   Disease relationship unknown     13 25
++                                    10 18
++Deaths < 30 days of last dose
++                                      25
++                                      12
++                                     —6
++                           CSH-9
++
++Special Safety Topics and
++Management of Toxicity
++                                                                           CSH-10
++
++Peripheral Neuropathy AEs
++
++                                                        HL patients, %  Total patients, %
++                                                             n = 102          N = 160
++
++                                                        Any grade Grade 3 Any grade Grade 3
++
++Any PN SMQ AEa                                          55 11 53 11
++
++Peripheral sensory neuropathy                           47  8 44           9
++
++Peripheral motor neuropathy                             12  1           9  2
++
++Paresthesia                                             4—4—
++
++Demyelinating polyneuropathy                            2   2           1  1
++
++Hypoesthesia                                            2—1—
++
++Muscular weakness                                       2111
++
++Neuralgia                                               —— 1 —
++
++SMQ = Standard MedDRA query.
++a Events of any relationship occurring in > 1 patient.
++                                                                                           CSH-11
++
++Characterization of Treatment-Emergent
++Peripheral Neuropathy
++
++Total Phase 2 Population
++
++                                          Weeks to onset
++0 12 24 36 48
++
++  Any PN       Grade 2 PN Grade 3 PN
++  (n = 84)
++   12 wk       (n = 41) (n = 18)
++(0.1 - 41.3)
++               24 wk  33 wk
++
++               (0.1 - 51.9) (6.0 - 57.1)
++
++ Median time to complete or partial resolution: 6.6 wk (0.3, 54.4)
++
++ Resolution:  62%
++
++– Complete:    31%
++
++– Partial:     31%
++Dose Modifications in Patients With  CSH-12
++Grade 2 Neuropathy Can Reduce
++Worsening of Neuropathy
++
++Of patients with grade 2 neuropathy
++
++   – 0/15 who had doses delayed had worsening
++
++   – 2/10 who had dose reduction had worsening
++
++   – 6/18 who had neither dose delays nor
++      reductions had worsening
++
++Both dose delays and dose reductions
++  appeared to be effective in reducing
++  progression of Grade 2 neuropathy
++                                                                                           CSH-13
++
++Management of Peripheral Neuropathy
++
++ Patients should be monitored for signs and
++   symptoms of PN
++
++ Neuropathy events
++    – Primarily sensory
++    – Appear to be associated with cumulative dosing
++    – Largely reversible
++
++ Patients experiencing new or worsening Grade 2 PN
++    – Hold dosing until resolution to Grade 1
++       or baseline
++    AND
++    – Reduce dose to 1.2 mg/kg
++                                                     CSH-14
++
++Neutropenia Experience
++
++Adverse event of neutropenia                  HL       Total
++≥ Grade 3                                  patients  patients
++                                           n = 102   N = 160
++   Median duration
++                                             20%        20%
++Grade 4                                     8 days    8 days
++   Median duration
++                                              6%        7%
++Any infections temporally associated with   4 days    6 days
++neutropenia/low neutrophils
++                                              33%      39%
++       Most < Grade 3, not serious          (7/21)    (14/36)
++Febrile neutropenia
++Discontinuation due to neutropenia             —         —
++                                               —         —
++                                                                                           CSH-15
++
++Management of Neutropenia
++
++Prolonged (≥ 1 wk) cases of Grade 4
++  neutropenia can occur
++
++CBC should be monitored with each dose
++If Grade 3 or 4 neutropenia develops,
++
++  manage according to institutional standards
++                                                                                           CSH-16
++
++Infusion-Related Reactions of Any
++Relationship Occurring in > 1 Patient
++
++                               Patients, %
++
++                               HL Total
++
++                               n = 102  N = 160
++
++Any infusion-related reaction  12 11
++     Chills
++     Nausea                    54
++     Dyspnea
++     Pruritus                  43
++     Cough
++     Dizziness                 43
++     Erythema
++     Flushing                  43
++     Pyrexia
++     Rash                      32
++     Throat tightness
++     Vomiting                  11
++
++                               21
++
++                               21
++
++                               11
++
++                               11
++
++                               21
++
++                               11
++                                CSH-17
++
++Management of Infusion-Related
++Reactions (IRR)
++
++Routine premedications not required
++In the event of IRR or anaphylaxis
++
++   – Stop infusion
++   – Institute appropriate medical management
++   – Restart infusion (at a slower rate)
++   – Premedication with subsequent infusions
++                                                                                           CSH-18
++
++Single-Event AEs
++
++ Stevens-Johnson Syndrome (SJS)
++     – HL patient receiving multiple medications including
++        naproxen
++     – Developed symptoms ~ 2 weeks after receiving his
++        second dose of brentuximab vedotin
++     – Patient discontinued treatment
++     – Event resolved in less than 1 month
++
++ Tumor Lysis Syndrome (TLS)
++     – ALCL patient with bulky disease
++     – Developed symptoms Day 1 of the Cycle 1 dose
++     – Event was considered resolved 5 days after onset
++     – Patient received a total of 8 cycles of treatment
++     – Patient had a CR and went on to allogeneic transplant
++                                                                                           CSH-19
++
++Brentuximab Vedotin Has a Manageable
++Safety Profile
++
++ Median duration of treatment: 6.2 months
++ No treatment-related deaths
++ Most common AE was peripheral neuropathy
++
++    – Primarily Grade 1 and 2 sensory
++
++    – Largely reversible
++ Grade 3/4 hematologic toxicity was limited
++ Low rate of infusion reactions observed
++
++   (Grade 1/2)
++ No evidence of cardiac, renal, or hepatic
++
++   toxicity signals
++                                                                                          CBH-1
++
++Brentuximab Vedotin
++Hodgkin Lymphoma Benefit:Risk Profile
++
++Joseph M. Connors, MD, FRCPC
++
++Clinical Director, Centre for Lymphoid Cancer
++British Columbia Cancer Agency
++University of British Columbia
++                                                                                                      CBH-2
++
++Benefit:
++Tumor Reduction
++
++94% (96 of 102)a of patients achieved tumor reduction
++
++a 4 patients not included in analysis (3, no measurable lesions per IRF; 1, no post-baseline scans).
++                                              CBH-3
++
++Benefit:
++Clinically Meaningful Results
++
++                             HL patients ALCL patients
++
++                             N = 102  N = 58
++
++Treatment response           75%      86%
++  Overall response rate      34%      57%
++  Complete remission (CR)    20.5     13.2
++  Median duration of CR, mo
++                              77%      82%
++Symptom resolution           N = 35   N = 17
++ B symptom resolution
++
++NE = Not estimable.
++                                                                                                      CBH-4
++
++Benefit:
++Population in Need: Post-transplant
++
++                100  TTR,  Median                                                               1-yr
++
++                     mo N % OS, yr mortality
++
++                80 > 12 214 28 4.6
++
++Probability, %       0 - 12 542 72 1.2                                                          > 40 %
++
++                60
++
++                40 N = 756
++
++                                                                   p < 0.001
++                20
++
++                     0
++
++                        0 5 10 15 20
++
++                                                       Time from relapse, yr
++
++TTR = Time to relapse.
++Horning et al. 10th International Conference on Malignant Lymphoma; Lugano, Switzerland; 2008.
++                                                                                CBH-5
++
++Treatment of Relapsed or Refractory
++Hodgkin Lymphoma
++
++                                All patients                Post-ASCT patients
++
++                     Evaluable                         Evaluable
++
++Agent                patients, n ORR, n (%) CR, n (%) patients, n ORR, n (%) CR, n (%)
++Vinblastinea
++Vinorelbinea         17         10 (59)       2 (12)   17         10 (59)       2 (12)
++Rituximaba
++Gemcitabinea         22         11 (50)       3 (14)
++Vinorelbine +
++Gemcitabinea         22         5 (23)        1 (5)    18         5 (23)        1 (5)
++Rituximab +
++Gemcitabinea         27         6 (22)        0        16 5 (31) 0
++Bortezomiba
++Bortezomiba          8          6 (75)        4 (50)
++Gem, Vinor, Doxb
++Panobinostatc        33         16 (48)       5 (15)   18         11 (61)
++
++Brentuximab vedotin  14         1 (7)         0        14         1 (7)                                         0
++
++                     30 0 0 28
++
++                     88         62 (70)       17 (19)  36         27 (75)       6 (17)
++
++                     129        35 (27)       5 (4)    129        35 (27)       5 (4)
++
++                     102        77 (75) 35 (34)        102        77 (75) 35 (34)
++
++a Crump M. Hema Am Soc Hematol Educ Prog. 2008:326-333; b Bartlett NL, et al. Ann Oncol. 2007;18(6):1071-1079;
++c Sureda A, et al. 52nd ASH Annual Meeting and Exposition. 2010. Abstract 169.
++                                                                                            CBH-6
++
++Benefit: Risk Ratio
++Relapsed/Refractory Hodgkin Lymphoma
++
++                                     Need
++
++ 50% relapse despite ASCT
++ 72% of relapses occur in less than 1 yr of ASCT
++
++       ~ 40% 1-yr mortality rate
++ All patients become markedly symptomatic
++ Available off-label remedies  short-term benefit in minority of patients
++ High-quality response  opportunity for potentially curative treatment
++
++             Risk                             Benefit
++
++ Peripheral neuropathy                 ORR           75%
++
++– Any grade              55%            CR            34%
++
++– Grade 3                11%            CR duration 20.5 months
++
++ Transient grade 3/4 neutropenia 20%   Potential to make eligible
++                                           for transplant
++ Infusion reactions     12%
++                   SS-1
++
++Supportive Slides
++                                    SS-2
++
++Statistical Methods—Stratification
++
++AETHERA
++
++ Best clinical response achieved after completion of
++   salvage therapy prior to ASCT
++    – CR
++    – PR
++    – SD
++
++ Prior disease status
++    – Refractory
++    – Relapsed < 12 months from the end of frontline therapy
++    – Relapsed ≥ 12 months from the end of frontline therapy
++                                                                                                   SS-3
++
++    Brentuximab Vedotin Studies Ongoing
++    and in Development
++
++Indication Study description                                               Ph 1 Ph 2 Ph 3
++
++              AETHERA—post-ASCT, high-risk HL (placebo controlled)                       X
++
++HL            Combination chemo + brentuximab vedotin in front-line HL     X
++
++              Combination chemo + brentuximab vedotin in front-line HL                   X
++
++ALCL          Combination chemo + brentuximab vedotin in front-line sALCL  X
++              Combination chemo + brentuximab vedotin in front-line sALCL
++                                                                                         X
++
++              Re-treatment                                                    X
++
++CD30+         Cardiac safety (primary data complete)                       X
++malignancies  Drug-drug interaction/Special populations                    X
++              CD30+ NHL
++                                                                                      X
++
++              CD30+ non-lymphomatous malignancies                             X
++
++CTCL          Single agent vs physicians choice in CD30+ CTCL                            X
++
++              Open          In Development
++Complete Remissions by Additional                         SS-4
++Subgroups—March 2011
++                                                       CR / N
++Hodgkin Lymphoma                                       35 / 102
++
++Subgroups                           Overall CRR = 34%   1 /1
++Overall                                                33 / 98
++Age                       12 - 17
++                          18 - 64                       1 /3
++Sex                       ≥ 65                         14 / 48
++                          Male                         21 / 54
++Baseline weight           Female                       29 / 91
++                          ≤ 100 kg
++Relapse                   > 100 kg                      6 / 11
++Refractory                                             21 / 59
++Bone marrow involvement   Present                      14 / 43
++                          Absent
++Baseline LDH              Normal                        0 /8
++                          High                         35 / 94
++Treatments post-ASCT      0                            25 / 65
++                          ≥1                           10 / 37
++Treatments prior to ASCT  ≤2                           17 / 45
++                          >2                           18 / 57
++Prior radiotherapy        Yes                          22 / 57
++                          No                           13 / 45
++                                                       22 / 67
++                                                       13 / 35
++PFSa: Brentuximab Vedotin vs Last                                                            SS-5
++
++Prior Post-ASCT Therapy—March 2011
++
++Hodgkin Lymphoma
++
++                                                                                              Median
++                                                                                             PFS , mo
++
++                  PFS per investigator                                                       7.8
++
++                  PFS most recent prior therapy 4.1
++
++                  HR = 0.41 (p < 0.001)
++
++a PFS as assessed by investigator in the subset of
++patients (n = 57) who received systemic therapy post-ASCT and prior to brentuximab vedotin.
++Combination of Brentuximab Vedotin SS-6
++With ABVD Provides Better Efficacy Than
++Either Agent Alone
++
++Tumor volume, mm3  1200                                                  Untreated
++                                                                         Brentuximab vedotin
++                   1000                                                  (1 mg/kg, q4dx3) ip (4/9 DRs)
++                                                                         ABVD (8/8 CRs / 0/8 DRs)
++                    800                                                  Brentuximab vedotin + ABVD
++                                                                         (9/9/DRs)
++                    600
++                                                                                   L540cy-70B
++                    400
++
++                    200
++
++                        0
++                           0 10 20 30 40 50 60 70 80 90
++
++                                                    Days
++
++ABVD = Doxorubicin (1 mg/kg, q4dx3) iv; bleomycin (7.5 u/kg, q4dx3) ip;
++vinblastine (0.015 mg/kg q4dx3) ip; dacarbazine (20 mg/kg, q3dx4) ip.
++                                                                                                    SS-7
++
++Best Clinical Response by Immunogenicity
++Status in Baseline Negative Patients
++
++Phase 2 Population
++
++                                                                        HL patients, n (%)
++                                                                                n = 96
++
++                                                                        Transient  Persistent
++                                                                                    positive
++                                     Negative positive                                n=7
++
++                                     n = 64                             n = 24
++
++Objective response rate (CR + PR)    49 (77)                            16 (67)             6 (86)
++Disease control rate (CR + PR + SD)
++                                     63 (98)                            22 (92)    7 (100)
++
++                                                                        ALCL patientsa, n (%)
++                                                                                  N = 54
++
++                                                                        Transient  Persistent
++                                                                                    positive
++                                     Negative positive                                n=3
++
++                                     n = 32                             n = 18
++
++Objective response rate (CR + PR)    28 (88)                            15 (83)    3 (100)
++Disease control rate (CR + PR + SD)
++                                     29 (91)                            16 (89)    3 (100)
++
++a Independent review facility assessment per Revised Response Criteria
++for Malignant Lymphoma.
++
+\ No newline at end of file

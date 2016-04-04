@@ -12,7 +12,8 @@ var isFromNotificationsPage=false;
  */
 $(document).ready(function() {
    var table = $('#aligned-physician-table').DataTable({
-	   order: [[0, "desc"]]
+	   order: [[0, "desc"]],
+	   "searching": true
    });
    
    $('li.navbar-menu-selected').removeClass("navbar-menu-selected");
@@ -305,10 +306,11 @@ var createJson = function(physIds, appointStartTime, appointEndTime, productIds,
 	var appointmentJson = {"appointments":[]};
 	var appointJsonList = [];
 	for( var i = 0; i<physIds.length;i++){
+//		console.log("Physician Id : "+parseInt(physIds[i])+"; Product Id  : "+parseInt(productIds[i][0])+"; parseInt(productIds[i]) : "+parseInt(productIds[i])+" productIds[i] : "+productIds[i]);
 		appointJsonList.push(
 				{
-					"physicianId":parseInt(physIds[i][0]),
-					"productId":parseInt(productIds[i][0]),
+					"physicianId":parseInt(physIds[i]),
+					"productId":parseInt(productIds[i]),
 					"appointmentStartTime":appointStartTime[i],
 					"appointmentEndTime": appointEndTime[i], 
 					"appointmentDate":appointDate[i],

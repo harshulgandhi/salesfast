@@ -38,7 +38,7 @@ public class MeetingExpAnalysisServiceImpl implements AnalysisService{
 		double percentLessSideEffects = (meetingExp.getCountForLessSideEffects(1, 0) + 
 				meetingExp.getCountForLessSideEffects(0, 1) + 
 				meetingExp.getCountForLessSideEffects(1, 1))*100.0/countAllEntries; 
-		overallData.add(new MeetingExperienceDataEntity("Liked that product is affordable", percentLessSideEffects));
+		overallData.add(new MeetingExperienceDataEntity("Liked that product has less side effects", percentLessSideEffects));
 		
 		double percentLikedPresentation = (meetingExp.getCountLikedPresentation(1, 0) + 
 				meetingExp.getCountLikedPresentation(0, 1) + 
@@ -69,7 +69,7 @@ public class MeetingExpAnalysisServiceImpl implements AnalysisService{
 		physicianReponseData.add(new MeetingExperienceDataEntity("Price affordability", percentPriceAffordability));
 		
 		double percentLessSideEffects = (meetingExp.getCountForLessSideEffects(1, 0))*100.0/countAllEntries; 
-		physicianReponseData.add(new MeetingExperienceDataEntity("Liked that product is affordable", percentLessSideEffects));
+		physicianReponseData.add(new MeetingExperienceDataEntity("Liked that product has less side effects", percentLessSideEffects));
 		
 		double percentLikedPresentation = (meetingExp.getCountLikedPresentation(1, 0))*100.0/countAllEntries; 
 		physicianReponseData.add(new MeetingExperienceDataEntity("Influenced by presentation", percentLikedPresentation));
@@ -94,7 +94,7 @@ public class MeetingExpAnalysisServiceImpl implements AnalysisService{
 		physicianReponseData.add(new MeetingExperienceDataEntity("Price affordability", percentPriceAffordability));
 		
 		double percentLessSideEffects = (meetingExp.getCountForLessSideEffects(0, 1))*100.0/countAllEntries; 
-		physicianReponseData.add(new MeetingExperienceDataEntity("Liked that product is affordable", percentLessSideEffects));
+		physicianReponseData.add(new MeetingExperienceDataEntity("Liked that product has less side effects", percentLessSideEffects));
 		
 		double percentLikedPresentation = (meetingExp.getCountLikedPresentation(0, 1))*100.0/countAllEntries; 
 		physicianReponseData.add(new MeetingExperienceDataEntity("Influenced by presentation", percentLikedPresentation));
@@ -113,22 +113,22 @@ public class MeetingExpAnalysisServiceImpl implements AnalysisService{
 		List<MeetingExperienceDataEntity> physicianReponseData = new ArrayList<>();
 		int countAllEntries = meetingExp.getCountAll_Lost();
 		double percentLikedProduct = (meetingExp.getCountOfLikedProduct_Lost())*100.0/countAllEntries; 
-		physicianReponseData.add(new MeetingExperienceDataEntity("Genuinely liked the product", percentLikedProduct));
+		physicianReponseData.add(new MeetingExperienceDataEntity("Did not like the product", 100.0-percentLikedProduct));
 		
 		double percentPriceAffordability = (meetingExp.getCountPriceAffordability_Lost())*100.0/countAllEntries; 
-		physicianReponseData.add(new MeetingExperienceDataEntity("Price affordability", percentPriceAffordability));
+		physicianReponseData.add(new MeetingExperienceDataEntity("Found the product expensive", 100.0-percentPriceAffordability));
 		
 		double percentLessSideEffects = (meetingExp.getCountForLessSideEffects_Lost())*100.0/countAllEntries; 
-		physicianReponseData.add(new MeetingExperienceDataEntity("Liked that product is affordable", percentLessSideEffects));
+		physicianReponseData.add(new MeetingExperienceDataEntity("Felt that product has many side effects", 100.0 - percentLessSideEffects));
 		
 		double percentLikedPresentation = (meetingExp.getCountLikedPresentation_Lost())*100.0/countAllEntries; 
-		physicianReponseData.add(new MeetingExperienceDataEntity("Influenced by presentation", percentLikedPresentation));
+		physicianReponseData.add(new MeetingExperienceDataEntity("Was not influenced by presentation", 100.0 - percentLikedPresentation));
 		
 		double percentLikedRepsConfidence = (meetingExp.getCountForRepsConfidence_Lost())*100.0/countAllEntries; 
-		physicianReponseData.add(new MeetingExperienceDataEntity("Impressed by SalesRep's confidence", percentLikedRepsConfidence));
+		physicianReponseData.add(new MeetingExperienceDataEntity("Was not impressed by SalesRep's confidence", 100.0 - percentLikedRepsConfidence));
 		
 		double percentOrganisationReputation = (meetingExp.getCountOrgReputation_Lost())*100.0/countAllEntries; 
-		physicianReponseData.add(new MeetingExperienceDataEntity("Impressed with organisation's reputations", percentOrganisationReputation));
+		physicianReponseData.add(new MeetingExperienceDataEntity("Was not impressed  by organisation's reputations", 100.0 - percentOrganisationReputation));
 	
 		return physicianReponseData;
 	}

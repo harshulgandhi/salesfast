@@ -14,7 +14,7 @@
 	<div class="container" id="layout">
 		<div class="page-heading row">
 			<div class="heading"><h2>Physicians aligned to you</h2>
-			<span class="alignment-table-desc">**Select row to fix appointment with a physician</span>
+			<span class="alignment-table-desc">**Select row and click on "Submit Appointments" to fix appointment with a physician</span>
 			</div>
 			<div class="table-legend">
 				<ul class="legend-ul">
@@ -65,8 +65,12 @@
 										</button>
 									</div>
 									<div class="aligned-physician-contact"  style="display: none">
-										<div class="phys-address"><span class="contactdetail-label">Address : </span><span class="contactdetail-content" 
-										th:text="${eachAlignment.addressLineOne} +' '+ ${eachAlignment.addressLineTwo}+' '+${eachAlignment.city}+' '+${eachAlignment.zip}"></span></div>
+										<div class="phys-address"><span class="contactdetail-label">Address : </span>
+										<span class="contactdetail-content" 
+										th:unless="${eachAlignment.addressLineTwo == null}" th:text="${eachAlignment.addressLineOne} +' '+ ${eachAlignment.addressLineTwo}+' '+${eachAlignment.city}+' '+${eachAlignment.zip}"></span>
+										<span class="contactdetail-content" 
+										th:if="${eachAlignment.addressLineTwo == null}" th:text="${eachAlignment.addressLineOne} +' '+${eachAlignment.city}+' '+${eachAlignment.zip}"></span>
+										</div>
 										<div class="phys-phone"><span class="contactdetail-label">Phone : </span><span class="contactdetail-content" 
 										th:text="${eachAlignment.contactNumber}"></span></div>
 										<div class="phys-email"><span class="contactdetail-label">Email : </span><span class="contactdetail-content" 

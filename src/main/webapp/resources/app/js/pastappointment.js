@@ -171,7 +171,9 @@ var populatePastAppTable = function(appointments){
 		}
 		
 	}
-	table = $('table#past-appointments-table').DataTable();
+	table = $('table#past-appointments-table').DataTable({
+		   "searching": true
+	   });
 	if(isFromAlignmentPage){
 		table.search(physNameParamFromAlignments).draw();
 	}

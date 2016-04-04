@@ -131,7 +131,7 @@ public class AddNewProductServiceImpl implements AddNewProductService {
 			
 			//send email to physician
 			String emailBody = "We have released new product "+newProduct.getProductName()+" which might interest you. Please visit your eDetailing "
-					+ "portal at http://127.0.0.1/edetailing to know more abou the product. You can contact our Sales Representative for further details."
+					+ "portal at http://127.0.0.1/edetailing to know more abou the product. You can contact our Sales Representative for further details. "
 					+ "Sales Rep's contact details can found on the e-detailing page itself.";
 			String subject = "New product launched by BioPharma";
 			sendNewProductNotificationEmails(subject, emailBody, physicianAsAUser.getEmail());
@@ -173,7 +173,7 @@ public class AddNewProductServiceImpl implements AddNewProductService {
 			//for all not interested physicians - before appointment
 			List<Integer> notInterestedPhysicians = appointmentService.getPhysiciansNotInterestedBeforeDetailing(eachUserId);
 			for(Integer eachPhysicianId : notInterestedPhysicians){
-				notification.insertNotificationSalesRepPhysNotInterest(eachUserId, newProduct.getProductName(), physService.getPhysicianName(eachPhysicianId), "NEW PRODUCT");
+//				notification.insertNotificationSalesRepPhysNotInterest(eachUserId, newProduct.getProductName(), physService.getPhysicianName(eachPhysicianId), "NEW PRODUCT");
 				
 				//send email to sales rep
 				String emailBody = "We have released new product "+newProduct.getProductName()+". Dr. "+physService.getPhysicianName(eachPhysicianId)
@@ -182,6 +182,7 @@ public class AddNewProductServiceImpl implements AddNewProductService {
 				String subject = "New product - detail not interested physicians";
 				sendNewProductNotificationEmails(subject, emailBody, user.getEmail());
 			}
+			notification.insertNotificationSalesRepPhysPrescribing(eachUserId, newProduct.getProductName(), "NEW PRODUCT NOT INTERESTED PHYSICIAN");
 			
 			//for all prescribing physicians
 			List<Integer> prescribingPhysicians = meetingUpdate.getPrescribingPhysiciansForAUser(eachUserId);

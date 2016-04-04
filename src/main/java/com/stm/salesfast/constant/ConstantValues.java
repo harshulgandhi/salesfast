@@ -14,7 +14,8 @@ public final class ConstantValues {
 	public static final String FORMAT_FOLLOWUP_CUSTGROWTH_LOST = "%s was just released. Call the most prospecting physicians who did not agree to prescribe to our "
 																	+ "last product. Click on \"Detail\" button to know all LOST physicians.";
 	
-	public static final String FORMAT_FOLLOWUP_CUSTGROWTH_NOT_INTERESTED = "%s was just released. Call Dr. %s who was not interested in detailing about last product.";
+	public static final String FORMAT_FOLLOWUP_CUSTGROWTH_NOT_INTERESTED = "%s was just released. Call the most prospecting physicians who was not interested in meeting for "
+																	+ "last product. Click on \"Detail\" button to know all NOT INTERESTED physicians.";
 	
 	public static final String FORMAT_FOLLOWUP_CUSTRETENTION = "%s was just released. Call the physicians who are already prescribing some of BioPharma's medicines  "
 															+ "from this medical field. Click on \"Detail\" button to know all PRESCRIBING physicians.";

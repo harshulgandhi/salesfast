@@ -124,8 +124,8 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 	
 	@Override
-	public void insertNotificationSalesRepPhysNotInterest(int userId,  String productName, String physicianName, String notificationCategory){
-		String notification = String.format(ConstantValues.FORMAT_FOLLOWUP_CUSTGROWTH_NOT_INTERESTED, productName, physicianName);
+	public void insertNotificationSalesRepPhysNotInterest(int userId,  String productName, String notificationCategory){
+		String notification = String.format(ConstantValues.FORMAT_FOLLOWUP_CUSTGROWTH_NOT_INTERESTED, productName);
 		notificationDao.insertNotification(new NotificationsDto(notification, false, userId, notificationCategory));
 	}
 	

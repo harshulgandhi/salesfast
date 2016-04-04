@@ -151,3 +151,15 @@ span.alignment-table-desc {
     font-size: 15px;
     color: red;
 }
+
+button.btn.btn-default.submit-selected-alignments {
+    border-radius: 0px;
+    width: 50%;
+    height: 45px;
+    margin-left: 25%;
+    margin-top: 2%;
+    background: brown;
+    color: white;
+    font-size: 21px;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}

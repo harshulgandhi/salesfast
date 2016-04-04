@@ -17,7 +17,7 @@ public interface NotificationService {
 			String notificationCategory);
 	public void insertNotificationNewProductSalesRep(int userId, String productName, String notificationCategory);
 	public void insertNotificationSalesRepPhysNotInterest(int userId,
-			String productName, String physicianName, String notificationCategory);
+			String productName, String notificationCategory);
 	public void insertNotificationSalesRepPhysPrescribing(int userId,
 			String productName,
 			String notificationCategory);

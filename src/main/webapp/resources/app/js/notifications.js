@@ -35,6 +35,8 @@ $(document).ready(function() {
 			window.location.replace("/showalignments?status="+"LOST");
 		}else if(r_.find('.notification-category').html() == "NEW PRODUCT PRESCRIBING PHYSICIAN"){
 			window.location.replace("/showalignments?status="+"PRESCRIBING");
+		}else if(r_.find('.notification-category').html() == "NEW PRODUCT NOT INTERESTED PHYSICIAN"){
+			window.location.replace("/showalignments?status="+"NOT INTERESTED");
 		}else if(r_.find('.notification-category').html() == "CANCELLED APPOINTMENTS BY PHYS"){
 			window.location.replace("/showappointments");
 		}else if(r_.find('.notification-category').html() == "FOLLOW UP"){

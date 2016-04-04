@@ -6,6 +6,10 @@ var tableAppointment = null;
 var currentSelectedAppointment = 0;
 var averageTravelTime = 30; //minutes
 $(document).ready(function() {
+	 var table = $('#aligned-vicinity-physician-table').DataTable({
+		   order: [[0, "desc"]],
+		   "searching": true
+	   });
 	$('li.left-menu-selected').removeClass('left-menu-selected');
 	$('li.today-appointment-li').addClass('left-menu-selected');
 	
@@ -18,10 +22,9 @@ $(document).ready(function() {
 	$('.slidedown-alignments').click(function(){
 		    $('.slidedown-alignments-show').slideToggle('fast');
 	});
-   var table = $('#aligned-vicinity-physician-table').DataTable({
-	   order: [[17, "desc"]],
-	   "searching": true
-   });
+   
+//	table.order( [ 17, 'desc' ] ).draw();
+   
    $('#appointment-fixed-physician-table').find('tr').each(function(i, val){
 	   if($(val).find('.confirmation-status').html() == 'CANCELLED'){
 		   $(val).css('background-color','mistyrose');
@@ -109,13 +112,14 @@ $(document).ready(function() {
     	}
     });
 
-    $(".appointment-status-selector").select2();
-     /*Initialize table with row colors*/
+    /*Initialize table with row colors*/
     var myTable = $('#aligned-vicinity-physician-table').dataTable();
     var tableRows = myTable.fnGetNodes();
     for(var i = 0; i<tableRows.length ; i++){
     	setRowColor($(tableRows[i]));
     }
+    
+    $(".appointment-status-selector").select2();
     
     tableAppointment = $('#appointment-fixed-physician-table').DataTable({
  	   order: [[7, "asc"]]

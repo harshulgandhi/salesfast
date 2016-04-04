@@ -469,6 +469,10 @@ public class AppointmentServiceImpl implements AppointmentService {
 		return appointmentDao.getAllAppointmentHavingPitch();
 	}
 	
+	@Override
+	public String getNotInterestedAppointmentStatus(int physicianId, int userId){
+		return appointmentDao.getNotInterestedStatus(physicianId, userId);
+	}
 }
 
 

@@ -20,6 +20,7 @@ import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.dto.UserDto;
 import com.stm.salesfast.backend.entity.AlignedPhysicianEntity;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
+import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
 import com.stm.salesfast.backend.services.specs.ProductFetchService;
 import com.stm.salesfast.backend.services.specs.UserDetailService;
@@ -46,6 +47,9 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 	
 	@Autowired
 	private MeetingUpdateService meetingUpdateService;
+	
+	@Autowired
+	private AppointmentService appointmentService;
 	
 	@Override
 	public List<AlignmentsDto> getAlignmentByUserId(int userId) {
@@ -83,6 +87,9 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 			List<String> updateStatuses = meetingUpdateService.getStatusForAllAppointments(userId, eachAlignment.getPhysicianId());
 			List<String> dedupeUpdateStatuses = updateStatuses.stream().distinct().collect(Collectors.toList());
 			String combinedUpdateStatus =  (dedupeUpdateStatuses.size() > 0) ? String.join(",", dedupeUpdateStatuses) : "";
+			String notInterestedConfirmationStatus = appointmentService.getNotInterestedAppointmentStatus(eachAlignment.getPhysicianId(), userId);
+			combinedUpdateStatus = ( notInterestedConfirmationStatus == null ) ?
+											combinedUpdateStatus : (combinedUpdateStatus + notInterestedConfirmationStatus);
 			
 			PhysicianStgDto physicianDto = physicianDao.getBy(eachAlignment.getPhysicianId());
 			alignedPhysicians.add(new AlignedPhysicianEntity(physicianDto,

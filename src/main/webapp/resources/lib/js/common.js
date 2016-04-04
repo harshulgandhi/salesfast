@@ -19,11 +19,11 @@ $(document).ready(function(){
 	
 });
 
-$.extend( $.fn.dataTable.defaults, {
-    searching: false,
-    ordering:  false
-    
-} );
+//$.extend( $.fn.dataTable.defaults, {
+//    searching: false,
+//    ordering:  false
+//    
+//} );
 
 var updateNotificationCounter = function(){
 	$.ajax({

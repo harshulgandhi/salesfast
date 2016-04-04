@@ -106,6 +106,7 @@
 							<table id="aligned-vicinity-physician-table" class="table table-striped table-bordered">
 								<thead>
 									<tr>
+										<th style="display:none">Importance Factor</th>
 										<th class="physician-id" style="display:none">Physician Id</th>
 										<th>Physician Name</th>
 										<th>Contact Details</th>
@@ -123,11 +124,11 @@
 										<th>Time</th>
 										<th>Appointment Status</th>
 										<th>Notes</th>
-										<th style="display:none">Importance Factor</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr th:each="eachVicinityAlignment : ${listOfPhysInVicinity}">
+										<td class="importance-factor" style="display:none" th:text="${eachVicinityAlignment.importanceFactor}"></td>
 										<td class="physician-id" style="display:none" th:text="${eachVicinityAlignment.physicianId}"></td>
 										<td th:text="${eachVicinityAlignment.firstName} + ' '+${eachVicinityAlignment.lastName}"></td>
 										<td class="contact-details">
@@ -181,7 +182,6 @@
 										</td>
 										<td><textarea name="id" class="form-control appointment-notes-class appointment-paramaters" 
 										id="appointment-notes-id" placeholder="Additional notes" rows="2" required="required" disabled="disabled"></textarea></td>
-										<td class="importance-factor" style="display:none" th:text="${eachVicinityAlignment.importanceFactor}"></td>
 									</tr>
 								</tbody>
 							</table>

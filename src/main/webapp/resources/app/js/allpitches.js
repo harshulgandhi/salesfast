@@ -190,9 +190,7 @@ var createPitchEnvironment = function(pitchList){
 		$('table#view-pitch-table tbody').find('tr').css('background-color','#E8D3CE');
 	}
 	else{
-		console.log("Initializing environment with : "+JSON.stringify(pitchList));
 		for(var i = 0; i < pitchList.length; i++){
-			console.log("Appending index "+i+" value == > "+JSON.stringify(pitchList[i]));
 			$('table#view-pitch-table tbody').append(
 					'<tr>'+
 						'<td class="pitch-id-td" style="display: none">'+pitchList[i]["pitchId"]+'</td>'+

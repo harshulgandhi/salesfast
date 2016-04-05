@@ -27,6 +27,7 @@
 	            <li id="nav-appointment" class="menu-item"><a class="navbar-menu-items" href="./showappointments" th:if="${session.roles.contains('SalesRep')}">Appointment</a></li>
 	            <li id="nav-meeting-phys" class="menu-item"><a class="navbar-menu-items" href="./showmeetingsphys" th:if="${session.roles.contains('PH')}">Your Meetings With Us</a></li>
 	            <li id="nav-products" class="menu-item"><a class="navbar-menu-items" href="./allproducts" th:if="${session.roles.contains('DM')} or ${session.roles.contains('NH')}">Products</a></li>
+	            <li id="nav-view-alignments" class="menu-item"><a class="navbar-menu-items" href="./showalignmentsfordm" th:if="${session.roles.contains('DM')}">View Alignments</a></li>
 	            <!-- <li class="dropdown">
 		          <a class="dropdown-toggle navbar-menu-items" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:if="${session.roles.contains('DM')} or ${session.roles.contains('NH')}">Products</a>
 		          <ul class="dropdown-menu product-dropdown-menu">
@@ -51,8 +52,6 @@
 	            <li id="nav-virtual-learning" class="menu-item"><a class="navbar-menu-items" href="./virtuallearning" th:if="${session.roles.contains('SalesRep')}">Virtual Learning</a></li>
 	            
 	          
-	            <li id="nav-appointment" class="menu-item"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('DM')}">View Alignments</a></li>
-	            
 	            <li id="nav-e-detail" class="menu-item"><a class="navbar-menu-items" href="./edetailing" th:if="${session.roles.contains('PH')}">e-Detailing</a></li>
 	            
 	            <li id="nav-loggedin-user" class="current-loggedin-user"><span class="loggedin-user-span"></span></li>

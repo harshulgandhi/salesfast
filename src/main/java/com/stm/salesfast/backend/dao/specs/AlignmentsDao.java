@@ -30,4 +30,8 @@ public interface AlignmentsDao {
 			int productId);
 
 	public List<Integer> getUsersForParticularMedicalField(String medicalField);
+
+	public void deleteByID(int alignmentId);
+
+	public List<AlignmentsDto> getAlignmentsForSuggestions(int userId);
 }

@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.entity.AlignedPhysicianEntity;
 import com.stm.salesfast.backend.entity.FollowupAppointmentUpdateEntity;
+import com.stm.salesfast.backend.entity.ManagerSuggestiveAlignmentsEntity;
+import com.stm.salesfast.backend.entity.ManagerViewAlignmentsEntity;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.PhysicianFetchService;
@@ -69,7 +71,35 @@ public class AlignmentController {
 		model.addAttribute("listOfAlignedPhysician", alignedPhysician);
 		return "showalignments";
 	}
+	
+	@RequestMapping(value="/showalignmentsfordm", method=RequestMethod.GET)
+	public String showAlignmentsToManager(){
+		return "alignmentsfordm";
+	}
+	
+	
+	@RequestMapping(value="/getalignmentsfordm", method=RequestMethod.GET)
+	@ResponseBody
+	public ManagerViewAlignmentsEntity[] getAlignmentsToManager(@RequestParam(value="userId") int userId){
+	    
+		List<ManagerViewAlignmentsEntity> alignedPhysician = alignmentFetchService.getAlignmentForManagersView(userId);
+		log.info("Alignments Fetched : ");
+		for(ManagerViewAlignmentsEntity eachEntity : alignedPhysician) log.info(""+eachEntity);
 		
+		return alignedPhysician.toArray(new ManagerViewAlignmentsEntity[alignedPhysician.size()]);
+	}
+		
+	@RequestMapping(value="/getsuggestivealignmentsfordm", method=RequestMethod.GET)
+	@ResponseBody
+	public ManagerSuggestiveAlignmentsEntity[] getSuggestiveAlignmentsForManager(@RequestParam(value="userId") int userId){
+	    
+		List<ManagerSuggestiveAlignmentsEntity> alignedPhysician = alignmentFetchService.getAlignmentForSuggestionsManualAlignment(userId);
+		log.info("Alignments Fetched : ");
+		for(ManagerSuggestiveAlignmentsEntity eachEntity : alignedPhysician) log.info(""+eachEntity);
+		
+		return alignedPhysician.toArray(new ManagerSuggestiveAlignmentsEntity[alignedPhysician.size()]);
+	}
+	
 	
 	@RequestMapping(value="/toRedirect", method=RequestMethod.GET)
 	public String forRedirecting(){	
@@ -109,6 +139,11 @@ public class AlignmentController {
 		reminders.followUpCallReminders();
 	}
 	
-	
+	@RequestMapping(value="/deletealignment", method=RequestMethod.POST)
+	@ResponseBody
+	public void cancelAppointment( @RequestParam(value="alignmentId") int alignmentId){
+		log.info("Delete alignment with id "+alignmentId);
+//		alignmentFetchService.deleteAlignmentByDM(alignmentId);
+	}
 	
 }

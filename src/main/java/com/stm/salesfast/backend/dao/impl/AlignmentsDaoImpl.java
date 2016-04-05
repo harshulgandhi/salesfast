@@ -54,6 +54,18 @@ public class AlignmentsDaoImpl implements AlignmentsDao {
 	private static final String FETCH_USER_FOR_MEDICAL_FIELD = "SELECT userId from alignments WHERE productId IN "
 															+ "(SELECT productId FROM products WHERE medicalFieldId = ?) "
 															+ "GROUP BY userId";
+	private static final String DELETE_BY_ID = "DELETE FROM alignments WHERE allignmentId = ?";
+	
+	private static final String FETCH_ALIGNMENT_SUGGESTION_MANUAL_ALIGNMENT = "SELECT * FROM salesfast.alignments "
+															+ "WHERE userId <> ? AND productId IN (SELECT "
+															+ "productId FROM products WHERE medicalFieldId =  "
+															+ "(SELECT medicalFieldId FROM training_material "
+															+ "WHERE userId = ? GROUP BY medicalFieldId)) "
+															+ "AND NOT EXISTS (SELECT 1 from appointment WHERE "
+															+ "(appointment.physicianId = alignments.physicianId AND "
+															+ "appointment.userId = alignments.userId AND "
+															+ "appointment.productId = alignments.productId) AND "
+															+ "appointment.confirmationStatus != 'CANCELLED')";
 	
 	@Override
 	public AlignmentsDto getAlignmentById(int alignmentId) {
@@ -96,6 +108,20 @@ public class AlignmentsDaoImpl implements AlignmentsDao {
 		return null;
 	}
 
+	@Override
+	public List<AlignmentsDto> getAlignmentsForSuggestions(int userId) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_ALIGNMENT_SUGGESTION_MANUAL_ALIGNMENT, (rs, rownum) -> {
+				return new AlignmentsDto(rs.getInt("alignmentId"), rs.getInt("physicianId"), rs.getInt("userId"),rs.getInt("territoryId"),rs.getInt("districtId"),rs.getString("zip"), rs.getInt("productId"));
+				}, userId, userId);
+			
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	@Override
 	public List<AlignmentsDto> getAlignmentByUserIdZip(int userId, String zip) {
 		// TODO Auto-generated method stub
@@ -156,6 +182,19 @@ public class AlignmentsDaoImpl implements AlignmentsDao {
 				ps.setInt(1, userId);
 				ps.setInt(2, physicianId);
 				ps.setInt(3, productId);
+			});
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		
+	}
+	
+	@Override
+	public void deleteByID(int alignmentId) {
+		// TODO Auto-generated method stub
+		try{
+			jdbcTemplate.update(DELETE_BY_ID, (ps)->{
+				ps.setInt(1, alignmentId);
 			});
 		}catch(DataAccessException e){
 			e.printStackTrace();

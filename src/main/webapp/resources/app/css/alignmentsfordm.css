@@ -1,1 +1,95 @@
 @CHARSET "ISO-8859-1";
+
+
+.row-header{
+	margin-top: 7%;
+	border-bottom: 2px solid #1910A2;
+    padding-top: 1%;
+    padding-bottom: 0%;
+}
+
+.filter-selector-label {
+    font: 91.5% "Lucida Sans Unicode", "Bitstream Vera Sans", "Trebuchet Unicode MS", "Lucida Grande", Verdana, Helvetica, sans-serif;
+    font-weight: bold;
+    /* border-bottom-style: solid; */
+    padding-bottom: 6px;
+    margin-bottom: -3px;
+    border-bottom-width: thin;
+}
+
+.row.filter-selector-div {
+    display: -webkit-inline-box;
+    padding-left: 13%;
+}
+
+.paramter-selection-div {
+    margin-right: 10%;
+}
+
+.row.row-custom-style.view-automatic-alignments-row {
+    margin-top: 3%;
+}
+
+.table-div {
+    width: 97%;
+    margin-left: 1%;
+}
+
+.view-alignment-label {
+    border-bottom: solid 2px #822C2C;
+    margin-bottom: 2%;
+}
+
+table#view-automatic-alignments-table{
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+}
+th.view-past-appointment.sorting_disabled {
+    color: #0A0AB7;
+}
+th.remove-alignment-header.sorting_disabled {
+    color: red;
+}
+td.product-name {
+    width: 12%;
+}
+td.is-new {
+    width: 8%;
+}
+td.view-past-appointment {
+    width: 14%;
+}
+td.remove-alignment-btn {
+    width: 14%;
+}
+
+.aligned-physician-contact {
+    margin-top: 6px;
+}
+
+button.btn.btn-default.btn-md.show-contact.form-control {
+    width: 90%;
+    height: 33px;
+}
+
+span.glyphicon.glyphicon-plus {
+    margin-right: 20px;
+}
+
+tr.no-alignment-tr {
+	background: none;
+}
+
+div.no-alignments-div {
+	font-weight: 600;
+    margin-right: -280%;
+    margin-left: 100%;
+}
+span.contactdetail-label {
+    width: 27%;
+    font-style: italic;
+}
+
+span.contactdetail-content {
+    font-weight: 600;
+    width: 65%;
+}

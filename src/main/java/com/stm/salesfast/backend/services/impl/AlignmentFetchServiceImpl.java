@@ -17,9 +17,11 @@ import com.stm.salesfast.backend.dao.specs.AlignmentsDao;
 import com.stm.salesfast.backend.dao.specs.PhysicianStgDao;
 import com.stm.salesfast.backend.dto.AlignmentsDto;
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
+import com.stm.salesfast.backend.dto.ProductDto;
 import com.stm.salesfast.backend.dto.UserDto;
 import com.stm.salesfast.backend.entity.AlignedPhysicianEntity;
-import com.stm.salesfast.backend.entity.AlignmentsViewManager;
+import com.stm.salesfast.backend.entity.ManagerSuggestiveAlignmentsEntity;
+import com.stm.salesfast.backend.entity.ManagerViewAlignmentsEntity;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
@@ -60,6 +62,42 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 		return alignmentsByUserId;
 	}
 
+	/**
+	 * Manager can choose from physicians aligned to other sales rep in
+	 * same medical field to update automatic alignment
+	 * */
+	@Override
+	public List<ManagerSuggestiveAlignmentsEntity> getAlignmentForSuggestionsManualAlignment(int userId) {
+		List<ManagerSuggestiveAlignmentsEntity> alignmentsNotForUser = new ArrayList<>();
+		List<AlignmentsDto> alignmentsNotForUserId = alignmentDao.getAlignmentsForSuggestions(userId);
+		
+		for(AlignmentsDto eachAlignment : alignmentsNotForUserId){
+			PhysicianStgDto physicianDto = physicianDao.getBy(eachAlignment.getPhysicianId());
+			ProductDto product = productService.getProductById(eachAlignment.getProductId());
+			UserDto user = userService.getUserDetails(eachAlignment.getUserId());
+			alignmentsNotForUser.add(new ManagerSuggestiveAlignmentsEntity(
+						eachAlignment.getAlignmentId(),
+						eachAlignment.getPhysicianId(),
+						physicianDto.getFirstName()+" "+physicianDto.getLastName(),
+						physicianDto.getAddressLineOne(),
+						physicianDto.getAddressLineTwo()==null?"":physicianDto.getAddressLineTwo(),
+						physicianDto.getCity(),
+						physicianDto.getState(),
+						physicianDto.getZip(),
+						physicianDto.getContactNumber(),
+						physicianDto.getEmail(),
+						product.getProductId(),
+						product.getProductName(),
+						physicianDto.isNew(),
+						physicianDto.getImportanceFactor(),
+						user.getUserId(),
+						user.getFirstName()+" "+user.getLastName()
+					));
+		}
+		
+		return alignmentsNotForUser;
+	}
+	
 	@Override
 	public AlignmentsDto getAlignmentByPhysicianId(int physicianId) {
 		// TODO Auto-generated method stub
@@ -75,6 +113,11 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 		return alignmentsByUserIdZip;
 	}
 
+	@Override
+	public void deleteAlignmentByDM(int alignmentId){
+		alignmentDao.deleteByID(alignmentId);
+	}
+	
 	/**
 	 * Method returns alignment specific details with fields that are to be
 	 * shown on the UI - CANCELLED Appointments are shown as well
@@ -102,12 +145,40 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 		return alignedPhysicians;
 	}
 	
-	public List<AlignmentsViewManager> getAlignmentForManagersView(int userId){
-		List<AlignmentsViewManager> alignmentsForUser = new ArrayList<>();
+	/**
+	 * Method returns alignment specific details with fields that are to be
+	 * shown TO THE MANAGER - CANCELLED Appointments are shown as well
+	 * */
+	@Override
+	public List<ManagerViewAlignmentsEntity> getAlignmentForManagersView(int userId){
+		List<ManagerViewAlignmentsEntity> alignmentsForUser = new ArrayList<>();
 		List<AlignmentsDto> alignmentsByUserId = alignmentDao.getAlignmentByUserIdNotInAppointments(userId);
+		
+		for(AlignmentsDto eachAlignment : alignmentsByUserId){
+			PhysicianStgDto physicianDto = physicianDao.getBy(eachAlignment.getPhysicianId());
+			ProductDto product = productService.getProductById(eachAlignment.getProductId());
+			alignmentsForUser.add(new ManagerViewAlignmentsEntity(
+						eachAlignment.getAlignmentId(),
+						eachAlignment.getPhysicianId(),
+						physicianDto.getFirstName()+" "+physicianDto.getLastName(),
+						physicianDto.getAddressLineOne(),
+						physicianDto.getAddressLineTwo()==null?"":physicianDto.getAddressLineTwo(),
+						physicianDto.getCity(),
+						physicianDto.getState(),
+						physicianDto.getZip(),
+						physicianDto.getContactNumber(),
+						physicianDto.getEmail(),
+						product.getProductId(),
+						product.getProductName(),
+						physicianDto.isNew(),
+						physicianDto.getImportanceFactor()
+					));
+		}
 		
 		return alignmentsForUser;
 	}
+	
+	
 	
 	
 	/**

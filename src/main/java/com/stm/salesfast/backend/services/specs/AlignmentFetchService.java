@@ -7,6 +7,8 @@ import com.stm.salesfast.backend.dto.AlignmentsDto;
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.dto.UserDto;
 import com.stm.salesfast.backend.entity.AlignedPhysicianEntity;
+import com.stm.salesfast.backend.entity.ManagerSuggestiveAlignmentsEntity;
+import com.stm.salesfast.backend.entity.ManagerViewAlignmentsEntity;
 
 public interface AlignmentFetchService {
 	
@@ -24,4 +26,7 @@ public interface AlignmentFetchService {
 	public void insert(AlignmentsDto alignment) throws IOException;
 	public UserDto getUserForAlignment(int physicianId, int productId);
 	public List<Integer> getUserIdsWorkingInMedicalField(String medicalFieldId);
+	public List<ManagerViewAlignmentsEntity> getAlignmentForManagersView(int userId);
+	public void deleteAlignmentByDM(int alignmentId);
+	public List<ManagerSuggestiveAlignmentsEntity> getAlignmentForSuggestionsManualAlignment(int userId);
 }

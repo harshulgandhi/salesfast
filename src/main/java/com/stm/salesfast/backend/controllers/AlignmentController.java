@@ -89,7 +89,6 @@ public class AlignmentController {
 		/* To set reminders in case any follow up appointment
 		 * was fixed for any time in next day*/
 		reminders.followUpCallReminders();
-//		return "forward:/toRedirect";
 	}
 	
 	@RequestMapping(value="/updatefollowupappointment", method=RequestMethod.POST, consumes = "application/json", produces = "application/json")

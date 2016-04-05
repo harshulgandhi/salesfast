@@ -21,7 +21,7 @@ public class SalesFastApp {
 	
 	@Scheduled(fixedRate=86400000)
 	public void printWelcomeMessage() throws ParseException, IOException{
-		System.out.println(" **** SALES FAST APPLICATION UP AND RUNNING **** ");
+		System.out.println(" ***** SALES FAST APPLICATION UP AND RUNNING ***** ");
 		createAlignments.getDataForProcessing();
 		createAlignments.createAlignments();
 		createAlignments.calculatePhysicianImportance();

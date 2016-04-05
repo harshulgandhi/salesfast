@@ -19,6 +19,7 @@ import com.stm.salesfast.backend.dto.AlignmentsDto;
 import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.dto.UserDto;
 import com.stm.salesfast.backend.entity.AlignedPhysicianEntity;
+import com.stm.salesfast.backend.entity.AlignmentsViewManager;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
@@ -100,6 +101,14 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 		Collections.sort(alignedPhysicians);		//Ordering physicians in reverse order of importance metric
 		return alignedPhysicians;
 	}
+	
+	public List<AlignmentsViewManager> getAlignmentForManagersView(int userId){
+		List<AlignmentsViewManager> alignmentsForUser = new ArrayList<>();
+		List<AlignmentsDto> alignmentsByUserId = alignmentDao.getAlignmentByUserIdNotInAppointments(userId);
+		
+		return alignmentsForUser;
+	}
+	
 	
 	/**
 	 * Method returns alignment specific details with fields that are to be

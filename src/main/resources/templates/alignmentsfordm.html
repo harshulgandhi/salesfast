@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Header to include css -->
+<div th:replace="fragments/header :: commonhead"></div>
+<link rel="stylesheet" type="text/css" href="resources/app/css/alignmentsfordm.css"/>
+<meta charset="UTF-8" />
+<title>All Alignments</title>
+</head>
+<body>
+
+	<!-- Common header -->
+	<div th:replace="fragments/header :: header"></div>
+	
+	<div class="outer-container">
+		<div class="container" id="layout">
+			<div class="row row-header page-header"><h3>Automatic alignments calculated by SalesFast</h3></div>
+			<div class="row filter-selector-div">
+				<div class="">
+					
+				</div>
+				<div class="med-field-selection-div paramter-selection-div">
+					<div class="salesrep-selector-label filter-selector-label">SELECT A MEDICAL FIELD</div>
+					<select class="salesrep-selector filter-selectors validate-ele" name="medifcalField">
+						<option value="none" disabled="disabled">-- select med field --</option>
+						<option selected="selected" value="ONC">ONCOLOGY</option>
+						<option value="DIAB">DIABETES</option>
+					</select>
+				</div>
+				<div class="salesrep-selection-div paramter-selection-div">
+					<div class="salesrep-selector-label filter-selector-label">SELECT SALES REPRESENTATIVE FOR WHOME YOU WANT TO VIEW ALIGNMENTS</div>
+					<select class="salesrep-selector filter-selectors validate-ele" name="product">
+						<option value="0" disabled="disabled">-- select sales rep --</option>
+						<option selected="selected" value="1">Johny Dep</option>
+						<option value="3">David Schwimmer</option>
+						<option value="12">Mathew Perry</option>
+					</select>
+				</div>
+			</div>
+			<div class="row row-custom-style view-automatic-alignments">
+				<div class="table-div" >
+					<table id="view-automatic-alignments-table" class="table">
+						<thead>
+							<tr>
+								<th style="display: none;" class="alignment-id">Alignment Id</th>
+								<th style="display: none;" class="physician-id">Physician Id</th>
+								<th class="physician-name">Physician</th>
+								<th class="contact-detail">Contact Details</th>
+								<th style="display: none;" class="product-id">Product Id</th>
+								<th class="product-name">Product Name</th>
+								<th class="is-new">Is New</th>
+								<th class="view-past-appointment">View Past Appointments</th>
+								<th class="remove-alignment-header">Remove Alignment</th>
+							</tr>
+						</thead>
+						<tbody>
+						</tbody>
+					</table>
+				</div>
+	        </div>
+		</div>
+	</div>
+
+<!-- Common footer -->
+<div th:replace="fragments/footer :: footer"></div>
+<script type="text/javascript" src="resources/app/js/alignmentsfordm.js"></script>
+</body>
+</html>

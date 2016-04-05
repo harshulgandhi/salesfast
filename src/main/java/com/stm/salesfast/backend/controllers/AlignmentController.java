@@ -108,4 +108,7 @@ public class AlignmentController {
 		 * was fixed for any time in next day*/
 		reminders.followUpCallReminders();
 	}
+	
+	
+	
 }

@@ -1,7 +1,7 @@
 /**
  * 
  */
-
+var isFromNotificationsPage=false;
 $(document).ready(function() {
 
 	$('.slidedown-questions').click(function(){
@@ -13,10 +13,31 @@ $(document).ready(function() {
 	
 	$('li.left-menu-selected').removeClass('left-menu-selected');
 	$('li.live-meeting-qna-li').addClass('left-menu-selected');
+	$('li.navbar-menu-selected').removeClass("navbar-menu-selected");
+	   
+	if(!$('li#nav-quick-assist').hasClass("navbar-menu-selected")){
+		$('li#nav-quick-assist').addClass("navbar-menu-selected")
+	}
 	
 	getAllQuestions();
 	getAllQuestionsAskedBySelf();
 	updateNotificationCounter();
+	var value;
+	if (window.location.search.split('?').length > 1) {
+        var params = window.location.search.split('?')[1].split('&');
+        for (var i = 0; i < params.length; i++) {
+            var key = params[i].split('=')[0];
+            value= decodeURIComponent(params[i].split('=')[1]);
+            console.log("Status : "+value);
+            isFromNotificationsPage = true;
+        }
+    }
+	if(isFromNotificationsPage){
+		if(value == "QUESTION WAS ANSWERED"){
+			$('.slidedown-questions-self').click();
+		}
+	}
+	
 });
 
 
@@ -130,7 +151,8 @@ var populateAllQuestions = function(questions){
 		}
 	}
 	var table = $('#question-answer-table').dataTable({
-		"bSort": false
+		"bSort": false,
+		"searching": true
 	});
 }
 
@@ -168,7 +190,8 @@ var populateAllQuestionsAskedBySelf = function(questions){
 	}
 	
 	var table = $('#self-question-answer-table').dataTable({
-		"bSort": false
+		"bSort": false,
+	   "searching": true
 	});
 }
 

@@ -3,7 +3,11 @@
  */
 var virtualLearningData = [];
 $(document).ready(function () {
-	
+	$('li.navbar-menu-selected').removeClass("navbar-menu-selected");
+	   
+	if(!$('li#nav-virtual-learning').hasClass("navbar-menu-selected")){
+		$('li#nav-virtual-learning').addClass("navbar-menu-selected")
+	}
 	$.ajax({
 		type: 'GET',
 		url : '/getvirtuallearningdata',

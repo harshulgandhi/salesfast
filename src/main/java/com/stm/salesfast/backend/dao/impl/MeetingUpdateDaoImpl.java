@@ -134,17 +134,15 @@ public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
 	
 	@Override
 	public List<String> getStatusesByAppointments(int userId, int physicianId) {
-		// TODO Auto-generated method stub
 		try{
 			return jdbcTemplate.query(FETCH_STATUS_FOR_APPOINTMENTS, (rs, rownum) -> {
 					return rs.getString("status");
-				}, userId);
+				}, userId, physicianId);
 			
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}
 		return null;
 	}
-	
 	
 }

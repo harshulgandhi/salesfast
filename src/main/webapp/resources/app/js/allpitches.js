@@ -15,6 +15,12 @@ $(document).ready(function(){
 $(document).on('change','select.filter-selectors',function(){
 	updateNotificationCounter();
 	
+	$('li.navbar-menu-selected').removeClass("navbar-menu-selected");
+	   
+	if(!$('li#nav-quick-assist').hasClass("navbar-menu-selected")){
+		$('li#nav-quick-assist').addClass("navbar-menu-selected")
+	}
+	   
 	$('.filter-selectors').each(function(){
 		console.log($(this).val());
 	});
@@ -34,6 +40,7 @@ $(document).on('click','button.show-pitch-doc',function(){
 	
 	$('#pitch-object-div-'+id).slideToggle('fast');
 	$('#pitch-detail-div-'+id).slideToggle('fast');
+	$('#pitch-upvote-div-'+id).slideToggle('fast');
 	
 });
 
@@ -53,9 +60,9 @@ var getInitialPitchList = function(){
 		data : JSON.stringify(data),
 		contentType : 'application/json',
 		success : function(data){
-//			console.log("Pitch to be shown : "+JSON.stringify(data));
+			console.log("Pitch to be shown : "+JSON.stringify(data));
 			populateDropDowns(data);
-			allPitches = data;
+//			allPitches = data;
 			createPitchEnvironment(data);
 		},
 		error : function(e){
@@ -83,7 +90,7 @@ var getPitchList = function(){
 		data : JSON.stringify(data),
 		contentType : 'application/json',
 		success : function(data){
-//			console.log("Pitch to be shown : "+JSON.stringify(data));
+			console.log("Pitch to be shown : "+JSON.stringify(data));
 //			populateDropDowns(data);
 			createPitchEnvironment(data);
 		},
@@ -136,6 +143,36 @@ var populateDropDowns = function(pitchList){
 	
 }
 
+$(document).on('click','div.arrow-up',function(){
+	if(!$(this).hasClass('upvoted')){
+		$('div.downvoted').removeClass('downvoted');
+		$(this).addClass('upvoted');
+		var pitchId = $(this).closest('tr').find('td.pitch-id-td').html();
+		console.log("Clicked \n"+pitchId);
+		$.ajax({
+				type: 'POST',
+				url: '/upvotepitch?pitchId='+pitchId
+		}).done(function(){
+			console.log();
+		});
+	}
+});
+
+$(document).on('click','div.arrow-down',function(){
+	if(!$(this).hasClass('downvoted')){
+		$('div.upvoted').removeClass('upvoted');
+		$(this).addClass('downvoted');
+		var pitchId = $(this).closest('tr').find('td.pitch-id-td').html();
+		console.log("Clicked \n"+pitchId);
+	
+		$.ajax({
+				type: 'POST',
+				url: '/downvotepitch?pitchId='+pitchId
+		}).done(function(){
+			console.log();
+		});
+	}
+});
 
 var createPitchEnvironment = function(pitchList){
 	if(pitchList.length == 0){
@@ -153,9 +190,12 @@ var createPitchEnvironment = function(pitchList){
 		$('table#view-pitch-table tbody').find('tr').css('background-color','#E8D3CE');
 	}
 	else{
+		console.log("Initializing environment with : "+JSON.stringify(pitchList));
 		for(var i = 0; i < pitchList.length; i++){
+			console.log("Appending index "+i+" value == > "+JSON.stringify(pitchList[i]));
 			$('table#view-pitch-table tbody').append(
 					'<tr>'+
+						'<td class="pitch-id-td" style="display: none">'+pitchList[i]["pitchId"]+'</td>'+
 						'<td class="pitch-buttons">'+
 							'<button type="button" class="btn btn-default btn-md show-pitch-doc form-control" id="'+i+'">'+
 								'<span class="button-value">Pitch '+(i+1)+'</span>'+
@@ -193,12 +233,22 @@ var createPitchEnvironment = function(pitchList){
 									'<span class="detail-value">'+pitchList[i]["meetingStatus"]+'</span>'+
 								'</div>'+
 							'</div>'+
+							'<div class="upvote-downvote-div" id="pitch-upvote-div-'+i+'" style="display: none">'+
+							  '<div class="upvote-pitch-label"><span class="upvote-label-span">Upvote Pitch : </span></div>'+
+							  		'<div class="upvote-downvote-btn">'+
+								  		'<div class="arrow-up"></div>'+
+								  		'<div class="arrow-down"></div>'+
+							  		'</div>'+
+							  '</div>'+
 						'</td>'+
 					'</tr>'
 			
 			);
 		}
 	}
-	var table = $('#view-pitch-table').dataTable();
+	var table = $('#view-pitch-table').DataTable({
+			retrieve: true,
+		   searching: true
+	   });
 	$('#0').trigger("click");
 }

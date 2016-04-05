@@ -2,10 +2,23 @@
  * common custom javascript added to footer i.e. to all pages
  */
 
-$.extend( $.fn.dataTable.defaults, {
-    searching: false,
-    ordering:  false
-} );
+$(document).ready(function(){
+	
+	$.ajax({
+		type: 'GET',
+		url : '/getcurrentuser',
+		success : function(data){
+	    	console.log("Curent logged in user is : "+JSON.stringify(data));
+		},
+		error : function(e){
+			console.log("Error : "+JSON.stringify(e));
+		}
+	});
+	
+	
+});
+
+
 
 
 var updateNotificationCounter = function(){
@@ -24,6 +37,3 @@ var updateNotificationCounter = function(){
 	});
 }
 
-
-//For updating the notification counter
-//document.getElementById("myspan").textContent="newtext";

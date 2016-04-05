@@ -6,15 +6,25 @@ var tableAppointment = null;
 var currentSelectedAppointment = 0;
 var averageTravelTime = 30; //minutes
 $(document).ready(function() {
+	 var table = $('#aligned-vicinity-physician-table').DataTable({
+		   order: [[0, "desc"]],
+		   "searching": true
+	   });
 	$('li.left-menu-selected').removeClass('left-menu-selected');
 	$('li.today-appointment-li').addClass('left-menu-selected');
+	
+	$('li.navbar-menu-selected').removeClass("navbar-menu-selected");
+	   
+	if(!$('li#nav-appointment').hasClass("navbar-menu-selected")){
+		$('li#nav-appointment').addClass("navbar-menu-selected")
+	}
 	
 	$('.slidedown-alignments').click(function(){
 		    $('.slidedown-alignments-show').slideToggle('fast');
 	});
-   var table = $('#aligned-vicinity-physician-table').DataTable({
-	   order: [[16, "desc"]]
-   });
+   
+//	table.order( [ 17, 'desc' ] ).draw();
+   
    $('#appointment-fixed-physician-table').find('tr').each(function(i, val){
 	   if($(val).find('.confirmation-status').html() == 'CANCELLED'){
 		   $(val).css('background-color','mistyrose');
@@ -102,13 +112,14 @@ $(document).ready(function() {
     	}
     });
 
-    $(".appointment-status-selector").select2();
-     /*Initialize table with row colors*/
+    /*Initialize table with row colors*/
     var myTable = $('#aligned-vicinity-physician-table').dataTable();
     var tableRows = myTable.fnGetNodes();
     for(var i = 0; i<tableRows.length ; i++){
     	setRowColor($(tableRows[i]));
     }
+    
+    $(".appointment-status-selector").select2();
     
     tableAppointment = $('#appointment-fixed-physician-table').DataTable({
  	   order: [[7, "asc"]]
@@ -153,8 +164,41 @@ $(document).ready(function() {
     	$(".phys-status-selector").select2();
     });
     
+//    if( $('#meetingupdate-add-modal').css('display') == 'none' ){
+//    	var row = $('#appointment-fixed-physician-table').find('tr.selected')[0];
+//    	$(row).removeClass('selected');
+//    	$(row).css('background-color',defaultColor);
+//    }
+    
+    
+    if( $('table#followup-appointments-table tbody tr').length == 0){
+    	 $('table#followup-appointments-table tbody').append(
+	    	   '<tr style="background-color: white;">'+
+	    	   		'<td class="no-followup-td" style="border: none;padding: 0px;">'+
+	    	   			'<div class="no-followup-message-div">'+ 
+	    	   				'<span class="no-followups-message-span" style="vertical-align: -webkit-baseline-middle;">NO FOLLOW UPs FOR TODAY</span>'+
+	    	   			'</div>'+
+	    	   		'</td>'+
+	    	   	'</tr>'
+    	 	);
+    	 $('table#followup-appointments-table').css('border','none');
+    	 $('table#followup-appointments-table').css('border-top','solid 1px #ddd');
+    	 
+    	}
+    
+    
+    
     
 });	
+
+$('.show-contact').click(function(){
+	$(this).parent().parent().find('div.aligned-physician-contact').toggle();
+	if($(this).parent().parent().find('div.aligned-physician-contact').css('display') == 'none'){
+	    $(this).find('span.button-value').html("Show Contact Details");
+	}else if($(this).parent().parent().find('div.aligned-physician-contact').css('display') == 'block'){
+	    $(this).find('span.button-value').html("Hide Contact Details");
+	}
+});
 
 
 $(document).on('click','.my-pitch-buttons',function(){
@@ -256,20 +300,19 @@ $('.submit-selected-alignments').click(function(){
 	var additionalNotesList = [];
 	var isDataInvalid = false; 
 	
-	$('#aligned-vicinity-physician-table .selected').each(function(i, val){
+	$('#aligned-vicinity-physician-table').find('.selected').each(function(i, val){
 		if ($(val).find('.appointment-start-time').length != 0 ) {
 			var appointDate = $(val).find('.appointment-date').val();
 			var appointStartTime = $(val).find('.appointment-start-time').val();
 			var appointEndTime = $(val).find('.appointment-end-time').val();
 			var appointStatus = $(val).find('.appointment-status-selector').val();
 			var additionalNotes = $(val).find('.appointment-notes-class').val();
-			if((appointTime == '' || appointDate == '' || appointEndTime== '') && appointStatus != "NOT INTERESTED"){		//Check if user entered time for all selected physicians
+			if((appointStartTime == '' || appointDate == '' || appointEndTime== '') && appointStatus != "NOT INTERESTED"){		//Check if user entered time for all selected physicians
 				alert("Please mention start time, end time and date both for all selected physicians");
 				isDataInvalid = true;
 				return;
 			}
 			else{
-				console.log("TIME " + appointTime+"; DATE "+appointDate);
 				appointStartTimeList.push(appointStartTime);
 				appointEndTimeList.push(appointEndTime);
 				appointDateList.push(appointDate);
@@ -329,7 +372,7 @@ var fixAppointments = function(physIds, appointStartTimeList, appointEndTimeList
 
 var sanityCheck = function(currentAppointments){
 	for(var i = 0; i<currentAppointments.length; i++){
-		if(currentAppointments[i]["appointmentStartTime"] >= currentAppointments[i]["appointmentEndTime"]){
+		if(currentAppointments[i]["appointmentStatus"] != "NOT INTERESTED" && currentAppointments[i]["appointmentStartTime"] >= currentAppointments[i]["appointmentEndTime"]){
 			alert("Appointment you are trying to book at "+currentAppointments[i]["appointmentStartTime"]
 			+" has Start Time after End Time. Please correct the time values and submit again");
 			return false; 
@@ -592,12 +635,13 @@ var getDiffInMinutes = function (t1, t2){
 //appointment time
 var createJson = function(physIds, appointStartTime, appointEndTime, productIds,appointDate, appointStatusList, additionalNotesList){
 	var appointmentJson = {"appointments":[]};
+	console.log("physIds : "+physIds);
 	var appointJsonList = [];
 	for( var i = 0; i<physIds.length;i++){
 		appointJsonList.push(
 				{
-					"physicianId":parseInt(physIds[i][0]),
-					"productId":parseInt(productIds[i][0]),
+					"physicianId":parseInt(physIds[i]),
+					"productId":parseInt(productIds[i]),
 					"appointmentStartTime":appointStartTime[i],
 					"appointmentEndTime": appointEndTime[i], 
 					"appointmentDate":appointDate[i],
@@ -616,8 +660,8 @@ var createJsonFollowupAppointment = function(physIds, appointStartTimeList, appo
 	for( var i = 0; i<physIds.length;i++){
 		appointJsonList.push(
 				{
-					"physicianId":parseInt(physIds[i][0]), 
-					"productId":parseInt(productIds[i][0]),
+					"physicianId":parseInt(physIds[i]), 
+					"productId":parseInt(productIds[i]),
 					"appointmentStartTime":appointStartTimeList[i],
 					"appointmentEndTime": appointEndTimeList[i],
 					"appointmentDate":appointDateList[i],

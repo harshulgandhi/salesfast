@@ -11,7 +11,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Data
 @ToString
-public class ViewAllPitchEntity {
+public class ViewAllPitchEntity implements Comparable<ViewAllPitchEntity>{
 	private int pitchId;
 	private int appointmentId;
 	private String meetingStatus;
@@ -26,4 +26,9 @@ public class ViewAllPitchEntity {
 	private String medicalFieldName;
 	private String fileLocation;
 	private int pitchScore;
+	
+	@Override
+	public int compareTo(ViewAllPitchEntity entity) {
+		return (Integer.compare(pitchScore, entity.getPitchScore()) == -1) ? 1 : (Integer.compare(pitchScore, entity.getPitchScore()) == 1) ? -1 : 0 ;
+	}
 }

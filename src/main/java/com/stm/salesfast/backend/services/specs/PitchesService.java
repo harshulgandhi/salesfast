@@ -34,4 +34,8 @@ public interface PitchesService {
 
 	List<ViewAllPitchEntity> getPitchViewEntityFields(
 			List<AppointmentDto> filteredAppointments);
+
+	public void upvotePitch(int pitchId);
+
+	public void downvotePitch(int pitchId);
 }

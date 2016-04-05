@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.10, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.11, for osx10.11 (x86_64)
 --
 -- Host: localhost    Database: salesfast
 -- ------------------------------------------------------
--- Server version	5.7.10-log
+-- Server version	5.7.11
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -41,7 +41,7 @@ CREATE TABLE `alignments` (
   CONSTRAINT `fk_Alignments_Physicians_Staging1` FOREIGN KEY (`physicianId`) REFERENCES `physicians_staging` (`physicianId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Alignments_Product1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Alignments_User1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=705 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2329 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,7 +50,7 @@ CREATE TABLE `alignments` (
 
 LOCK TABLES `alignments` WRITE;
 /*!40000 ALTER TABLE `alignments` DISABLE KEYS */;
-INSERT INTO `alignments` VALUES (7,1,1,1,1,'11001',3),(8,1,1,1,1,'11001',4),(9,2,1,1,1,'11001',3),(10,2,1,1,1,'11001',4),(11,3,2,2,1,'11003',1),(12,3,2,2,1,'11003',2),(13,4,1,1,1,'11001',3),(14,4,1,1,1,'11001',4),(15,5,1,1,1,'11001',3),(16,5,1,1,1,'11001',4),(17,6,2,2,1,'11003',1),(18,6,2,2,1,'11003',2),(21,1,1,1,1,'11001',5),(24,2,1,1,1,'11001',5),(29,4,1,1,1,'11001',5),(32,5,1,1,1,'11001',5);
+INSERT INTO `alignments` VALUES (7,1,1,1,1,'11001',3),(8,1,1,1,1,'11001',4),(9,2,1,1,1,'11001',3),(10,2,1,1,1,'11001',4),(11,3,2,2,1,'11003',1),(12,3,2,2,1,'11003',2),(13,4,1,1,1,'11001',3),(14,4,1,1,1,'11001',4),(15,5,1,1,1,'11001',3),(16,5,1,1,1,'11001',4),(17,6,2,2,1,'11003',1),(18,6,2,2,1,'11003',2),(21,1,1,1,1,'11001',5),(24,2,1,1,1,'11001',5),(29,4,1,1,1,'11001',5),(32,5,1,1,1,'11001',5),(1092,1,1,1,1,'11001',6),(1096,2,1,1,1,'11001',6),(1102,4,1,1,1,'11001',6),(1106,5,1,1,1,'11001',6),(1133,1,1,1,1,'11001',7),(1138,2,1,1,1,'11001',7),(1145,4,1,1,1,'11001',7),(1150,5,1,1,1,'11001',7),(1182,1,1,1,1,'11001',8),(1188,2,1,1,1,'11001',8),(1196,4,1,1,1,'11001',8),(1202,5,1,1,1,'11001',8),(1771,1,1,1,1,'11001',9),(1778,2,1,1,1,'11001',9),(1787,4,1,1,1,'11001',9),(1794,5,1,1,1,'11001',9),(1868,1,1,1,1,'11001',10),(1876,2,1,1,1,'11001',10),(1886,4,1,1,1,'11001',10),(1894,5,1,1,1,'11001',10);
 /*!40000 ALTER TABLE `alignments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -84,7 +84,7 @@ CREATE TABLE `appointment` (
   CONSTRAINT `fk_Appointment_Physicians_Staging1` FOREIGN KEY (`physicianId`) REFERENCES `physicians_staging` (`physicianId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Appointment_Products1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Appointment_User1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=214 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=232 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -93,7 +93,7 @@ CREATE TABLE `appointment` (
 
 LOCK TABLES `appointment` WRITE;
 /*!40000 ALTER TABLE `appointment` DISABLE KEYS */;
-INSERT INTO `appointment` VALUES (192,'14:59:00','00:00:00','2016-03-22',1,1,3,'CONFIRMED','11001','','',1,1,1,0),(206,'14:00:00','14:30:00','2016-03-23',1,1,4,'CONFIRMED','11001','','',1,1,1,0),(207,'13:00:00','13:30:00','2016-03-23',1,1,5,'CONFIRMED','11001','','',0,0,0,1),(208,'15:00:00','15:30:00','2016-03-24',5,1,3,'CONFIRMED','11001','','',0,0,0,1),(209,'17:15:00','17:45:00','2016-03-24',5,1,4,'FOLLOW UP','11001','','',0,0,0,0),(210,'00:00:00','00:01:00','2016-03-23',5,1,5,'CONFIRMED','11001','','',0,0,0,1),(211,'15:00:00','15:30:00','2016-03-25',2,1,3,'CONFIRMED','11001','','',0,0,0,1),(212,'16:00:00','16:40:00','2016-03-25',2,1,4,'CONFIRMED','11001','','									',0,0,0,1),(213,'14:00:00','15:00:00','2016-04-02',2,1,5,'CONFIRMED','11001','','',0,0,0,0);
+INSERT INTO `appointment` VALUES (208,'15:00:00','15:30:00','2016-03-24',5,1,3,'CONFIRMED','11001','','',0,0,0,1),(209,'17:15:00','17:45:00','2016-03-24',5,1,4,'FOLLOW UP','11001','','',0,0,0,0),(210,'00:00:00','00:01:00','2016-03-23',5,1,5,'CONFIRMED','11001','','',0,0,0,1),(211,'15:00:00','15:30:00','2016-03-25',2,1,3,'CONFIRMED','11001','','',0,0,0,1),(212,'16:00:00','16:40:00','2016-03-25',2,1,4,'CONFIRMED','11001','','									',0,0,0,1),(213,'14:30:00','15:00:00','2016-04-04',2,1,5,'CONFIRMED','11001','ewa','									',0,0,0,0),(216,'14:00:00','15:00:00','2016-04-01',4,1,3,'CONFIRMED','11001','','',1,1,0,0),(217,'11:00:00','11:30:00','2016-04-01',1,1,3,'CONFIRMED','11001','','',1,1,1,0),(218,'11:00:00','11:30:00','2016-04-01',1,1,4,'CONFIRMED','11001','','',1,1,0,0),(219,'15:30:00','16:00:00','2016-04-08',1,1,7,'CANCELLED','11001','some reason','									',0,0,0,0),(220,'15:00:00','15:30:00','2016-04-02',1,1,5,'CONFIRMED','11001','','',1,1,0,0),(221,'15:00:00','15:30:00','2016-04-02',1,1,6,'CONFIRMED','11001','','',1,1,1,0),(222,'21:00:00','21:30:00','2016-04-04',5,1,7,'CONFIRMED','11001','reason','',0,0,0,0),(223,'02:00:00','02:30:00','2016-04-06',2,1,7,'CONFIRMED','11001','Reason','',0,0,0,0),(224,'23:00:00','23:01:00','2016-04-06',4,1,5,'NOT INTERESTED','11001','','',0,0,0,0),(225,'15:00:00','15:30:00','2016-04-02',5,1,6,'CONFIRMED','11001','','',0,0,0,1),(226,'18:00:00','18:30:00','2016-04-03',1,1,8,'CONFIRMED','11001','','',0,0,0,0),(227,'16:00:00','16:40:00','2016-04-03',5,1,8,'CONFIRMED','11001','','',0,0,0,0),(228,'10:30:00','11:00:00','2016-04-03',1,1,7,'CONFIRMED','11001','','',1,1,1,1),(229,'16:00:00','16:30:00','2016-04-04',5,1,9,'FOLLOW UP','11001','','',0,0,0,0),(230,'20:00:00','20:30:00','2016-04-06',2,1,6,'CONFIRMED','11001','','',0,0,0,0),(231,'23:00:00','23:33:00','2016-04-04',1,1,9,'CONFIRMED','11001','','',0,0,0,0);
 /*!40000 ALTER TABLE `appointment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -175,7 +175,7 @@ CREATE TABLE `edetailing_material` (
   CONSTRAINT `fk_eDetailing_Material_Medical_Fields1` FOREIGN KEY (`medicalFieldId`) REFERENCES `medical_fields` (`medicalFieldId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_eDetailing_Material_Physicians_Staging1` FOREIGN KEY (`physicianId`) REFERENCES `physicians_staging` (`physicianId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_eDetailing_Material_Products1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -184,7 +184,7 @@ CREATE TABLE `edetailing_material` (
 
 LOCK TABLES `edetailing_material` WRITE;
 /*!40000 ALTER TABLE `edetailing_material` DISABLE KEYS */;
-INSERT INTO `edetailing_material` VALUES (8,'O_Med_1.pdf',1,'ONC',3),(13,'O_Med_2.pdf',1,'ONC',4),(16,'O_Med_1.pdf',5,'ONC',3),(17,'O_Med_2.pdf',5,'ONC',4),(18,'O_Med_3.pdf',1,'ONC',5),(19,'O_Med_3.pdf',5,'ONC',5),(20,'O_Med_2.pdf',2,'ONC',4),(21,'O_Med_1.pdf',2,'ONC',3);
+INSERT INTO `edetailing_material` VALUES (8,'O_Med_1.pdf',1,'ONC',3),(13,'O_Med_2.pdf',1,'ONC',4),(16,'O_Med_1.pdf',5,'ONC',3),(17,'O_Med_2.pdf',5,'ONC',4),(18,'O_Med_3.pdf',1,'ONC',5),(19,'O_Med_3.pdf',5,'ONC',5),(20,'O_Med_2.pdf',2,'ONC',4),(21,'O_Med_1.pdf',2,'ONC',3),(22,'O_Med_4.pdf',1,'ONC',6),(23,'O_Med_4.pdf',2,'ONC',6),(24,'O_Med_4.pdf',5,'ONC',6),(25,'O_Med_5.pdf',1,'ONC',7),(26,'O_Med_5.pdf',2,'ONC',7),(27,'O_Med_5.pdf',5,'ONC',7),(28,'O_Med_6.pdf',1,'ONC',8),(29,'O_Med_6.pdf',2,'ONC',8),(30,'O_Med_6.pdf',5,'ONC',8),(31,'O_Med_7.pdf',1,'ONC',9),(32,'O_Med_7.pdf',2,'ONC',9),(33,'O_Med_7.pdf',5,'ONC',9),(34,'O_Med_8.pdf',1,'ONC',10),(35,'O_Med_8.pdf',2,'ONC',10),(36,'O_Med_8.pdf',5,'ONC',10);
 /*!40000 ALTER TABLE `edetailing_material` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -261,7 +261,7 @@ CREATE TABLE `live_meeting_questions` (
   PRIMARY KEY (`liveMeetingQuestionId`),
   KEY `fk_user_live_meeting_update_1_idx` (`userId`),
   CONSTRAINT `fk_user_live_meeting_update_1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -270,7 +270,7 @@ CREATE TABLE `live_meeting_questions` (
 
 LOCK TABLES `live_meeting_questions` WRITE;
 /*!40000 ALTER TABLE `live_meeting_questions` DISABLE KEYS */;
-INSERT INTO `live_meeting_questions` VALUES (1,1,'Q1-This the question asked by physician during the meeting.','A1-This is answer for this question submitted by one of the district managers. This should be long enough for testing. ',2,2,'2016-03-14'),(2,1,'Q2-This the question asked by physician during the meeting.','A2-This is answer for this question submitted by one of the district managers. This should be long enough for testing. ',2,2,'2016-03-14'),(4,1,'Q3-This the question asked by physician during the meeting.','This is the answer to question three .. this should be a lon answer',4,2,'2016-03-14'),(5,1,'Q2-This the question asked',NULL,NULL,1,'2016-03-15'),(6,1,'Q 5- Physician asked me this question about O_Med_1 that i am not able to answer','I am submitting the answer to this question. I am submitting the answer to this question. I am submitting the answer to this question. I am submitting the answer to this question. I am submitting the answer to this question. I am submitting the answer to this question.I am submitting the answer to this question.',1,6,'2016-03-15'),(7,1,'Q 6 - physician asked me this question and i dont know the answer','Here is the answer to your question. I hope this helps.',4,2,'2016-03-15'),(8,1,'Q7 Physician asked me this question about some medicine that i am not able to answer',NULL,NULL,1,'2016-03-20'),(9,1,'A question that is sample',NULL,NULL,1,'2016-03-28');
+INSERT INTO `live_meeting_questions` VALUES (1,1,'Q1-This the question asked by physician during the meeting.','A1-This is answer for this question submitted by one of the district managers. This should be long enough for testing. ',2,3,'2016-03-14'),(2,1,'Q2-This the question asked by physician during the meeting.','A2-This is answer for this question submitted by one of the district managers. This should be long enough for testing. ',2,3,'2016-03-14'),(4,1,'Q3-This the question asked by physician during the meeting.','This is the answer to question three .. this should be a lon answer',4,3,'2016-03-14'),(5,1,'Q2-This the question asked',NULL,NULL,1,'2016-03-15'),(6,1,'Q 5- Physician asked me this question about O_Med_1 that i am not able to answer','I am submitting the answer to this question. I am submitting the answer to this question. I am submitting the answer to this question. I am submitting the answer to this question. I am submitting the answer to this question. I am submitting the answer to this question.I am submitting the answer to this question.',1,6,'2016-03-15'),(7,1,'Q 6 - physician asked me this question and i dont know the answer','Here is the answer to your question. I hope this helps.',4,3,'2016-03-15'),(8,1,'Q7 Physician asked me this question about some medicine that i am not able to answer',NULL,NULL,1,'2016-03-20'),(9,1,'A question that is sample',NULL,NULL,1,'2016-03-28'),(10,1,'Q10- by physician during the meeting.','Answer to question 10 submitted by morgan freeman',4,6,'2016-04-02'),(11,1,'Q3-This the qu during the meeting.',NULL,NULL,1,'2016-04-03');
 /*!40000 ALTER TABLE `live_meeting_questions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -320,7 +320,7 @@ CREATE TABLE `meeting_experience` (
   PRIMARY KEY (`meetingExperienceId`),
   KEY `fk_Meeting_Experience_Appointment1_idx` (`appointmentId`),
   CONSTRAINT `fk_Meeting_Experience_Appointment1` FOREIGN KEY (`appointmentId`) REFERENCES `appointment` (`appointmentId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -329,7 +329,7 @@ CREATE TABLE `meeting_experience` (
 
 LOCK TABLES `meeting_experience` WRITE;
 /*!40000 ALTER TABLE `meeting_experience` DISABLE KEYS */;
-INSERT INTO `meeting_experience` VALUES (27,0,1,'PRESCRIBING',1,0,1,0,1,0,192),(28,0,1,'PRESCRIBING',1,1,1,0,0,1,206),(29,1,0,'PRESCRIBING',1,1,1,0,1,0,206),(30,1,0,'PRESCRIBING',1,1,0,1,0,1,192);
+INSERT INTO `meeting_experience` VALUES (33,0,1,'LOST',1,0,1,1,1,1,216),(34,0,1,'PRESCRIBING',1,1,0,0,1,1,217),(35,0,1,'LOST',0,1,0,1,1,1,218),(36,0,1,'PRESCRIBING',0,1,0,1,1,1,220),(37,0,1,'PRESCRIBING',1,0,1,0,1,1,221),(38,1,0,'PRESCRIBING',1,0,1,0,1,1,217),(39,1,0,'PRESCRIBING',1,0,1,1,0,1,221),(40,0,1,'PRESCRIBING',0,1,0,1,1,1,228),(41,1,0,'PRESCRIBING',1,1,0,1,0,1,228);
 /*!40000 ALTER TABLE `meeting_experience` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -359,7 +359,7 @@ CREATE TABLE `meeting_update` (
   CONSTRAINT `fk_Meeting_Update_Medical_Fields1` FOREIGN KEY (`medicalFieldId`) REFERENCES `medical_fields` (`medicalFieldId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Meeting_Update_Physicians_Staging1` FOREIGN KEY (`physicianId`) REFERENCES `physicians_staging` (`physicianId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Meeting_Update_Products1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -368,7 +368,7 @@ CREATE TABLE `meeting_update` (
 
 LOCK TABLES `meeting_update` WRITE;
 /*!40000 ALTER TABLE `meeting_update` DISABLE KEYS */;
-INSERT INTO `meeting_update` VALUES (26,'2016-03-22','PRESCRIBING',1,1,3,'ONC',192),(27,'2016-03-23','PRESCRIBING',1,1,4,'ONC',206);
+INSERT INTO `meeting_update` VALUES (30,'2016-04-01','LOST',0,4,3,'ONC',216),(31,'2016-04-01','PRESCRIBING',0,1,3,'ONC',217),(32,'2016-04-01','LOST',0,1,4,'ONC',218),(33,'2016-04-02','PRESCRIBING',0,1,5,'ONC',220),(34,'2016-04-02','PRESCRIBING',0,1,6,'ONC',221),(35,'2016-04-03','PRESCRIBING',0,1,7,'ONC',228);
 /*!40000 ALTER TABLE `meeting_update` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -388,7 +388,7 @@ CREATE TABLE `notifications` (
   PRIMARY KEY (`notificationId`),
   KEY `fk_Notifications_User1_idx` (`userId`),
   CONSTRAINT `fk_Notifications_User1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -397,7 +397,7 @@ CREATE TABLE `notifications` (
 
 LOCK TABLES `notifications` WRITE;
 /*!40000 ALTER TABLE `notifications` DISABLE KEYS */;
-INSERT INTO `notifications` VALUES (6,'Reminder: Call Dr. Clint Eastwood tomorrow to follow up regarding detailing for medicine O_Med_1, as discussed during previous call.',0,1,'FOLLOW UP'),(7,'We just release a new product O_Med_3. Visit your e-detailing page for more details.',0,9,'NEW PRODUCT'),(8,'We just release a new product O_Med_3. Visit your e-detailing page for more details.',0,10,'NEW PRODUCT'),(9,'O_Med_3 was just released. Call Dr. Clint Eastwood who was not interested in detailing about last product.',0,1,'NEW PRODUCT'),(10,'O_Med_3 was just released. Call Dr. Christopher Nolan who has been prescribing BioPharma medicines and detail him about this new medicine.',0,1,'NEW PRODUCT'),(11,'O_Med_3 was just released. Call Dr. Christopher Nolan who has been prescribing BioPharma medicines and detail him about this new medicine.',0,1,'NEW PRODUCT'),(12,'O_Med_3 was just released. Call Dr. Quentin Tarantino who has been prescribing BioPharma medicines and detail him about this new medicine.',0,1,'NEW PRODUCT'),(13,'O_Med_3 was just released. Call Dr. Quentin Tarantino who has been prescribing BioPharma medicines and detail him about this new medicine.',0,1,'NEW PRODUCT'),(14,'Sales Representative Johny Dep has a question that needs answering.',0,2,'LIVE MEETING QUESTION'),(15,'Sales Representative Johny Dep has a question that needs answering.',0,3,'LIVE MEETING QUESTION'),(16,'Sales Representative Johny Dep has a question that needs answering.',0,4,'LIVE MEETING QUESTION'),(17,'Dr. Johny Dep has cancelled the appointment.',0,9,'CANCELLED APPOINTMENTS'),(18,'Reminder: Call Dr. Quentin Tarantino tomorrow to follow up regarding detailing for medicine O_Med_2, as discussed during previous call.',0,1,'FOLLOW UP'),(19,'Reminder: Call Dr. Quentin Tarantino tomorrow to follow up regarding detailing for medicine O_Med_2, as discussed during previous call.',0,1,'FOLLOW UP'),(20,'Reminder: Call Dr. Quentin Tarantino tomorrow to follow up regarding detailing for medicine O_Med_2, as discussed during previous call.',0,1,'FOLLOW UP'),(21,'Reminder: Call Dr. Quentin Tarantino tomorrow to follow up regarding detailing for medicine O_Med_2, as discussed during previous call.',0,1,'FOLLOW UP'),(22,'BioPharma SalesRep Johny Dep has rescheduled an appointment on 2016-03-25 at 16:00:00.',0,11,'RESCHEDULED APPOINTMENTS'),(23,'Reminder: Call Dr. Quentin Tarantino tomorrow to follow up regarding detailing for medicine O_Med_2, as discussed during previous call.',0,1,'FOLLOW UP'),(32,'Online Detailing document for medicine O_Med_1. Please visit e-Detailing page to go through it.',0,9,'EDETAILING DOCUMENT UPDATE'),(33,'Online Detailing document for medicine O_Med_1. Please visit e-Detailing page to go through it.',0,11,'EDETAILING DOCUMENT UPDATE'),(34,'Online Detailing document for medicine O_Med_1. Please visit e-Detailing page to go through it.',0,10,'EDETAILING DOCUMENT UPDATE'),(35,'Online Detailing document for medicine O_Med_1. Please visit e-Detailing page to go through it.',0,1,'TRAINING DOCUMENT UPDATE'),(36,'Online Detailing document for medicine O_Med_1. Please visit e-Detailing page to go through it.',0,9,'EDETAILING DOCUMENT UPDATE'),(37,'Online Detailing document for medicine O_Med_1. Please visit e-Detailing page to go through it.',0,11,'EDETAILING DOCUMENT UPDATE'),(38,'Online Detailing document for medicine O_Med_1. Please visit e-Detailing page to go through it.',0,10,'EDETAILING DOCUMENT UPDATE'),(39,'Online Detailing document for medicine O_Med_1. Please visit e-Detailing page to go through it.',0,1,'TRAINING DOCUMENT UPDATE'),(40,'Sales Representative Johny Dep has a question that needs answering.',0,2,'LIVE MEETING QUESTION'),(41,'Sales Representative Johny Dep has a question that needs answering.',0,3,'LIVE MEETING QUESTION'),(42,'Sales Representative Johny Dep has a question that needs answering.',0,4,'LIVE MEETING QUESTION');
+INSERT INTO `notifications` VALUES (7,'We just release a new product O_Med_3. Visit your e-detailing page for more details.',0,9,'NEW PRODUCT'),(8,'We just release a new product O_Med_3. Visit your e-detailing page for more details.',0,10,'NEW PRODUCT'),(14,'Sales Representative Johny Dep has a question that needs answering.',0,2,'LIVE MEETING QUESTION'),(15,'Sales Representative Johny Dep has a question that needs answering.',0,3,'LIVE MEETING QUESTION'),(16,'Sales Representative Johny Dep has a question that needs answering.',0,4,'LIVE MEETING QUESTION'),(17,'Dr. Johny Dep has cancelled the appointment.',0,9,'CANCELLED APPOINTMENTS'),(22,'BioPharma SalesRep Johny Dep has rescheduled an appointment on 2016-03-25 at 16:00:00.',0,11,'RESCHEDULED APPOINTMENTS'),(32,'Online Detailing document for medicine O_Med_1. Please visit e-Detailing page to go through it.',0,9,'EDETAILING DOCUMENT UPDATE'),(33,'Online Detailing document for medicine O_Med_1. Please visit e-Detailing page to go through it.',0,11,'EDETAILING DOCUMENT UPDATE'),(34,'Online Detailing document for medicine O_Med_1. Please visit e-Detailing page to go through it.',0,10,'EDETAILING DOCUMENT UPDATE'),(36,'Online Detailing document for medicine O_Med_1. Please visit e-Detailing page to go through it.',0,9,'EDETAILING DOCUMENT UPDATE'),(37,'Online Detailing document for medicine O_Med_1. Please visit e-Detailing page to go through it.',0,11,'EDETAILING DOCUMENT UPDATE'),(38,'Online Detailing document for medicine O_Med_1. Please visit e-Detailing page to go through it.',0,10,'EDETAILING DOCUMENT UPDATE'),(40,'Sales Representative Johny Dep has a question that needs answering.',0,2,'LIVE MEETING QUESTION'),(41,'Sales Representative Johny Dep has a question that needs answering.',0,3,'LIVE MEETING QUESTION'),(42,'Sales Representative Johny Dep has a question that needs answering.',0,4,'LIVE MEETING QUESTION'),(43,'BioPharma SalesRep Johny Dep has rescheduled an appointment on 2016-04-04 at 14:30:00.',0,11,'RESCHEDULED APPOINTMENTS'),(44,'We just release a new product O_Med_4. Visit your e-detailing page for more details.',0,9,'NEW PRODUCT'),(45,'We just release a new product O_Med_4. Visit your e-detailing page for more details.',0,11,'NEW PRODUCT'),(46,'We just release a new product O_Med_4. Visit your e-detailing page for more details.',0,10,'NEW PRODUCT'),(49,'We just release a new product O_Med_5. Visit your e-detailing page for more details.',0,9,'NEW PRODUCT'),(50,'We just release a new product O_Med_5. Visit your e-detailing page for more details.',0,11,'NEW PRODUCT'),(51,'We just release a new product O_Med_5. Visit your e-detailing page for more details.',0,10,'NEW PRODUCT'),(54,'BioPharma SalesRep Johny Dep has rescheduled an appointment on 2016-04-08 at 15:30:00.',0,9,'RESCHEDULED APPOINTMENTS'),(55,'BioPharma SalesRep Johny Dep has cancelled the appointment. He will fix a fresh appointment for someother time.',0,11,'CANCELLED APPOINTMENTS'),(56,'Sales Representative Johny Dep has a question that needs answering.',0,2,'LIVE MEETING QUESTION'),(57,'Sales Representative Johny Dep has a question that needs answering.',0,3,'LIVE MEETING QUESTION'),(58,'Sales Representative Johny Dep has a question that needs answering.',0,4,'LIVE MEETING QUESTION'),(59,'We just release a new product O_Med_6. Visit your e-detailing page for more details.',0,9,'NEW PRODUCT'),(60,'We just release a new product O_Med_6. Visit your e-detailing page for more details.',0,11,'NEW PRODUCT'),(61,'We just release a new product O_Med_6. Visit your e-detailing page for more details.',0,10,'NEW PRODUCT'),(63,'O_Med_6 was just released. Call Dr. Clint Eastwood who was not interested in detailing about last product.',0,1,'NEW PRODUCT'),(64,'O_Med_6 was just released. Call the physicians who are already prescribing some of BioPharma\'s medicines  from this medical field. Click on \"Detail\" button to know all PRESCRIBING physicians.',0,1,'NEW PRODUCT PRESCRIBING PHYSICIAN'),(65,'Mr. Morgan Freeman just answered a question you asked during one of your meetings with a physician.',0,1,'QUESTION WAS ANSWERED'),(66,'BioPharma SalesRep Johny Dep has cancelled the appointment. He will fix a fresh appointment for someother time.',0,9,'CANCELLED APPOINTMENTS'),(67,'BioPharma SalesRep Johny Dep has cancelled the appointment. He will fix a fresh appointment for someother time.',0,11,'CANCELLED APPOINTMENTS'),(68,'BioPharma SalesRep Johny Dep has cancelled the appointment. He will fix a fresh appointment for someother time.',0,10,'CANCELLED APPOINTMENTS'),(69,'BioPharma SalesRep Johny Dep has cancelled the appointment. He will fix a fresh appointment for someother time.',0,9,'CANCELLED APPOINTMENTS'),(70,'BioPharma SalesRep Johny Dep has cancelled the appointment. He will fix a fresh appointment for someother time.',0,9,'CANCELLED APPOINTMENTS'),(71,'BioPharma SalesRep Johny Dep has cancelled the appointment. He will fix a fresh appointment for someother time.',0,11,'CANCELLED APPOINTMENTS'),(72,'BioPharma SalesRep Johny Dep has cancelled the appointment. He will fix a fresh appointment for someother time.',0,9,'CANCELLED APPOINTMENTS'),(73,'BioPharma SalesRep Johny Dep has cancelled the appointment. He will fix a fresh appointment for someother time.',0,11,'CANCELLED APPOINTMENTS'),(74,'BioPharma SalesRep Johny Dep has cancelled the appointment. He will fix a fresh appointment for someother time.',0,10,'CANCELLED APPOINTMENTS'),(75,'BioPharma SalesRep Johny Dep has cancelled the appointment. He will fix a fresh appointment for someother time.',0,9,'CANCELLED APPOINTMENTS'),(76,'We just release a new product O_Med_7. Visit your e-detailing page for more details.',0,9,'NEW PRODUCT'),(77,'We just release a new product O_Med_7. Visit your e-detailing page for more details.',0,11,'NEW PRODUCT'),(78,'We just release a new product O_Med_7. Visit your e-detailing page for more details.',0,10,'NEW PRODUCT'),(79,'O_Med_7 was just released. Call the most prospecting physicians who did not agree to prescribe to our last product. Click on \"Detail\" button to know all LOST physicians.',0,1,'NEW PRODUCT LOST PHYSICIAN'),(80,'O_Med_7 was just released. Call Dr. Clint Eastwood who was not interested in detailing about last product.',0,1,'NEW PRODUCT'),(81,'O_Med_7 was just released. Call the physicians who are already prescribing some of BioPharma\'s medicines  from this medical field. Click on \"Detail\" button to know all PRESCRIBING physicians.',0,1,'NEW PRODUCT PRESCRIBING PHYSICIAN'),(82,'We just release a new product O_Med_8. Visit your e-detailing page for more details.',0,9,'NEW PRODUCT'),(83,'We just release a new product O_Med_8. Visit your e-detailing page for more details.',0,11,'NEW PRODUCT'),(84,'We just release a new product O_Med_8. Visit your e-detailing page for more details.',0,10,'NEW PRODUCT'),(88,'Reminder: Call Dr. Quentin Tarantino tomorrow to follow up regarding detailing for medicine O_Med_7, as discussed during previous call.',0,1,'FOLLOW UP'),(89,'Reminder: Call Dr. Quentin Tarantino tomorrow to follow up regarding detailing for medicine O_Med_7, as discussed during previous call.',0,1,'FOLLOW UP'),(90,'Reminder: Call Dr. Quentin Tarantino tomorrow to follow up regarding detailing for medicine O_Med_7, as discussed during previous call.',0,1,'FOLLOW UP'),(91,'Sales Representative Johny Dep has a question that needs answering.',0,2,'LIVE MEETING QUESTION'),(92,'Sales Representative Johny Dep has a question that needs answering.',0,3,'LIVE MEETING QUESTION'),(93,'Sales Representative Johny Dep has a question that needs answering.',0,4,'LIVE MEETING QUESTION');
 /*!40000 ALTER TABLE `notifications` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -419,7 +419,7 @@ CREATE TABLE `patient_sample_feedback` (
   PRIMARY KEY (`patientSampleFeedbackId`),
   KEY `fk_Patient_Sample_Feedback_Products1_idx` (`productId`),
   CONSTRAINT `fk_Patient_Sample_Feedback_Products1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -428,7 +428,7 @@ CREATE TABLE `patient_sample_feedback` (
 
 LOCK TABLES `patient_sample_feedback` WRITE;
 /*!40000 ALTER TABLE `patient_sample_feedback` DISABLE KEYS */;
-INSERT INTO `patient_sample_feedback` VALUES (1,1,1,0,'Side effect 1','Other comment',1),(2,0,1,1,'Side effect 2','',2),(3,0,0,1,'','Not effective',3),(4,0,1,1,'SIde effect worse','Other comment is',2),(5,1,1,1,'Some side effects','Other comments',1),(6,0,0,1,'Some side effects','Not effective',1),(7,1,1,0,'Not much','Expensive',1),(8,1,0,1,'Not much','No other comments',1),(9,0,0,0,'','Yes',1),(10,1,1,0,'Some','',1),(11,1,1,1,'Some','',1),(12,0,1,0,'Itching','',2),(13,1,0,0,'','Expensive\n',2),(14,0,1,0,'Boyels','',2),(15,1,0,1,'','',2),(16,0,0,0,'','',2),(17,1,1,0,'Something','',2),(18,0,0,0,'','',2),(19,0,1,0,'Some side effects','',2),(20,1,1,1,'SIde','',3),(21,0,1,0,'Side Effect','Not effective',3),(22,0,0,0,'','',3),(23,1,1,0,'Itching','Good product',3),(24,0,1,0,'Serious side effect','good med',3),(25,0,1,0,'has','',4),(26,0,1,0,'Side','other comments',4),(27,1,0,1,'','Comments Comments Comments Comments Comments Comments Comments Comments Comments',4),(28,0,0,1,'','Other comments',4),(29,1,1,0,'Stomachache','',4),(30,1,1,1,'sdasd','sds',4),(31,1,1,1,'dasdDA','zsdaads',1);
+INSERT INTO `patient_sample_feedback` VALUES (1,1,1,0,'Side effect 1','Other comment',1),(2,0,1,1,'Side effect 2','',2),(3,0,0,1,'','Not effective',3),(4,0,1,1,'SIde effect worse','Other comment is',2),(5,1,1,1,'Some side effects','Other comments',1),(6,0,0,1,'Some side effects','Not effective',1),(7,1,1,0,'Not much','Expensive',1),(8,1,0,1,'Not much','No other comments',1),(9,0,0,0,'','Yes',1),(10,1,1,0,'Some','',1),(11,1,1,1,'Some','',1),(12,0,1,0,'Itching','',2),(13,1,0,0,'','Expensive\n',2),(14,0,1,0,'Boyels','',2),(15,1,0,1,'','',2),(16,0,0,0,'','',2),(17,1,1,0,'Something','',2),(18,0,0,0,'','',2),(19,0,1,0,'Some side effects','',2),(20,1,1,1,'SIde','',3),(21,0,1,0,'Side Effect','Not effective',3),(22,0,0,0,'','',3),(23,1,1,0,'Itching','Good product',3),(24,0,1,0,'Serious side effect','good med',3),(25,0,1,0,'has','',4),(26,0,1,0,'Side','other comments',4),(27,1,0,1,'','Comments Comments Comments Comments Comments Comments Comments Comments Comments',4),(28,0,0,1,'','Other comments',4),(29,1,1,0,'Stomachache','',4),(30,1,1,1,'sdasd','sds',4),(31,1,1,1,'dasdDA','zsdaads',1),(32,1,1,0,'itching','very expensive',3);
 /*!40000 ALTER TABLE `patient_sample_feedback` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -499,7 +499,7 @@ CREATE TABLE `physicians_staging` (
 
 LOCK TABLES `physicians_staging` WRITE;
 /*!40000 ALTER TABLE `physicians_staging` DISABLE KEYS */;
-INSERT INTO `physicians_staging` VALUES (1,'Christopher','Nolan','salesfast.stm@gmail.com','11119999','23 Ridge Drive',NULL,'Florence','South Carolina','11001','ONC',0,'PRESCRIBING',1.95,'2000-01-01'),(2,'Alfred','Hitchcock','salesfast.stm@gmail.com','11110000','25 Beverly Hill',NULL,'Florence','South Carolina','11001','ONC',0,'PRESCRIBING',1.11,'2007-01-01'),(3,'Steven','Spielberg','salesfast.stm@gmail.com','6667777','1-32 Kent Ridge Drive',NULL,'Florence','South Carolina','11003','DIAB',0,'TO BE DETAILED',2.91,'1992-01-01'),(4,'Clint','Eastwood','salesfast.stm@gmail.com','99992299','2-43 New Ridge Mountain',NULL,'Florence','South Carolina','11001','ONC',1,'PRESCRIBING',0.12,'2015-04-01'),(5,'Quentin','Tarantino','salesfast.stm@gmail.com','66667766','23-103, Normanton Park',NULL,'Florence','South Carolina','11001','ONC',0,'PRESCRIBING',1.83,'2001-01-01'),(6,'James','Cameroon','salesfast.stm@gmail.com','934902248','block 4, 3-109, Normanton Park',NULL,'Florence','South Carolina','11003','DIAB',1,'TO BE DETAILED',0.14,'2015-02-01');
+INSERT INTO `physicians_staging` VALUES (1,'Christopher','Nolan','salesfast.stm@gmail.com','11119999','23 Ridge Drive',NULL,'Florence','South Carolina','11001','ONC',0,'PRESCRIBING',1.96,'2000-01-01'),(2,'Alfred','Hitchcock','salesfast.stm@gmail.com','11110000','25 Beverly Hill',NULL,'Florence','South Carolina','11001','ONC',0,'PRESCRIBING',1.12,'2007-01-01'),(3,'Steven','Spielberg','salesfast.stm@gmail.com','6667777','1-32 Kent Ridge Drive',NULL,'Florence','South Carolina','11003','DIAB',0,'TO BE DETAILED',2.92,'1992-01-01'),(4,'Clint','Eastwood','salesfast.stm@gmail.com','99992299','2-43 New Ridge Mountain',NULL,'Florence','South Carolina','11001','ONC',1,'LOST',0.13,'2015-04-01'),(5,'Quentin','Tarantino','salesfast.stm@gmail.com','66667766','23-103, Normanton Park',NULL,'Florence','South Carolina','11001','ONC',0,'PRESCRIBING',1.84,'2001-01-01'),(6,'James','Cameroon','salesfast.stm@gmail.com','934902248','block 4, 3-109, Normanton Park',NULL,'Florence','South Carolina','11003','DIAB',1,'TO BE DETAILED',0.15,'2015-02-01');
 /*!40000 ALTER TABLE `physicians_staging` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -519,7 +519,7 @@ CREATE TABLE `pitches` (
   PRIMARY KEY (`pitchesId`),
   KEY `fk_Appointment_Pitches_idx` (`appointmentId`),
   CONSTRAINT `fk_Appointment_Pitches` FOREIGN KEY (`appointmentId`) REFERENCES `appointment` (`appointmentId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -528,7 +528,7 @@ CREATE TABLE `pitches` (
 
 LOCK TABLES `pitches` WRITE;
 /*!40000 ALTER TABLE `pitches` DISABLE KEYS */;
-INSERT INTO `pitches` VALUES (1,210,'TO BE DETAILED','perfecting-your-pitch-3.pdf',1),(2,211,'TO BE DETAILED','perfecting-your-pitch-2.pdf',1),(3,207,'TO BE DETAILED','perfecting-your-pitch-4.pdf',1),(4,208,'TO BE DETAILED','perfecting-your-pitch-99.pdf',1),(5,212,'TO BE DETAILED','perfecting-your-pitch-71.pdf',1);
+INSERT INTO `pitches` VALUES (1,210,'TO BE DETAILED','perfecting-your-pitch-3.pdf',1),(2,211,'TO BE DETAILED','perfecting-your-pitch-2.pdf',1),(4,208,'TO BE DETAILED','perfecting-your-pitch-99.pdf',1),(5,212,'TO BE DETAILED','perfecting-your-pitch-71.pdf',1),(6,225,'TO BE DETAILED','perfecting-your-pitch-101.pdf',1),(7,228,'PRESCRIBING','perfecting-your-pitch-99.pdf',1);
 /*!40000 ALTER TABLE `pitches` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -579,7 +579,7 @@ CREATE TABLE `products` (
   PRIMARY KEY (`productId`),
   KEY `fk_Products_Medical_Fields1_idx` (`medicalFieldId`),
   CONSTRAINT `fk_Products_Medical_Fields1` FOREIGN KEY (`medicalFieldId`) REFERENCES `medical_fields` (`medicalFieldId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -588,7 +588,7 @@ CREATE TABLE `products` (
 
 LOCK TABLES `products` WRITE;
 /*!40000 ALTER TABLE `products` DISABLE KEYS */;
-INSERT INTO `products` VALUES (1,'D_Med_1','2016-01-12','DIAB'),(2,'D_Med_2','2015-11-13','DIAB'),(3,'O_Med_1','2016-01-30','ONC'),(4,'O_Med_2','2015-11-14','ONC'),(5,'O_Med_3','2016-03-18','ONC');
+INSERT INTO `products` VALUES (1,'D_Med_1','2016-01-12','DIAB'),(2,'D_Med_2','2015-11-13','DIAB'),(3,'O_Med_1','2016-01-30','ONC'),(4,'O_Med_2','2015-11-14','ONC'),(5,'O_Med_3','2016-03-18','ONC'),(6,'O_Med_4','2016-04-02','ONC'),(7,'O_Med_5','2016-04-02','ONC'),(8,'O_Med_6','2016-04-04','ONC'),(9,'O_Med_7','2016-04-03','ONC'),(10,'O_Med_8','2016-04-03','ONC');
 /*!40000 ALTER TABLE `products` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -729,7 +729,7 @@ CREATE TABLE `training_material` (
   CONSTRAINT `fk_Training_Material_Medical_Fields1` FOREIGN KEY (`medicalFieldId`) REFERENCES `medical_fields` (`medicalFieldId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Training_Material_Products1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Training_Material_User1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -738,7 +738,7 @@ CREATE TABLE `training_material` (
 
 LOCK TABLES `training_material` WRITE;
 /*!40000 ALTER TABLE `training_material` DISABLE KEYS */;
-INSERT INTO `training_material` VALUES (1,'O_Med_1.pdf',1,'ONC',3),(2,'O_Med_2.pdf',1,'ONC',4),(3,'D_Med_1.pdf',2,'DIAB',1),(4,'D_Med_2.pdf',2,'DIAB',2),(5,'O_Med_3.pdf',1,'ONC',5);
+INSERT INTO `training_material` VALUES (1,'O_Med_1.pdf',1,'ONC',3),(2,'O_Med_2.pdf',1,'ONC',4),(3,'D_Med_1.pdf',2,'DIAB',1),(4,'D_Med_2.pdf',2,'DIAB',2),(5,'O_Med_3.pdf',1,'ONC',5),(6,'O_Med_4.pdf',1,'ONC',6),(7,'O_Med_5.pdf',1,'ONC',7),(8,'O_Med_6.pdf',1,'ONC',8),(9,'O_Med_7.pdf',1,'ONC',9),(10,'O_Med_8.pdf',1,'ONC',10);
 /*!40000 ALTER TABLE `training_material` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -772,7 +772,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'Johny','Dep','salesfast.stm@gmail.com','99009922','22-103, Normanton Park',NULL,'Florence','South Carolina','11001','2014-01-01','9999-01-01'),(2,'Chritain','Bale','salesfast.stm@gmail.com','99223311','104-Block 5, Beverly hills',NULL,'Florence','South Carolina','11003','2014-01-01','9999-01-01'),(3,'David','Schwimmer','salesfast.stm@gmail.com','77664455','102-Block 3, Beverly hills',NULL,'Florence','South Carolina','11006','2014-01-01','9999-01-01'),(4,'Morgan','Freeman','salesfast.stm@gmail.com','00992900','18-104, Clementi Heights',NULL,'Florence','South Carolina','11006','2013-01-01','9999-01-01'),(9,'Christopher','Nolan','salesfast.stm@gmail.com','11119999','23 Ridge Drive',NULL,'Florence','South Carolina','11001',NULL,NULL),(10,'Quentin','Tarantino','salesfast.stm@gmail.com','66667766','23-103, Normanton Park',NULL,'Florence','South Carolina','11001',NULL,NULL),(11,'Alfred','Hitchcock','salesfast.stm@gmail.com','11110000','25 Beverly Hill',NULL,'Florence','South Carolina','11001',NULL,NULL);
+INSERT INTO `user` VALUES (1,'Johny','Depp','salesfast.stm@gmail.com','99009922','22-103, Normanton Park',NULL,'Florence','South Carolina','11001','2014-01-01','9999-01-01'),(2,'Chritain','Bale','salesfast.stm@gmail.com','99223311','104-Block 5, Beverly hills',NULL,'Florence','South Carolina','11003','2014-01-01','9999-01-01'),(3,'David','Schwimmer','salesfast.stm@gmail.com','77664455','102-Block 3, Beverly hills',NULL,'Florence','South Carolina','11006','2014-01-01','9999-01-01'),(4,'Morgan','Freeman','salesfast.stm@gmail.com','00992900','18-104, Clementi Heights',NULL,'Florence','South Carolina','11006','2013-01-01','9999-01-01'),(9,'Christopher','Nolan','salesfast.stm@gmail.com','11119999','23 Ridge Drive',NULL,'Florence','South Carolina','11001',NULL,NULL),(10,'Quentin','Tarantino','salesfast.stm@gmail.com','66667766','23-103, Normanton Park',NULL,'Florence','South Carolina','11001',NULL,NULL),(11,'Alfred','Hitchcock','salesfast.stm@gmail.com','11110000','25 Beverly Hill',NULL,'Florence','South Carolina','11001',NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -872,4 +872,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-03-30 19:09:24
+-- Dump completed on 2016-04-04  1:51:21

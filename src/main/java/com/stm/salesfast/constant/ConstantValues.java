@@ -11,13 +11,16 @@ public final class ConstantValues {
 	
 	public static final String FORMAT_FOLLOWUP = "Reminder: Call Dr. %s tomorrow to follow up regarding detailing for medicine %s, as discussed during previous call.";
 	
-	public static final String FORMAT_FOLLOWUP_CUSTGROWTH_LOST = "%s was just released. Call Dr. %s who did not agree to prescribe to our last product.";
+	public static final String FORMAT_FOLLOWUP_CUSTGROWTH_LOST = "%s was just released. Call the most prospecting physicians who did not agree to prescribe to our "
+																	+ "last product. Click on \"Detail\" button to know all LOST physicians.";
 	
-	public static final String FORMAT_FOLLOWUP_CUSTGROWTH_NOT_INTERESTED = "%s was just released. Call Dr. %s who was not interested in detailing about last product.";
+	public static final String FORMAT_FOLLOWUP_CUSTGROWTH_NOT_INTERESTED = "%s was just released. Call the most prospecting physicians who was not interested in meeting for "
+																	+ "last product. Click on \"Detail\" button to know all NOT INTERESTED physicians.";
 	
-	public static final String FORMAT_FOLLOWUP_CUSTRETENTION = "%s was just released. Call Dr. %s who has been prescribing BioPharma medicines and detail him about this new medicine.";
+	public static final String FORMAT_FOLLOWUP_CUSTRETENTION = "%s was just released. Call the physicians who are already prescribing some of BioPharma's medicines  "
+															+ "from this medical field. Click on \"Detail\" button to know all PRESCRIBING physicians.";
 	
-	public static final String FORMAT_PHYSICIAN_NEW_PRODUCT = "We just release a new product %s. Visit your e-detailing page for more details.";
+	public static final String FORMAT_PHYSICIAN_NEW_PRODUCT = "We just release a new product %s. Click on \"Detail\" to check out your e-detailing page for more details.";
 	
 	public static final String FORMAT_NEW_QUESTION = "Sales Representative %s has a question that needs answering.";
 	

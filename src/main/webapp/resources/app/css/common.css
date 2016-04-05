@@ -1,12 +1,13 @@
 @CHARSET "ISO-8859-1";
 
-
+ 
 h1{
  	text-align: center; 
 	margin-bottom: 30px;
 	margin-top: 10%;
 }
-
+ 
+ 
 .select-bool-flag{
 	width : 40%;
 }
@@ -42,13 +43,19 @@ a.navbar-brand.navbar-menu-items{
     font: 12px Verdana;
 }
 
-.dropdown-menu>li>a:hover{
+.dropdown-menu>li.menu-item>a:hover{
 	background-color: cadetblue;
     font-weight: 600;
     color: black;
 }
 
-nav.navbar-collapse ul li:hover,nav.navbar-collapse ul li ul:hover,nav.navbar-collapse ul li.dropdown ul.product-dropdown-menu li:hover {
+li.navbar-menu-selected>a.navbar-menu-items{
+	background-color: cadetblue;
+    font-weight: 600;
+    color: black;
+}
+
+nav.navbar-collapse ul li.menu-item:hover,nav.navbar-collapse ul li ul:hover,nav.navbar-collapse ul li.dropdown ul.product-dropdown-menu li:hover {
     background-color: cadetblue;
     font-weight: 600;
 }
@@ -96,4 +103,24 @@ nav.navbar-collapse ul li:hover,nav.navbar-collapse ul li ul:hover,nav.navbar-co
     color: #fff;
     padding-bottom: 8px;
 }
+li#nav-logout {
+	margin-left: 2%;
+}
+ul#salesfast-navbar {
+    width: 91%;
+}
 
+li#nav-loggedin-user {
+    margin-top: 16px;
+    color: #E6E1E1;
+}
+
+span.loggedin-user-span {
+	margin-left: 147px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 15px;
+}
+
+nav.navbar-collapse.collapse {
+    width: 200%;
+}

@@ -2,6 +2,27 @@
  * 
  */
 
+$(document).ready(function(){
+	
+	$.ajax({
+		type: 'GET',
+		url : '/getcurrentuser',
+		success : function(data){
+	    	console.log("Curent logged in user is : "+JSON.stringify(data));
+	    	$('span.loggedin-user-span').html("Welcome! "+data)
+		},
+		error : function(e){
+			console.log("Error : "+JSON.stringify(e));
+		}
+	});
+	
+	
+});
+
+$.extend( $.fn.dataTable.defaults, {
+    ordering:  false
+});
+
 var updateNotificationCounter = function(){
 	$.ajax({
 		type : 'GET',

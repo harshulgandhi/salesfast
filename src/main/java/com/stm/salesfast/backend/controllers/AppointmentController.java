@@ -114,11 +114,9 @@ public class AppointmentController {
 	}
 	
 	@RequestMapping(value="/cancelappointment", method=RequestMethod.POST)
-	@ResponseBody
 	public void cancelAppointment( @RequestParam(value="appointmentId") int appointmentId, @RequestParam(value="cancellationReason") String cancellationReason){
 		log.info("Cancellation request received for appointment "+appointmentId+" due to "+cancellationReason);
 		appointmentFetchService.cancelAppointment(appointmentId, cancellationReason);
-		
 	}
 	
 	@RequestMapping(value="/getallappointments",  headers="Accept=*/*", method=RequestMethod.GET, produces="appliation/json")
@@ -134,7 +132,6 @@ public class AppointmentController {
 	public void cancelAppointmentBySR( @RequestParam(value="appointmentId") int appointmentId, @RequestParam(value="cancellationReason") String cancellationReason){
 		log.info("Cancellation request received from SALESREP for appointment "+appointmentId+" due to "+cancellationReason);
 		appointmentFetchService.cancelAppointmentBySR(appointmentId, cancellationReason);
-		
 	}
 	
 	@RequestMapping(value="/updatefutureappointment", method=RequestMethod.POST, consumes = "application/json", produces = "application/json")

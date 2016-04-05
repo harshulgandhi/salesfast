@@ -50,5 +50,7 @@ public interface AppointmentDao {
 	public List<AppointmentDto> getAllAppointmentHavingPitch();
 
 	public List<AppointmentDto> getPastAppointmentByUserId(int userId);
+
+	public String getNotInterestedStatus(int physicianId, int userId);
 	
 }

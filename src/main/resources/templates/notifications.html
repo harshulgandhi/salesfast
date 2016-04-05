@@ -31,8 +31,8 @@
 							<td class="notification-id" style="display: none" th:text="${eachNotification.notificationId}"></td>
 							<td class="user-id" style="display: none" th:text="${eachNotification.userId}"></td>
 							<td class="notification-category" style="display: none" th:text="${eachNotification.notificationCategory}"></td>
-							<td th:text="${eachNotification.notification}"></td>
-							<td><button type="button" class="btn btn-default btn-sm btn-warning remove-notification">
+							<td class="notification-td" th:text="${eachNotification.notification}"></td>
+							<td class="notification-manipulation-td" ><button type="button" class="btn btn-default btn-sm btn-warning remove-notification">
 						          <span class="glyphicon glyphicon-trash"></span> Remove 
 						        </button>
 						        <button type="button" class="btn btn-default btn-sm btn-info detail-notification">

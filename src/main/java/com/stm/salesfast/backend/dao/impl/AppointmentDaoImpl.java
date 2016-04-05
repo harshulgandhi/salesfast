@@ -77,7 +77,11 @@ public class AppointmentDaoImpl implements AppointmentDao {
 			+ "WHERE userId = ? AND "
 			+ "date < DATE_SUB(NOW(),INTERVAL 0 YEAR) "
 			+ "ORDER BY date desc";
-	
+	private static final String FETCH_IF_STATUS_NOT_INTERESTED = "SELECT confirmationStatus FROM appointment "
+			+ "WHERE hasMeetingUpdate = 0 AND "
+			+ "confirmationStatus = 'NOT INTERESTED' AND "
+			+ "physicianId = ? AND "
+			+ "userId = ?";
 	
 	@Override
 	public AppointmentDto getAppointmentById(int appointmentId) {
@@ -382,6 +386,18 @@ public class AppointmentDaoImpl implements AppointmentDao {
 			return jdbcTemplate.query(FETCH_NOT_INTERESTED_PHY_FORUSER, (rs, rownnum)->{
 				return rs.getInt("physicianId");
 			}, userId);
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public String getNotInterestedStatus(int physicianId, int userId) {
+		try{
+			return jdbcTemplate.queryForObject(FETCH_IF_STATUS_NOT_INTERESTED, (rs, rownnum)->{
+				return rs.getString(1);
+			}, physicianId, userId);
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}

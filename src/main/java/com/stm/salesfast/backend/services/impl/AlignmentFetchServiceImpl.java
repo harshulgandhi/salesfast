@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,8 @@ import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.dto.UserDto;
 import com.stm.salesfast.backend.entity.AlignedPhysicianEntity;
 import com.stm.salesfast.backend.services.specs.AlignmentFetchService;
+import com.stm.salesfast.backend.services.specs.AppointmentService;
+import com.stm.salesfast.backend.services.specs.MeetingUpdateService;
 import com.stm.salesfast.backend.services.specs.ProductFetchService;
 import com.stm.salesfast.backend.services.specs.UserDetailService;
 
@@ -41,6 +44,12 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 	
 	@Autowired
 	private UserDetailService userService;
+	
+	@Autowired
+	private MeetingUpdateService meetingUpdateService;
+	
+	@Autowired
+	private AppointmentService appointmentService;
 	
 	@Override
 	public List<AlignmentsDto> getAlignmentByUserId(int userId) {
@@ -75,12 +84,18 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 		List<AlignmentsDto> alignmentsByUserId = alignmentDao.getAlignmentByUserIdNotInAppointments(userId);
 		List<AlignedPhysicianEntity> alignedPhysicians = new ArrayList<AlignedPhysicianEntity>();
 		for(AlignmentsDto eachAlignment : alignmentsByUserId){
+			List<String> updateStatuses = meetingUpdateService.getStatusForAllAppointments(userId, eachAlignment.getPhysicianId());
+			List<String> dedupeUpdateStatuses = updateStatuses.stream().distinct().collect(Collectors.toList());
+			String combinedUpdateStatus =  (dedupeUpdateStatuses.size() > 0) ? String.join(",", dedupeUpdateStatuses) : "";
+			String notInterestedConfirmationStatus = appointmentService.getNotInterestedAppointmentStatus(eachAlignment.getPhysicianId(), userId);
+			combinedUpdateStatus = ( notInterestedConfirmationStatus == null ) ?
+											combinedUpdateStatus : (combinedUpdateStatus + notInterestedConfirmationStatus);
 			
 			PhysicianStgDto physicianDto = physicianDao.getBy(eachAlignment.getPhysicianId());
 			alignedPhysicians.add(new AlignedPhysicianEntity(physicianDto,
 					productService.getProductById(eachAlignment.getProductId()).getProductName(),
-					productService.getProductById(eachAlignment.getProductId()).getProductId()
-					));
+					productService.getProductById(eachAlignment.getProductId()).getProductId(),
+					combinedUpdateStatus));
 		}
 		Collections.sort(alignedPhysicians);		//Ordering physicians in reverse order of importance metric
 		return alignedPhysicians;
@@ -108,9 +123,14 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 		List<AlignedPhysicianEntity> alignedPhysicians = new ArrayList<AlignedPhysicianEntity>();
 		for(AlignmentsDto eachAlignment : alignmentsByUserId){
 			PhysicianStgDto physicianDto = physicianDao.getBy(eachAlignment.getPhysicianId());
+			List<String> updateStatuses = meetingUpdateService.getStatusForAllAppointments(userId, eachAlignment.getPhysicianId());
+			List<String> dedupeUpdateStatuses = updateStatuses.stream().distinct().collect(Collectors.toList());
+			String combinedUpdateStatus =  (dedupeUpdateStatuses.size() > 0) ? String.join(",", dedupeUpdateStatuses) : "";
+			
 			alignedPhysicians.add(new AlignedPhysicianEntity(physicianDto, 
 					productService.getProductById(eachAlignment.getProductId()).getProductName(),
-					productService.getProductById(eachAlignment.getProductId()).getProductId()
+					productService.getProductById(eachAlignment.getProductId()).getProductId(),
+					combinedUpdateStatus
 					));
 		}
 		return alignedPhysicians;

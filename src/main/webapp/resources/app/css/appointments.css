@@ -128,3 +128,56 @@ object.pdf-doc-object.pdf-doc-object-slidedown {
     height: 100%;
     width: 100%;
 }	
+
+button.btn.btn-default.btn-md.show-contact.form-control {
+    border-radius: 0px;
+        width: 100%;
+    height: 32px;
+    vertical-align: middle;
+}
+
+span.glyphicon.glyphicon-plus {
+    float: left;
+}
+
+.phys-address {
+    display: inline-flex;
+	padding: 0px;
+}
+
+span.contactdetail-label {
+    width: 27%;
+    font-style: italic;
+}
+
+span.contactdetail-content {
+    font-weight: 600;
+    width: 65%;
+}
+
+td.contact-details {
+    width: 19%;
+}
+table#aligned-vicinity-physician-table {
+    width: 112%;
+}
+
+.no-followup-message-div{
+	margin-right: -373%;
+   	text-align: center;
+	border: 1px solid #ddd;
+	height: 33px;
+	margin-top: -2px;
+	background: #ECC4B3;
+	font:  100.5% "Lucida Sans Unicode", "Bitstream Vera Sans", "Trebuchet Unicode MS", "Lucida Grande", Verdana, Helvetica, sans-serif;;
+}
+
+span.no-followups-message-span{
+	vertical-align: -webkit-baseline-middle;
+	
+}
+
+td.no-followup-td{
+	border: none;
+	padding: 0px;
+}

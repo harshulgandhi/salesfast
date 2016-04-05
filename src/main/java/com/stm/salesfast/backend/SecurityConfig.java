@@ -78,7 +78,10 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 				new AntPathRequestMatcher("/getpitchforappointment"),
 				new AntPathRequestMatcher("/updatemeetingpitch"),
 				new AntPathRequestMatcher("/filterparameters"),
-				new AntPathRequestMatcher("/getpastappointments")
+				new AntPathRequestMatcher("/getpastappointments"),
+				new AntPathRequestMatcher("/getcurrentuser"),
+				new AntPathRequestMatcher("/upvotepitch"),
+				new AntPathRequestMatcher("/downvotepitch")
 				};
 
 		@Override

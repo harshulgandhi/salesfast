@@ -12,7 +12,18 @@
 	<div th:replace="fragments/header :: header"></div>
 	
 	<div class="container" id="layout">
-		<div class="page-heading row"><h1>Your Alignments</h1></div>
+		<div class="page-heading row">
+			<div class="heading"><h2>Physicians aligned to you</h2>
+			<span class="alignment-table-desc">**Select row and click on "Submit Appointments" to fix appointment with a physician</span>
+			</div>
+			<div class="table-legend">
+				<ul class="legend-ul">
+					<li class="legend-li most-prospecting-li"><span class="most-prospecting-span"></span>Most prospecting</li>
+					<li class="legend-li prospecting-li"><span class="prospecting-span"></span>Prospecting</li>
+					<li class="legend-li less-prospecting-li"><span class="less-prospecting-span"></span>Less prospecting</li>
+				</ul>
+			</div>
+		</div>
 		<div class="row alignment-table-row">
 			<div class="col-lg-12 col-sm-12">
 				<table id="aligned-physician-table" class="table table-striped table-bordered">
@@ -37,6 +48,7 @@
 							<th>Appointment Status</th>
 							<th>Notes</th>
 							<th>Past Meetings</th>
+							<th style="display:none">Past Statues</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -53,8 +65,12 @@
 										</button>
 									</div>
 									<div class="aligned-physician-contact"  style="display: none">
-										<div class="phys-address"><span class="contactdetail-label">Address : </span><span class="contactdetail-content" 
-										th:text="${eachAlignment.addressLineOne} +' '+ ${eachAlignment.addressLineTwo}+' '+${eachAlignment.city}+' '+${eachAlignment.zip}"></span></div>
+										<div class="phys-address"><span class="contactdetail-label">Address : </span>
+										<span class="contactdetail-content" 
+										th:unless="${eachAlignment.addressLineTwo == null}" th:text="${eachAlignment.addressLineOne} +' '+ ${eachAlignment.addressLineTwo}+' '+${eachAlignment.city}+' '+${eachAlignment.zip}"></span>
+										<span class="contactdetail-content" 
+										th:if="${eachAlignment.addressLineTwo == null}" th:text="${eachAlignment.addressLineOne} +' '+${eachAlignment.city}+' '+${eachAlignment.zip}"></span>
+										</div>
 										<div class="phys-phone"><span class="contactdetail-label">Phone : </span><span class="contactdetail-content" 
 										th:text="${eachAlignment.contactNumber}"></span></div>
 										<div class="phys-email"><span class="contactdetail-label">Email : </span><span class="contactdetail-content" 
@@ -98,6 +114,7 @@
 									<span class="button-value">Your past interactions</span>
 								</button>
 							</td>
+							<td style="display: none;" th:text="${eachAlignment.updateStatuses}"></td>
 						</tr>
 					</tbody>
 				</table>

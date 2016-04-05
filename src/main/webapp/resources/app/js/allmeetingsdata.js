@@ -25,6 +25,11 @@ var chartParameters = [{
 $(function () {
 	
     $(document).ready(function () {
+       $('li.navbar-menu-selected').removeClass("navbar-menu-selected");
+    	   
+	   if(!$('li#nav-data-report').hasClass("navbar-menu-selected")){
+		   $('li#nav-data-report').addClass("navbar-menu-selected")
+	   }
     	for(var i = 0; i< chartParameters.length; i++){
     		constructPieCharts(chartParameters[i]['url'],chartParameters[i]['containerName'], chartParameters[i]['title']);
     	}

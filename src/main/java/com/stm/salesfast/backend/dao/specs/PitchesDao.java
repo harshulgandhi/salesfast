@@ -13,4 +13,8 @@ public interface PitchesDao {
 	public void updateStatus(int appointmentId, String status);
 
 	public void updatePitchFile(int appointmentId, String fileName);
+
+	public void upvotePitch(int pitchesId);
+
+	public void downvotePitch(int pitchesId);
 }

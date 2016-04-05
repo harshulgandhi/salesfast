@@ -8,7 +8,15 @@ $(document).ready(function(){
 	$('li.left-menu-selected').removeClass('left-menu-selected');
 	$('li.future-appointment-li').addClass('left-menu-selected');
 	
-	futureAppointmentTable = $('#future-appointment-fixed-physician-table').dataTable();
+	$('li.navbar-menu-selected').removeClass("navbar-menu-selected");
+	   
+	if(!$('li#nav-appointment').hasClass("navbar-menu-selected")){
+		$('li#nav-appointment').addClass("navbar-menu-selected")
+	}
+	
+	futureAppointmentTable = $('#future-appointment-fixed-physician-table').dataTable({
+		   "searching": true
+	   });
 	
 	$(".appointment-status-selector").select2();
 	
@@ -21,9 +29,11 @@ $(document).ready(function(){
 	var defaultColorFuture;
 	$('#future-appointment-fixed-physician-table tbody').on('click','tr', function(e){
 		var cell = $(e.target).get(0);
+		console.log(cell.nodeName);
 		if(cell.childElementCount < 1 && cell.nodeName != 'INPUT' 
 			&& cell.nodeName != 'SPAN' && cell.nodeName != 'TEXTAREA' 
-			&& $(this).find('.cancelled-appointment-status').html() != 'CANCELLED'){
+			&& $(this).find('.cancelled-appointment-status').html() != 'CANCELLED'
+			&& cell.nodeName != 'BUTTON'){
 	    	if ($(this).hasClass('selected') ) {
 	    		$(this).removeClass('selected');
 	    		$(this).css('background-color', defaultColorFuture);
@@ -53,9 +63,14 @@ $('#appointment-cancellation-button').click(function(){
 		$.ajax({
 			type: 'POST',
 			url : "/cancelappointmentbysr?appointmentId="+appointmentId+"&cancellationReason="+cancellationReason,
-			contentType: 'application/json; charset=utf-8',
-	        dataType: 'json'
+			success : function(){
+				console.log("success");
+			},
+			error: function(e){
+				console.log("Error : "+JSON.stringify(e));
+			}
 		}).done(function(){
+			console.log("appointment cancellation by sales rep done");
 			location.reload(true);
 		});
 	}

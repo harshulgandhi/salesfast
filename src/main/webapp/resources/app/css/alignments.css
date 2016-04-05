@@ -60,7 +60,7 @@ span.glyphicon.glyphicon-plus {
 
 .phys-address {
     display: inline-flex;
-        padding: 0px;
+	padding: 0px;
 }
 
 span.contactdetail-label {
@@ -75,4 +75,91 @@ span.contactdetail-content {
 
 td.contact-details {
     width: 19%;
+}
+
+.legend-ul{
+	list-style: none;
+}
+
+.legend-ul li { 
+	float: left; 
+	margin-right: 10px; 
+}
+.legend-ul span {
+    border: 1px solid #ccc;
+    float: left;
+    width: 16px;
+    height: 16px;
+    margin: 4px;
+    margin-right: 23px;
+}
+.page-heading.row {
+    display: -webkit-inline-box;
+    margin-top: 6%;
+}
+.heading {
+	margin-left: -13%;
+    margin-top: 3%;
+    width: 53%;
+    margin-bottom: 2%;
+}
+h2 {
+    border-bottom: solid 3px #0202A9;
+    padding-bottom: 9px;
+    font-size: 33px;
+}
+.table-legend {
+    width: 27%;
+    border: 1px solid;
+    padding-top: 6px;
+    padding-bottom: 6px;
+	margin-left: 54%;
+    margin-bottom: 3%;
+    margin-top: 1%;
+}
+
+.legend-ul {
+    list-style: none;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: larger;
+    margin-top: 4%;
+    margin-left: -5%;
+}
+.legend-ul li {
+    float: left;
+    margin-right: 10px;
+}
+
+span.most-prospecting-span {
+    background-color: #4F9651;
+}
+
+span.prospecting-span {
+    background-color: #A6DAA8;
+}
+
+span.less-prospecting-span {
+    background-color: #ECFBEC;
+}
+.page-heading.row {
+    display: -webkit-inline-box;
+    margin-top: 6%;
+}
+
+span.alignment-table-desc {
+    font-style: italic;
+    font-size: 15px;
+    color: red;
+}
+
+button.btn.btn-default.submit-selected-alignments {
+	border-radius: 0px;
+    width: 32%;
+    height: 34px;
+    margin-left: 30%;
+    margin-top: 1%;
+    background: #A24F4F;
+    color: white;
+    font-size: 17px;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 }

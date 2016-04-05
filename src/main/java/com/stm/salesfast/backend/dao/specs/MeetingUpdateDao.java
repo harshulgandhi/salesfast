@@ -19,4 +19,6 @@ public interface MeetingUpdateDao {
 
 	public List<Integer> getPrescribingPhysiciansForUser(int userId);
 
+	public List<String> getStatusesByAppointments(int userId, int physicianId);
+
 }

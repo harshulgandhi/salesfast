@@ -10,7 +10,11 @@ $(document).ready(function() {
 
 	$('li.left-menu-selected').removeClass('left-menu-selected');
 	$('li.past-appointment-li').addClass('left-menu-selected');
-	
+	$('li.navbar-menu-selected').removeClass("navbar-menu-selected");
+	   
+	if(!$('li#nav-appointment').hasClass("navbar-menu-selected")){
+		$('li#nav-appointment').addClass("navbar-menu-selected")
+	}
 	updateNotificationCounter();
 	
 	getPastAppointments();
@@ -167,7 +171,9 @@ var populatePastAppTable = function(appointments){
 		}
 		
 	}
-	table = $('table#past-appointments-table').DataTable();
+	table = $('table#past-appointments-table').DataTable({
+		   "searching": true
+	   });
 	if(isFromAlignmentPage){
 		table.search(physNameParamFromAlignments).draw();
 	}

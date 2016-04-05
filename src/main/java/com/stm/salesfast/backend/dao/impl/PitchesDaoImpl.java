@@ -16,11 +16,18 @@ public class PitchesDaoImpl implements PitchesDao{
 	
 	private static final String INSERT = "INSERT INTO pitches (appointmentId, meetingStatus, fileName, pitchScore) "
 			+ "VALUES (?,?,?,?)";
-	private static final String FETCH_BY_APPOINTMENT = "SELECT * FROM pitches WHERE appointmentId = ?";
-	private static final String FETCH_BY_ID = "SELECT * FROM pitches WHERE pitchesId = ?";
+	private static final String FETCH_BY_APPOINTMENT = "SELECT * FROM pitches WHERE appointmentId = ? ORDER BY pitchScore desc";
+	private static final String FETCH_BY_ID = "SELECT * FROM pitches WHERE pitchesId = ? ORDER BY pitchScore desc";
 	private static final String UPDATE_STATUS = "UPDATE pitches SET meetingStatus = ? WHERE appointmentId = ?";
 	private static final String UPDATE_PITCH_FILE = "UPDATE pitches SET fileName = ? WHERE appointmentId = ?";
-	
+	private static final String UPVOTE_PITCH = "UPDATE salesfast.pitches "
+											+ "SET pitchScore = pitchScore + 1 "
+											+ "WHERE pitchesId = ?";
+											
+	private static final String DOWNVOTE_PITCH = "UPDATE salesfast.pitches "
+											+ "SET pitchScore = pitchScore - 1 "
+											+ "WHERE pitchesId = ?";			 
+
 	
 	@Override
 	public void insert(PitchesDto pitch) {
@@ -83,6 +90,30 @@ public class PitchesDaoImpl implements PitchesDao{
 			jdbcTemplate.update(UPDATE_PITCH_FILE, (ps)->{
 				ps.setString(1, fileName);
 				ps.setInt(2, appointmentId);
+			});
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void upvotePitch(int pitchesId) {
+		// TODO Auto-generated method stub
+		try{
+			jdbcTemplate.update(UPVOTE_PITCH, (ps)->{
+				ps.setInt(1, pitchesId);
+			});
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+	}
+	
+	@Override
+	public void downvotePitch(int pitchesId) {
+		// TODO Auto-generated method stub
+		try{
+			jdbcTemplate.update(DOWNVOTE_PITCH, (ps)->{
+				ps.setInt(1, pitchesId);
 			});
 		}catch(DataAccessException e){
 			e.printStackTrace();

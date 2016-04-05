@@ -118,4 +118,19 @@ public class LiveMeetingController {
 		List<ViewAllPitchEntity> allPitchesToShow =  pitchService.getAllPitchesForFilter(filterEntity);
 		return allPitchesToShow.toArray(new ViewAllPitchEntity[allPitchesToShow.size()]);
 	}
+	
+	@RequestMapping(value="/upvotepitch", method=RequestMethod.POST)
+	@ResponseBody
+	public void upvotePitch( @RequestParam(value="pitchId") int pitchId){
+		log.info("Pitch to be upvoted "+pitchId);
+		pitchService.upvotePitch(pitchId);
+	}
+	
+	@RequestMapping(value="/downvotepitch", method=RequestMethod.POST)
+	@ResponseBody
+	public void downvotePitch( @RequestParam(value="pitchId") int pitchId){
+		log.info("Pitch to be downvoted "+pitchId);
+		pitchService.downvotePitch(pitchId);
+	}
+	
 }	

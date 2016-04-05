@@ -4,17 +4,24 @@
  */
 var selectedAlignments = [];
 var averageTravelTime = 30; //minutes
+var statusParam;
+var isFromNotificationsPage=false;
 /**
  * Toggles between selected and de-selected rows of the table
  * Takes care of clicks done on the 'time' element 
  */
 $(document).ready(function() {
    var table = $('#aligned-physician-table').DataTable({
-	   order: [[0, "desc"]]
+	   order: [[0, "desc"]],
+	   "searching": true
    });
-   /*,
-	   "oSearch": {"sSearch": "O_Med_2"}
-   });*/
+   
+   $('li.navbar-menu-selected').removeClass("navbar-menu-selected");
+   
+   if(!$('li#nav-alignment').hasClass("navbar-menu-selected")){
+	   $('li#nav-alignment').addClass("navbar-menu-selected")
+   }
+   
    console.log("Alignment referrer : "+document.referrer);
    
     $('#aligned-physician-table tbody').on( 'click', 'tr', function (e) {
@@ -54,7 +61,23 @@ $(document).ready(function() {
     }
     
     updateNotificationCounter();
+    
+  //Physician name received and parsed for table search
+	var value;
+	if (window.location.search.split('?').length > 1) {
+        var params = window.location.search.split('?')[1].split('&');
+        for (var i = 0; i < params.length; i++) {
+            var key = params[i].split('=')[0];
+            statusParam= decodeURIComponent(params[i].split('=')[1]);
+            console.log("Status : "+statusParam);
+            isFromNotificationsPage = true;
+        }
+    }
+	if(isFromNotificationsPage){
+		table.search(statusParam).draw();
+	}
 });	
+
 
 $(document).on('click','button.redirect-past-appointments',function(){
 	   var name = $(this).parent().parent().find('td.physician-name').html();
@@ -64,9 +87,9 @@ $(document).on('click','button.redirect-past-appointments',function(){
 $('.show-contact').click(function(){
 	$(this).parent().parent().find('div.aligned-physician-contact').toggle();
 	if($(this).parent().parent().find('div.aligned-physician-contact').css('display') == 'none'){
-	    $(this).find('span.button-value').html("Show Contact");
+	    $(this).find('span.button-value').html("Show Contact Details");
 	}else if($(this).parent().parent().find('div.aligned-physician-contact').css('display') == 'block'){
-	    $(this).find('span.button-value').html("Hide Contact");
+	    $(this).find('span.button-value').html("Hide Contact Details");
 	}
 });
 
@@ -157,7 +180,7 @@ var fixAppointments = function(physIds, appointStartTimeList, appointEndTimeList
 
 var sanityCheck = function(currentAppointments){
 	for(var i = 0; i<currentAppointments.length; i++){
-		if(currentAppointments[i]["appointmentStartTime"] >= currentAppointments[i]["appointmentEndTime"]){
+		if(currentAppointments[i]["appointmentStatus"] != "NOT INTERESTED" && currentAppointments[i]["appointmentStartTime"] >= currentAppointments[i]["appointmentEndTime"]){
 			alert("Appointment you are trying to book at "+currentAppointments[i]["appointmentStartTime"]
 			+" has Start Time after End Time. Please correct the time values and submit again");
 			return false; 
@@ -283,10 +306,11 @@ var createJson = function(physIds, appointStartTime, appointEndTime, productIds,
 	var appointmentJson = {"appointments":[]};
 	var appointJsonList = [];
 	for( var i = 0; i<physIds.length;i++){
+//		console.log("Physician Id : "+parseInt(physIds[i])+"; Product Id  : "+parseInt(productIds[i][0])+"; parseInt(productIds[i]) : "+parseInt(productIds[i])+" productIds[i] : "+productIds[i]);
 		appointJsonList.push(
 				{
-					"physicianId":parseInt(physIds[i][0]),
-					"productId":parseInt(productIds[i][0]),
+					"physicianId":parseInt(physIds[i]),
+					"productId":parseInt(productIds[i]),
 					"appointmentStartTime":appointStartTime[i],
 					"appointmentEndTime": appointEndTime[i], 
 					"appointmentDate":appointDate[i],

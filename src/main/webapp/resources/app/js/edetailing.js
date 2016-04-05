@@ -2,9 +2,15 @@
  * 
  */
 var virtualLearningData = [];
+var isFromNotificationsPage=false;
 $(document).ready(function () {
 	
 	$('button.edetail-button-clicked').removeClass('edetail-button-clicked');
+	$('li.navbar-menu-selected').removeClass("navbar-menu-selected");
+	   
+	if(!$('li#nav-e-detail').hasClass("navbar-menu-selected")){
+		$('li#nav-e-detail').addClass("navbar-menu-selected")
+	}
 	
 	$.ajax({
 		type: 'GET',
@@ -23,6 +29,7 @@ $(document).ready(function () {
 	});
 	
 	updateNotificationCounter();
+	
 });
 
 $(document).on('click','button.show-doc-edetail',function(){
@@ -55,7 +62,7 @@ var createEDetailingEnvironment = function(data){
 							'</embed>'+
 						'</object>'+
 					'</div>'+
-					'<div class="col-lg-3 info-right-panel" id="'+str+'-salesrep-info" style="display: none;>'+
+					'<div class="col-lg-3 info-right-panel" id="'+str+'-salesrep-info" style="display: none;">'+
 						'<span class="salesrep-info-span">Contact our Sales Representative in case you need answers to any questions.</span>'+
 						'<table id="salesrep-info-table" class="table">'+
 							'<thead>'+
@@ -85,6 +92,24 @@ var createEDetailingEnvironment = function(data){
 	var btn = list[0];
 	$('#'+btn.id).trigger( "click" );
 	$(window).resize();
+	
+	var value;
+	if (window.location.search.split('?').length > 1) {
+        var params = window.location.search.split('?')[1].split('&');
+        for (var i = 0; i < params.length; i++) {
+            var key = params[i].split('=')[0];
+            statusParam= decodeURIComponent(params[i].split('=')[1]);
+            console.log("Product : "+statusParam);
+            isFromNotificationsPage = true;
+        }
+    }
+	
+	if(isFromNotificationsPage){
+		var newProductButtons = $('button.show-doc-edetail');
+		var len = $(newProductButtons).length;
+		var lastBtn = $(newProductButtons)[len-1];
+		$(lastBtn).click();
+	}
 	
 }
 

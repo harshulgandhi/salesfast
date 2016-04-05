@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.11, for osx10.11 (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.10, for Win64 (x86_64)
 --
 -- Host: localhost    Database: salesfast
 -- ------------------------------------------------------
--- Server version	5.7.11
+-- Server version	5.7.10-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -41,7 +41,7 @@ CREATE TABLE `alignments` (
   CONSTRAINT `fk_Alignments_Physicians_Staging1` FOREIGN KEY (`physicianId`) REFERENCES `physicians_staging` (`physicianId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Alignments_Product1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Alignments_User1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=3015 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3983 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,9 +63,9 @@ DROP TABLE IF EXISTS `appointment`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `appointment` (
   `appointmentId` int(11) NOT NULL AUTO_INCREMENT,
-  `startTime` time NOT NULL,
-  `endTime` time NOT NULL,
-  `date` date NOT NULL,
+  `startTime` time DEFAULT NULL,
+  `endTime` time DEFAULT NULL,
+  `date` date DEFAULT NULL,
   `physicianId` int(11) NOT NULL,
   `userId` int(11) NOT NULL,
   `productId` int(11) NOT NULL,
@@ -84,7 +84,7 @@ CREATE TABLE `appointment` (
   CONSTRAINT `fk_Appointment_Physicians_Staging1` FOREIGN KEY (`physicianId`) REFERENCES `physicians_staging` (`physicianId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Appointment_Products1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Appointment_User1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=258 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=261 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -528,7 +528,7 @@ CREATE TABLE `pitches` (
 
 LOCK TABLES `pitches` WRITE;
 /*!40000 ALTER TABLE `pitches` DISABLE KEYS */;
-INSERT INTO `pitches` VALUES (8,239,'PRESCRIBING','perfecting-your-pitch-99.pdf',1),(9,240,'LOST','sample_pitch.pdf',1),(10,241,'LOST','sample_pitch_wJamesCameroon.pdf',1),(11,247,'PRESCRIBING','sample_pitch_wQuentin.pdf',1),(12,248,'PRESCRIBING','sample_pitch_wAlfred.pdf',1),(13,249,'LOST','perfecting-your-pitch-wChristopher.pdf',1),(14,250,'PRESCRIBING','perfecting-your-pitch-wChristopher.pdf',1),(15,251,'LOST','sample_pitch_wQuentin.pdf',1),(16,252,'PRESCRIBING','sample_pitch_wQuentin.pdf',1);
+INSERT INTO `pitches` VALUES (8,239,'PRESCRIBING','perfecting-your-pitch-99.pdf',2),(9,240,'LOST','sample_pitch.pdf',1),(10,241,'LOST','sample_pitch_wJamesCameroon.pdf',1),(11,247,'PRESCRIBING','sample_pitch_wQuentin.pdf',2),(12,248,'PRESCRIBING','sample_pitch_wAlfred.pdf',4),(13,249,'LOST','perfecting-your-pitch-wChristopher.pdf',1),(14,250,'PRESCRIBING','perfecting-your-pitch-wChristopher.pdf',2),(15,251,'LOST','sample_pitch_wQuentin.pdf',1),(16,252,'PRESCRIBING','sample_pitch_wQuentin.pdf',2);
 /*!40000 ALTER TABLE `pitches` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -802,7 +802,7 @@ CREATE TABLE `user_account` (
 
 LOCK TABLES `user_account` WRITE;
 /*!40000 ALTER TABLE `user_account` DISABLE KEYS */;
-INSERT INTO `user_account` VALUES (1,'christain','balechristain',2),(2,'johny','depjohny',1),(3,'david','schwimmerdavid',3),(4,'morgan','freemanmorgan',4),(12,'mathew','perrymathew',12),(13,'matt','leblancmatt',13),(14,'steven','spielberg705',14),(15,'james','cameroon650',15),(16,'ang','lee713',16),(17,'christopher','nolan983',17),(18,'quentin','tarantino939',18),(19,'alfred','hitchcock518',19),(20,'john','hughes638',20),(21,'woody','allen593',21);
+INSERT INTO `user_account` VALUES (1,'christain','balechristain',2),(2,'johny','deppjohny',1),(3,'david','schwimmerdavid',3),(4,'morgan','freemanmorgan',4),(12,'mathew','perrymathew',12),(13,'matt','leblancmatt',13),(14,'steven','spielberg705',14),(15,'james','cameroon650',15),(16,'ang','lee713',16),(17,'christopher','nolan983',17),(18,'quentin','tarantino939',18),(19,'alfred','hitchcock518',19),(20,'john','hughes638',20),(21,'woody','allen593',21);
 /*!40000 ALTER TABLE `user_account` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -872,4 +872,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-04-05  2:40:47
+-- Dump completed on 2016-04-05 16:13:14

@@ -21,12 +21,12 @@
         	</div>
         	<nav class="navbar-collapse collapse">
 	          <ul id="salesfast-navbar" class="nav navbar-nav">
-	            <li id="nav-home"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('SalesRep')} or ${session.roles.contains('DM')} or ${session.roles.contains('PH')}">Home</a></li>
-	            <li id="nav-alignment"><a class="navbar-menu-items" href="./showalignments" th:if="${session.roles.contains('SalesRep')}">Alignments</a></li>
+	            <li id="nav-home" class="menu-item"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('SalesRep')} or ${session.roles.contains('DM')} or ${session.roles.contains('PH')}">Home</a></li>
+	            <li id="nav-alignment" class="menu-item"><a class="navbar-menu-items" href="./showalignments" th:if="${session.roles.contains('SalesRep')}">Alignments</a></li>
 	            <!-- <li id="nav-target-incentive"><a class="navbar-menu-items" href="./targetandincentive" th:if="${session.roles.contains('SalesRep')}">Target And Incentive</a></li> -->
-	            <li id="nav-appointment"><a class="navbar-menu-items" href="./showappointments" th:if="${session.roles.contains('SalesRep')}">Appointment</a></li>
-	            <li id="nav-meeting-phys"><a class="navbar-menu-items" href="./showmeetingsphys" th:if="${session.roles.contains('PH')}">Your Meetings With Us</a></li>
-	            <li id="nav-products"><a class="navbar-menu-items" href="./allproducts" th:if="${session.roles.contains('DM')} or ${session.roles.contains('NH')}">Products</a></li>
+	            <li id="nav-appointment" class="menu-item"><a class="navbar-menu-items" href="./showappointments" th:if="${session.roles.contains('SalesRep')}">Appointment</a></li>
+	            <li id="nav-meeting-phys" class="menu-item"><a class="navbar-menu-items" href="./showmeetingsphys" th:if="${session.roles.contains('PH')}">Your Meetings With Us</a></li>
+	            <li id="nav-products" class="menu-item"><a class="navbar-menu-items" href="./allproducts" th:if="${session.roles.contains('DM')} or ${session.roles.contains('NH')}">Products</a></li>
 	            <!-- <li class="dropdown">
 		          <a class="dropdown-toggle navbar-menu-items" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:if="${session.roles.contains('DM')} or ${session.roles.contains('NH')}">Products</a>
 		          <ul class="dropdown-menu product-dropdown-menu">
@@ -34,8 +34,8 @@
 		            <li><a class="navbar-menu-items" href="./addproductspage">Add Products</a></li>
 		          </ul>
 		        </li> -->
-		        <li id="nav-data-report"><a class="navbar-menu-items" href="./datareport" th:if="${session.roles.contains('DM')}">Data Report</a></li>
-		        <li id="nav-quick-assist"><a class="navbar-menu-items" href="./livemeetingquestions" th:if="${session.roles.contains('DM')} or ${session.roles.contains('NH')} or ${session.roles.contains('SalesRep')}">Quick Assistance</a></li>
+		        <li id="nav-data-report" class="menu-item"><a class="navbar-menu-items" href="./datareport" th:if="${session.roles.contains('DM')}">Data Report</a></li>
+		        <li id="nav-quick-assist" class="menu-item"><a class="navbar-menu-items" href="./livemeetingquestions" th:if="${session.roles.contains('DM')} or ${session.roles.contains('NH')} or ${session.roles.contains('SalesRep')}">Quick Assistance</a></li>
 		        <!-- <li class="dropdown">
 		          <a class="dropdown-toggle navbar-menu-items" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:if="${session.roles.contains('DM')} or ${session.roles.contains('NH')} or ${session.roles.contains('SalesRep')}">Quick Assistance</a>
 		          <ul class="dropdown-menu product-dropdown-menu">
@@ -45,18 +45,18 @@
 		          </ul>
 		        </li> -->
 		        
-	            <li id="nav-notification"><a class="navbar-menu-items" href="./shownotifications" th:if="${session.roles.contains('SalesRep')} or ${session.roles.contains('DM')} or ${session.roles.contains('PH')}">Notifications</a>
+	            <li id="nav-notification" class="menu-item"><a class="navbar-menu-items" href="./shownotifications" th:if="${session.roles.contains('SalesRep')} or ${session.roles.contains('DM')} or ${session.roles.contains('PH')}">Notifications</a>
 	           		<span class="notification-counter" id="notification-count"></span>
 	            </li>
-	            <li id="nav-virtual-learning"><a class="navbar-menu-items" href="./virtuallearning" th:if="${session.roles.contains('SalesRep')}">Virtual Learning</a></li>
+	            <li id="nav-virtual-learning" class="menu-item"><a class="navbar-menu-items" href="./virtuallearning" th:if="${session.roles.contains('SalesRep')}">Virtual Learning</a></li>
 	            
 	          
-	            <!-- <li id="nav-appointment"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('DM')}">View Alignments</a></li> -->
+	            <!-- <li id="nav-appointment" class="menu-item"><a class="navbar-menu-items" href="./home" th:if="${session.roles.contains('DM')}">View Alignments</a></li> -->
 	            
-	            <li id="nav-e-detail"><a class="navbar-menu-items" href="./edetailing" th:if="${session.roles.contains('PH')}">e-Detailing</a></li>
+	            <li id="nav-e-detail" class="menu-item"><a class="navbar-menu-items" href="./edetailing" th:if="${session.roles.contains('PH')}">e-Detailing</a></li>
 	            
-	            <!-- <li id="nav-loggedin-user"><span class="loggedin-user-span"></span></li> -->
-	            <li id="nav-logout"><a class="navbar-menu-items" href="/logout" >Logout</a></li>
+	            <li id="nav-loggedin-user" class="current-loggedin-user"><span class="loggedin-user-span"></span></li>
+	            <li id="nav-logout" class="menu-item" ><a class="navbar-menu-items" href="/logout" >Logout</a></li>
 	          </ul>
 	        </nav>
 		</div>

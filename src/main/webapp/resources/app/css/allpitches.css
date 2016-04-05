@@ -67,3 +67,44 @@ button.btn.btn-default.btn-md.show-pitch-doc.form-control{
 	width: 98%;
 	border-radius: 0px;
 }
+
+.upvote-downvote-div {
+    margin-top: 12%;
+    display: -webkit-inline-box;
+    margin-left: 25%;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+.upvote-pitch-label {
+    padding-top: 16px;
+}
+
+.upvote-downvote-btn {
+	margin-left: 21%;
+}
+
+.arrow-up {
+    width: 0px;
+    height: 0px;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 24px solid #FF5E00;
+}
+
+.arrow-down {
+    width: 0px;
+    height: 0px;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 24px solid #FF5E00;
+    margin-top: 8px;
+}
+
+.arrow-up.upvoted {
+	border-bottom: 24px solid #9292F3;
+}
+
+.arrow-down.downvoted {
+	border-top: 24px solid #9292F3;
+}

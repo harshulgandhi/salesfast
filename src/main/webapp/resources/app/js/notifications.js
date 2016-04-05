@@ -30,7 +30,7 @@ $(document).ready(function() {
 		if(r_.find('.notification-category').html() == "LIVE MEETING QUESTION"){
 			window.location.replace("/unansweredques")
 		}else if(r_.find('.notification-category').html() == "QUESTION WAS ANSWERED"){
-			window.location.replace("/livemeetingquestions")
+			window.location.replace("/livemeetingquestions?param="+"QUESTION WAS ANSWERED")
 		}else if(r_.find('.notification-category').html() == "NEW PRODUCT LOST PHYSICIAN"){
 			window.location.replace("/showalignments?status="+"LOST");
 		}else if(r_.find('.notification-category').html() == "NEW PRODUCT PRESCRIBING PHYSICIAN"){

@@ -43,7 +43,7 @@ a.navbar-brand.navbar-menu-items{
     font: 12px Verdana;
 }
 
-.dropdown-menu>li>a:hover{
+.dropdown-menu>li.menu-item>a:hover{
 	background-color: cadetblue;
     font-weight: 600;
     color: black;
@@ -55,7 +55,7 @@ li.navbar-menu-selected>a.navbar-menu-items{
     color: black;
 }
 
-nav.navbar-collapse ul li:hover,nav.navbar-collapse ul li ul:hover,nav.navbar-collapse ul li.dropdown ul.product-dropdown-menu li:hover {
+nav.navbar-collapse ul li.menu-item:hover,nav.navbar-collapse ul li ul:hover,nav.navbar-collapse ul li.dropdown ul.product-dropdown-menu li:hover {
     background-color: cadetblue;
     font-weight: 600;
 }
@@ -117,4 +117,10 @@ li#nav-loggedin-user {
 
 span.loggedin-user-span {
 	margin-left: 147px;
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 15px;
+}
+
+nav.navbar-collapse.collapse {
+    width: 200%;
 }

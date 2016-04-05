@@ -148,3 +148,16 @@ button.btn.btn-default.btn-md.show-doc.form-control.product-doc-button-clicked {
 button.btn.btn-default.btn-md.show-doc.form-control {
     background: white;
 }
+
+.submit-updated-doc{
+	background: cadetblue;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    margin-left: 14%;
+    margin-top: -65px;
+}
+
+.update-doc-upload{
+	padding: 0% 5% 0% 4%;
+}

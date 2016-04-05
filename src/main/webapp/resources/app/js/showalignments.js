@@ -180,7 +180,7 @@ var fixAppointments = function(physIds, appointStartTimeList, appointEndTimeList
 
 var sanityCheck = function(currentAppointments){
 	for(var i = 0; i<currentAppointments.length; i++){
-		if(currentAppointments[i]["appointmentStartTime"] >= currentAppointments[i]["appointmentEndTime"]){
+		if(currentAppointments[i]["appointmentStatus"] != "NOT INTERESTED" && currentAppointments[i]["appointmentStartTime"] >= currentAppointments[i]["appointmentEndTime"]){
 			alert("Appointment you are trying to book at "+currentAppointments[i]["appointmentStartTime"]
 			+" has Start Time after End Time. Please correct the time values and submit again");
 			return false; 

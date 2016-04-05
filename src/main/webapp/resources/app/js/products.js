@@ -179,7 +179,7 @@ var attachClickEvent = function(productId){
 						'</div>'+
 						'<div class="col-lg-3 update-right-panel" id="'+str+'-update-doc-'+currentProductId+'" style="display: none;">'+
 							'<form id="update-files-form-'+currentProductId+'" class="form-horizontal" action="/updateproductfile" method="post" enctype="multipart/form-data">'+
-								'<div class="form-group">'+
+								'<div class="form-group update-doc-upload">'+
 									'<label for="product-doc" class="control-label" id="product-doc-label">Update This Doc</label>'+
 									'<input name="productdocument" type="file" class="form-control validate-ele" id="product-doc-update"/>'+
 								'</div>'+

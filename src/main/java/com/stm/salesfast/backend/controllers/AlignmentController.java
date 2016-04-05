@@ -81,9 +81,9 @@ public class AlignmentController {
 	public void fixAppointment(@RequestBody AjaxRequestListMapper[] appointments) throws ParseException{
 		for (AjaxRequestListMapper appointmentList : appointments){
 			log.info("Appointment fixed for physician = "+appointmentList);
-			Time selectedStartTime = SalesFastUtilities.getTimeForStringTime(appointmentList.getAppointmentStartTime(), "HH:mm");
-			Time selectedEndTime = SalesFastUtilities.getTimeForStringTime(appointmentList.getAppointmentEndTime(), "HH:mm");
-			Date selectedDate = SalesFastUtilities.getDateForStringTime(appointmentList.getAppointmentDate(), "yyyy-MM-dd"); 
+			Time selectedStartTime = (appointmentList.getAppointmentStartTime() == "" ) ? null :SalesFastUtilities.getTimeForStringTime(appointmentList.getAppointmentStartTime(), "HH:mm");
+			Time selectedEndTime = (appointmentList.getAppointmentEndTime() == "" ) ? null : SalesFastUtilities.getTimeForStringTime(appointmentList.getAppointmentEndTime(), "HH:mm");
+			Date selectedDate = (appointmentList.getAppointmentDate() == "" ) ? null : SalesFastUtilities.getDateForStringTime(appointmentList.getAppointmentDate(), "yyyy-MM-dd"); 
 			appointmentService.addAppointment(appointmentList.getPhysicianId(), selectedStartTime, selectedEndTime, selectedDate, appointmentList.getAppointmentStatus(), appointmentList.getProductId(), appointmentList.getAdditionalNotes());
 		}
 		/* To set reminders in case any follow up appointment

@@ -153,13 +153,13 @@ span.alignment-table-desc {
 }
 
 button.btn.btn-default.submit-selected-alignments {
-    border-radius: 0px;
-    width: 50%;
-    height: 45px;
-    margin-left: 25%;
-    margin-top: 2%;
-    background: brown;
+	border-radius: 0px;
+    width: 32%;
+    height: 34px;
+    margin-left: 30%;
+    margin-top: 1%;
+    background: #A24F4F;
     color: white;
-    font-size: 21px;
+    font-size: 17px;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 }

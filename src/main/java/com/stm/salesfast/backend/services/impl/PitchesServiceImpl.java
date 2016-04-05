@@ -3,6 +3,8 @@ package com.stm.salesfast.backend.services.impl;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -96,6 +98,16 @@ public class PitchesServiceImpl implements PitchesService{
 	}
 	
 	@Override
+	public void upvotePitch(int pitchId){
+		pitchDao.upvotePitch(pitchId);
+	}
+
+	@Override
+	public void downvotePitch(int pitchId){
+		pitchDao.downvotePitch(pitchId);
+	}
+	
+	@Override
 	public void updatePitchFile(int appointmentId, MultipartFile pitchdocument) throws IllegalStateException, IOException{
 		String realPathtoUploads =   request.getServletContext().getRealPath("/resources/");
 		String orgName = "docs\\meetingpitch\\"+pitchdocument.getOriginalFilename();
@@ -171,6 +183,12 @@ public class PitchesServiceImpl implements PitchesService{
 					));
 			
 		}
+		log.info("Before sorting ");
+		for(ViewAllPitchEntity eachEntity : allPitchView) log.info(""+eachEntity);
+		Collections.sort(allPitchView);
+		
+		log.info("After sorting ");
+		for(ViewAllPitchEntity eachEntity : allPitchView) log.info(""+eachEntity);
 		
 		return allPitchView;
 	}
@@ -223,5 +241,7 @@ public class PitchesServiceImpl implements PitchesService{
 		
 		return appointments;
 	}
+	
+	
 	
 }

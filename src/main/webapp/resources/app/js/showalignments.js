@@ -2,6 +2,18 @@
  * handles UI interactivity for page 
  * showalignments.html
  */
+
+/* FOR TESTING CHARTS */
+//google.charts.load("current", {packages:["timeline"]});
+//google.charts.setOnLoadCallback(drawChart);
+//var startTimeA = (new Date (new Date().toDateString() + ' ' + "12:00:00"));
+//var endTimeA = (new Date (new Date().toDateString() + ' ' + "12:30:00"));
+//var startTimeB = (new Date (new Date().toDateString() + ' ' + "14:00:00"));
+//var endTimeB = (new Date (new Date().toDateString() + ' ' + "14:40:00"))
+//var startTimeC = (new Date (new Date().toDateString() + ' ' + "16:00:00"));
+//var endTimeC = (new Date (new Date().toDateString() + ' ' + "16:30:00"));
+
+
 var selectedAlignments = [];
 var averageTravelTime = 30; //minutes
 var statusParam;
@@ -76,7 +88,52 @@ $(document).ready(function() {
 	if(isFromNotificationsPage){
 		table.search(statusParam).draw();
 	}
+//	drawTestChart();
 });	
+var drawTestChart = function(data){
+	console.log("Drawing : "+JSON.stringify(data));
+	google.charts.load("current", {packages:["timeline"]});
+	google.charts.setOnLoadCallback(drawChart);
+	var startTimeA = (new Date (new Date().toDateString() + ' ' + "12:00:00"));
+	var endTimeA = (new Date (new Date().toDateString() + ' ' + "12:30:00"));
+	var startTimeB = (new Date (new Date().toDateString() + ' ' + "14:00:00"));
+	var endTimeB = (new Date (new Date().toDateString() + ' ' + "14:40:00"))
+	var startTimeC = (new Date (new Date().toDateString() + ' ' + "16:00:00"));
+	var endTimeC = (new Date (new Date().toDateString() + ' ' + "16:30:00"));
+	var timelineData = formatDateAppointmentForTimeline(data);
+//	var timelineData = [[ 'President', 'George Washington', startTimeA,
+//						endTimeA ],
+//						[ 'President', 'John Adams', startTimeB,
+//						endTimeB ],
+//						[ 'President', 'Thomas Jefferson',  startTimeC,
+//						endTimeC]];
+	console.log("data for chart : "+timelineData);
+	function drawChart() {
+		
+	    var container = document.getElementById('show-timeline');
+	    var chart = new google.visualization.Timeline(container);
+	    var dataTable = new google.visualization.DataTable();
+	
+	    dataTable.addColumn({ type: 'string', id: 'Role' });
+	    dataTable.addColumn({ type: 'string', id: 'Name' });
+	    dataTable.addColumn({ type: 'date', id: 'Start' });
+	    dataTable.addColumn({ type: 'date', id: 'End' });
+	    dataTable.addRows(timelineData);
+//	    		[
+//	      [ 'President', 'George Washington', startTimeA,
+//	         endTimeA ],
+//	      [ 'President', 'John Adams', startTimeB,
+//	         endTimeB ],
+//	      [ 'President', 'Thomas Jefferson',  startTimeC,
+//	         endTimeC]]);
+	
+	    var options = {
+	      timeline: { groupByRowLabel: true }
+	    };
+	
+	    chart.draw(dataTable, options);
+	}
+}
 
 $(document).on('change','input.appointment-date',function(){
 	var date = $(this).val();
@@ -86,7 +143,8 @@ $(document).on('change','input.appointment-date',function(){
 		dataType : 'json',
 		success : function(data){
 	    	console.log("Data received (Particular Date appoinments): "+JSON.stringify(data));
-	    	$('#fixed-date-appointment-modal').modal('show');
+//	    	$('#fixed-date-appointment-modal').modal('show');
+	    	drawTestChart(data);
 		},
 		error : function(e){
 			console.log("Error : "+JSON.stringify(e));
@@ -97,6 +155,25 @@ $(document).on('change','input.appointment-date',function(){
 var getAppointmentForDate = function(){
 	
 }
+
+var formatDateAppointmentForTimeline = function(data){
+	var formattedData = [];
+	for(var i = 0; i < data.length; i++){
+		var temp = [];
+		temp.push("Appointment");
+		temp.push(data[i]["physicianName"]+" "+data[i]["product"]);
+		var startTime = new Date (new Date().toDateString() + ' ' + data[i]["startTime"]);
+		console.log("Start Time : "+startTime);
+		temp.push(startTime);
+		var endTime = new Date (new Date().toDateString() + ' ' + data[i]["endTime"]);
+		console.log("End Time : "+startTime);
+		temp.push(endTime);
+		formattedData.push[temp];
+	}
+	
+	return formattedData;
+}
+
 
 $(document).on('click','button.redirect-past-appointments',function(){
 	   var name = $(this).parent().parent().find('td.physician-name').html();

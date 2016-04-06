@@ -78,6 +78,25 @@ $(document).ready(function() {
 	}
 });	
 
+$(document).on('change','input.appointment-date',function(){
+	var date = $(this).val();
+	$.ajax({
+		type: 'GET',
+		url : '/getallappointmentsfordate?date='+date,
+		dataType : 'json',
+		success : function(data){
+	    	console.log("Data received (Particular Date appoinments): "+JSON.stringify(data));
+	    	$('#fixed-date-appointment-modal').modal('show');
+		},
+		error : function(e){
+			console.log("Error : "+JSON.stringify(e));
+		}
+	});
+});
+
+var getAppointmentForDate = function(){
+	
+}
 
 $(document).on('click','button.redirect-past-appointments',function(){
 	   var name = $(this).parent().parent().find('td.physician-name').html();

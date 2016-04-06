@@ -2,9 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <!-- Header to include css -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <div th:replace="fragments/header :: commonhead"></div>
 <link rel="stylesheet" type="text/css" href="resources/app/css/alignments.css"/>
-<meta charset="ISO-8859-1" />
 <title>SalesFast Home</title>
 </head>
 <body>
@@ -89,7 +89,7 @@
 							<td class="product-id" style="display:none" th:text="${eachAlignment.productId}"></td>
 							<td th:unless="${eachAlignment.isNew}" th:text="NO"></td>
 							<td th:if="${eachAlignment.isNew}" th:text="YES"></td>
-							<td><input class="appointment-date appointment-paramaters" type="date" disabled="disabled"/></td>
+							<td class="appointment-date-td"><input class="appointment-date appointment-paramaters" type="date" disabled="disabled"/></td>
 							<td class="appointment-time-td">
 								<span class="time-label">Start@</span><input class="appointment-start-time appointment-paramaters top time-entry" title="Enter start time of meeting"
 		   							data-original-title="Enter start time of meeting" type="time" disabled="disabled"/>

@@ -40,7 +40,7 @@
     margin-bottom: 2%;
 }
 
-table#view-automatic-alignments-table{
+table#view-automatic-alignments-table, table#suggestion-physician-table{
 	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 }
 th.view-past-appointment.sorting_disabled {
@@ -49,6 +49,10 @@ th.view-past-appointment.sorting_disabled {
 th.remove-alignment-header.sorting_disabled {
     color: red;
 }
+th.align-to-salesrep.sorting_disabled{
+    color: #085008;
+}
+
 td.product-name {
     width: 12%;
 }
@@ -92,4 +96,14 @@ span.contactdetail-label {
 span.contactdetail-content {
     font-weight: 600;
     width: 65%;
+}
+
+span.glyphicon.glyphicon-plus.add-alignment-glyphicon {
+    margin-right: 0px;
+}
+.available-phys-foralignment-div {
+    margin-top: 3%;
+}
+td.add-alignment-btn {
+    width: 14%;
 }

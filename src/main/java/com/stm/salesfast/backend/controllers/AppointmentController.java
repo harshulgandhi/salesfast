@@ -121,9 +121,17 @@ public class AppointmentController {
 	
 	@RequestMapping(value="/getallappointments",  headers="Accept=*/*", method=RequestMethod.GET, produces="appliation/json")
 	@ResponseBody
-	public AppointmentEntity[] getAllQuestionsWithAnswers() throws ParseException{
+	public AppointmentEntity[] getAllAppointments() throws ParseException{
 		log.info("Fetching all appointments!");
 		List<AppointmentEntity> futureAppointmentsList = appointmentFetchService.getAllAppointmentToShow(SessionConstants.USER_ID);
+		return futureAppointmentsList.toArray(new AppointmentEntity[futureAppointmentsList.size()]);
+	}
+	
+	@RequestMapping(value="/getallappointmentsfordate",  headers="Accept=*/*", method=RequestMethod.GET, produces="appliation/json")
+	@ResponseBody
+	public AppointmentEntity[] getAllAppointmentsForDate(@RequestParam(value="date") String date) throws ParseException{
+		Date selectedDate = SalesFastUtilities.getDateForStringTime(date, "yyyy-MM-dd");
+		List<AppointmentEntity> futureAppointmentsList = appointmentFetchService.getAllAppointmentForADate(SessionConstants.USER_ID, selectedDate);
 		return futureAppointmentsList.toArray(new AppointmentEntity[futureAppointmentsList.size()]);
 	}
 	

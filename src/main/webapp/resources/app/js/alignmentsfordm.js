@@ -18,6 +18,7 @@ $(document).on('change','select.salesrep-selector',function(){
 	$("table#view-automatic-alignments-table tbody").html("");
 	updateNotificationCounter();
 	getAlignedPhysicians();
+	getSuggestionPhysicians();
 });
 
 var getAlignedPhysicians = function(){
@@ -48,7 +49,7 @@ var getSuggestionPhysicians = function(){
 		contentType : 'application/json',
 		success : function(data){
 			console.log("Suggestion to be shown : "+JSON.stringify(data));
-//			populateSelectedUsersAlignment(data);
+			populateSuggestionPhysicians(data);
 		},
 		error : function(e){
 			console.log("Error : "+JSON.stringify(e));
@@ -147,6 +148,75 @@ var populateSelectedUsersAlignment = function(alignmentsData){
 		}
 	}
 	var table = $('#view-automatic-alignments-table').DataTable({
+		'iDisplayLength': 5
+	});
+//	{
+//			retrieve: true
+//	  });
+}
+
+var populateSuggestionPhysicians = function(physiciansData){
+	var selectedSalesRep = $('.salesrep-selector').find('option[selected="selected"]').html();
+	if(physiciansData.length == 0){
+		$('table#suggestion-physician-table tbody').append(
+			'<tr class="no-suggestion-tr">'+
+				'<td class="no-suggestion-message">'+
+					'<div style="font-weight: 600;" class="no-suggestion-div">'+
+						'No physicians available who can be aligned to this SalesRep.'+
+					'</div>'+
+				'</td>'+
+			'</tr>'
+		);
+		$('table#suggestion-physician-table tbody tbody').find('tr').css('background-color','#E8D3CE');
+	}
+	else{
+		for(var i = 0; i < physiciansData.length; i++){
+			if(physiciansData[i]["physicianNew"] == true) physiciansData[i]["physicianNew"] = 'YES';
+			else physiciansData[i]["physicianNew"] = 'NO';
+			$('table#suggestion-physician-table tbody').append(
+					'<tr>'+
+						'<td class="alignment-id" style="display: none">'+physiciansData[i]["alignmentId"]+'</td>'+
+						'<td class="physician-id" style="display: none">'+physiciansData[i]["physicianId"]+'</td>'+
+						'<td class="physician-name">'+physiciansData[i]["physicianName"]+'</td>'+
+						'<td class="contact-details">'+
+							'<div class="aligned-phys-contact-td">'+
+								'<div class="phys-contact-detail-btn">'+
+									'<button type="button" class="btn btn-default btn-md show-contact form-control">'+
+										'<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>'+
+										'<span class="button-value">Show Contact Details</span>'+
+									'</button>'+
+								'</div>'+
+								'<div class="aligned-physician-contact"  style="display: none">'+
+									'<div class="phys-address"><span class="contactdetail-label">Address : </span>'+
+									'<span class="contactdetail-content">'+physiciansData[i]["physicianAddressLineOne"]+' '+physiciansData[i]["physicianAddressLineTwo"]+' '+physiciansData[i]["physicianCity"]+' '+physiciansData[i]["physicianState"]+' '+physiciansData[i]["physicianZip"]+'</span>'+
+									'</div>'+
+									'<div class="phys-phone"><span class="contactdetail-label">Phone : </span><span class="contactdetail-content"'+ 
+									'>'+physiciansData[i]["phone"]+'</span></div>'+
+									'<div class="phys-email"><span class="contactdetail-label">Email : </span><span class="contactdetail-content"'+ 
+									'>'+physiciansData[i]["email"]+'</span></div>'+
+								'</div>'+
+							'</div>'+
+						'</td>'+
+						'<td class="product-id" style="display: none">'+physiciansData[i]["productId"]+'</td>'+
+						'<td class="product-name">'+physiciansData[i]["productName"]+'</td>'+
+						'<td class="is-new">'+physiciansData[i]["physicianNew"]+'</td>'+
+						'<td class="view-past-appointment">'+
+							'<button type="button" class="btn btn-default btn-md view-past-appointments form-control">'+
+								'<span class="glyphicon" aria-hidden="true"></span>'+
+								'<span class="button-value">Past Appointment</span>'+
+							'</button>'+
+						'</td>'+
+						'<td class="add-alignment-btn">'+
+							'<button type="button" class="btn btn-default btn-sm btn-success remove-alignment">'+
+				          		'<span class="glyphicon glyphicon-plus add-alignment-glyphicon"></span> Align to '+selectedSalesRep+ 
+					        '</button>'+
+						'</td>'+
+					'</tr>'
+			
+			);
+		}
+	}
+	var table = $('#suggestion-physician-table').DataTable({
 		'iDisplayLength': 5
 	});
 //	{

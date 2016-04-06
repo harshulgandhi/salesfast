@@ -72,5 +72,7 @@ public interface AppointmentService {
 			throws ParseException;
 
 	public String getNotInterestedAppointmentStatus(int physicianId, int userId);
+
+	public List<AppointmentEntity> getAllAppointmentForADate(int userId, Date date);
 	
 }

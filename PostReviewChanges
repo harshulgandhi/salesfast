@@ -1,0 +1,29 @@
+
+
+Thank you for providing the feedback about my system this morning. Following are the changes that I am planning to make in next 1 week :
+
+Priority: HIGH
+[User : SalesRep] 1. While entering date for an appointment on "Alignments" page, SalesRep should be able to see all appointments fixed for that date. This should happen as soon as he enters the date - not after submitting the appointment.
+
+[User : SalesRep] 2. "Future Appointments" section should be interactive enough so that SalesRep can easily look at any of his future appointments.
+
+[User : SalesRep] 3. A new product addition should fall under one of these categories : a) IMPROVED SIDE EFFECTS OVER MEDICINE X, b) IMPROVED PRICING OVER MEDICINE X, c) NEW DRUG. If a new product falls under (a) and (b) category, SalesRep should be suggested only those physicians who were lost because of one of these reasons. This way he can influence the physician effectively by mentioning the improvement first. 
+
+[User : SalesRep] 4. Provide filters on Alignments page which can filter aligned physicians based on past experiences and outcomes of previous meetings. This will compliment change #3 (above)
+
+
+[User : DM] 5. Analyse the side effect comments submitted as for sample medicines and identify most popular side effect reasons and show it as a report to DM. DM can then take required actions and target to release a new improved product
+
+[User : DM] 6. Data Analysis Report: Report should be generated at a more granular level. Idea is to provide ability to DM to apply filters based on MEDICAL FIELD, PRODUCT, SALESREP and MEETING STATUS. These filters increase the granularity of the data in the order in which they are mentioned. Before filtering for any medical field, the application will by default show over all analysis.
+
+Priority: MEDIUM
+[User : SalesRep] 1. While uploading pitch from "TODAY's APPOINTMENT" page and "FUTURE APPOINTMENT" page, SalesRep should be able to view his pitches for same med already present in the system and also other SalesRep's pitches. 
+
+[User : SalesRep] 2. Provide filter parameters on Past Appointment page so that SalesRep can easily filter the data and quickly refer to an appointments that happened during a particular month and had a fixed outcome.
+
+[User : SalesRep] 3. Track time spent by physician on e-Detailing document for each product. If a physician spends or to often visits a particular product's page, especially if its a new product, prompt sales rep to call that physician and try to book detailing meeting. Because there are high chances that that particular physician is interested in that medicine.
+
+[User : DM] 4. Data Analysis Report: Analysis of performance of SalesRep based on How many meetings he has been to so far (broken down to daily activities). Another metric to be considered here is how many physicians have been LOST as compared to PRESCRIBING. Also, the feedback provided about the presentation and confidence of this salesrep is analysed and shown here.
+
+
+P.S. The last feature under MEDIUM priority is rather an important one but I am trying to restrict the scope of development owing to 1 week duration. Also, this feature is listed for DM only as of now, if time permits, I will try to implement it for both roles (SalesRep and DM). 

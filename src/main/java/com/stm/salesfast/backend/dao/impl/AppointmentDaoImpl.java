@@ -24,7 +24,11 @@ public class AppointmentDaoImpl implements AppointmentDao {
 																		+ "AND (confirmationStatus = 'CONFIRMED' OR "
 																		+ "confirmationStatus = 'CANCELLED') "
 																		+ "ORDER BY startTime";
-	
+	private static final String FETCH_BY_USERID_ON_PARTICULAR_DATE= "SELECT * FROM appointment WHERE userId = ? "
+																		+ "AND (hasMeetingUpdate = 0 OR hasMeetingExperienceFromSR = 0) "
+																		+ "AND confirmationStatus = 'CONFIRMED' "
+																		+ "AND date = ? "
+																		+ "ORDER BY startTime";
 	private static final String INSERT = "INSERT INTO appointment "+
 										"(startTime, endTime, date, physicianId, userId, productId, confirmationStatus, zip, cancellationReason, additionalNotes) "+
 										"VALUES (?,?,?,?,?,?,?,?,?,?)";
@@ -183,6 +187,23 @@ public class AppointmentDaoImpl implements AppointmentDao {
 			return jdbcTemplate.query(FETCH_BY_USERID_wMeetingUpdateExperienceCheck, (rs, rownnum)->{
 				return new AppointmentDto(rs.getInt("appointmentId"), rs.getTime("startTime"), rs.getTime("endTime"), rs.getDate("date"), rs.getInt("physicianId"), userId, rs.getInt("productId"), rs.getString("confirmationStatus"), rs.getString("zip"),rs.getString("cancellationReason"), rs.getString("additionalNotes"), rs.getBoolean("hasMeetingUpdate"),rs.getBoolean("hasMeetingExperienceFromSR"),rs.getBoolean("hasMeetingExperienceFromPH"), rs.getBoolean("hasPitch"));
 			}, userId);
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * This method returns appointments of a user based on whether
+	 * he/she has entered meeting update or meeting experience details 
+	 * */
+	@Override
+	public List<AppointmentDto> getAppointmentByUserIdForADate(int userId, Date date) {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_BY_USERID_ON_PARTICULAR_DATE, (rs, rownnum)->{
+				return new AppointmentDto(rs.getInt("appointmentId"), rs.getTime("startTime"), rs.getTime("endTime"), rs.getDate("date"), rs.getInt("physicianId"), rs.getInt("userId"), rs.getInt("productId"), rs.getString("confirmationStatus"), rs.getString("zip"),rs.getString("cancellationReason"), rs.getString("additionalNotes"), rs.getBoolean("hasMeetingUpdate"),rs.getBoolean("hasMeetingExperienceFromSR"),rs.getBoolean("hasMeetingExperienceFromPH"), rs.getBoolean("hasPitch"));
+			}, userId, date );
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}

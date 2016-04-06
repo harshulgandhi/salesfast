@@ -85,7 +85,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 				new AntPathRequestMatcher("/showalignmentsfordm"),
 				new AntPathRequestMatcher("/getalignmentsfordm"),
 				new AntPathRequestMatcher("/deletealignment"),
-				new AntPathRequestMatcher("/getsuggestivealignmentsfordm")
+				new AntPathRequestMatcher("/getsuggestivealignmentsfordm"),
+				new AntPathRequestMatcher("/getallappointmentsfordate")
 				};
 
 		@Override

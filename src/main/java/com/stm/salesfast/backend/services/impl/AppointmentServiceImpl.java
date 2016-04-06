@@ -235,6 +235,42 @@ public class AppointmentServiceImpl implements AppointmentService {
 		return futureAppointmentEntitiesList;
 	}
 	
+	
+	/**
+	 * This method returns ALL appointments of a user based on whether
+	 * he/she has entered meeting update or meeting experience details
+	 * and appointments belonging to a particular DATE 
+	 * @throws ParseException 
+	 * */
+	@Override
+	public List<AppointmentEntity> getAllAppointmentForADate(int userId, Date date) {
+		// TODO Auto-generated method stub
+		List<AppointmentDto> appointmentDtos = appointmentDao.getAppointmentByUserIdForADate(userId, date);
+		List<AppointmentEntity> futureAppointmentEntitiesList = new ArrayList<>();
+		for(AppointmentDto eachAppointment : appointmentDtos){
+			PhysicianStgDto physicianDto = physicianService.getPhysicianById(eachAppointment.getPhysicianId());
+			ProductDto productDto = productFetchService.getProductById(eachAppointment.getProductId());
+				futureAppointmentEntitiesList.add(new AppointmentEntity(eachAppointment.getAppointmnetId(),
+						physicianDto.getPhysicianId(),
+						physicianDto.getFirstName()+" "+physicianDto.getLastName(), 
+						physicianDto.getAddressLineOne()+" "+physicianDto.getAddressLineTwo()+" "+physicianDto.getCity()+"-"+physicianDto.getZip(),
+						physicianDto.getContactNumber(), 
+						physicianDto.getEmail(), 
+						eachAppointment.getConfirmationStatus(),
+						eachAppointment.getStartTime(),
+						eachAppointment.getEndTime(),
+						eachAppointment.getDate(),
+						productDto.getProductName(),
+						eachAppointment.isHasMeetingUpdate(),
+						eachAppointment.isHasMeetingExperienceFromSR(),
+						eachAppointment.getCancellationReason(),
+						eachAppointment.getAdditionalNotes(),
+						eachAppointment.isHasPitch()));
+		}
+		return futureAppointmentEntitiesList;
+	}
+	
+	
 	@Override
 	public int getAppointmentId(String username, int physicianId) {
 		// TODO Auto-generated method stub

@@ -72,6 +72,7 @@ public class AlignmentController {
 		return "showalignments";
 	}
 	
+	
 	@RequestMapping(value="/showalignmentsfordm", method=RequestMethod.GET)
 	public String showAlignmentsToManager(){
 		return "alignmentsfordm";

@@ -52,5 +52,7 @@ public interface AppointmentDao {
 	public List<AppointmentDto> getPastAppointmentByUserId(int userId);
 
 	public String getNotInterestedStatus(int physicianId, int userId);
+
+	public List<AppointmentDto> getAppointmentByUserIdForADate(int userId, Date date);
 	
 }

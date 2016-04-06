@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+</head>
+<body>
+<div class="modal fade" id="fixed-date-appointment-modal" role="dialog" data-edit-mode="false" th:fragment="particular-date-appointments-modal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<h4 class="modal-title" id="uploadpitchlabel">Your meeting for </h4>
+			</div>
+			<div class="modal-body modal-body">
+				<table id="past-appointments-table" class="table table-bordered past-appointment-table-class">
+					<thead>
+						<tr>
+							<th style="display:none" class="physician-id">Physician Id</th>
+							<th>Physician Name</th>
+							<th style="display:none" class="product-id">Product Id</th>
+							<th>Product</th>
+							<th>Contact Details</th>
+							<th>Start Time</th>
+							<th>End Time</th>
+						</tr>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+			
+			<div class="modal-footer">
+				<button id="pitchupload-cancel-button" type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>

@@ -3,6 +3,7 @@ package com.stm.salesfast.backend.services.specs;
 import java.util.List;
 
 import com.stm.salesfast.backend.dto.MeetingExperienceDto;
+import com.stm.salesfast.backend.entity.MeetingExperienceDetailedDataEntity;
 import com.stm.salesfast.backend.entity.MeetingExperienceEntity;
 
 public interface MeetingExperienceService {
@@ -48,4 +49,6 @@ public interface MeetingExperienceService {
 	List<String> physicianResponse(int appointmentId);
 
 	List<String> salesRepResponse(int appointmentId);
+
+	List<MeetingExperienceDetailedDataEntity> fetchAllDetailedRecords();
 }

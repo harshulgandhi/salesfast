@@ -3,6 +3,7 @@ package com.stm.salesfast.backend.dao.specs;
 import java.util.List;
 
 import com.stm.salesfast.backend.dto.MeetingExperienceDto;
+import com.stm.salesfast.backend.entity.MeetingExperienceDetailedDataEntity;
 
 public interface MeetingExperienceDao {
 	
@@ -47,5 +48,7 @@ public interface MeetingExperienceDao {
 	int countRepsConfidenceLost();
 
 	int countOrgReputationLost();
+
+	public List<MeetingExperienceDetailedDataEntity> getDetailedData();
 	
 }

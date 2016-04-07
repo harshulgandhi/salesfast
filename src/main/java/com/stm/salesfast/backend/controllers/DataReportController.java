@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.stm.salesfast.backend.entity.MeetingExpAnalysisFilterEntity;
 import com.stm.salesfast.backend.entity.MeetingExperienceDataEntity;
 import com.stm.salesfast.backend.entity.MeetingExperienceEntity;
 import com.stm.salesfast.backend.services.specs.AnalysisService;
@@ -37,6 +38,7 @@ public class DataReportController {
 		for(MeetingExperienceDataEntity analysedData : analysisOverAll){
 			log.info(""+analysedData);
 		}
+		analysis.analyseMeetingExperience(new MeetingExpAnalysisFilterEntity("ONC",0,0,null));
 		return analysisOverAll.toArray(new MeetingExperienceDataEntity[0]);
 	}
 	

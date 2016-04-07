@@ -75,7 +75,6 @@ public class PitchesServiceImpl implements PitchesService{
 		insertPitch(new PitchesDto(appointmentId, status, pitch.getOriginalFilename(), 1
 				));
 		appointmentServ.setHasPitchFlag(appointmentId);
-		
 	}
 	
 	@Override

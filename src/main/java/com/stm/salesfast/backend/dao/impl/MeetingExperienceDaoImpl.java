@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.stm.salesfast.backend.dao.specs.MeetingExperienceDao;
+import com.stm.salesfast.backend.entity.MeetingExperienceDetailedDataEntity;
 
 @Repository
 public class MeetingExperienceDaoImpl implements MeetingExperienceDao {
@@ -79,6 +80,15 @@ public class MeetingExperienceDaoImpl implements MeetingExperienceDao {
 			+ "impressiveCompanyReputation = 1 AND appointmentId IN "
 			+ "(SELECT appointmentId FROM meeting_update WHERE "
 			+ "status = 'LOST')";
+	private static final String FETCH_WITH_REPNAME_PRODUCT_MEDFIELD = "SELECT isPhysicianEntry, isSalesRepEntry, status, "
+			+ "likedTheProduct, likedPriceAffordability, impressiveLessSideEffects, "
+			+ "likedPresentation, salesRepConfidence, impressiveCompanyReputation, "
+			+ "meeting_experience.appointmentId as appointmentId,  user.userId as userId, user.firstName as firstName, user.lastName as lastName, "
+			+ "products.productId as productId, products.productName as productName, products.medicalFieldId as medicalFieldId FROM meeting_experience, "
+			+ "user, products WHERE user.userId = (SELECT userId FROM appointment "
+			+ "WHERE appointmentId = meeting_experience.appointmentId) AND "
+			+ "products.productId = (SELECT productId FROM appointment WHERE "
+			+ "appointmentId = meeting_experience.appointmentId)";
 	
 	
 	@Override
@@ -157,6 +167,22 @@ public class MeetingExperienceDaoImpl implements MeetingExperienceDao {
 		}
 		return null;
 	}
+	
+	
+	@Override
+	public List<MeetingExperienceDetailedDataEntity> getDetailedData() {
+		// TODO Auto-generated method stub
+		try{
+			return jdbcTemplate.query(FETCH_WITH_REPNAME_PRODUCT_MEDFIELD, (rs, rownum) -> {
+					return new MeetingExperienceDetailedDataEntity(rs.getBoolean("isPhysicianEntry"), rs.getBoolean("isSalesRepEntry"), rs.getString("status"),rs.getBoolean("likedTheProduct"),rs.getBoolean("likedPriceAffordability"), rs.getBoolean("impressiveLessSideEffects"), rs.getBoolean("likedPresentation"), rs.getBoolean("salesRepConfidence"), rs.getBoolean("impressiveCompanyReputation"), rs.getInt("appointmentId"),rs.getInt("userId"), rs.getString("firstName"), rs.getString("lastName"), rs.getInt("productId"),rs.getString("productName"), rs.getString("medicalFieldId"));
+				});
+			
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	
 	@Override
 	public int countAll(){

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.stm.salesfast.backend.dao.specs.MeetingExperienceDao;
 import com.stm.salesfast.backend.dto.MeetingExperienceDto;
+import com.stm.salesfast.backend.entity.MeetingExperienceDetailedDataEntity;
 import com.stm.salesfast.backend.entity.MeetingExperienceEntity;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.MeetingExperienceService;
@@ -77,6 +78,11 @@ public class MeetingExperienceServiceImpl implements MeetingExperienceService {
 	public List<MeetingExperienceDto> fetchAll() {
 		// TODO Auto-generated method stub
 		return meetingExperienceDao.getAll();
+	}
+	
+	@Override
+	public List<MeetingExperienceDetailedDataEntity> fetchAllDetailedRecords(){
+		return meetingExperienceDao.getDetailedData();
 	}
 	
 	@Override

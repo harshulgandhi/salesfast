@@ -163,3 +163,16 @@ button.btn.btn-default.submit-selected-alignments {
     font-size: 17px;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
 }
+
+div.show-timeline {
+    margin-left: -11%;
+    margin-bottom: -10%;
+}
+
+.time-line-lable {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    margin-left: -11%;
+    margin-bottom: 4px;
+}

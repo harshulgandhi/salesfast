@@ -3,17 +3,6 @@
  * showalignments.html
  */
 
-/* FOR TESTING CHARTS */
-//google.charts.load("current", {packages:["timeline"]});
-//google.charts.setOnLoadCallback(drawChart);
-//var startTimeA = (new Date (new Date().toDateString() + ' ' + "12:00:00"));
-//var endTimeA = (new Date (new Date().toDateString() + ' ' + "12:30:00"));
-//var startTimeB = (new Date (new Date().toDateString() + ' ' + "14:00:00"));
-//var endTimeB = (new Date (new Date().toDateString() + ' ' + "14:40:00"))
-//var startTimeC = (new Date (new Date().toDateString() + ' ' + "16:00:00"));
-//var endTimeC = (new Date (new Date().toDateString() + ' ' + "16:30:00"));
-
-
 var selectedAlignments = [];
 var averageTravelTime = 30; //minutes
 var statusParam;
@@ -88,29 +77,18 @@ $(document).ready(function() {
 	if(isFromNotificationsPage){
 		table.search(statusParam).draw();
 	}
-//	drawTestChart();
-});	
-var drawTestChart = function(data){
-	console.log("Drawing : "+JSON.stringify(data));
 	google.charts.load("current", {packages:["timeline"]});
 	google.charts.setOnLoadCallback(drawChart);
-	var startTimeA = (new Date (new Date().toDateString() + ' ' + "12:00:00"));
-	var endTimeA = (new Date (new Date().toDateString() + ' ' + "12:30:00"));
-	var startTimeB = (new Date (new Date().toDateString() + ' ' + "14:00:00"));
-	var endTimeB = (new Date (new Date().toDateString() + ' ' + "14:40:00"))
-	var startTimeC = (new Date (new Date().toDateString() + ' ' + "16:00:00"));
-	var endTimeC = (new Date (new Date().toDateString() + ' ' + "16:30:00"));
-	var timelineData = formatDateAppointmentForTimeline(data);
-//	var timelineData = [[ 'President', 'George Washington', startTimeA,
-//						endTimeA ],
-//						[ 'President', 'John Adams', startTimeB,
-//						endTimeB ],
-//						[ 'President', 'Thomas Jefferson',  startTimeC,
-//						endTimeC]];
-	console.log("data for chart : "+timelineData);
-	function drawChart() {
-		
-	    var container = document.getElementById('show-timeline');
+	
+});	
+
+var drawChart = function (data, timelineData) {
+	if($('div.timeline-for-date').find('div#show-timeline-'+data[0]["date"]).length == 0){
+		$('div.timeline-for-date').append(
+			'<div class="time-line-lable">These are your appointments for '+data[0]["date"]+'</div>'+
+			'<div class="show-timeline" id="show-timeline-'+data[0]["date"]+'"></div>'
+		);
+	    var container = document.getElementById('show-timeline-'+data[0]["date"]);
 	    var chart = new google.visualization.Timeline(container);
 	    var dataTable = new google.visualization.DataTable();
 	
@@ -119,20 +97,38 @@ var drawTestChart = function(data){
 	    dataTable.addColumn({ type: 'date', id: 'Start' });
 	    dataTable.addColumn({ type: 'date', id: 'End' });
 	    dataTable.addRows(timelineData);
-//	    		[
-//	      [ 'President', 'George Washington', startTimeA,
-//	         endTimeA ],
-//	      [ 'President', 'John Adams', startTimeB,
-//	         endTimeB ],
-//	      [ 'President', 'Thomas Jefferson',  startTimeC,
-//	         endTimeC]]);
-	
 	    var options = {
 	      timeline: { groupByRowLabel: true }
 	    };
 	
 	    chart.draw(dataTable, options);
 	}
+}
+
+var timelineVisualizer = function(data){
+	
+	var startTimeA = (new Date (new Date().toDateString() + ' ' + "12:00:00"));
+	var endTimeA = (new Date (new Date().toDateString() + ' ' + "12:30:00"));
+	var startTimeB = (new Date (new Date().toDateString() + ' ' + "14:00:00"));
+	var endTimeB = (new Date (new Date().toDateString() + ' ' + "14:40:00"))
+	var startTimeC = (new Date (new Date().toDateString() + ' ' + "16:00:00"));
+	var endTimeC = (new Date (new Date().toDateString() + ' ' + "16:30:00"));
+	var timelineData = [];
+	for(var i = 0; i < data.length; i++){
+		var temp = [];
+		temp.push("No of Appointments "+data.length);
+		temp.push(data[i]["physicianName"]+" "+data[i]["product"]);
+		var startTime = new Date (data[i]["date"] + ' ' + data[i]["startTime"]);
+		temp.push(startTime);
+		var endTime = new Date (data[i]["date"] + ' ' + data[i]["endTime"]);
+		temp.push(endTime);
+		console.log(temp);
+		var tempNew = temp.slice();
+		timelineData.push(tempNew);
+	}
+	var tempNew = ["No of Appointments "+data.length, "EOD",new Date (data[0]["date"] + ' ' + "23:59:01"),new Date (data[0]["date"] + ' ' + "23:59:02")]
+	timelineData.push(tempNew);
+	drawChart(data, timelineData);
 }
 
 $(document).on('change','input.appointment-date',function(){
@@ -143,7 +139,6 @@ $(document).on('change','input.appointment-date',function(){
 		dataType : 'json',
 		success : function(data){
 	    	console.log("Data received (Particular Date appoinments): "+JSON.stringify(data));
-//	    	$('#fixed-date-appointment-modal').modal('show');
 	    	drawTestChart(data);
 		},
 		error : function(e){
@@ -168,6 +163,7 @@ var formatDateAppointmentForTimeline = function(data){
 		var endTime = new Date (new Date().toDateString() + ' ' + data[i]["endTime"]);
 		console.log("End Time : "+startTime);
 		temp.push(endTime);
+		console.log("Pushing first list : "+temp);
 		formattedData.push[temp];
 	}
 	

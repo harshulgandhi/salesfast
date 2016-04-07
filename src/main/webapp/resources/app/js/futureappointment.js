@@ -54,6 +54,15 @@ $(document).ready(function(){
 	console.log(futureAppointmentTable.$('.cancelled-appointment-status'));
 });
 
+$(document).on('click','button.show-contact-future-appointment',function(){
+	$(this).parent().parent().find('div.future-appointment-physician-contact').toggle();
+	if($(this).parent().parent().find('div.future-appointment-physician-contact').css('display') == 'none'){
+	    $(this).find('span.button-value').html("Show Contact Details");
+	}else if($(this).parent().parent().find('div.future-appointment-physician-contact').css('display') == 'block'){
+	    $(this).find('span.button-value').html("Hide Contact Details");
+	}
+});
+
 $('#appointment-cancellation-button').click(function(){
 	var appointmentId =	futureAppointmentTable.$('tr.selected').find('.future-appointmentid').html();
 	var cancellationReason = $('#cancellation-reason-id').val();

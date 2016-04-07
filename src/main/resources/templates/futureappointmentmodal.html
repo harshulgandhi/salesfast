@@ -20,9 +20,10 @@
 							<tr>
 								<th style="display:none" class="physician-id">Physician Id</th>
 								<th>Physician Name</th>
-								<th>Address</th>
-								<th>Contact</th>
-								<th>Email Id</th>
+								<th>Contact Details</th>
+								<th style="display:none">Address</th>
+								<th style="display:none">Contact</th>
+								<th style="display:none">Email Id</th>
 								<th>Product</th>
 								<th>Date of appointment</th>
 								<th>Time of appointment</th>
@@ -37,9 +38,28 @@
 							<tr th:each="eachAppointment : ${listOfFutureAppointments}">
 								<td style="display:none" th:text="${eachAppointment.physicianId}"></td>
 								<td th:text="${eachAppointment.physicianName}"></td>
-								<td th:text="${eachAppointment.address}"></td>
-								<td th:text="${eachAppointment.contact}"></td>
-								<td th:text="${eachAppointment.emailId}"></td>
+								<td class="future-appointment-contact-details">
+									<div class="future-appointment-contact-td">
+										<div class="future-appointment-contact-detail-btn">
+											<button type="button" class="btn btn-default btn-md show-contact-future-appointment form-control">
+												<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+												<span class="button-value">Show Contact Details</span>
+											</button>
+										</div>
+										<div class="future-appointment-physician-contact"  style="display: none">
+											<div class="phys-address"><span class="contactdetail-label">Address : </span>
+												<span class="contactdetail-content" th:text="${eachAppointment.address}"></span>
+											</div>
+											<div class="phys-phone"><span class="contactdetail-label">Phone : </span><span class="contactdetail-content" 
+											th:text="${eachAppointment.contact}"></span></div>
+											<div class="phys-email"><span class="contactdetail-label">Email : </span><span class="contactdetail-content" 
+											th:text="${eachAppointment.emailId}"></span></div>
+										</div>
+									</div>
+								</td>
+								<td style="display:none" th:text="${eachAppointment.address}"></td>
+								<td style="display:none" th:text="${eachAppointment.contact}"></td>
+								<td style="display:none" th:text="${eachAppointment.emailId}"></td>
 								<td th:text="${eachAppointment.product}"></td>
 								<td><input class="appointment-date future-appointment-paramaters" type="date"
 								 disabled="disabled" th:value="${eachAppointment.date}"/></td>

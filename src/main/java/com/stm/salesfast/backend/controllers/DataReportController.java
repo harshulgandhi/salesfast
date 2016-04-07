@@ -35,10 +35,10 @@ public class DataReportController {
 		log.info("Fetching data for the report");
 		List<MeetingExperienceDataEntity> analysisOverAll = analysis.analyseOverall();
 		log.info("Analysed data : ");
-		for(MeetingExperienceDataEntity analysedData : analysisOverAll){
-			log.info(""+analysedData);
-		}
-		analysis.analyseMeetingExperience(new MeetingExpAnalysisFilterEntity("ONC",0,0,null));
+//		for(MeetingExperienceDataEntity analysedData : analysisOverAll){
+//			log.info(""+analysedData);
+//		}
+		log.info(""+analysis.analyseMeetingExperience(new MeetingExpAnalysisFilterEntity(null,0,0,"LOST")));
 		return analysisOverAll.toArray(new MeetingExperienceDataEntity[0]);
 	}
 	
@@ -48,9 +48,9 @@ public class DataReportController {
 		log.info("Fetching data for the report");
 		List<MeetingExperienceDataEntity> analysisOverAll = analysis.analysePhysicianResponse();
 		log.info("Analysed data : ");
-		for(MeetingExperienceDataEntity analysedData : analysisOverAll){
-			log.info(""+analysedData);
-		}
+//		for(MeetingExperienceDataEntity analysedData : analysisOverAll){
+//			log.info(""+analysedData);
+//		}
 		return analysisOverAll.toArray(new MeetingExperienceDataEntity[0]);
 	}
 	
@@ -60,9 +60,9 @@ public class DataReportController {
 		log.info("Fetching data for the report");
 		List<MeetingExperienceDataEntity> analysisOverAll = analysis.analyseSalesRepResponse();
 		log.info("Analysed data : ");
-		for(MeetingExperienceDataEntity analysedData : analysisOverAll){
-			log.info(""+analysedData);
-		}
+//		for(MeetingExperienceDataEntity analysedData : analysisOverAll){
+//			log.info(""+analysedData);
+//		}
 		return analysisOverAll.toArray(new MeetingExperienceDataEntity[0]);
 	}
 	
@@ -72,9 +72,9 @@ public class DataReportController {
 		log.info("Fetching data for the report");
 		List<MeetingExperienceDataEntity> analysisOverAll = analysis.analyseLostStatusRecords();
 		log.info("Analysed data : ");
-		for(MeetingExperienceDataEntity analysedData : analysisOverAll){
-			log.info(""+analysedData);
-		}
+//		for(MeetingExperienceDataEntity analysedData : analysisOverAll){
+//			log.info(""+analysedData);
+//		}
 		return analysisOverAll.toArray(new MeetingExperienceDataEntity[0]);
 	}
 }

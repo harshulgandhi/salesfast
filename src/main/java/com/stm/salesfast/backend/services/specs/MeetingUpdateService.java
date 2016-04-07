@@ -19,13 +19,11 @@ public interface MeetingUpdateService {
 
 	public void sendMail(String subject, String body, String toEmailId);
 
-
-	public List<MeetingUpdateDto> getForPhysiciansPortal(String status1,
-			String status2, int physicianId);
-
 	public List<Integer> getLostPhysiciansForAUser(int userId);
 
 	public List<Integer> getPrescribingPhysiciansForAUser(int userId);
 
 	public List<String> getStatusForAllAppointments(int userId, int physicianId);
+
+	public List<MeetingUpdateDto> getForPhysiciansPortal(String status1, String status2, String status3, int physicianId);
 }

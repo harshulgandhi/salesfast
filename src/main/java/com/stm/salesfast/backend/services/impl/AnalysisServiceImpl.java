@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.stm.salesfast.backend.dto.MeetingExperienceDto;
 import com.stm.salesfast.backend.entity.MeetingExpAnalysisFilterEntity;
+import com.stm.salesfast.backend.entity.MeetingExperienceAnalyzedDataEntity;
 import com.stm.salesfast.backend.entity.MeetingExperienceDataEntity;
 import com.stm.salesfast.backend.entity.MeetingExperienceDetailedDataEntity;
 import com.stm.salesfast.backend.services.specs.AnalysisService;
@@ -136,80 +137,113 @@ public class AnalysisServiceImpl implements AnalysisService{
 	}
 	
 	@Override
-	public void calculateAnalysisPercentage(int[][] countMatrix){
-		for(int[] eachRow : countMatrix){
-			log.info("Row ");
-			for(int eachVal : eachRow){
-				System.out.print(eachVal+" : ");
-			}
-		}
+	public List<MeetingExperienceAnalyzedDataEntity> calculateAnalysisPercentage(int[][] countMatrix,int countAllSREntries, int countAllPhysEntries, int countAll){
+		List<MeetingExperienceAnalyzedDataEntity> analyzedDataFiltered = new ArrayList<>();
+		
+		List<MeetingExperienceDataEntity> onlyPhysAnalyzedData = new ArrayList<>();
+		onlyPhysAnalyzedData.add(new MeetingExperienceDataEntity("Genuinely liked the product", countMatrix[0][0]*100.0/countAllPhysEntries));
+		onlyPhysAnalyzedData.add(new MeetingExperienceDataEntity("Price affordability", countMatrix[0][1]*100.0/countAllPhysEntries));
+		onlyPhysAnalyzedData.add(new MeetingExperienceDataEntity("Liked that product has less side effects", countMatrix[0][2]*100.0/countAllPhysEntries));
+		onlyPhysAnalyzedData.add(new MeetingExperienceDataEntity("Influenced by presentation", countMatrix[0][3]*100.0/countAllPhysEntries));
+		onlyPhysAnalyzedData.add(new MeetingExperienceDataEntity("Impressed by SalesRep's confidence", countMatrix[0][4]*100.0/countAllPhysEntries));
+		onlyPhysAnalyzedData.add(new MeetingExperienceDataEntity("Impressed with organisation's reputations", countMatrix[0][5]*100.0/countAllPhysEntries));
+		analyzedDataFiltered.add(new MeetingExperienceAnalyzedDataEntity("Only Physician Data", onlyPhysAnalyzedData));
+		
+		List<MeetingExperienceDataEntity> onlySRAnalyzedData = new ArrayList<>();
+		onlySRAnalyzedData.add(new MeetingExperienceDataEntity("Genuinely liked the product", countMatrix[1][0]*100.0/countAllSREntries));
+		onlySRAnalyzedData.add(new MeetingExperienceDataEntity("Price affordability", countMatrix[1][1]*100.0/countAllSREntries));
+		onlySRAnalyzedData.add(new MeetingExperienceDataEntity("Liked that product has less side effects", countMatrix[1][2]*100.0/countAllSREntries));
+		onlySRAnalyzedData.add(new MeetingExperienceDataEntity("Influenced by presentation", countMatrix[1][3]*100.0/countAllSREntries));
+		onlySRAnalyzedData.add(new MeetingExperienceDataEntity("Impressed by SalesRep's confidence", countMatrix[1][4]*100.0/countAllSREntries));
+		onlySRAnalyzedData.add(new MeetingExperienceDataEntity("Impressed with organisation's reputations", countMatrix[1][5]*100.0/countAllSREntries));
+		analyzedDataFiltered.add(new MeetingExperienceAnalyzedDataEntity("Only SalesRep Data", onlySRAnalyzedData));
+		
+		List<MeetingExperienceDataEntity> allAnalyzedData = new ArrayList<>();
+		allAnalyzedData.add(new MeetingExperienceDataEntity("Genuinely liked the product", countMatrix[2][0]*100.0/countAll));
+		allAnalyzedData.add(new MeetingExperienceDataEntity("Price affordability", countMatrix[2][1]*100.0/countAll));
+		allAnalyzedData.add(new MeetingExperienceDataEntity("Liked that product has less side effects", countMatrix[2][2]*100.0/countAll));
+		allAnalyzedData.add(new MeetingExperienceDataEntity("Influenced by presentation", countMatrix[2][3]*100.0/countAll));
+		allAnalyzedData.add(new MeetingExperienceDataEntity("Impressed by SalesRep's confidence", countMatrix[2][4]*100.0/countAll));
+		allAnalyzedData.add(new MeetingExperienceDataEntity("Impressed with organisation's reputations", countMatrix[2][5]*100.0/countAll));
+		analyzedDataFiltered.add(new MeetingExperienceAnalyzedDataEntity("All Data", allAnalyzedData));
+		
+		return analyzedDataFiltered;
 	}
 	
 	@Override
-	public void analyseMeetingExperience(MeetingExpAnalysisFilterEntity filter){
+	public List<MeetingExperienceAnalyzedDataEntity> analyseMeetingExperience(MeetingExpAnalysisFilterEntity filter){
 		List<MeetingExperienceDetailedDataEntity> allEntries = meetingExp.fetchAllDetailedRecords();
 		int countAllSREntries = 0;
 		int countAllPhysEntries = 0;
 		int countAll = 0;
-		int countMatrix[][] = new int[3][6];
+		int countMatrix[][] = new int[3][7];
 		
 		for(MeetingExperienceDetailedDataEntity eachEntity : allEntries){
-			log.info("Checking for : "+eachEntity+" \nagainst filter : "+filter);
 			if(filter.getMedicalFieldId() != null){ log.info("Not null");}
-			log.info("Medical Field Ids : "+filter.getMedicalFieldId()+"; "+eachEntity.getMedicalFieldId());
 			if(filter.getMedicalFieldId() != null && filter.getMedicalFieldId().equals(eachEntity.getMedicalFieldId())){
 				if(filter.getProductId() != 0 && filter.getProductId() == eachEntity.getProductId()){
 					if(filter.getUserId() !=0 && filter.getUserId() == eachEntity.getUserId()){
 						if(filter.getStatus() != null && filter.getStatus() == eachEntity.getStatus()){
-							applyCount(countMatrix, eachEntity);
+							applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 						}
 					}
 				}
 				else if(filter.getUserId() !=0 && filter.getUserId() == eachEntity.getUserId()){
 					if(filter.getStatus() != null && filter.getStatus() == eachEntity.getStatus()){
-						applyCount(countMatrix, eachEntity);
+						applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 					}
 				}
 				else if(filter.getStatus() != null && filter.getStatus() == eachEntity.getStatus()){
-					applyCount(countMatrix, eachEntity);
+					applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 				}
-				else applyCount(countMatrix, eachEntity);
+				else applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 				
 			}
 			
 			else if(filter.getProductId() != 0 && filter.getProductId() == eachEntity.getProductId()){
 				if(filter.getUserId() !=0 && filter.getUserId() == eachEntity.getUserId()){
 					if(filter.getStatus() != null && filter.getStatus() == eachEntity.getStatus()){
-						applyCount(countMatrix, eachEntity);
+						applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 					}
 				}
 				else if(filter.getStatus() != null && filter.getStatus() == eachEntity.getStatus()){
-					applyCount(countMatrix, eachEntity);
+					applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 				}
-				else applyCount(countMatrix, eachEntity);
+				else applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 			}
 			
 			else if(filter.getUserId() !=0 && filter.getUserId() == eachEntity.getUserId()){
 				if(filter.getStatus() != null && filter.getStatus() == eachEntity.getStatus()){
-					applyCount(countMatrix, eachEntity);
+					applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 				}
-				else applyCount(countMatrix, eachEntity);
+				else applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 			}
 			
 			else if(filter.getStatus() != null && filter.getStatus().equals(eachEntity.getStatus())){
-				applyCount(countMatrix, eachEntity);
+				applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 			}
 			
-			else if(filter.getMedicalFieldId() != null && filter.getProductId() != 0 && filter.getUserId() !=0 && (filter.getStatus() != null)){
-				applyCount(countMatrix, eachEntity);
+			else if(filter.getMedicalFieldId() == null && filter.getProductId() == 0 && filter.getUserId() ==0 && (filter.getStatus() == null)){
+				applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 			}
 		}
-		
-		calculateAnalysisPercentage(countMatrix);
+		log.info("Total figure : "+countMatrix[1][6]+" "+countMatrix[0][6]+" "+countMatrix[2][6]);
+		for(int[] eachrow : countMatrix){
+			System.out.println();
+			for(int eachval : eachrow) System.out.print(eachval+" ");
+		}
+		countAllSREntries = countMatrix[1][6];
+		countAllPhysEntries = countMatrix[0][6];
+		countAll = countMatrix[2][6];
+		return calculateAnalysisPercentage(countMatrix,countAllSREntries, countAllPhysEntries, countAll);
 	}
 	
 	@Override
-	public void applyCount(int[][] countMatrix, MeetingExperienceDetailedDataEntity entityToBeCounted){
+	public void applyCount(int[][] countMatrix, MeetingExperienceDetailedDataEntity entityToBeCounted,int countAllSREntries, int countAllPhysEntries, int countAll){
+		countAll++;
+		countMatrix[2][6]++;
+		if(entityToBeCounted.isSalesRepEntry()) countMatrix[1][6]++;
+		if(entityToBeCounted.isPhysicianEntry()) countMatrix[0][6]++;
 		log.info("Applying count to : "+entityToBeCounted);
 		if(entityToBeCounted.isLikedTheProduct()){
 			countMatrix[2][0]++;

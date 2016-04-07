@@ -11,14 +11,12 @@ public interface MeetingUpdateDao {
 	
 	public List<MeetingUpdateDto> getByPrescribingPhysicians(int physicianId);
 
-
-	public List<MeetingUpdateDto> getForPhysiciansPortal(String status1,
-			String status2, int physicianId);
-
 	public List<Integer> getLostPhysiciansForUser(int userId);
 
 	public List<Integer> getPrescribingPhysiciansForUser(int userId);
 
 	public List<String> getStatusesByAppointments(int userId, int physicianId);
+
+	public List<MeetingUpdateDto> getForPhysiciansPortal(String status1, String status2, String status3, int physicianId);
 
 }

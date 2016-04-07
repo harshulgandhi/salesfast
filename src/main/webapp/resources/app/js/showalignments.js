@@ -139,7 +139,7 @@ $(document).on('change','input.appointment-date',function(){
 		dataType : 'json',
 		success : function(data){
 	    	console.log("Data received (Particular Date appoinments): "+JSON.stringify(data));
-	    	drawTestChart(data);
+	    	timelineVisualizer(data);
 		},
 		error : function(e){
 			console.log("Error : "+JSON.stringify(e));

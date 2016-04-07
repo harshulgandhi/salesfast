@@ -47,7 +47,7 @@ public class PhysicianPortalServiceImpl implements PhysicianPortalService {
 				userDetail.getUserDetails(physiciansUserId).getLastName(),
 				userDetail.getUserDetails(physiciansUserId).getEmail());
 		
-		List<MeetingUpdateDto> allMeetings = meetingUpdates.getForPhysiciansPortal("PRESCRIBING", "PROSPECTING", physicianId);
+		List<MeetingUpdateDto> allMeetings = meetingUpdates.getForPhysiciansPortal("PRESCRIBING", "PROSPECTING", "LOST",physicianId);
 		log.info("No of appointments for phys : "+allMeetings.size()+" for physician : "+physicianId);
 		for(MeetingUpdateDto each : allMeetings) log.info(""+each);
 		List<AppointmentForPhysEntity> physMeetings = new ArrayList<>();

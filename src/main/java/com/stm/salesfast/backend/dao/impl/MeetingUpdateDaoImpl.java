@@ -23,7 +23,7 @@ public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
 			+ "(`date`,`status`,`isEDetailed`,`physicianId`,`productId`,`medicalFieldId`,`appointmentId`) "
 			+ "VALUES (?,?,?,?,?,?,?);";
 	private static final String FETCH_FOR_PRESCRIBING = "SELECT * FROM meeting_update WHERE appointmentId  = ? AND status = 'PRESCRIBING'";
-	private static final String FETCH_FOR_PHYS_PORTAL = "SELECT * FROM meeting_update WHERE (status = ? OR status = ? ) AND physicianId = ?";
+	private static final String FETCH_FOR_PHYS_PORTAL = "SELECT * FROM meeting_update WHERE (status = ? OR status = ? OR status =?) AND physicianId = ?";
 	private static final String FETCH_LOST_PHY = "SELECT physicianId FROM meeting_update "
 													+ "WHERE status='LOST' AND "
 													+ "(physicianId, productId) IN "
@@ -91,12 +91,12 @@ public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
 	}
 	
 	@Override
-	public List<MeetingUpdateDto> getForPhysiciansPortal(String status1, String status2, int physicianId) {
+	public List<MeetingUpdateDto> getForPhysiciansPortal(String status1, String status2, String status3, int physicianId) {
 		// TODO Auto-generated method stub
 		try{
 			return jdbcTemplate.query(FETCH_FOR_PHYS_PORTAL, (rs, rownum) -> {
 					return new MeetingUpdateDto(rs.getInt("meetingUpdateId"), rs.getDate("date"), rs.getString("status"), rs.getBoolean("isEDetailed"), physicianId, rs.getInt("productId"),rs.getString("medicalFieldId"),rs.getInt("appointmentId"));
-				}, status1, status2, physicianId);
+				}, status1, status2,status3, physicianId);
 			
 		}catch(DataAccessException e){
 			e.printStackTrace();

@@ -1,6 +1,10 @@
 /**
  * 
  */
+var numDays = {
+                '01': 31, '02': 28, '03': 31, '04': 30, '05': 31, '06': 30,
+                '07': 31, '08': 31, '09': 30, '10': 31, '11': 30, '12': 31
+              };
 var futureAppointmentTable;
 var averageTravelTime = 30; //minutes
 $(document).ready(function(){
@@ -14,11 +18,12 @@ $(document).ready(function(){
 		$('li#nav-appointment').addClass("navbar-menu-selected")
 	}
 	
-	futureAppointmentTable = $('#future-appointment-fixed-physician-table').dataTable({
+	futureAppointmentTable = $('#future-appointment-fixed-physician-table').DataTable({
 		   "searching": true
 	   });
 	
 	$(".appointment-status-selector").select2();
+	$('select.search-filter-param').select2({ width: '100%' });
 	
 	$('#future-appointment-fixed-physician-table').find('tr').each(function(i, val){
 		   if($(val).find('.cancelled-appointment-status').html() == 'CANCELLED'){
@@ -52,7 +57,59 @@ $(document).ready(function(){
 	});
 	
 	console.log(futureAppointmentTable.$('.cancelled-appointment-status'));
+	var yearSelected = $('select.year-selector').val();
+	futureAppointmentTable.search(yearSelected).draw();
 });
+
+$(document).on('change','select.month-selector',function(){
+	var month = $(this).val();
+	var numOfDays = numDays[month];
+	if(month != '0'){
+		$('select.day-selector').attr('disabled',false);
+		$('select.day-selector').html("");
+		$('select.day-selector').append('<option value="0">day</option>');
+		console.log('number of days '+numOfDays);
+		for(var i = 1 ; i <= numOfDays ; i++){
+			if(i<10){
+				$('select.day-selector').append('<option value="0'+i+'">'+i+'</option>');
+			}else{
+				$('select.day-selector').append('<option value="'+i+'">'+i+'</option>');
+			}
+		}
+	}
+	else if(month == "0"){
+		$('select.day-selector').attr('disabled',true);
+	}
+	
+});
+
+$(document).on('change','select.search-filter-param',function(){
+	if($(this).hasClass('day-selector')){
+		var year = $('select.year-selector').val();
+		var month = $('select.month-selector').val();
+		var day = $(this).val();
+		var searchTerm = year+'-'+month+'-'+day;
+		futureAppointmentTable.search(searchTerm).draw();
+	}
+	else if($(this).hasClass('month-selector')){
+		if(!$('select.day-selector').attr('disabled')){
+			var year = $('select.year-selector').val();
+			var month = $('select.month-selector').val();
+			var day = $('select.day-selector').val();
+			console.log('day : '+day)
+			if(day == '0'){
+				var searchTerm = year+'-'+month;
+				futureAppointmentTable.search(searchTerm).draw();
+			}
+			else{
+				var searchTerm = year+'-'+month+'-'+day;
+				futureAppointmentTable.search(searchTerm).draw();
+			}
+		}
+	}
+	
+});
+
 
 $(document).on('click','button.show-contact-future-appointment',function(){
 	$(this).parent().parent().find('div.future-appointment-physician-contact').toggle();

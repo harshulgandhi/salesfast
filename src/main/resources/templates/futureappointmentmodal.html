@@ -25,6 +25,7 @@
 								<th style="display:none">Contact</th>
 								<th style="display:none">Email Id</th>
 								<th>Product</th>
+								<th class="appointment-date-search" style="display:none">Appointment Date for Search</th>
 								<th>Date of appointment</th>
 								<th>Time of appointment</th>
 								<th>Appointment Status</th>
@@ -61,6 +62,7 @@
 								<td style="display:none" th:text="${eachAppointment.contact}"></td>
 								<td style="display:none" th:text="${eachAppointment.emailId}"></td>
 								<td th:text="${eachAppointment.product}"></td>
+								<td th:text="${eachAppointment.date}" class="appointment-date-search" style="display:none"></td>
 								<td><input class="appointment-date future-appointment-paramaters" type="date"
 								 disabled="disabled" th:value="${eachAppointment.date}"/></td>
 								<td class="appointment-time-td">

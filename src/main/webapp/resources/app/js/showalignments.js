@@ -107,12 +107,6 @@ var drawChart = function (data, timelineData) {
 
 var timelineVisualizer = function(data){
 	
-	var startTimeA = (new Date (new Date().toDateString() + ' ' + "12:00:00"));
-	var endTimeA = (new Date (new Date().toDateString() + ' ' + "12:30:00"));
-	var startTimeB = (new Date (new Date().toDateString() + ' ' + "14:00:00"));
-	var endTimeB = (new Date (new Date().toDateString() + ' ' + "14:40:00"))
-	var startTimeC = (new Date (new Date().toDateString() + ' ' + "16:00:00"));
-	var endTimeC = (new Date (new Date().toDateString() + ' ' + "16:30:00"));
 	var timelineData = [];
 	for(var i = 0; i < data.length; i++){
 		var temp = [];

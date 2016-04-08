@@ -23,5 +23,9 @@ public interface AnalysisService {
 			int callAllPhysEntries, int countAll);
 
 	List<MeetingExperienceAnalyzedDataEntity> calculateAnalysisPercentage(int[][] countMatrix, int countAllSREntries, int countAllPhysEntries, int countAll);
+
+	List<MeetingExperienceAnalyzedDataEntity> calculateAnalysisPercentageForLost(
+			int[][] countMatrix, int countAllSREntries,
+			int countAllPhysEntries, int countAll);
 	
 }

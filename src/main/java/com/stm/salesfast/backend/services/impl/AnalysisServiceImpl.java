@@ -135,6 +135,40 @@ public class AnalysisServiceImpl implements AnalysisService{
 	
 		return physicianResponseData;
 	}
+
+	@Override
+	public List<MeetingExperienceAnalyzedDataEntity> calculateAnalysisPercentageForLost(int[][] countMatrix,int countAllSREntries, int countAllPhysEntries, int countAll){
+		List<MeetingExperienceAnalyzedDataEntity> analyzedDataFiltered = new ArrayList<>();
+		
+		List<MeetingExperienceDataEntity> onlyPhysAnalyzedData = new ArrayList<>();
+		onlyPhysAnalyzedData.add(new MeetingExperienceDataEntity("Did not like the product", 100.0-(countMatrix[0][0]*100.0/countAllPhysEntries)));
+		onlyPhysAnalyzedData.add(new MeetingExperienceDataEntity("Too expensive", 100.0-(countMatrix[0][1]*100.0/countAllPhysEntries)));
+		onlyPhysAnalyzedData.add(new MeetingExperienceDataEntity("Has too many side effects", 100.0-(countMatrix[0][2]*100.0/countAllPhysEntries)));
+		onlyPhysAnalyzedData.add(new MeetingExperienceDataEntity("Presentation could be better", 100.0-(countMatrix[0][3]*100.0/countAllPhysEntries)));
+		onlyPhysAnalyzedData.add(new MeetingExperienceDataEntity("SalesRep needs to be more confident", 100.0-(countMatrix[0][4]*100.0/countAllPhysEntries)));
+		onlyPhysAnalyzedData.add(new MeetingExperienceDataEntity("Not impressed with organisation's reputations", 100.0-(countMatrix[0][5]*100.0/countAllPhysEntries)));
+		analyzedDataFiltered.add(new MeetingExperienceAnalyzedDataEntity("According to Physicians", onlyPhysAnalyzedData));
+		
+		List<MeetingExperienceDataEntity> onlySRAnalyzedData = new ArrayList<>();
+		onlySRAnalyzedData.add(new MeetingExperienceDataEntity("Did not like the product", 100.0-(countMatrix[1][0]*100.0/countAllSREntries)));
+		onlySRAnalyzedData.add(new MeetingExperienceDataEntity("Too expensive", 100.0-(countMatrix[1][1]*100.0/countAllSREntries)));
+		onlySRAnalyzedData.add(new MeetingExperienceDataEntity("Has too many side effects", 100.0-(countMatrix[1][2]*100.0/countAllSREntries)));
+		onlySRAnalyzedData.add(new MeetingExperienceDataEntity("Presentation could be better", 100.0-(countMatrix[1][3]*100.0/countAllSREntries)));
+		onlySRAnalyzedData.add(new MeetingExperienceDataEntity("SalesRep needs to be more confident", 100.0-(countMatrix[1][4]*100.0/countAllSREntries)));
+		onlySRAnalyzedData.add(new MeetingExperienceDataEntity("Not impressed with organisation's reputations", 100.0-(countMatrix[1][5]*100.0/countAllSREntries)));
+		analyzedDataFiltered.add(new MeetingExperienceAnalyzedDataEntity("According to SalesReps", onlySRAnalyzedData));
+		
+		List<MeetingExperienceDataEntity> allAnalyzedData = new ArrayList<>();
+		allAnalyzedData.add(new MeetingExperienceDataEntity("Did not like the product", 100.0-(countMatrix[2][0]*100.0/countAll)));
+		allAnalyzedData.add(new MeetingExperienceDataEntity("Too expensive", 100.0-(countMatrix[2][1]*100.0/countAll)));
+		allAnalyzedData.add(new MeetingExperienceDataEntity("Has too many side effects", 100.0-(countMatrix[2][2]*100.0/countAll)));
+		allAnalyzedData.add(new MeetingExperienceDataEntity("Presentation could be better", 100.0-(countMatrix[2][3]*100.0/countAll)));
+		allAnalyzedData.add(new MeetingExperienceDataEntity("SalesRep needs to be more confident", 100.0-(countMatrix[2][4]*100.0/countAll)));
+		allAnalyzedData.add(new MeetingExperienceDataEntity("Not impressed with organisation's reputations", 100.0-(countMatrix[2][5]*100.0/countAll)));
+		analyzedDataFiltered.add(new MeetingExperienceAnalyzedDataEntity("Aggregated", allAnalyzedData));
+		
+		return analyzedDataFiltered;
+	}
 	
 	@Override
 	public List<MeetingExperienceAnalyzedDataEntity> calculateAnalysisPercentage(int[][] countMatrix,int countAllSREntries, int countAllPhysEntries, int countAll){
@@ -147,7 +181,7 @@ public class AnalysisServiceImpl implements AnalysisService{
 		onlyPhysAnalyzedData.add(new MeetingExperienceDataEntity("Influenced by presentation", countMatrix[0][3]*100.0/countAllPhysEntries));
 		onlyPhysAnalyzedData.add(new MeetingExperienceDataEntity("Impressed by SalesRep's confidence", countMatrix[0][4]*100.0/countAllPhysEntries));
 		onlyPhysAnalyzedData.add(new MeetingExperienceDataEntity("Impressed with organisation's reputations", countMatrix[0][5]*100.0/countAllPhysEntries));
-		analyzedDataFiltered.add(new MeetingExperienceAnalyzedDataEntity("Only Physician Data", onlyPhysAnalyzedData));
+		analyzedDataFiltered.add(new MeetingExperienceAnalyzedDataEntity("According to Physicians", onlyPhysAnalyzedData));
 		
 		List<MeetingExperienceDataEntity> onlySRAnalyzedData = new ArrayList<>();
 		onlySRAnalyzedData.add(new MeetingExperienceDataEntity("Genuinely liked the product", countMatrix[1][0]*100.0/countAllSREntries));
@@ -156,7 +190,7 @@ public class AnalysisServiceImpl implements AnalysisService{
 		onlySRAnalyzedData.add(new MeetingExperienceDataEntity("Influenced by presentation", countMatrix[1][3]*100.0/countAllSREntries));
 		onlySRAnalyzedData.add(new MeetingExperienceDataEntity("Impressed by SalesRep's confidence", countMatrix[1][4]*100.0/countAllSREntries));
 		onlySRAnalyzedData.add(new MeetingExperienceDataEntity("Impressed with organisation's reputations", countMatrix[1][5]*100.0/countAllSREntries));
-		analyzedDataFiltered.add(new MeetingExperienceAnalyzedDataEntity("Only SalesRep Data", onlySRAnalyzedData));
+		analyzedDataFiltered.add(new MeetingExperienceAnalyzedDataEntity("According to SalesReps", onlySRAnalyzedData));
 		
 		List<MeetingExperienceDataEntity> allAnalyzedData = new ArrayList<>();
 		allAnalyzedData.add(new MeetingExperienceDataEntity("Genuinely liked the product", countMatrix[2][0]*100.0/countAll));
@@ -165,7 +199,7 @@ public class AnalysisServiceImpl implements AnalysisService{
 		allAnalyzedData.add(new MeetingExperienceDataEntity("Influenced by presentation", countMatrix[2][3]*100.0/countAll));
 		allAnalyzedData.add(new MeetingExperienceDataEntity("Impressed by SalesRep's confidence", countMatrix[2][4]*100.0/countAll));
 		allAnalyzedData.add(new MeetingExperienceDataEntity("Impressed with organisation's reputations", countMatrix[2][5]*100.0/countAll));
-		analyzedDataFiltered.add(new MeetingExperienceAnalyzedDataEntity("All Data", allAnalyzedData));
+		analyzedDataFiltered.add(new MeetingExperienceAnalyzedDataEntity("Aggregated", allAnalyzedData));
 		
 		return analyzedDataFiltered;
 	}
@@ -179,51 +213,79 @@ public class AnalysisServiceImpl implements AnalysisService{
 		int countMatrix[][] = new int[3][7];
 		
 		for(MeetingExperienceDetailedDataEntity eachEntity : allEntries){
-			if(filter.getMedicalFieldId() != null){ log.info("Not null");}
 			if(filter.getMedicalFieldId() != null && filter.getMedicalFieldId().equals(eachEntity.getMedicalFieldId())){
+				log.info("FirstIf : "+filter.getMedicalFieldId()+" "+filter.getProductId()+" "+filter.getUserId()+" "+filter.getStatus());
+				log.info(filter.getMedicalFieldId() +" : "+eachEntity.getMedicalFieldId());
+				
 				if(filter.getProductId() != 0 && filter.getProductId() == eachEntity.getProductId()){
+					log.info(filter.getProductId() +" : "+eachEntity.getProductId());
+					
 					if(filter.getUserId() !=0 && filter.getUserId() == eachEntity.getUserId()){
-						if(filter.getStatus() != null && filter.getStatus() == eachEntity.getStatus()){
+						if(filter.getStatus() != null && filter.getStatus().equals(eachEntity.getStatus())){
+							applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
+						}
+						else if(filter.getStatus() == null){
 							applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 						}
 					}
-				}
-				else if(filter.getUserId() !=0 && filter.getUserId() == eachEntity.getUserId()){
-					if(filter.getStatus() != null && filter.getStatus() == eachEntity.getStatus()){
+					else if(filter.getUserId() == 0 && filter.getStatus() != null && filter.getStatus().equals(eachEntity.getStatus())) {
+						applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
+					}
+					else if(filter.getUserId() == 0 && filter.getStatus() == null ){
 						applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 					}
 				}
-				else if(filter.getStatus() != null && filter.getStatus() == eachEntity.getStatus()){
+				else if(filter.getProductId() == 0 && filter.getUserId() !=0 && filter.getUserId() == eachEntity.getUserId()){
+					if(filter.getStatus() != null && filter.getStatus().equals(eachEntity.getStatus())){
+						applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
+					}else if(filter.getStatus() == null){
+						applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
+					}
+				}
+				else if(filter.getUserId() ==0 && filter.getStatus() != null && filter.getStatus().equals(eachEntity.getStatus())){
 					applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 				}
-				else applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
+				else if (filter.getProductId() == 0 && filter.getUserId() == 0 && filter.getStatus() == null){
+					applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
+				}
 				
 			}
 			
-			else if(filter.getProductId() != 0 && filter.getProductId() == eachEntity.getProductId()){
+			else if(filter.getMedicalFieldId() == null && filter.getProductId() != 0 && filter.getProductId() == eachEntity.getProductId()){
+				log.info("SecondIf : "+filter.getMedicalFieldId()+" "+filter.getProductId()+" "+filter.getUserId()+" "+filter.getStatus());
 				if(filter.getUserId() !=0 && filter.getUserId() == eachEntity.getUserId()){
-					if(filter.getStatus() != null && filter.getStatus() == eachEntity.getStatus()){
+					if(filter.getStatus() != null && filter.getStatus().equals(eachEntity.getStatus())){
+						applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
+					}
+					else if(filter.getStatus() == null){
 						applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 					}
 				}
-				else if(filter.getStatus() != null && filter.getStatus() == eachEntity.getStatus()){
+				else if(filter.getUserId() ==0 && filter.getStatus() != null && filter.getStatus().equals(eachEntity.getStatus())){
 					applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 				}
-				else applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
-			}
-			
-			else if(filter.getUserId() !=0 && filter.getUserId() == eachEntity.getUserId()){
-				if(filter.getStatus() != null && filter.getStatus() == eachEntity.getStatus()){
+				else if(filter.getUserId() == 0 && filter.getStatus() == null){
 					applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 				}
-				else applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 			}
 			
-			else if(filter.getStatus() != null && filter.getStatus().equals(eachEntity.getStatus())){
+			else if(filter.getMedicalFieldId() == null && filter.getProductId() == 0 && filter.getUserId() !=0 && filter.getUserId() == eachEntity.getUserId()){
+				log.info("ThirdId: "+filter.getMedicalFieldId()+" "+filter.getProductId()+" "+filter.getUserId()+" "+filter.getStatus());
+				if(filter.getStatus() != null && filter.getStatus().equals(eachEntity.getStatus())){
+					applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
+				}
+				else if(filter.getStatus() == null){
+					applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
+				}
+			}
+			
+			else if(filter.getMedicalFieldId() == null && filter.getProductId() == 0 &&  filter.getUserId() == 0 && filter.getStatus() != null && filter.getStatus().equals(eachEntity.getStatus())){
+				log.info("ForthIf : "+filter.getMedicalFieldId()+" "+filter.getProductId()+" "+filter.getUserId()+" "+filter.getStatus());
 				applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 			}
 			
-			else if(filter.getMedicalFieldId() == null && filter.getProductId() == 0 && filter.getUserId() ==0 && (filter.getStatus() == null)){
+			else if(filter.getMedicalFieldId() == null && filter.getProductId() == 0 && filter.getUserId() == 0 && filter.getStatus() == null){
+				log.info("Null filter : "+filter.getMedicalFieldId()+" "+filter.getProductId()+" "+filter.getUserId()+" "+filter.getStatus());
 				applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 			}
 		}
@@ -235,7 +297,11 @@ public class AnalysisServiceImpl implements AnalysisService{
 		countAllSREntries = countMatrix[1][6];
 		countAllPhysEntries = countMatrix[0][6];
 		countAll = countMatrix[2][6];
-		return calculateAnalysisPercentage(countMatrix,countAllSREntries, countAllPhysEntries, countAll);
+		
+		return (filter.getStatus() != null && filter.getStatus().equals("LOST")) ?
+				calculateAnalysisPercentageForLost(countMatrix,countAllSREntries, countAllPhysEntries, countAll)
+				: calculateAnalysisPercentage(countMatrix,countAllSREntries, countAllPhysEntries, countAll);
+		
 	}
 	
 	@Override

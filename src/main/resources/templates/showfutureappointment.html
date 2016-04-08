@@ -22,6 +22,49 @@
 		<div class="container" id="layout">
 			<div class="future-appointment-div">
 				<div class="row row-header page-header"><h3>Future Appointments!</h3></div>
+				<div class="row date-filter-row">
+					<div class="filter-label">Filter for quick reference</div>
+					<span class="year-label date-selector-label">Year : </span>
+					<div class="year-selector-div date-div">
+						<select class="year-selector search-filter-param" name="year">
+							<option value="2016" selected="selected">2016</option>
+							<option value="2017">2017</option>
+							<option value="2018">2018</option>
+							<option value="2019">2019</option>
+							<option value="2020">2020</option>
+							<option value="2021">2021</option>
+							<option value="2022">2022</option>
+							<option value="2023">2023</option>
+							<option value="2024">2024</option>
+							<option value="2025">2025</option>
+						</select>
+					</div>
+					<span class="month-label date-selector-label">Month : </span>
+					<div class="month-selector-div date-div">
+						<select class="month-selector search-filter-param" name="day">
+							<option value="0">month</option>
+							<option value="01">Jan</option>
+							<option value="02">Feb</option>
+							<option value="03">March</option>
+							<option value="04">April</option>
+							<option value="05">May</option>
+							<option value="06">June</option>
+							<option value="07">July</option>
+							<option value="08">August</option>
+							<option value="09">September</option>
+							<option value="10">October</option>
+							<option value="11">November</option>
+							<option value="12">December</option>
+						</select>
+					</div>
+					<span class="day-label date-selector-label">Day : </span>
+					<div class="day-selector-div date-div">
+						<select class="day-selector search-filter-param" name="day" disabled="disabled">
+							<option value="0">day</option>
+							
+						</select>
+					</div>
+				</div>
 				<div class="row future-appointment-div"><div th:replace="futureappointmentmodal :: futureappointmentmodal-body"></div></div>
 			</div>
 		</div>

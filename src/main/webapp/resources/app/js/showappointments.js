@@ -1,6 +1,7 @@
 /**
  * 
  */
+
 var selectedAlignments = [];
 var tableAppointment = null;
 var currentSelectedAppointment = 0;
@@ -23,7 +24,6 @@ $(document).ready(function() {
 		    $('.slidedown-alignments-show').slideToggle('fast');
 	});
    
-//	table.order( [ 17, 'desc' ] ).draw();
    
    $('#appointment-fixed-physician-table').find('tr').each(function(i, val){
 	   if($(val).find('.confirmation-status').html() == 'CANCELLED'){

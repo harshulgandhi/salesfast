@@ -94,5 +94,8 @@ public class DataReportController {
 		return filteredAnalyzedData.toArray(new MeetingExperienceAnalyzedDataEntity[filteredAnalyzedData.size()]);
 	}
 	
-	
+	@RequestMapping(value="/salesrepperformance", method=RequestMethod.GET)
+	public String salesRepPerformance(){
+		return "salesrepperformance";
+	}
 }

@@ -42,7 +42,13 @@ public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
 	private static final String UPDATE_EXPENSIVE_SIDE_EFFECT_FLAGS = "UPDATE meeting_update SET "
 			+ "isExpensive = ?, hasSideEffects = ? "
 			+ "WHERE appointmentId = ?";
-	
+//	SELECT count(*) as lostAppointments FROM meeting_update
+//	WHERE appointmentId IN (SELECT appointmentId FROM appointment
+//	WHERE confirmationStatus = 'CONFIRMED' ) AND status='LOST';
+//
+//	SELECT count(*) as lostAppointments FROM meeting_update
+//	WHERE appointmentId IN (SELECT appointmentId FROM appointment
+//	WHERE confirmationStatus = 'CONFIRMED') AND status='PRESCRIBING';
 	
 	@Autowired
 	JdbcTemplate jdbcTemplate;

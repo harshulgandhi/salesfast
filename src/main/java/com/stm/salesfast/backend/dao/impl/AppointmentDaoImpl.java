@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.stm.salesfast.backend.dao.specs.AppointmentDao;
 import com.stm.salesfast.backend.dto.AppointmentDto;
+import com.stm.salesfast.backend.entity.AppointmentCountPerDayEntity;
 
 @Repository
 public class AppointmentDaoImpl implements AppointmentDao {
@@ -86,6 +87,12 @@ public class AppointmentDaoImpl implements AppointmentDao {
 			+ "confirmationStatus = 'NOT INTERESTED' AND "
 			+ "physicianId = ? AND "
 			+ "userId = ?";
+	private static final String FETCH_PERDAY_APPOINTMENT_COUNTBY_OUTCOME = "SELECT count(appointmentId) as noOfAppointments, "
+			+ "date FROM appointment WHERE userId = ? "
+			+ "AND appointmentId IN (SELECT appointmentId "
+			+ "from meeting_update WHERE status = ?) "
+			+ "group by date;";
+	
 	
 	@Override
 	public AppointmentDto getAppointmentById(int appointmentId) {
@@ -419,6 +426,18 @@ public class AppointmentDaoImpl implements AppointmentDao {
 			return jdbcTemplate.queryForObject(FETCH_IF_STATUS_NOT_INTERESTED, (rs, rownnum)->{
 				return rs.getString(1);
 			}, physicianId, userId);
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	@Override
+	public List<AppointmentCountPerDayEntity> getCountPerDayPerformanceBased(int userId, String status){
+		try{
+			return jdbcTemplate.query(FETCH_PERDAY_APPOINTMENT_COUNTBY_OUTCOME, (rs, rownnum)->{
+				return new AppointmentCountPerDayEntity(rs.getInt("noOfAppointment"),rs.getDate("date"));
+			}, userId, status);
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}

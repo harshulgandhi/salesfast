@@ -22,6 +22,7 @@ import com.stm.salesfast.backend.dto.PhysicianStgDto;
 import com.stm.salesfast.backend.dto.ProductDto;
 import com.stm.salesfast.backend.dto.UserDto;
 import com.stm.salesfast.backend.entity.AlignedPhysicianFollowUpEntity;
+import com.stm.salesfast.backend.entity.AppointmentCountPerDayEntity;
 import com.stm.salesfast.backend.entity.AppointmentEntity;
 import com.stm.salesfast.backend.entity.PastAppointmentEntity;
 import com.stm.salesfast.backend.entity.PitchViewEntity;
@@ -514,6 +515,11 @@ public class AppointmentServiceImpl implements AppointmentService {
 	public AppointmentDto getAppointmentPhysIdUserIdProductId(int physicianId, int userId, int productId){
 		int appointmentId = appointmentDao.getIdByPhysIdUserIdProductId(physicianId, userId, productId);
 		return appointmentDao.getAppointmentById(appointmentId);
+	}
+	
+	@Override
+	public List<AppointmentCountPerDayEntity> getPerDayAppointmentCountByPerformance(int userId, String status){
+		return appointmentDao.getCountPerDayPerformanceBased(userId, status);
 	}
 }
 

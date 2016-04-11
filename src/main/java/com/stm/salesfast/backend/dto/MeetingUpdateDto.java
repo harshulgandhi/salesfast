@@ -19,6 +19,8 @@ public class MeetingUpdateDto {
 	private int productId;
 	private String medicalFieldId;
 	private int appointmentId;
+	private boolean isExpensive;
+	private boolean hasSideEffects;
 	
 	public MeetingUpdateDto(Date currentDate, String meetingStatus,
 			boolean eDetailing, int physicianId2, int productId2,
@@ -35,6 +37,7 @@ public class MeetingUpdateDto {
 	
 	@Override
 	public String toString(){
-		return " Date : "+(date)+"\n Status : "+status+"\n isEDetailed : "+isEDetailed+"\n Physician Id : "+(physicianId)+"\n Product Id: "+productId+"\n Medical Field Id : "+medicalFieldId+"\n Appointment Id : "+appointmentId;
+		return " Date : "+(date)+"\n Status : "+status+"\n isEDetailed : "+isEDetailed+"\n Physician Id : "+(physicianId)+"\n Product Id: "+productId+"\n Medical Field Id : "+medicalFieldId+"\n Appointment Id : "+appointmentId
+				+"isExpensive : "+isExpensive+"\n hasSideEffects : "+hasSideEffects;
 	}
 }

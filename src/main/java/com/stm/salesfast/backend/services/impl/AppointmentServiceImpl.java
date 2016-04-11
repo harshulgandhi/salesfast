@@ -509,6 +509,12 @@ public class AppointmentServiceImpl implements AppointmentService {
 	public String getNotInterestedAppointmentStatus(int physicianId, int userId){
 		return appointmentDao.getNotInterestedStatus(physicianId, userId);
 	}
+	
+	@Override
+	public AppointmentDto getAppointmentPhysIdUserIdProductId(int physicianId, int userId, int productId){
+		int appointmentId = appointmentDao.getIdByPhysIdUserIdProductId(physicianId, userId, productId);
+		return appointmentDao.getAppointmentById(appointmentId);
+	}
 }
 
 

@@ -41,7 +41,7 @@ CREATE TABLE `alignments` (
   CONSTRAINT `fk_Alignments_Physicians_Staging1` FOREIGN KEY (`physicianId`) REFERENCES `physicians_staging` (`physicianId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Alignments_Product1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Alignments_User1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=5479 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5699 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -84,7 +84,7 @@ CREATE TABLE `appointment` (
   CONSTRAINT `fk_Appointment_Physicians_Staging1` FOREIGN KEY (`physicianId`) REFERENCES `physicians_staging` (`physicianId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Appointment_Products1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Appointment_User1` FOREIGN KEY (`userId`) REFERENCES `user` (`userId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=270 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=273 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -93,7 +93,7 @@ CREATE TABLE `appointment` (
 
 LOCK TABLES `appointment` WRITE;
 /*!40000 ALTER TABLE `appointment` DISABLE KEYS */;
-INSERT INTO `appointment` VALUES (232,'11:00:00','11:30:00','2016-04-04',3,2,1,'CONFIRMED','11003','','',1,1,1,0),(233,'11:00:00','11:30:00','2016-04-04',3,2,2,'CONFIRMED','11003','','',1,1,1,0),(238,'11:00:00','11:30:00','2016-04-04',3,2,12,'CONFIRMED','11003','','',1,1,1,0),(239,'14:00:00','14:30:00','2016-04-04',6,2,1,'CONFIRMED','11003','','',1,1,1,1),(240,'14:00:00','14:30:00','2016-04-04',6,2,2,'CONFIRMED','11003','','',1,1,1,1),(241,'14:00:00','14:30:00','2016-04-04',6,2,12,'CONFIRMED','11003','','',1,1,1,1),(242,'11:00:00','11:30:00','2016-04-04',17,13,2,'CONFIRMED','11004','','',1,1,1,0),(243,'11:00:00','11:30:00','2016-04-04',17,13,12,'CONFIRMED','11004','','',1,1,1,0),(246,'11:00:00','11:30:00','2016-04-04',1,1,11,'CONFIRMED','11001','','',1,1,1,0),(247,'14:00:00','14:30:00','2016-04-04',5,1,11,'CONFIRMED','11001','','',1,1,1,1),(248,'16:00:00','16:30:00','2016-04-04',2,1,11,'CONFIRMED','11001','','',1,1,1,1),(249,'12:00:00','12:45:00','2016-04-04',1,1,13,'CONFIRMED','11001','','',1,1,1,1),(250,'12:00:00','12:45:00','2016-04-04',1,1,14,'CONFIRMED','11001','','',1,1,1,1),(251,'19:00:00','19:30:00','2016-04-04',5,1,13,'CONFIRMED','11001','','',1,1,1,1),(252,'19:00:00','19:30:00','2016-04-04',5,1,14,'CONFIRMED','11001','','',1,1,1,1),(255,'12:00:00','12:30:00','2016-04-05',19,1,3,'CONFIRMED','11001','','',1,1,1,0),(256,'12:00:00','12:30:00','2016-04-05',19,1,4,'CONFIRMED','11001','','',1,1,1,0),(257,'16:00:00','16:30:00','2016-04-05',16,1,4,'CONFIRMED','11001','','',1,1,1,0),(261,'15:00:00','15:30:00','2016-04-06',18,12,3,'CANCELLED','11004','not available, out of town','',0,0,0,0),(262,'11:00:00','11:30:00','2016-04-11',16,1,14,'CONFIRMED','11001','','',0,0,0,1),(263,'14:00:00','14:45:00','2016-04-11',4,1,13,'CONFIRMED','11001','','',0,0,0,0),(264,'16:08:00','17:15:00','2016-04-11',4,1,14,'CONFIRMED','11001','','',0,0,0,0),(265,'11:00:00','12:00:00','2016-04-12',16,1,3,'CONFIRMED','11001','','',0,0,0,0),(266,'13:03:00','13:45:00','2016-04-12',16,1,13,'CONFIRMED','11001','','',0,0,0,0),(267,'17:00:00','17:40:00','2016-04-12',4,1,11,'CONFIRMED','11001','','',0,0,0,0),(268,'14:00:00','14:30:00','2016-04-08',2,1,3,'CONFIRMED','11001','','',1,1,1,0),(269,'11:00:00','11:30:00','2016-04-09',19,1,14,'CONFIRMED','11001','','',0,0,0,1);
+INSERT INTO `appointment` VALUES (232,'11:00:00','11:30:00','2016-04-04',3,2,1,'CONFIRMED','11003','','',1,1,1,0),(233,'11:00:00','11:30:00','2016-04-04',3,2,2,'CONFIRMED','11003','','',1,1,1,0),(238,'11:00:00','11:30:00','2016-04-04',3,2,12,'CONFIRMED','11003','','',1,1,1,0),(239,'14:00:00','14:30:00','2016-04-04',6,2,1,'CONFIRMED','11003','','',1,1,1,1),(240,'14:00:00','14:30:00','2016-04-04',6,2,2,'CONFIRMED','11003','','',1,1,1,1),(241,'14:00:00','14:30:00','2016-04-04',6,2,12,'CONFIRMED','11003','','',1,1,1,1),(242,'11:00:00','11:30:00','2016-04-04',17,13,2,'CONFIRMED','11004','','',1,1,1,0),(243,'11:00:00','11:30:00','2016-04-04',17,13,12,'CONFIRMED','11004','','',1,1,1,0),(246,'11:00:00','11:30:00','2016-04-04',1,1,11,'CONFIRMED','11001','','',1,1,1,0),(247,'14:00:00','14:30:00','2016-04-04',5,1,11,'CONFIRMED','11001','','',1,1,1,1),(248,'16:00:00','16:30:00','2016-04-04',2,1,11,'CONFIRMED','11001','','',1,1,1,1),(249,'12:00:00','12:45:00','2016-04-04',1,1,13,'CONFIRMED','11001','','',1,1,1,1),(250,'12:00:00','12:45:00','2016-04-04',1,1,14,'CONFIRMED','11001','','',1,1,1,1),(251,'19:00:00','19:30:00','2016-04-04',5,1,13,'CONFIRMED','11001','','',1,1,1,1),(252,'19:00:00','19:30:00','2016-04-04',5,1,14,'CONFIRMED','11001','','',1,1,1,1),(255,'12:00:00','12:30:00','2016-04-05',19,1,3,'CONFIRMED','11001','','',1,1,1,0),(256,'12:00:00','12:30:00','2016-04-05',19,1,4,'CONFIRMED','11001','','',1,1,1,0),(257,'16:00:00','16:30:00','2016-04-05',16,1,4,'CONFIRMED','11001','','',1,1,1,0),(261,'15:00:00','15:30:00','2016-04-06',18,12,3,'CANCELLED','11004','not available, out of town','',0,0,0,0),(262,'11:00:00','11:30:00','2016-04-11',16,1,14,'CONFIRMED','11001','','',0,0,0,1),(263,'14:00:00','14:45:00','2016-04-11',4,1,13,'CONFIRMED','11001','','',0,0,0,0),(264,'16:08:00','17:15:00','2016-04-11',4,1,14,'CONFIRMED','11001','','',0,0,0,0),(265,'11:00:00','12:00:00','2016-04-12',16,1,3,'CONFIRMED','11001','','',0,0,0,0),(266,'13:03:00','13:45:00','2016-04-12',16,1,13,'CONFIRMED','11001','','',0,0,0,0),(267,'17:00:00','17:40:00','2016-04-12',4,1,11,'CONFIRMED','11001','','',0,0,0,0),(268,'14:00:00','14:30:00','2016-04-08',2,1,3,'CONFIRMED','11001','','',1,1,1,0),(269,'11:00:00','11:30:00','2016-04-09',19,1,14,'CONFIRMED','11001','','',1,1,0,1),(270,'11:00:00','11:30:00','2016-04-09',19,1,13,'CONFIRMED','11001','','',1,1,0,0),(271,'13:00:00','13:30:00','2016-04-09',2,1,14,'CONFIRMED','11001','','',1,1,1,0),(272,'16:00:00','16:45:00','2016-04-09',16,1,11,'CONFIRMED','11001','','',1,1,1,0);
 /*!40000 ALTER TABLE `appointment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -320,7 +320,7 @@ CREATE TABLE `meeting_experience` (
   PRIMARY KEY (`meetingExperienceId`),
   KEY `fk_Meeting_Experience_Appointment1_idx` (`appointmentId`),
   CONSTRAINT `fk_Meeting_Experience_Appointment1` FOREIGN KEY (`appointmentId`) REFERENCES `appointment` (`appointmentId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=81 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -329,7 +329,7 @@ CREATE TABLE `meeting_experience` (
 
 LOCK TABLES `meeting_experience` WRITE;
 /*!40000 ALTER TABLE `meeting_experience` DISABLE KEYS */;
-INSERT INTO `meeting_experience` VALUES (42,0,1,'PRESCRIBING',1,1,1,0,0,1,232),(43,0,1,'LOST',1,0,1,0,1,1,233),(45,0,1,'PRESCRIBING',1,0,0,1,1,1,238),(46,0,1,'PRESCRIBING',0,1,0,1,1,1,239),(47,0,1,'LOST',1,0,1,1,1,0,240),(48,0,1,'LOST',0,0,0,1,0,1,241),(49,1,0,'PRESCRIBING',1,0,1,0,1,1,232),(50,1,0,'PRESCRIBING',1,1,0,0,0,1,238),(51,1,0,'PRESCRIBING',1,0,0,0,1,1,239),(52,0,1,'PRESCRIBING',1,1,1,0,0,0,242),(53,1,0,'PRESCRIBING',0,1,0,0,1,1,242),(54,0,1,'PRESCRIBING',1,0,0,1,1,1,243),(55,1,0,'PRESCRIBING',1,0,1,0,1,1,243),(56,0,1,'PRESCRIBING',0,1,0,1,1,1,246),(57,0,1,'PRESCRIBING',0,1,0,1,1,1,247),(58,0,1,'PRESCRIBING',1,1,0,1,0,1,248),(59,0,1,'LOST',1,0,1,1,0,0,249),(60,0,1,'PRESCRIBING',1,1,0,0,0,1,250),(61,0,1,'PRESCRIBING',0,1,0,0,1,1,252),(62,0,1,'LOST',0,1,0,0,1,1,251),(63,1,0,'PRESCRIBING',1,0,1,0,0,1,248),(64,1,0,'PRESCRIBING',1,0,1,0,0,1,247),(65,1,0,'PRESCRIBING',0,0,0,1,1,0,252),(66,1,0,'PRESCRIBING',1,1,1,0,0,0,246),(67,1,0,'PRESCRIBING',1,1,0,1,1,1,250),(68,0,1,'LOST',1,1,0,0,1,0,256),(69,0,1,'PRESCRIBING',0,1,0,1,0,1,255),(70,1,0,'PRESCRIBING',1,1,0,1,1,0,255),(71,0,1,'PRESCRIBING',1,0,1,0,1,0,257),(72,0,1,'LOST',1,1,0,0,1,0,268),(73,1,0,'LOST',1,1,0,1,0,1,268),(74,1,0,'LOST',1,0,1,0,1,0,233),(75,1,0,'LOST',1,1,0,0,1,1,240),(76,1,0,'LOST',1,1,0,0,0,1,241),(77,1,0,'LOST',1,1,0,1,0,0,249),(78,1,0,'LOST',1,0,1,0,1,0,251),(79,1,0,'LOST',1,0,1,0,1,1,256),(80,1,0,'PRESCRIBING',1,0,1,1,1,0,257);
+INSERT INTO `meeting_experience` VALUES (42,0,1,'PRESCRIBING',1,1,1,0,0,1,232),(43,0,1,'LOST',1,0,1,0,1,1,233),(45,0,1,'PRESCRIBING',1,0,0,1,1,1,238),(46,0,1,'PRESCRIBING',0,1,0,1,1,1,239),(47,0,1,'LOST',1,0,1,1,1,0,240),(48,0,1,'LOST',0,0,0,1,0,1,241),(49,1,0,'PRESCRIBING',1,0,1,0,1,1,232),(50,1,0,'PRESCRIBING',1,1,0,0,0,1,238),(51,1,0,'PRESCRIBING',1,0,0,0,1,1,239),(52,0,1,'PRESCRIBING',1,1,1,0,0,0,242),(53,1,0,'PRESCRIBING',0,1,0,0,1,1,242),(54,0,1,'PRESCRIBING',1,0,0,1,1,1,243),(55,1,0,'PRESCRIBING',1,0,1,0,1,1,243),(56,0,1,'PRESCRIBING',0,1,0,1,1,1,246),(57,0,1,'PRESCRIBING',0,1,0,1,1,1,247),(58,0,1,'PRESCRIBING',1,1,0,1,0,1,248),(59,0,1,'LOST',1,0,1,1,0,0,249),(60,0,1,'PRESCRIBING',1,1,0,0,0,1,250),(61,0,1,'PRESCRIBING',0,1,0,0,1,1,252),(62,0,1,'LOST',0,1,0,0,1,1,251),(63,1,0,'PRESCRIBING',1,0,1,0,0,1,248),(64,1,0,'PRESCRIBING',1,0,1,0,0,1,247),(65,1,0,'PRESCRIBING',0,0,0,1,1,0,252),(66,1,0,'PRESCRIBING',1,1,1,0,0,0,246),(67,1,0,'PRESCRIBING',1,1,0,1,1,1,250),(68,0,1,'LOST',1,1,0,0,1,0,256),(69,0,1,'PRESCRIBING',0,1,0,1,0,1,255),(70,1,0,'PRESCRIBING',1,1,0,1,1,0,255),(71,0,1,'PRESCRIBING',1,0,1,0,1,0,257),(72,0,1,'LOST',1,1,0,0,1,0,268),(73,1,0,'LOST',1,1,0,1,0,1,268),(74,1,0,'LOST',1,0,1,0,1,0,233),(75,1,0,'LOST',1,1,0,0,1,1,240),(76,1,0,'LOST',1,1,0,0,0,1,241),(77,1,0,'LOST',1,1,0,1,0,0,249),(78,1,0,'LOST',1,0,1,0,1,0,251),(79,1,0,'LOST',1,0,1,0,1,1,256),(80,1,0,'PRESCRIBING',1,0,1,1,1,0,257),(81,0,1,'LOST',1,0,1,1,1,1,269),(82,0,1,'LOST',1,0,1,1,1,1,270),(83,0,1,'LOST',1,1,0,1,1,1,271),(84,1,0,'LOST',1,0,1,1,0,1,271),(85,0,1,'LOST',0,1,1,1,1,1,272),(86,1,0,'LOST',1,0,0,1,0,1,272);
 /*!40000 ALTER TABLE `meeting_experience` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -349,6 +349,8 @@ CREATE TABLE `meeting_update` (
   `productId` int(11) NOT NULL,
   `medicalFieldId` varchar(5) NOT NULL,
   `appointmentId` int(11) NOT NULL,
+  `isExpensive` tinyint(4) DEFAULT NULL,
+  `hasSideEffects` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`meetingUpdateId`),
   UNIQUE KEY `appointmentId_UNIQUE` (`appointmentId`),
   KEY `fk_Meeting_Update_Physicians_Staging1_idx` (`physicianId`),
@@ -359,7 +361,7 @@ CREATE TABLE `meeting_update` (
   CONSTRAINT `fk_Meeting_Update_Medical_Fields1` FOREIGN KEY (`medicalFieldId`) REFERENCES `medical_fields` (`medicalFieldId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Meeting_Update_Physicians_Staging1` FOREIGN KEY (`physicianId`) REFERENCES `physicians_staging` (`physicianId`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `fk_Meeting_Update_Products1` FOREIGN KEY (`productId`) REFERENCES `products` (`productId`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -368,7 +370,7 @@ CREATE TABLE `meeting_update` (
 
 LOCK TABLES `meeting_update` WRITE;
 /*!40000 ALTER TABLE `meeting_update` DISABLE KEYS */;
-INSERT INTO `meeting_update` VALUES (36,'2016-04-04','PRESCRIBING',1,3,1,'DIAB',232),(37,'2016-04-04','LOST',0,3,2,'DIAB',233),(39,'2016-04-04','PRESCRIBING',0,3,12,'DIAB',238),(40,'2016-04-04','PRESCRIBING',1,6,1,'DIAB',239),(41,'2016-04-04','LOST',0,6,2,'DIAB',240),(42,'2016-04-04','LOST',0,6,12,'DIAB',241),(43,'2016-04-04','PRESCRIBING',1,17,2,'DIAB',242),(44,'2016-04-04','PRESCRIBING',1,17,12,'DIAB',243),(45,'2016-04-04','PRESCRIBING',1,1,11,'ONC',246),(46,'2016-04-04','PRESCRIBING',1,5,11,'ONC',247),(47,'2016-04-04','PRESCRIBING',1,2,11,'ONC',248),(48,'2016-04-04','LOST',1,1,13,'ONC',249),(49,'2016-04-04','PRESCRIBING',1,1,14,'ONC',250),(50,'2016-04-04','PRESCRIBING',1,5,14,'ONC',252),(51,'2016-04-04','LOST',1,5,13,'ONC',251),(52,'2016-04-05','LOST',1,19,4,'ONC',256),(53,'2016-04-05','PRESCRIBING',1,19,3,'ONC',255),(54,'2016-04-05','PRESCRIBING',1,16,4,'ONC',257),(55,'2016-04-08','LOST',1,2,3,'ONC',268);
+INSERT INTO `meeting_update` VALUES (36,'2016-04-04','PRESCRIBING',1,3,1,'DIAB',232,NULL,NULL),(37,'2016-04-04','LOST',0,3,2,'DIAB',233,NULL,NULL),(39,'2016-04-04','PRESCRIBING',0,3,12,'DIAB',238,NULL,NULL),(40,'2016-04-04','PRESCRIBING',1,6,1,'DIAB',239,NULL,NULL),(41,'2016-04-04','LOST',0,6,2,'DIAB',240,NULL,NULL),(42,'2016-04-04','LOST',0,6,12,'DIAB',241,NULL,NULL),(43,'2016-04-04','PRESCRIBING',1,17,2,'DIAB',242,NULL,NULL),(44,'2016-04-04','PRESCRIBING',1,17,12,'DIAB',243,NULL,NULL),(45,'2016-04-04','PRESCRIBING',1,1,11,'ONC',246,NULL,NULL),(46,'2016-04-04','PRESCRIBING',1,5,11,'ONC',247,NULL,NULL),(47,'2016-04-04','PRESCRIBING',1,2,11,'ONC',248,NULL,NULL),(48,'2016-04-04','LOST',1,1,13,'ONC',249,NULL,NULL),(49,'2016-04-04','PRESCRIBING',1,1,14,'ONC',250,NULL,NULL),(50,'2016-04-04','PRESCRIBING',1,5,14,'ONC',252,NULL,NULL),(51,'2016-04-04','LOST',1,5,13,'ONC',251,NULL,NULL),(52,'2016-04-05','LOST',1,19,4,'ONC',256,NULL,NULL),(53,'2016-04-05','PRESCRIBING',1,19,3,'ONC',255,NULL,NULL),(54,'2016-04-05','PRESCRIBING',1,16,4,'ONC',257,NULL,NULL),(55,'2016-04-08','LOST',1,2,3,'ONC',268,NULL,NULL),(56,'2016-04-09','LOST',1,19,14,'ONC',269,NULL,NULL),(57,'2016-04-09','LOST',1,19,13,'ONC',270,0,0),(58,'2016-04-09','LOST',1,2,14,'ONC',271,1,0),(59,'2016-04-09','LOST',1,16,11,'ONC',272,1,1);
 /*!40000 ALTER TABLE `meeting_update` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -499,7 +501,7 @@ CREATE TABLE `physicians_staging` (
 
 LOCK TABLES `physicians_staging` WRITE;
 /*!40000 ALTER TABLE `physicians_staging` DISABLE KEYS */;
-INSERT INTO `physicians_staging` VALUES (1,'Christopher','Nolan','salesfast.stm@gmail.com','11119999','23 Ridge Drive',NULL,'Florence','South Carolina','11001','ONC',0,'PRESCRIBING',1.96,'2000-01-01'),(2,'Alfred','Hitchcock','salesfast.stm@gmail.com','11110000','25 Beverly Hill',NULL,'Florence','South Carolina','11001','ONC',0,'LOST',1.12,'2007-01-01'),(3,'Steven','Spielberg','salesfast.stm@gmail.com','6667777','1-32 Kent Ridge Drive',NULL,'Florence','South Carolina','11003','DIAB',0,'PRESCRIBING',2.92,'1992-01-01'),(4,'Clint','Eastwood','salesfast.stm@gmail.com','99992299','2-43 New Ridge Mountain',NULL,'Florence','South Carolina','11001','ONC',1,'TO BE DETAILED',0.13,'2015-04-01'),(5,'Quentin','Tarantino','salesfast.stm@gmail.com','66667766','23-103, Normanton Park',NULL,'Florence','South Carolina','11001','ONC',0,'LOST',1.84,'2001-01-01'),(6,'James','Cameroon','salesfast.stm@gmail.com','934902248','block 4, 3-109, Normanton Park',NULL,'Florence','South Carolina','11003','DIAB',1,'LOST',0.15,'2015-02-01'),(16,'Woody','Allen','salesfast.stm@gmail.com','556442343','1-23 Ridge Drive',NULL,'Florence','South Carolina','11001','ONC',0,'PRESCRIBING',0.76,'2010-01-01'),(17,'Ang','Lee','salesfast.stm@gmail.com','886442000','23-103, Normanton Park',NULL,'Florence','South Carolina','11004','DIAB',0,'PRESCRIBING',1.12,'2007-01-01'),(18,'Peter','Jackson','salesfast.stm@gmail.com','00220022','2-23 Ridge Drive',NULL,'Florence','South Carolina','11004','ONC',0,'TO BE DETAILED',1.72,'2002-01-01'),(19,'John','Hughes','salesfast.stm@gmail.com','44532134','1-23 Ridge Drive',NULL,'Florence','South Carolina','11001','ONC',0,'PRESCRIBING',1.12,'2007-01-01');
+INSERT INTO `physicians_staging` VALUES (1,'Christopher','Nolan','salesfast.stm@gmail.com','11119999','23 Ridge Drive',NULL,'Florence','South Carolina','11001','ONC',0,'PRESCRIBING',1.96,'2000-01-01'),(2,'Alfred','Hitchcock','salesfast.stm@gmail.com','11110000','25 Beverly Hill',NULL,'Florence','South Carolina','11001','ONC',0,'LOST',1.12,'2007-01-01'),(3,'Steven','Spielberg','salesfast.stm@gmail.com','6667777','1-32 Kent Ridge Drive',NULL,'Florence','South Carolina','11003','DIAB',0,'PRESCRIBING',2.92,'1992-01-01'),(4,'Clint','Eastwood','salesfast.stm@gmail.com','99992299','2-43 New Ridge Mountain',NULL,'Florence','South Carolina','11001','ONC',1,'TO BE DETAILED',0.13,'2015-04-01'),(5,'Quentin','Tarantino','salesfast.stm@gmail.com','66667766','23-103, Normanton Park',NULL,'Florence','South Carolina','11001','ONC',0,'LOST',1.84,'2001-01-01'),(6,'James','Cameroon','salesfast.stm@gmail.com','934902248','block 4, 3-109, Normanton Park',NULL,'Florence','South Carolina','11003','DIAB',1,'LOST',0.15,'2015-02-01'),(16,'Woody','Allen','salesfast.stm@gmail.com','556442343','1-23 Ridge Drive',NULL,'Florence','South Carolina','11001','ONC',0,'LOST',0.76,'2010-01-01'),(17,'Ang','Lee','salesfast.stm@gmail.com','886442000','23-103, Normanton Park',NULL,'Florence','South Carolina','11004','DIAB',0,'PRESCRIBING',1.12,'2007-01-01'),(18,'Peter','Jackson','salesfast.stm@gmail.com','00220022','2-23 Ridge Drive',NULL,'Florence','South Carolina','11004','ONC',0,'TO BE DETAILED',1.72,'2002-01-01'),(19,'John','Hughes','salesfast.stm@gmail.com','44532134','1-23 Ridge Drive',NULL,'Florence','South Carolina','11001','ONC',0,'LOST',1.12,'2007-01-01');
 /*!40000 ALTER TABLE `physicians_staging` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -528,7 +530,7 @@ CREATE TABLE `pitches` (
 
 LOCK TABLES `pitches` WRITE;
 /*!40000 ALTER TABLE `pitches` DISABLE KEYS */;
-INSERT INTO `pitches` VALUES (8,239,'PRESCRIBING','perfecting-your-pitch-99.pdf',2),(9,240,'LOST','sample_pitch.pdf',1),(10,241,'LOST','sample_pitch_wJamesCameroon.pdf',1),(11,247,'PRESCRIBING','sample_pitch_wQuentin.pdf',2),(12,248,'PRESCRIBING','sample_pitch_wAlfred.pdf',4),(13,249,'LOST','perfecting-your-pitch-wChristopher.pdf',1),(14,250,'PRESCRIBING','perfecting-your-pitch-wChristopher.pdf',2),(15,251,'LOST','sample_pitch_wQuentin.pdf',1),(16,252,'PRESCRIBING','sample_pitch_wQuentin.pdf',2),(17,269,'TO BE DETAILED','sample_pitch_wAlfred.pdf',1),(18,262,'TO BE DETAILED','sample_pitch_wQuentin.pdf',1);
+INSERT INTO `pitches` VALUES (8,239,'PRESCRIBING','perfecting-your-pitch-99.pdf',2),(9,240,'LOST','sample_pitch.pdf',1),(10,241,'LOST','sample_pitch_wJamesCameroon.pdf',1),(11,247,'PRESCRIBING','sample_pitch_wQuentin.pdf',2),(12,248,'PRESCRIBING','sample_pitch_wAlfred.pdf',4),(13,249,'LOST','perfecting-your-pitch-wChristopher.pdf',1),(14,250,'PRESCRIBING','perfecting-your-pitch-wChristopher.pdf',2),(15,251,'LOST','sample_pitch_wQuentin.pdf',1),(16,252,'PRESCRIBING','sample_pitch_wQuentin.pdf',2),(17,269,'LOST','sample_pitch_wAlfred.pdf',1),(18,262,'TO BE DETAILED','sample_pitch_wQuentin.pdf',1);
 /*!40000 ALTER TABLE `pitches` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -872,4 +874,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-04-09 17:08:49
+-- Dump completed on 2016-04-09 20:57:00

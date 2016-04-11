@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.stm.salesfast.backend.dao.specs.MeetingExperienceDao;
 import com.stm.salesfast.backend.dto.MeetingExperienceDto;
+import com.stm.salesfast.backend.dto.MeetingUpdateDto;
 import com.stm.salesfast.backend.entity.MeetingExperienceDetailedDataEntity;
 import com.stm.salesfast.backend.entity.MeetingExperienceEntity;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
@@ -53,6 +54,21 @@ public class MeetingExperienceServiceImpl implements MeetingExperienceService {
 		if(isSalesRepEntry) appointmentService.setHasMeetingExperienceFlagFromSR(meetingExperience.getAppointmentId(), 1);
 		if(isPhysicianEntry) appointmentService.setHasMeetingExperienceFlagFromPH(meetingExperience.getAppointmentId(), 1 );
 //		if (isPhysicianEntry) appointmentService.setHasMeetingExperienceFlagFromPH(meetingExperience.getAppointmentId(), 1);
+		
+		//Check if meeting update has isExpensive flag and hasSideEffects flag set - if set check if
+		//this meeting experience entry is from phys, if yes overwrite the existing values. 
+		//If not set in the first place, enter these values
+		
+		MeetingUpdateDto meetingUpdate = meetingUpdateService.getMeetingUpdateByAppointmentId(meetingExperience.getAppointmentId());
+		log.info("Checking meeting update flags before updating them \n"+meetingUpdate);
+		if(meetingUpdate.getStatus().equals("LOST")){
+			if(!meetingUpdate.isExpensive() && !meetingUpdate.isHasSideEffects() && isSalesRepEntry){
+				meetingUpdateService.updateIsExpensiveAndHasSideEffects(!meetingExperience.isLikedPriceAffordability(), !meetingExperience.isImpressiveLessSideEffects(), meetingUpdate.getAppointmentId());
+			}else if(isPhysicianEntry){
+				meetingUpdateService.updateIsExpensiveAndHasSideEffects(!meetingExperience.isLikedPriceAffordability(), !meetingExperience.isImpressiveLessSideEffects(), meetingUpdate.getAppointmentId());
+			}
+		}
+		
 	}
 
 	@Override

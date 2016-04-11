@@ -18,4 +18,8 @@ public class NewProductEntity {
 	private String productName;
 	private Date releaseDate;
 	private String medicalFieldId;	
+	private String typeOfProduct;
+	private boolean hasLessPrice;
+	private boolean hasLessSideEffects;
+	private int improvedOverProduct;
 }

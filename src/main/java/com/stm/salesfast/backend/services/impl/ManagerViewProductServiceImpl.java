@@ -74,7 +74,10 @@ public class ManagerViewProductServiceImpl implements ManagerViewProductService{
 				"SampleReport",
 				"Sample Medicine Feedback Analysis"
 				));
-		
+		filesForProduct.add(new ManagerProductViewEntity(
+				"SideEffectCommentsAnalysis",
+				"Side Effect Comments Analysis"
+				));
 		
 		
 		return filesForProduct;

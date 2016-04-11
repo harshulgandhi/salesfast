@@ -19,4 +19,6 @@ public interface MeetingUpdateDao {
 
 	public List<MeetingUpdateDto> getForPhysiciansPortal(String status1, String status2, String status3, int physicianId);
 
+	public void update(boolean isExpensive, boolean hasSideEffetcs, int appointmentId);
+
 }

@@ -29,19 +29,48 @@ $(document).ready(function() {
 		var r_ = $(this).parents('tr');
 		if(r_.find('.notification-category').html() == "LIVE MEETING QUESTION"){
 			window.location.replace("/unansweredques")
-		}else if(r_.find('.notification-category').html() == "QUESTION WAS ANSWERED"){
+		}
+		else if(r_.find('.notification-category').html() == "QUESTION WAS ANSWERED"){
 			window.location.replace("/livemeetingquestions?param="+"QUESTION WAS ANSWERED")
-		}else if(r_.find('.notification-category').html() == "NEW PRODUCT LOST PHYSICIAN"){
-			window.location.replace("/showalignments?status="+"LOST");
-		}else if(r_.find('.notification-category').html() == "NEW PRODUCT PRESCRIBING PHYSICIAN"){
+		}
+		else if(r_.find('.notification-category').html().indexOf("NEW PRODUCT LOST PHYSICIAN") > -1){
+			var notifCat = r_.find('.notification-category').html();
+			var productName = notifCat.split(" ")[notifCat.split(" ").length - 1]; 
+			window.location.replace("/showalignments?status="+"LOST "+productName);
+		}
+		else if(r_.find('.notification-category').html() == "NEW PRODUCT PRESCRIBING PHYSICIAN"){
 			window.location.replace("/showalignments?status="+"PRESCRIBING");
-		}else if(r_.find('.notification-category').html() == "NEW PRODUCT NOT INTERESTED PHYSICIAN"){
-			window.location.replace("/showalignments?status="+"NOT INTERESTED");
-		}else if(r_.find('.notification-category').html() == "CANCELLED APPOINTMENTS BY PHYS"){
+		}
+		else if(r_.find('.notification-category').html().indexOf("NEW PRODUCT NOT INTERESTED PHYSICIAN") > -1){
+			var notifCat = r_.find('.notification-category').html();
+			var productName = notifCat.split(" ")[notifCat.split(" ").length - 1]
+			window.location.replace("/showalignments?status="+"NOT INTERESTED "+productName);
+		}
+		
+		else if(r_.find('.notification-category').html().indexOf("IMPROVED PRODUCT LOST PHYSICIAN MORE AFFORDABLE LESS SIDE EFFECTS") > -1){
+			var notifCat = r_.find('.notification-category').html();
+			var productName = notifCat.split(" ")[notifCat.split(" ").length - 1]
+			window.location.replace("/showalignments?status="+"LOST MORE AFFORDABLE LESS SIDE EFFECTS "+productName);
+		}
+		
+		else if(r_.find('.notification-category').html().indexOf("IMPROVED PRODUCT LOST PHYSICIAN MORE AFFORDABLE") > -1){
+			var notifCat = r_.find('.notification-category').html();
+			var productName = notifCat.split(" ")[notifCat.split(" ").length - 1]
+			window.location.replace("/showalignments?status="+"LOST MORE AFFORDABLE "+productName);
+		}
+		else if(r_.find('.notification-category').html().indexOf("IMPROVED PRODUCT LOST PHYSICIAN LESS SIDE EFFECTS") > -1){
+			var notifCat = r_.find('.notification-category').html();
+			var productName = notifCat.split(" ")[notifCat.split(" ").length - 1]
+			window.location.replace("/showalignments?status="+"LOST LESS SIDE EFFECTS "+productName);
+		}
+		
+		else if(r_.find('.notification-category').html() == "CANCELLED APPOINTMENTS BY PHYS"){
 			window.location.replace("/showappointments");
-		}else if(r_.find('.notification-category').html() == "FOLLOW UP"){
+		}
+		else if(r_.find('.notification-category').html() == "FOLLOW UP"){
 			window.location.replace("/showappointments#followup-appointments-table");
-		}else if(r_.find('.notification-category').html() == "NEW PRODUCT TO PHYS"){
+		}
+		else if(r_.find('.notification-category').html() == "NEW PRODUCT TO PHYS"){
 			window.location.replace("/edetailing?param="+"NEW_PRODUCT");
 		}
 		

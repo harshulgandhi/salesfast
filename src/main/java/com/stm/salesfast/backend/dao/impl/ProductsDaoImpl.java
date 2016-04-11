@@ -24,8 +24,9 @@ public class ProductsDaoImpl implements ProductsDao{
 	private static final String  FETCH_BY_ID = "SELECT * FROM products WHERE productId = ?";
 	private static final String  FETCH_BY_NAME = "SELECT * FROM products WHERE productName = ?";
 	private static final String  FETCH_BY_MEDICALFIELD = "SELECT * FROM products WHERE medicalFieldId= ?";
-	private static final String INSERT = "INSERT INTO products (productName, releaseDate, medicalFieldId) "
-			+ "VALUES (?,?,?)";
+	private static final String INSERT = "INSERT INTO products (productName, releaseDate, medicalFieldId, typeOfProduct,"
+			+ "isAffordable, hasLessSideEffects, improvedOverProduct) "
+			+ "VALUES (?,?,?,?,?,?,?)";
 	private static final String FETCH_ALL = "SELECT * FROM products";
 	private static final String FETCH_MEDICAL_FIELD = "SELECT medicalFieldId FROM products WHERE productId = ?";
 	
@@ -36,7 +37,7 @@ public class ProductsDaoImpl implements ProductsDao{
 		try{
 			return jdbcTemplate.queryForObject(
 					FETCH_BY_ID, (rs, rownum) -> {
-						return new ProductDto(productId, rs.getString("productName"), rs.getDate("releaseDate"),rs.getString("medicalFieldId"));}
+						return new ProductDto(productId, rs.getString("productName"), rs.getDate("releaseDate"),rs.getString("medicalFieldId"), rs.getString("typeOfProduct"), rs.getBoolean("isAffordable"),rs.getBoolean("hasLessSideEffects"), rs.getInt("improvedOverProduct"));}
 					, productId);
 		}catch(DataAccessException e){
 			e.printStackTrace();
@@ -51,7 +52,7 @@ public class ProductsDaoImpl implements ProductsDao{
 			log.debug("Fetching for product : "+productName);
 			return jdbcTemplate.queryForObject(
 					FETCH_BY_NAME, (rs, rownum) -> {
-						return new ProductDto(rs.getInt("productId"), productName, rs.getDate("releaseDate"),rs.getString("medicalFieldId"));}
+						return new ProductDto(rs.getInt("productId"), productName, rs.getDate("releaseDate"),rs.getString("medicalFieldId"), rs.getString("typeOfProduct"), rs.getBoolean("isAffordable"),rs.getBoolean("hasLessSideEffects"), rs.getInt("improvedOverProduct"));}
 					, productName);
 		}catch(DataAccessException e){
 			e.printStackTrace();
@@ -80,7 +81,7 @@ public class ProductsDaoImpl implements ProductsDao{
 		try{
 			return jdbcTemplate.query(
 					FETCH_BY_MEDICALFIELD, (rs, rownum) -> {
-						return new ProductDto(rs.getInt("productId"), rs.getString("productName"), rs.getDate("releaseDate"),medicalFieldId)
+						return new ProductDto(rs.getInt("productId"), rs.getString("productName"), rs.getDate("releaseDate"),medicalFieldId, rs.getString("typeOfProduct"), rs.getBoolean("isAffordable"),rs.getBoolean("hasLessSideEffects"), rs.getInt("improvedOverProduct"))
 						;}
 					, medicalFieldId);
 		}catch(DataAccessException e){
@@ -96,6 +97,10 @@ public class ProductsDaoImpl implements ProductsDao{
 				ps.setString(1, product.getProductName());
 				ps.setDate(2, product.getReleaseDate());
 				ps.setString(3, product.getMedicalFieldId());
+				ps.setString(4, product.getTypeOfProduct());
+				ps.setBoolean(5, product.isAffordable());
+				ps.setBoolean(6, product.isHasLessSideEffects());
+				ps.setInt(7, product.getImprovedOverProduct());
 			});
 		}catch(DataAccessException e){
 			e.printStackTrace();
@@ -107,7 +112,7 @@ public class ProductsDaoImpl implements ProductsDao{
 		try{
 			return jdbcTemplate.query(
 					FETCH_ALL, (rs, rownum) -> {
-						return new ProductDto(rs.getInt("productId"), rs.getString("productName"), rs.getDate("releaseDate"),rs.getString("medicalFieldId"));});
+						return new ProductDto(rs.getInt("productId"), rs.getString("productName"), rs.getDate("releaseDate"),rs.getString("medicalFieldId"), rs.getString("typeOfProduct"), rs.getBoolean("isAffordable"),rs.getBoolean("hasLessSideEffects"), rs.getInt("improvedOverProduct"));});
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}

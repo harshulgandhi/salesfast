@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.stm.salesfast.backend.dto.EDetailingMaterialDto;
+import com.stm.salesfast.backend.dto.ProductDto;
 import com.stm.salesfast.backend.dto.TrainingMaterialDto;
 import com.stm.salesfast.backend.dto.UserDto;
 import com.stm.salesfast.backend.entity.NewProductEntity;
@@ -98,6 +99,7 @@ public class AddNewProductServiceImpl implements AddNewProductService {
 	@Override
 	public void addNewProduct(NewProductEntity newProduct) throws IOException{
 		productService.insertNewProduct(newProduct);
+		
 		recalculateAlignments();
 		
 		
@@ -168,8 +170,18 @@ public class AddNewProductServiceImpl implements AddNewProductService {
 				String subject = "New product - detail lost physicians";
 				sendNewProductNotificationEmails(subject, emailBody, user.getEmail());
 			}
-			notification.insertNotificationNewProductSalesRep(eachUserId, newProduct.getProductName(), "NEW PRODUCT LOST PHYSICIAN");
 			
+			//Adding two different kind of notifications for NEW PRODUCT and IMPROVED PRODUCTS.
+			//Improved products will have 3 types of notification in itself. One for each type of
+			//improvement and one for a combination of both improvements
+			if(newProduct.getTypeOfProduct().equals("NEW PRODUCT")){
+				notification.insertNotificationNewProductSalesRep(eachUserId, newProduct.getProductName(), "NEW PRODUCT LOST PHYSICIAN "+newProduct.getProductName());
+			}else if(newProduct.getTypeOfProduct().equals("IMPROVED PRODUCT")){
+				ProductDto prevProduct = productService.getProductById(newProduct.getImprovedOverProduct());
+				notification.insertNotificationImprovedProductMoreAffordableSalesRep(eachUserId, newProduct.getProductName(), prevProduct.getProductName(), "IMPROVED PRODUCT LOST PHYSICIAN MORE AFFORDABLE "+newProduct.getProductName());
+				notification.insertNotificationImprovedProductLessSideEffectsSalesRep(eachUserId, newProduct.getProductName(), prevProduct.getProductName(), "IMPROVED PRODUCT LOST PHYSICIAN LESS SIDE EFFECTS "+newProduct.getProductName());
+				notification.insertNotificationImprovedProductBothReasonsSalesRep(eachUserId, newProduct.getProductName(), prevProduct.getProductName(), "IMPROVED PRODUCT LOST PHYSICIAN MORE AFFORDABLE LESS SIDE EFFECTS "+newProduct.getProductName());
+			}
 			//for all not interested physicians - before appointment
 			List<Integer> notInterestedPhysicians = appointmentService.getPhysiciansNotInterestedBeforeDetailing(eachUserId);
 			for(Integer eachPhysicianId : notInterestedPhysicians){
@@ -182,7 +194,7 @@ public class AddNewProductServiceImpl implements AddNewProductService {
 				String subject = "New product - detail not interested physicians";
 				sendNewProductNotificationEmails(subject, emailBody, user.getEmail());
 			}
-			notification.insertNotificationSalesRepPhysPrescribing(eachUserId, newProduct.getProductName(), "NEW PRODUCT NOT INTERESTED PHYSICIAN");
+			notification.insertNotificationSalesRepPhysNotInterest(eachUserId, newProduct.getProductName(), "NEW PRODUCT NOT INTERESTED PHYSICIAN "+newProduct.getProductName());
 			
 			//for all prescribing physicians
 			List<Integer> prescribingPhysicians = meetingUpdate.getPrescribingPhysiciansForAUser(eachUserId);

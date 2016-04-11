@@ -26,4 +26,6 @@ public interface MeetingUpdateService {
 	public List<String> getStatusForAllAppointments(int userId, int physicianId);
 
 	public List<MeetingUpdateDto> getForPhysiciansPortal(String status1, String status2, String status3, int physicianId);
+
+	public void updateIsExpensiveAndHasSideEffects(boolean isExpensive, boolean hasSideEffects, int appointmentId);
 }

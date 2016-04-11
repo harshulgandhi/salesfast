@@ -222,4 +222,9 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 	public List<String> getStatusForAllAppointments(int userId, int physicianId){
 		return meetingUpdateDao.getStatusesByAppointments(userId, physicianId);
 	}
+	
+	@Override
+	public void updateIsExpensiveAndHasSideEffects(boolean isExpensive, boolean hasSideEffects, int appointmentId){
+		meetingUpdateDao.update(isExpensive, hasSideEffects, appointmentId);
+	}
 }

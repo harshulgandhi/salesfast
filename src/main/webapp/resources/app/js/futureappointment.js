@@ -61,11 +61,15 @@ $(document).ready(function(){
 	futureAppointmentTable.search(yearSelected).draw();
 });
 
+var currentSelectedDate = '0';
 $(document).on('change','select.month-selector',function(){
 	var month = $(this).val();
 	var numOfDays = numDays[month];
 	if(month != '0'){
 		$('select.day-selector').attr('disabled',false);
+		if($('select.day-selector').val() != "0"){
+			currentSelectedDate = $('select.day-selector').val();
+		}
 		$('select.day-selector').html("");
 		$('select.day-selector').append('<option value="0">day</option>');
 		console.log('number of days '+numOfDays);
@@ -95,6 +99,7 @@ $(document).on('change','select.search-filter-param',function(){
 		if(!$('select.day-selector').attr('disabled')){
 			var year = $('select.year-selector').val();
 			var month = $('select.month-selector').val();
+			$('select.day-selector').select2('val',currentSelectedDate);
 			var day = $('select.day-selector').val();
 			console.log('day : '+day)
 			if(day == '0'){
@@ -121,7 +126,7 @@ $(document).on('click','button.show-contact-future-appointment',function(){
 });
 
 $('#appointment-cancellation-button').click(function(){
-	var appointmentId =	futureAppointmentTable.$('tr.selected').find('.future-appointmentid').html();
+	var appointmentId =	futureAppointmentTable.$('tr.selected').find('.appointmentid').html();
 	var cancellationReason = $('#cancellation-reason-id').val();
 	console.log("Cancellation parameters : "+appointmentId+" and "+cancellationReason);
 	if(cancellationReason == '') alert("Please provide reason for cancellation.");

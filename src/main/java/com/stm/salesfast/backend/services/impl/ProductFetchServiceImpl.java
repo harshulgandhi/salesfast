@@ -48,7 +48,11 @@ public class ProductFetchServiceImpl implements ProductFetchService {
 		productDao.insert(new ProductDto(
 				newProduct.getProductName(),
 				newProduct.getReleaseDate(),
-				newProduct.getMedicalFieldId()
+				newProduct.getMedicalFieldId(),
+				newProduct.getTypeOfProduct(),
+				newProduct.isHasLessPrice(),
+				newProduct.isHasLessSideEffects(),
+				newProduct.getImprovedOverProduct()
 				));
 	}
 	

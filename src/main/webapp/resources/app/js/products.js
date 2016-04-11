@@ -169,7 +169,23 @@ var attachClickEvent = function(productId){
 	    		var rightPanelId = '#analysis-right-panel-'+currentProductId;
 	    		$(rightPanelId).slideToggle('fast');
 	    		
-	    	}else{
+	    	}else if(str == 'side-effect-comments-analysis'){
+	    		$('.row-custom-style').append(
+	    				'<div class="col-lg-9 analysis-right-panel" id="sideeffect-analysis-right-panel-'+currentProductId+'" style="display: none;">'+
+	    			      	'<div id="container-sideeffect-'+currentProductId+'"  class="col-md-6" style="min-width: 310px; height: 400px;'+ 
+	    			      	'max-width: 600px; margin: 0 auto"></div>'+
+	    			      	
+	    			    '</div>'
+	    			);
+	    		var containerId = '#container-sideeffect-'+currentProductId;
+	    		var productName = $('.product-selector').find('option[value="'+currentProductId+'"]').html();
+	    		getSideEffectCommentsAnalysisData(currentProductId, containerId, productName);
+	    		$('.analysis-right-panel').css('display','none');
+	    		var rightPanelId = '#sideeffect-analysis-right-panel-'+currentProductId;
+	    		$(rightPanelId).slideToggle('fast');
+	    	}
+	    	
+	    	else{
 				$('.row-custom-style').append(
 						'<div class="col-lg-6 doc-middle-panel" id="'+str+'-product'+currentProductId+'" style="display: none;">'+
 							'<object class="pdf-doc-object pdf-doc-object-slidedown" data="'+productFiles[idx]["filePath"] +'" type="application/pdf" >'+
@@ -209,6 +225,35 @@ $(document).on('click','button.show-comments',function(){
 	$('.comments-div-'+id).slideToggle('fast');
 });
 
+var getSideEffectCommentsAnalysisData = function(productId, containerId, productName){
+	$.ajax({
+		type: 'GET',
+		url : '/getsideeffectanalysis?id='+productId,
+		dataType : 'json',
+		success : function(data){
+	    	console.log("Data received : "+JSON.stringify(data));
+	    	constructGraphSideEffectCommentsAnalysis(data, containerId, productName, productId)
+	    	/*if(data[0]["isMedicineEffective"] == "NaN") {
+	    		for(var i = 0; i < data.length; i++){
+	    		    data[i]["isMedicineEffective"] = 0.0;
+	    		    data[i]["hasSideEffects"] = 0.0;
+	    		    data[i]["isAffordable"] = 0.0;
+	    		}
+	    		console.log("Data after updating to 0 : "+JSON.stringify(data));
+	    		formatData(data,containerId, productName,productId);
+	    	}else{
+	    		formatData(data,containerId, productName,productId);
+	    	}*/
+		},
+		error : function(e){
+			console.log("Error : "+JSON.stringify(e));
+		}
+	}).done(function(){
+		console.log("ajax complete!");
+	});
+}
+
+
 var getAnalysisData = function(productId, containerId, productName){
 	$.ajax({
 		type: 'GET',
@@ -236,6 +281,71 @@ var getAnalysisData = function(productId, containerId, productName){
 	});
 }
 
+var constructGraphSideEffectCommentsAnalysis = function(data,containerId, productName,productId){
+	var sideEffects = [];
+	var noOfOccurences = [];
+	
+	for(var i = 0; i< data.length; i++){
+		sideEffects.push(data[i]["sideEffect"]);
+		noOfOccurences.push(data[i]["noOfOccurence"]);
+	}
+	
+	$(containerId).highcharts({
+        chart: {
+            type: 'bar'
+        },
+        title: {
+            text: 'Sample medicine Side Effects Analysis for '+productName
+        },
+        subtitle: {
+            text: 'Source: Patients using sample medicines'
+        },
+        xAxis: {
+            categories: sideEffects,
+            title: {
+                text: null
+            }
+        },
+        yAxis: {
+            min: 0,
+            title: {
+                text: 'No of cases',
+                align: 'high'
+            },
+            labels: {
+                overflow: 'justify'
+            }
+        },
+        tooltip: {
+            valueSuffix: ''
+        },
+        plotOptions: {
+            bar: {
+                dataLabels: {
+                    enabled: true
+                }
+            }
+        },
+        /*legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'top',
+            x: -50,
+            y: 10,
+            floating: true,
+            borderWidth: 1,
+            backgroundColor: ((Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'),
+            shadow: true
+        },*/
+        credits: {
+            enabled: false
+        },
+        series: [{
+            name: 'No of patients experiencing side effects',
+            data: noOfOccurences
+        }]
+    });
+}
 
 var formatData = function(rawData, containerId, productName,productId){
 	var data = {};

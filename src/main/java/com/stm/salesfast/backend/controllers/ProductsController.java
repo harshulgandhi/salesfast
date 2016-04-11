@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.stm.salesfast.backend.dto.ProductDto;
 import com.stm.salesfast.backend.entity.ManagerProductViewEntity;
 import com.stm.salesfast.backend.entity.MedicalFieldEntity;
 import com.stm.salesfast.backend.entity.NewProductEntity;
@@ -83,7 +84,14 @@ public class ProductsController {
 		List<ProductEntity> allProducts = productService.getAllProducts();
 		return allProducts.toArray(new ProductEntity[allProducts.size()]);
 	}
-
+	
+	@RequestMapping(value="/getproductsformedfield", method=RequestMethod.GET)
+	@ResponseBody
+	public ProductDto[] getProductsForMedField(@RequestParam(value="medicalfield") String medicalFieldId){
+		List<ProductDto> allProductForMedField = productService.getProductByMedicalField(medicalFieldId);
+		return allProductForMedField.toArray(new ProductDto[allProductForMedField.size()]);
+	}
+	
 	@RequestMapping(value = "/getproductdocuments",method=RequestMethod.GET, produces="application/json")
 	@ResponseBody
 	public ManagerProductViewEntity[] getProductDocument(@RequestParam(value="productId") int productId) {

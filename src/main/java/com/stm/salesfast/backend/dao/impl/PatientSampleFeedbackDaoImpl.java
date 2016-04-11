@@ -39,7 +39,6 @@ public class PatientSampleFeedbackDaoImpl implements PatientSampleFeedbackDao{
 	private static final String COUNT_ALL = "SELECT COUNT(*) FROM patient_sample_feedback "
 			+ "WHERE productId = ?";
 	
-	
 	@Override
 	public void insert(PatientSampleFeedbackDto sampleFeedback) {
 		try{

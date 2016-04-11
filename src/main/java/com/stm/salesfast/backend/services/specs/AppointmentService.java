@@ -74,5 +74,7 @@ public interface AppointmentService {
 	public String getNotInterestedAppointmentStatus(int physicianId, int userId);
 
 	public List<AppointmentEntity> getAllAppointmentForADate(int userId, Date date);
+
+	public AppointmentDto getAppointmentPhysIdUserIdProductId(int physicianId, int userId, int productId);
 	
 }

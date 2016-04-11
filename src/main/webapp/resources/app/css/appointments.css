@@ -195,7 +195,7 @@ table#future-appointment-fixed-physician-table{
     border: solid 2px;
     padding: 6px;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    width: 53%;
+    width: 60%;
 }
 .filter-label {
     margin-right: 5%;
@@ -207,11 +207,14 @@ span.date-selector-label {
     margin-right: 13%;
 }
 span.month-label.date-selector-label {
-	margin-left: 39%;
-	    width: 35px;
+	/* margin-left: 39%;
+	    width: 40px; */
+	    margin-right: 12%;
 }
 span.day-label.date-selector-label {
-    margin-left: 45%;
+    /* margin-left: 45%;
+    width: 40px; */
+    margin-right: 12%;
 }
 
 .select2-container {
@@ -219,10 +222,14 @@ span.day-label.date-selector-label {
 }
 .year-selector-div.date-div {
     width: 75px;
+    margin-right: 9%;
 }
 .month-selector-div.date-div {
     width: 70px;
+    margin-right: 9%;
+	/* margin-left: 10px; */
 }
 .day-selector-div.date-div {
     width: 64px;
+	/* margin-left: 10px; */
 }

@@ -29,6 +29,7 @@ public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
 													+ "(physicianId, productId) IN "
 													+ "(SELECT physicianId, productId from appointment "
 													+ " WHERE userId = ?)";
+	
 	private static final String FETCH_PRESCRIBING_PHY = "SELECT physicianId FROM meeting_update "
 													+ "WHERE status='PRESCRIBING' AND "
 													+ "(physicianId, productId) IN "
@@ -38,6 +39,10 @@ public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
 													+ "WHERE appointmentId in "
 													+ "(SELECT appointmentId from appointment "
 													+ "WHERE userId = ? AND physicianId = ?)";
+	private static final String UPDATE_EXPENSIVE_SIDE_EFFECT_FLAGS = "UPDATE meeting_update SET "
+			+ "isExpensive = ?, hasSideEffects = ? "
+			+ "WHERE appointmentId = ?";
+	
 	
 	@Autowired
 	JdbcTemplate jdbcTemplate;
@@ -66,7 +71,7 @@ public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
 		// TODO Auto-generated method stub
 		try{
 			return jdbcTemplate.queryForObject(FETCH_BY_APPOINTMENTID, (rs, rownum) -> {
-					return new MeetingUpdateDto(rs.getInt("meetingUpdateId"), rs.getDate("date"), rs.getString("status"), rs.getBoolean("isEDetailed"), rs.getInt("physicianId"), rs.getInt("productId"),rs.getString("medicalFieldId"),appointmentId);
+					return new MeetingUpdateDto(rs.getInt("meetingUpdateId"), rs.getDate("date"), rs.getString("status"), rs.getBoolean("isEDetailed"), rs.getInt("physicianId"), rs.getInt("productId"),rs.getString("medicalFieldId"),rs.getInt("appointmentId"), rs.getBoolean("isExpensive"), rs.getBoolean("hasSideEffects"));
 				}, appointmentId);
 			
 		}catch(DataAccessException e){
@@ -81,7 +86,7 @@ public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
 		// TODO Auto-generated method stub
 		try{
 			return jdbcTemplate.query(FETCH_FOR_PRESCRIBING, (rs, rownum) -> {
-					return new MeetingUpdateDto(rs.getInt("meetingUpdateId"), rs.getDate("date"), rs.getString("status"), rs.getBoolean("isEDetailed"), physicianId, rs.getInt("productId"),rs.getString("medicalFieldId"),rs.getInt("appointmentId"));
+					return new MeetingUpdateDto(rs.getInt("meetingUpdateId"), rs.getDate("date"), rs.getString("status"), rs.getBoolean("isEDetailed"), physicianId, rs.getInt("productId"),rs.getString("medicalFieldId"),rs.getInt("appointmentId"), rs.getBoolean("isExpensive"), rs.getBoolean("hasSideEffects"));
 				}, physicianId);
 			
 		}catch(DataAccessException e){
@@ -95,7 +100,7 @@ public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
 		// TODO Auto-generated method stub
 		try{
 			return jdbcTemplate.query(FETCH_FOR_PHYS_PORTAL, (rs, rownum) -> {
-					return new MeetingUpdateDto(rs.getInt("meetingUpdateId"), rs.getDate("date"), rs.getString("status"), rs.getBoolean("isEDetailed"), physicianId, rs.getInt("productId"),rs.getString("medicalFieldId"),rs.getInt("appointmentId"));
+					return new MeetingUpdateDto(rs.getInt("meetingUpdateId"), rs.getDate("date"), rs.getString("status"), rs.getBoolean("isEDetailed"), physicianId, rs.getInt("productId"),rs.getString("medicalFieldId"),rs.getInt("appointmentId"), rs.getBoolean("isExpensive"), rs.getBoolean("hasSideEffects"));
 				}, status1, status2,status3, physicianId);
 			
 		}catch(DataAccessException e){
@@ -144,5 +149,21 @@ public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
 		}
 		return null;
 	}
+	
+	@Override
+	public void update(boolean isExpensive, boolean hasSideEffetcs, int appointmentId) {
+		// TODO Auto-generated method stub
+		
+		try{
+			jdbcTemplate.update(UPDATE_EXPENSIVE_SIDE_EFFECT_FLAGS,(ps)->{
+				ps.setBoolean(1, isExpensive);
+				ps.setBoolean(2, hasSideEffetcs);
+				ps.setInt(3, appointmentId);
+			});
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+	}
+
 	
 }

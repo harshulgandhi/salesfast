@@ -35,5 +35,14 @@ public interface NotificationService {
 			String notificationCategory);
 	public void insertNotificationDocUpdateSalesRep(int userId, String productName,
 			String physicianName, String notificationCategory);
+	public void insertNotificationImprovedProductMoreAffordableSalesRep(int userId,
+			String productName, String prevProductName,
+			String notificationCategory);
+	public void insertNotificationImprovedProductLessSideEffectsSalesRep(int userId,
+			String productName, String prevProductName,
+			String notificationCategory);
+	public void insertNotificationImprovedProductBothReasonsSalesRep(int userId,
+			String productName, String prevProductName,
+			String notificationCategory);
 	
 }

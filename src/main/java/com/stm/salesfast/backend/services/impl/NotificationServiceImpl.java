@@ -116,6 +116,29 @@ public class NotificationServiceImpl implements NotificationService {
 		notificationDao.insertNotification(new NotificationsDto(notification, false, userId, notificationCategory));
 	}
 	
+	/**
+	 * Notifications in case of improved 
+	 * products - 3 notifications for different combinations of type
+	 * of improvements possible
+	 * */
+	@Override
+	public void insertNotificationImprovedProductMoreAffordableSalesRep(int userId, String productName, String prevProductName, String notificationCategory){
+		String notification = String.format(ConstantValues.FORMAT_FOLLOWUP_CUSTGROWTH_LOST_MORE_AFFORDABLE, productName, prevProductName, prevProductName);
+		notificationDao.insertNotification(new NotificationsDto(notification, false, userId, notificationCategory));
+	}
+	@Override
+	public void insertNotificationImprovedProductLessSideEffectsSalesRep(int userId, String productName, String prevProductName, String notificationCategory){
+		String notification = String.format(ConstantValues.FORMAT_FOLLOWUP_CUSTGROWTH_LOST_LESS_SIDE_EFFECTS, productName, prevProductName, prevProductName);
+		notificationDao.insertNotification(new NotificationsDto(notification, false, userId, notificationCategory));
+	}
+	@Override
+	public void insertNotificationImprovedProductBothReasonsSalesRep(int userId, String productName, String prevProductName, String notificationCategory){
+		String notification = String.format(ConstantValues.FORMAT_FOLLOWUP_CUSTGROWTH_LOST_BOTH_REASONS, productName, prevProductName, prevProductName);
+		notificationDao.insertNotification(new NotificationsDto(notification, false, userId, notificationCategory));
+	}
+	
+	
+	
 	@Override
 	public void insertNotificationDocUpdateSalesRep(int userId, String productName, String physicianName, String notificationCategory){
 		String notification = String.format(ConstantValues.FORMAT_TRAINING_DOC_UPDATE, productName, physicianName);

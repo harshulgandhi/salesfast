@@ -11,8 +11,20 @@ public final class ConstantValues {
 	
 	public static final String FORMAT_FOLLOWUP = "Reminder: Call Dr. %s tomorrow to follow up regarding detailing for medicine %s, as discussed during previous call.";
 	
-	public static final String FORMAT_FOLLOWUP_CUSTGROWTH_LOST = "%s was just released. Call the most prospecting physicians who did not agree to prescribe to our "
+	public static final String FORMAT_FOLLOWUP_CUSTGROWTH_LOST = "[NEW PRODUCT] %s was just released. Call the most prospecting physicians who did not agree to prescribe to our "
 																	+ "last product. Click on \"Detail\" button to know all LOST physicians.";
+	
+	public static final String FORMAT_FOLLOWUP_CUSTGROWTH_LOST_MORE_AFFORDABLE = "[NEW PRODUCT] %s was just released which is an improved version of %s. Call the most prospecting "
+																	+ "physicians who found medicine %s too expensive and did not agree to prescribe the same"
+																	+ ". Click on \"Detail\" button to access list of such physicians.";
+
+	public static final String FORMAT_FOLLOWUP_CUSTGROWTH_LOST_LESS_SIDE_EFFECTS= "[NEW PRODUCT] %s was just released which is an improved version of %s. Call the most prospecting "
+																	+ "physicians who found medicine %s having too many side effects and did not agree to prescribe the same"
+																	+ ". Click on \"Detail\" button to access list of such physicians.";
+	
+	public static final String FORMAT_FOLLOWUP_CUSTGROWTH_LOST_BOTH_REASONS = "[NEW PRODUCT] %s was just released which is an improved version of %s. Call the most prospecting "
+																	+ "physicians who found medicine %s too expensive and having too many side effects, and did not agree to prescribe the same"
+																	+ ". Click on \"Detail\" button to access list of such physicians physicians.";
 	
 	public static final String FORMAT_FOLLOWUP_CUSTGROWTH_NOT_INTERESTED = "%s was just released. Call the most prospecting physicians who was not interested in meeting for "
 																	+ "last product. Click on \"Detail\" button to know all NOT INTERESTED physicians.";

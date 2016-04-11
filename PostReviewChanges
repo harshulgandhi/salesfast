@@ -11,7 +11,6 @@ Priority: HIGH
 
 [User : SalesRep] 4. Provide filters on Alignments page which can filter aligned physicians based on past experiences and outcomes of previous meetings. This will compliment change #3 (above)
 
-
 [User : DM] 5. Analyse the side effect comments submitted as for sample medicines and identify most popular side effect reasons and show it as a report to DM. DM can then take required actions and target to release a new improved product
 
 [User : DM] 6. Data Analysis Report: Report should be generated at a more granular level. Idea is to provide ability to DM to apply filters based on MEDICAL FIELD, PRODUCT, SALESREP and MEETING STATUS. These filters increase the granularity of the data in the order in which they are mentioned. Before filtering for any medical field, the application will by default show over all analysis.

@@ -1,5 +1,7 @@
 package com.stm.salesfast.backend.services.impl;
 
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,12 +14,15 @@ import com.stm.salesfast.backend.dto.ProductDto;
 import com.stm.salesfast.backend.entity.MedicalFieldEntity;
 import com.stm.salesfast.backend.entity.ProductEntity;
 import com.stm.salesfast.backend.entity.SampleFeedbackDataEntity;
+import com.stm.salesfast.backend.entity.SampleSideEffectCommentsEntity;
 import com.stm.salesfast.backend.services.specs.MedicalFieldService;
 import com.stm.salesfast.backend.services.specs.ProductFetchService;
 import com.stm.salesfast.backend.services.specs.SampleFeedbackAnalysisService;
 import com.stm.salesfast.backend.services.specs.SampleFeedbackService;
 import com.stm.salesfast.backend.services.specs.TrainingMaterialService;
 import com.stm.salesfast.backend.services.specs.UserToRoleService;
+import com.stm.salesfast.backend.utils.CardKeyword;
+import com.stm.salesfast.backend.utils.KeywordsExtractor;
 
 @Service
 public class SampleFeedbackAnalysisServiceImpl implements SampleFeedbackAnalysisService{
@@ -81,4 +86,22 @@ public class SampleFeedbackAnalysisServiceImpl implements SampleFeedbackAnalysis
 	public List<SampleFeedbackDataEntity> analyseFeedbackData(int productId) {
 		return getCounts(productId);
 	}
+	
+	@Override
+	public List<SampleSideEffectCommentsEntity> getSideEffectTextAnalysis(int productId) throws IOException{
+		List<String> sideEffects = sampleFeedbackService.getSideEffectComments(productId);
+		List<SampleSideEffectCommentsEntity> sideEffectCommentsAnalysed = new ArrayList<>();
+		String allComments = String.join(" ", sideEffects);
+		allComments = allComments.replaceAll("-+", "");
+		allComments = allComments.toLowerCase().replaceAll(" ache","ache");
+		List<CardKeyword> keywordsList = KeywordsExtractor.getKeywordsList(allComments);
+		for(CardKeyword eachKeyWord : keywordsList){
+			if(eachKeyWord.getFrequency() >= 2){
+				sideEffectCommentsAnalysed.add(new SampleSideEffectCommentsEntity(eachKeyWord.getStem(), eachKeyWord.getFrequency()));
+			}
+		}
+		
+		return sideEffectCommentsAnalysed;
+	}
+	
 }

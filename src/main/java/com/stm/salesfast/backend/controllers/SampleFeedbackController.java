@@ -1,6 +1,7 @@
 package com.stm.salesfast.backend.controllers;
 
 
+import java.io.IOException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.stm.salesfast.backend.entity.ProductEntity;
 import com.stm.salesfast.backend.entity.SampleFeedbackDataEntity;
 import com.stm.salesfast.backend.entity.SampleFeedbackEntity;
+import com.stm.salesfast.backend.entity.SampleSideEffectCommentsEntity;
 import com.stm.salesfast.backend.entity.VirtualLearningEntity;
 import com.stm.salesfast.backend.services.specs.SampleFeedbackAnalysisService;
 import com.stm.salesfast.backend.services.specs.SampleFeedbackService;
@@ -71,6 +73,14 @@ public class SampleFeedbackController {
 		List<SampleFeedbackDataEntity> feedbackAnalysis = feedbackAnalysisService.analyseFeedbackData(productId);
 		for(SampleFeedbackDataEntity eachFeed : feedbackAnalysis) log.info(productId+" ==> "+eachFeed);
 		return feedbackAnalysis.toArray(new SampleFeedbackDataEntity[feedbackAnalysis.size()]);
+	}
+	
+	@RequestMapping(value="/getsideeffectanalysis", method=RequestMethod.GET,produces="application/json")
+	@ResponseBody
+	public SampleSideEffectCommentsEntity[] getSampleSideEffectCommentsAnalysisForProduct(@RequestParam(value="id") int productId) throws IOException{
+		List<SampleSideEffectCommentsEntity> sideEffectCommentsAnalysis = feedbackAnalysisService.getSideEffectTextAnalysis(productId);
+		for(SampleSideEffectCommentsEntity eachFeed : sideEffectCommentsAnalysis) log.info(productId+" ==> "+eachFeed);
+		return sideEffectCommentsAnalysis.toArray(new SampleSideEffectCommentsEntity[sideEffectCommentsAnalysis.size()]);
 	}
 	
 	@RequestMapping(value="/getsideeffectcomments", method=RequestMethod.GET,produces="application/json")

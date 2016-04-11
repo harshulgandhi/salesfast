@@ -22,9 +22,45 @@
 			<div class="row row-header page-header"><h3>Add a new product</h3></div>
 			<div class="row row-custom-style">
 				<div class="col-lg-3 medfield-left-panel">
-					<select class="medical-field-selector validate-ele" name="medicalfield">
-						<option disabled="disabled" selected="selected" value="none"> -- select medical field -- </option>
-					</select>
+					<div class="product-specifications medical-field-div">
+						<label class="control-label" id="medical-field-label">Medical Field</label>
+						<select class="medical-field-selector validate-ele" name="medicalfield">
+							<option disabled="disabled" selected="selected" value="none"> -- select medical field -- </option>
+						</select>
+					</div>
+					
+					<div class="product-specifications category-product">
+						<label class="control-label" id="product-type-label">Type of product</label>
+						<select class="product-type-selector validate-ele" disabled="disabled" name="producttype">
+							<option disabled="disabled" value="none"> -- select medical field -- </option>
+							<option selected="selected" value="NEW PRODUCT">New Product</option>
+							<option value="IMPROVED PRODUCT">Improvement over existing</option>
+						</select>
+					</div>
+					
+					<div class="product-specifications improvement-category">
+						<label class="control-label" id="improvement-type-label">Select type of improvement</label>
+						
+						<div class="squaredThree more-affordable-div">
+							<input class="category-checkbox" type="checkbox" value="MORE AFFORDABLE" id="affordable-checkbox" name="moreaffordable" disabled="disabled"/>
+							<label class="control-label" id="more-affordable-label">More Affordable</label>
+							<!-- <label for="affordable-checkbox"></label> -->
+						</div>
+						
+						<div class="squaredThree less-sideeffects-div">
+							<input class="category-checkbox" type="checkbox" value="LESS SIDE EFFECTS" id="less-sideeffects-checkbox" name="lesssideeffects" disabled="disabled"/>
+							<label class="control-label" id="less-sideeffects-label">Less Side Effects</label>
+							<!-- <label for="less-sideeffects-checkbox"></label> -->
+						</div>							
+					</div>
+					
+					<div class="product-specifications previous-products">
+						<label class="control-label" id="previous-products-label">Improved over?</label>
+						<select class="previous-product-selector validate-ele" disabled="disabled" name="previousproduct">
+							<option disabled="disabled" value="0"> -- select previous product -- </option>
+						</select>
+					</div>
+					
 				</div>
 				<div class="col-lg-4 newproduct-middle-panel">
 					<form id="add-product-form" class="form-horizontal" >

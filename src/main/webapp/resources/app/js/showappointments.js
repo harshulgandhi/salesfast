@@ -202,17 +202,16 @@ $('.show-contact').click(function(){
 
 
 $(document).on('click','.my-pitch-buttons',function(){
-	var $row = $(this).parent()  
-	                  .parent(); 
+	var $row = $(this).closest('tr'); 
 	var appointmentId = $row.find('.appointment-id').text();
 	var hasPitch = $row.find('.has-pitch-td').html();
 	if(hasPitch == 'false'){
 		$('input[name="uploadModalAppointmentId"]').val(appointmentId);
-		console.log($('input[name="uploadModalAppointmentId"]').val());
+		console.log("Appointment Id : "+$('input[name="uploadModalAppointmentId"]').val());
 		$('#add-meeting-pitch-modal').modal('show');
 	}else if(hasPitch = 'true'){
 		$('input[name="viewModalAppointmentId"]').val(appointmentId);
-		console.log($('input[name="viewModalAppointmentId"]').val());
+		console.log("Appointment Id : "+$('input[name="viewModalAppointmentId"]').val());
 		getPitchFile(appointmentId);
 //		$('#view-meeting-pitch-modal').modal('show');
 	}

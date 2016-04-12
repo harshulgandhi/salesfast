@@ -67,6 +67,26 @@ $(document).on('change','select.search-filter-param',function(){
 	if($(this).hasClass('day-selector')){
 		var year = $('select.year-selector').val();
 		var month = $('select.month-selector').val();
+		var day = $('select.day-selector').val();
+		var physResponseCategory = $('.phys-response').val();
+		var status = $('select.status-selector').val();
+		console.log('year : '+year+"; month : "+month+"; day : "+day+"; physResponseCategory : "+physResponseCategory+"; status : "+status);
+		searchTerm = '';
+		if(month != '0') searchTerm += year+' '+month;
+		if(day != '0') searchTerm += ' '+day;
+		if(status != 'none') searchTerm += ' '+status;
+		if(physResponseCategory != 'none'){
+			if(physResponseCategory == 'presentation'){
+				searchTerm += ' '+'presentation problem';	
+			}else if(physResponseCategory == 'confidence'){
+				searchTerm += ' '+'confidence problem';
+			}else if(physResponseCategory == 'reputation'){
+				searchTerm += ' '+'maintain reputation problem';
+			}
+		}
+		table.search(searchTerm).draw();
+		/*var year = $('select.year-selector').val();
+		var month = $('select.month-selector').val();
 		var day = $(this).val();
 		var searchTerm = year+'-'+month+'-'+day;
 		console.log("$('.status-selector').val() : "+$('.status-selector').val());
@@ -75,10 +95,30 @@ $(document).on('change','select.search-filter-param',function(){
 			table.search(searchTerm).draw();
 		}else{
 			table.search(searchTerm).draw();
-		}
+		}*/
 	}
 	else if($(this).hasClass('month-selector')){
-		if(!$('select.day-selector').attr('disabled')){
+		var year = $('select.year-selector').val();
+		var month = $('select.month-selector').val();
+		var day = $('select.day-selector').val();
+		var physResponseCategory = $('.phys-response').val();
+		var status = $('select.status-selector').val();
+		console.log('year : '+year+"; month : "+month+"; day : "+day+"; physResponseCategory : "+physResponseCategory+"; status : "+status);
+		searchTerm = '';
+		if(month != '0') searchTerm += year+' '+month;
+		if(day != '0') searchTerm += ' '+day;
+		if(status != 'none') searchTerm += ' '+status;
+		if(physResponseCategory != 'none'){
+			if(physResponseCategory == 'presentation'){
+				searchTerm += ' '+'presentation problem';	
+			}else if(physResponseCategory == 'confidence'){
+				searchTerm += ' '+'confidence problem';
+			}else if(physResponseCategory == 'reputation'){
+				searchTerm += ' '+'maintain reputation problem';
+			}
+		}
+		table.search(searchTerm).draw();
+		/*if(!$('select.day-selector').attr('disabled')){
 			var year = $('select.year-selector').val();
 			var month = $('select.month-selector').val();
 			$('select.day-selector').select2('val',currentSelectedDate);
@@ -103,9 +143,29 @@ $(document).on('change','select.search-filter-param',function(){
 					table.search(searchTerm).draw();
 				}
 			}
-		}
+		}*/
 	}else if($(this).hasClass('status-selector')){
 		var year = $('select.year-selector').val();
+		var month = $('select.month-selector').val();
+		var day = $('select.day-selector').val();
+		var physResponseCategory = $('.phys-response').val();
+		var status = $(this).val();
+		console.log('year : '+year+"; month : "+month+"; day : "+day+"; physResponseCategory : "+physResponseCategory+"; status : "+status);
+		searchTerm = '';
+		if(month != '0') searchTerm += year+' '+month;
+		if(day != '0') searchTerm += ' '+day;
+		if(status != 'none') searchTerm += ' '+status;
+		if(physResponseCategory != 'none'){
+			if(physResponseCategory == 'presentation'){
+				searchTerm += ' '+'presentation problem';	
+			}else if(physResponseCategory == 'confidence'){
+				searchTerm += ' '+'confidence problem';
+			}else if(physResponseCategory == 'reputation'){
+				searchTerm += ' '+'maintain reputation problem';
+			}
+		}
+		table.search(searchTerm).draw();
+		/*var year = $('select.year-selector').val();
 		var month = $('select.month-selector').val();
 		var day = $('select.day-selector').val();
 		var status = $(this).val();
@@ -121,9 +181,29 @@ $(document).on('change','select.search-filter-param',function(){
 		}else if(month == "0" && status == 'none'){
 			searchTerm = year+' '+status;
 			table.search(searchTerm).draw();
-		}
+		}*/
 	}else if($(this).hasClass('phys-response')){
 		var year = $('select.year-selector').val();
+		var month = $('select.month-selector').val();
+		var day = $('select.day-selector').val();
+		var physResponseCategory = $('.phys-response').val();
+		var status = $('select.status-selector').val();
+		console.log('year : '+year+"; month : "+month+"; day : "+day+"; physResponseCategory : "+physResponseCategory+"; status : "+status);
+		searchTerm = '';
+		if(month != '0') searchTerm += year+' '+month;
+		if(day != '0') searchTerm += ' '+day;
+		if(status != 'none') searchTerm += ' '+status;
+		if(physResponseCategory != 'none'){
+			if(physResponseCategory == 'presentation'){
+				searchTerm += ' '+'presentation problem';	
+			}else if(physResponseCategory == 'confidence'){
+				searchTerm += ' '+'confidence problem';
+			}else if(physResponseCategory == 'reputation'){
+				searchTerm += ' '+'maintain reputation problem';
+			}
+		}
+		table.search(searchTerm).draw();
+		/*var year = $('select.year-selector').val();
 		var month = $('select.month-selector').val();
 		var day = $('select.day-selector').val();
 		var status = $('select.status-selector').val();
@@ -145,7 +225,7 @@ $(document).on('change','select.search-filter-param',function(){
 				searchTerm += ' '+'maintain reputation problem';
 			}
 		}
-		table.search(searchTerm).draw();
+		table.search(searchTerm).draw();*/
 		
 	}
 	

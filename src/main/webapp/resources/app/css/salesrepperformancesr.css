@@ -35,15 +35,19 @@ h1{
     width: 80%;
 }
 
+.row, .salesrep-appointment-details {
+    margin-left: 2%;
+}
+
 /*Filter styling*/
 .row.date-filter-row {
     /* display: -webkit-inline-box; */
     border: solid 2px;
     padding: 6px;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    width: 100%;
-	margin-bottom: 2%;
-	margin-left: 1px;
+    width: 96%;
+    margin-bottom: 2%;
+    margin-left: 4%;
 }
 .filter-label {
     margin-right: 4%;
@@ -99,14 +103,15 @@ span.day-label.date-selector-label {
     margin-top: 1%;
     border-top: solid 1px #C7BEBE;
     padding-top: 1%;
+    width: 100%;
 }
 span.phys-response-label.phys-response-selector-label {
     margin-left: 9%;
-    margin-right: 3%;
+    margin-right: 5%;
 }
 .phys-response-selector-div.advance-filter-div {
     width: 330px;
-    margin-left: 1%;
+    margin-left: 0%;
 }
 .status-selector-div.date-div{
 	width: 140px;

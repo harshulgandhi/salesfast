@@ -199,7 +199,12 @@ table#future-appointment-fixed-physician-table{
     width: 60%;
 }
 .filter-label {
-    margin-right: 5%;
+    margin-right: 4%;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-weight: 800;
+    color: #AF0808;
+    padding-top: 2px;
+    padding-left: 15px;
 }
 span.date-selector-label {
     margin-right: 13%;

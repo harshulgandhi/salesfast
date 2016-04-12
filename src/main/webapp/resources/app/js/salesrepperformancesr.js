@@ -721,7 +721,7 @@ var createPhysicianResponseChart=function(containerId, data){
 }
 
 var getReportEnvironmentHtml = function(salesRepId){
-	var envHtml = '<div class="row row-header page-header"><h1>Sales Representative\'s performance</h1></div>'+
+	var envHtml = '<div class="row row-header page-header"><h1>Your performance</h1></div>'+
 					'<div class="row row-chart">'+
 					'<div id="container-daily-meeting"  class="col-md-12" style="min-width: 310px; height: 400px; margin: 0 auto"></div>'+
 					'</div>'+

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.stm.salesfast.backend.dao.specs.AppointmentDao;
 import com.stm.salesfast.backend.dto.AppointmentDto;
 import com.stm.salesfast.backend.entity.AppointmentCountPerDayEntity;
+import com.stm.salesfast.backend.entity.MeetingStatusCountEntity;
 
 @Repository
 public class AppointmentDaoImpl implements AppointmentDao {
@@ -92,7 +93,8 @@ public class AppointmentDaoImpl implements AppointmentDao {
 			+ "AND appointmentId IN (SELECT appointmentId "
 			+ "from meeting_update WHERE status = ?) "
 			+ "group by date;";
-	
+	private static final String FETCH_CALL_STATUS_COUNT = "SELECT count(appointmentId)  as count, confirmationStatus  "
+			+ "FROM appointment WHERE userId = ? GROUP BY confirmationStatus";
 	
 	@Override
 	public AppointmentDto getAppointmentById(int appointmentId) {
@@ -436,12 +438,24 @@ public class AppointmentDaoImpl implements AppointmentDao {
 	public List<AppointmentCountPerDayEntity> getCountPerDayPerformanceBased(int userId, String status){
 		try{
 			return jdbcTemplate.query(FETCH_PERDAY_APPOINTMENT_COUNTBY_OUTCOME, (rs, rownnum)->{
-				return new AppointmentCountPerDayEntity(rs.getInt("noOfAppointment"),rs.getDate("date"));
+				return new AppointmentCountPerDayEntity(rs.getInt("noOfAppointments"),rs.getDate("date"));
 			}, userId, status);
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}
 		return null;
 	}
-
+	
+	@Override
+	public List<MeetingStatusCountEntity> getAppointmentStatusCount(int userId) {
+		try{
+			return jdbcTemplate.query(FETCH_CALL_STATUS_COUNT, (rs, rownum) -> {
+					return new MeetingStatusCountEntity(rs.getString("confirmationStatus"), rs.getInt("count"));
+				}, userId);
+			
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

@@ -9,6 +9,7 @@ import com.stm.salesfast.backend.dto.AppointmentDto;
 import com.stm.salesfast.backend.entity.AlignedPhysicianFollowUpEntity;
 import com.stm.salesfast.backend.entity.AppointmentCountPerDayEntity;
 import com.stm.salesfast.backend.entity.AppointmentEntity;
+import com.stm.salesfast.backend.entity.MeetingStatusCountEntity;
 import com.stm.salesfast.backend.entity.PastAppointmentEntity;
 
 public interface AppointmentService {
@@ -79,5 +80,7 @@ public interface AppointmentService {
 	public AppointmentDto getAppointmentPhysIdUserIdProductId(int physicianId, int userId, int productId);
 
 	List<AppointmentCountPerDayEntity> getPerDayAppointmentCountByPerformance(int userId, String status);
+
+	List<MeetingStatusCountEntity> getAppointmentStatusCount(int userId);
 	
 }

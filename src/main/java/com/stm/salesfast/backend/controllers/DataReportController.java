@@ -11,16 +11,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.stm.salesfast.backend.entity.AssignedSalesRepInfoEntity;
 import com.stm.salesfast.backend.entity.MeetingExpAnalysisFilterEntity;
 import com.stm.salesfast.backend.entity.MeetingExperienceAnalyzedDataEntity;
 import com.stm.salesfast.backend.entity.MeetingExperienceDataEntity;
 import com.stm.salesfast.backend.entity.MeetingExperienceEntity;
+import com.stm.salesfast.backend.entity.SalesRepDailyPerformanceEntity;
+import com.stm.salesfast.backend.entity.SalesRepMeetingPerformanceEntity;
 import com.stm.salesfast.backend.entity.ViewAllPitchEntity;
 import com.stm.salesfast.backend.entity.ViewPitchFilterParamEntity;
 import com.stm.salesfast.backend.services.specs.AnalysisService;
+import com.stm.salesfast.backend.services.specs.SalesRepPerformanceService;
+import com.stm.salesfast.backend.services.specs.TerritoryService;
 import com.stm.salesfast.backend.utils.DataReportMapper;
+import com.stm.salesfast.constant.SessionConstants;
 
 @Controller
 public class DataReportController {
@@ -28,6 +35,12 @@ public class DataReportController {
 	
 	@Autowired
 	private AnalysisService analysis;
+	
+	@Autowired
+	private SalesRepPerformanceService salesRepPerformance;
+	
+	@Autowired
+	private TerritoryService territory;
 	
 	@RequestMapping(value="/datareport", method=RequestMethod.GET)
 	public String loginPage(){
@@ -98,4 +111,31 @@ public class DataReportController {
 	public String salesRepPerformance(){
 		return "salesrepperformance";
 	}
+	
+	@RequestMapping(value="/getdailymeetingcount", method=RequestMethod.GET, produces="application/json")
+	@ResponseBody
+	public SalesRepDailyPerformanceEntity[] getDailyMeetingsAttendedBySalesRep(@RequestParam(value="userId") int userId, @RequestParam(value="month") int month){
+		List<SalesRepDailyPerformanceEntity> dailyPerformance = salesRepPerformance.getDailyPerformanceData(userId, month);
+		log.info("Record count : "+dailyPerformance.size());
+		for(SalesRepDailyPerformanceEntity eachEntity : dailyPerformance) log.info(""+eachEntity);
+		return dailyPerformance.toArray(new SalesRepDailyPerformanceEntity[dailyPerformance.size()]);
+	}
+	
+	@RequestMapping(value="/getallassignedsalesrep", method=RequestMethod.GET, produces="application/json")
+	@ResponseBody
+	public AssignedSalesRepInfoEntity[] getSalesRepInformation(){
+		List<AssignedSalesRepInfoEntity> assignedSalesrep = new ArrayList<>();
+		if(SessionConstants.CURRENT_USER_ROLES.contains("DM")){
+			assignedSalesrep = territory.getSalesRepByDMId(SessionConstants.USER_ID);
+		}
+		return assignedSalesrep.toArray(new AssignedSalesRepInfoEntity[assignedSalesrep.size()]);
+	}
+	
+	@RequestMapping(value="/getmeetingstatusanalysis", method=RequestMethod.GET, produces="application/json")
+	@ResponseBody
+	public SalesRepMeetingPerformanceEntity getMeetingStatusAnalysis(@RequestParam(value="userId") int userId){
+		SalesRepMeetingPerformanceEntity meetingStatusAnalysis = salesRepPerformance.getMeetingStatuses(userId);
+		return meetingStatusAnalysis;
+	}
+	
 }

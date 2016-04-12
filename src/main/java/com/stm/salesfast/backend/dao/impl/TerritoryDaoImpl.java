@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 import com.stm.salesfast.backend.dao.specs.TerritoryDao;
 import com.stm.salesfast.backend.dto.ProductDto;
 import com.stm.salesfast.backend.dto.TerritoryDto;
+import com.stm.salesfast.backend.dto.UserDto;
+import com.stm.salesfast.backend.entity.AssignedSalesRepInfoEntity;
 
 @Repository
 public class TerritoryDaoImpl implements TerritoryDao{
@@ -24,6 +26,15 @@ public class TerritoryDaoImpl implements TerritoryDao{
 	private static final String  FETCH_BY_ID = "SELECT * FROM territories WHERE territoryId = ?";
 	private static final String  FETCH_BY_ZIP = "SELECT * FROM territories WHERE zip = ?";
 	private static final String FETCH_BY_USER = "SELECT * FROM territories WHERE userID = ?";
+	private static final String FETCH_SALESREPS_FOR_DM = "SELECT userWithMedField.*, products.productId, "
+			+ "products.productName FROM (SELECT training_material.medicalFieldId, "
+			+ "filteredUser.* FROM ( SELECT user.* FROM territories, user WHERE "
+			+ "territories.districtId IN (SELECT districtId FROM districts WHERE "
+			+ "userId = ?) AND territories.userId = user.userId  GROUP BY userId) "
+			+ "as filteredUser, training_material WHERE filteredUser.userId = "
+			+ "training_material.userId GROUP BY filteredUser.userId) as userWithMedField, "
+			+ "products WHERE userWithMedField.medicalFieldId = products.medicalFieldId "
+			+ "ORDER BY userWithMedField.userId ASC";
 	
 	@Override
 	public TerritoryDto getBy(int territoryId) {
@@ -65,5 +76,19 @@ public class TerritoryDaoImpl implements TerritoryDao{
 			e.printStackTrace();
 		}
 		return null;
-	} 
+	}
+	
+	@Override
+	public List<AssignedSalesRepInfoEntity> getSalesRepsByDM(int userId){
+		try{
+			return jdbcTemplate.query(
+					FETCH_SALESREPS_FOR_DM, (rs, rownum) -> {
+						return new AssignedSalesRepInfoEntity(rs.getInt("userId"), rs.getString("firstName"), rs.getString("lastName"),rs.getString("email"),rs.getString("contactNumber"),rs.getString("addressLineOne"),rs.getString("addressLineTwo"),rs.getString("city"),rs.getString("state"),rs.getString("zip"), rs.getDate("startDate"), rs.getDate("endDate"), rs.getString("medicalFieldId"), rs.getInt("productId"), rs.getString("productName"));}
+					, userId);
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
+		
+	}
 }

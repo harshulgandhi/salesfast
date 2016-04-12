@@ -67,3 +67,50 @@ div.modal-body>ul>li:before {
     top: 0.9em;
     position: relative;
 }
+
+/*Filter styling*/
+.row.date-filter-row {
+    display: -webkit-inline-box;
+    border: solid 2px;
+    padding: 6px;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    width: 100%;
+	margin-bottom: 2%;
+}
+.filter-label {
+    margin-right: 5%;
+}
+span.date-selector-label {
+    margin-right: 13%;
+}
+span.date-selector-label {
+    margin-right: 13%;
+}
+span.month-label.date-selector-label {
+	/* margin-left: 39%;
+	    width: 40px; */
+	    margin-right: 12%;
+}
+span.day-label.date-selector-label {
+    /* margin-left: 45%;
+    width: 40px; */
+    margin-right: 12%;
+}
+
+.select2-container {
+    width: 75px;
+}
+.year-selector-div.date-div {
+	width: 75px;
+    margin-right: 3%;
+}
+.month-selector-div.date-div {
+    width: 70px;
+    margin-right: 5%;
+	/* margin-left: 10px; */
+}
+.day-selector-div.date-div {
+    width: 64px;
+	margin-right: 5%;
+	/* margin-left: 10px; */
+}

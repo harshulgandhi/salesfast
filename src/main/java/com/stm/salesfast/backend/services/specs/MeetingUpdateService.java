@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.stm.salesfast.backend.dto.MeetingUpdateDto;
 import com.stm.salesfast.backend.dto.ProductDto;
+import com.stm.salesfast.backend.entity.MeetingStatusCountEntity;
 import com.stm.salesfast.backend.entity.MeetingUpdateEntity;
 
 public interface MeetingUpdateService {
@@ -28,4 +29,6 @@ public interface MeetingUpdateService {
 	public List<MeetingUpdateDto> getForPhysiciansPortal(String status1, String status2, String status3, int physicianId);
 
 	public void updateIsExpensiveAndHasSideEffects(boolean isExpensive, boolean hasSideEffects, int appointmentId);
+
+	public List<MeetingStatusCountEntity> getMeetingUpdateStatusCount(int userId);
 }

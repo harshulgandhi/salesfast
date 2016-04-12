@@ -1,7 +1,10 @@
 /**
  * 
  */
-
+var numDays = {
+                '01': 31, '02': 28, '03': 31, '04': 30, '05': 31, '06': 30,
+                '07': 31, '08': 31, '09': 30, '10': 31, '11': 30, '12': 31
+              };
 var table = null;
 var pastAppointments = []; 
 var isFromAlignmentPage = false;
@@ -31,8 +34,80 @@ $(document).ready(function() {
         }
     }
 	
+	$('select.search-filter-param').select2({ width: '100%' });
 });
-   
+
+var currentSelectedDate = '0';
+$(document).on('change','select.month-selector',function(){
+	var month = $(this).val();
+	var numOfDays = numDays[month];
+	if(month != '0'){
+		$('select.day-selector').attr('disabled',false);
+		if($('select.day-selector').val() != "0"){
+			currentSelectedDate = $('select.day-selector').val();
+		}
+		$('select.day-selector').html("");
+		$('select.day-selector').append('<option value="0">day</option>');
+		console.log('number of days '+numOfDays);
+		for(var i = 1 ; i <= numOfDays ; i++){
+			if(i<10){
+				$('select.day-selector').append('<option value="0'+i+'">'+i+'</option>');
+			}else{
+				$('select.day-selector').append('<option value="'+i+'">'+i+'</option>');
+			}
+		}
+	}
+	else if(month == "0"){
+		$('select.day-selector').attr('disabled',true);
+	}
+	
+});
+
+$(document).on('change','select.search-filter-param',function(){
+	if($(this).hasClass('day-selector')){
+		var year = $('select.year-selector').val();
+		var month = $('select.month-selector').val();
+		var day = $(this).val();
+		var searchTerm = year+'-'+month+'-'+day;
+		console.log("$('.status-selector').val() : "+$('.status-selector').val());
+		if($('.status-selector').val() != 'none'){
+			searchTerm  = searchTerm +' '+$('.status-selector').val(); 
+			table.search(searchTerm).draw();
+		}else{
+			table.search(searchTerm).draw();
+		}
+	}
+	else if($(this).hasClass('month-selector')){
+		if(!$('select.day-selector').attr('disabled')){
+			var year = $('select.year-selector').val();
+			var month = $('select.month-selector').val();
+			$('select.day-selector').select2('val',currentSelectedDate);
+			var day = $('select.day-selector').val();
+			console.log('day : '+day)
+			console.log("$('.status-selector').val() : "+$('.status-selector').val());
+			if(day == '0'){
+				var searchTerm = year+'-'+month;
+				if($('.status-selector').val() != 'none'){
+					searchTerm  = searchTerm +' '+$('.status-selector').val(); 
+					table.search(searchTerm).draw();
+				}else{
+					table.search(searchTerm).draw();
+				}
+			}
+			else{
+				var searchTerm = year+'-'+month+'-'+day;
+				if($('.status-selector').val() != 'none'){
+					searchTerm  = searchTerm +' '+$('.status-selector').val(); 
+					table.search(searchTerm).draw();
+				}else{
+					table.search(searchTerm).draw();
+				}
+			}
+		}
+	}
+	
+});
+
 var getPastAppointments = function(){
 	console.log("Fetching similar questions");
 	$.ajax({

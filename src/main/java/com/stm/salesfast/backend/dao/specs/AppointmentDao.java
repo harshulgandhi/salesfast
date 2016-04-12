@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.stm.salesfast.backend.dto.AppointmentDto;
 import com.stm.salesfast.backend.entity.AppointmentCountPerDayEntity;
+import com.stm.salesfast.backend.entity.MeetingStatusCountEntity;
 
 public interface AppointmentDao {
 	public AppointmentDto getAppointmentById(int appointmentId);
@@ -57,5 +58,7 @@ public interface AppointmentDao {
 	public List<AppointmentDto> getAppointmentByUserIdForADate(int userId, Date date);
 
 	public List<AppointmentCountPerDayEntity> getCountPerDayPerformanceBased(int userId, String status);
+
+	List<MeetingStatusCountEntity> getAppointmentStatusCount(int userId);
 	
 }

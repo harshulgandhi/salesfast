@@ -17,14 +17,15 @@ h1{
 }
 
 .filter-selector-div {
-    margin-top: 14%;
+    margin-top: 131px;
     margin-left: 0%;
-    margin-right: -6%;
+    margin-right: -11%;
     border-right: solid 3px #E4E0E0;
     padding: 18px;
     background: #E9EEF5;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     width: 18%;
+    padding-left: 35px;
 }
 
 .filters-heading {

@@ -3,6 +3,7 @@ package com.stm.salesfast.backend.dao.specs;
 import java.util.List;
 
 import com.stm.salesfast.backend.dto.MeetingUpdateDto;
+import com.stm.salesfast.backend.entity.MeetingStatusCountEntity;
 
 public interface MeetingUpdateDao {
 	public void insert(MeetingUpdateDto meetingUpdate);
@@ -20,5 +21,7 @@ public interface MeetingUpdateDao {
 	public List<MeetingUpdateDto> getForPhysiciansPortal(String status1, String status2, String status3, int physicianId);
 
 	public void update(boolean isExpensive, boolean hasSideEffetcs, int appointmentId);
+
+	public List<MeetingStatusCountEntity> getMeetingStatusCountForUser(int userId);
 
 }

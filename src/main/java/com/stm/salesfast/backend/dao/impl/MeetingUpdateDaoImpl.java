@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import com.stm.salesfast.backend.dao.specs.MeetingUpdateDao;
 import com.stm.salesfast.backend.dto.MeetingExperienceDto;
 import com.stm.salesfast.backend.dto.MeetingUpdateDto;
+import com.stm.salesfast.backend.entity.MeetingStatusCountEntity;
 import com.stm.salesfast.constant.PhysicianStatus;
 
 @Repository
@@ -42,6 +43,12 @@ public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
 	private static final String UPDATE_EXPENSIVE_SIDE_EFFECT_FLAGS = "UPDATE meeting_update SET "
 			+ "isExpensive = ?, hasSideEffects = ? "
 			+ "WHERE appointmentId = ?";
+	
+	private static final String COUNT_MEETING_STATUS = "SELECT count(meetingUpdateId) as count, status "
+													+ "FROM meeting_update WHERE appointmentId IN "
+													+ "(SELECT appointmentId from appointment WHERE "
+													+ "appointment.userId = ?)  GROUP BY status";
+	
 //	SELECT count(*) as lostAppointments FROM meeting_update
 //	WHERE appointmentId IN (SELECT appointmentId FROM appointment
 //	WHERE confirmationStatus = 'CONFIRMED' ) AND status='LOST';
@@ -169,6 +176,19 @@ public class MeetingUpdateDaoImpl implements MeetingUpdateDao {
 		}catch(DataAccessException e){
 			e.printStackTrace();
 		}
+	}
+	
+	@Override
+	public List<MeetingStatusCountEntity> getMeetingStatusCountForUser(int userId) {
+		try{
+			return jdbcTemplate.query(COUNT_MEETING_STATUS, (rs, rownum) -> {
+					return new MeetingStatusCountEntity(rs.getString("status"), rs.getInt("count"));
+				}, userId);
+			
+		}catch(DataAccessException e){
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	

@@ -19,6 +19,7 @@ import com.stm.salesfast.backend.dto.ProductDto;
 import com.stm.salesfast.backend.dto.UserAccountDto;
 import com.stm.salesfast.backend.dto.UserDto;
 import com.stm.salesfast.backend.dto.UserToRoleDto;
+import com.stm.salesfast.backend.entity.MeetingStatusCountEntity;
 import com.stm.salesfast.backend.entity.MeetingUpdateEntity;
 import com.stm.salesfast.backend.services.specs.AppointmentService;
 import com.stm.salesfast.backend.services.specs.EDetailingMaterialService;
@@ -226,5 +227,10 @@ public class MeetingUpdateServiceImpl implements MeetingUpdateService {
 	@Override
 	public void updateIsExpensiveAndHasSideEffects(boolean isExpensive, boolean hasSideEffects, int appointmentId){
 		meetingUpdateDao.update(isExpensive, hasSideEffects, appointmentId);
+	}
+	
+	@Override
+	public List<MeetingStatusCountEntity> getMeetingUpdateStatusCount(int userId){
+		return meetingUpdateDao.getMeetingStatusCountForUser(userId);
 	}
 }

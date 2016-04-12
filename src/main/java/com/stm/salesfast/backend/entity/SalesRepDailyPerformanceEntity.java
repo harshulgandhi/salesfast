@@ -11,8 +11,14 @@ import lombok.ToString;
 @NoArgsConstructor
 @Data
 @ToString
-public class SalesRepDailyPerformanceEntity {
+public class SalesRepDailyPerformanceEntity implements Comparable<SalesRepDailyPerformanceEntity>{
 	private Date date;
 	private int noOfLostAppointments;
 	private int noOfPrescribingAppointments;
+	
+	@Override
+	public int compareTo(SalesRepDailyPerformanceEntity o) {
+		// TODO Auto-generated method stub
+		return (Long.compare(date.getTime(),o.getDate().getTime())); 
+	}
 }

@@ -20,7 +20,7 @@ $(document).ready(function(){
 });
 
 $.extend( $.fn.dataTable.defaults, {
-    ordering:  false
+//    ordering:  false
 });
 
 var updateNotificationCounter = function(){

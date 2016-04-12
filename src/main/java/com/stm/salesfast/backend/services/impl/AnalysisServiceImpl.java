@@ -214,11 +214,11 @@ public class AnalysisServiceImpl implements AnalysisService{
 		
 		for(MeetingExperienceDetailedDataEntity eachEntity : allEntries){
 			if(filter.getMedicalFieldId() != null && filter.getMedicalFieldId().equals(eachEntity.getMedicalFieldId())){
-				log.info("FirstIf : "+filter.getMedicalFieldId()+" "+filter.getProductId()+" "+filter.getUserId()+" "+filter.getStatus());
-				log.info(filter.getMedicalFieldId() +" : "+eachEntity.getMedicalFieldId());
+//				log.info("FirstIf : "+filter.getMedicalFieldId()+" "+filter.getProductId()+" "+filter.getUserId()+" "+filter.getStatus());
+//				log.info(filter.getMedicalFieldId() +" : "+eachEntity.getMedicalFieldId());
 				
 				if(filter.getProductId() != 0 && filter.getProductId() == eachEntity.getProductId()){
-					log.info(filter.getProductId() +" : "+eachEntity.getProductId());
+//					log.info(filter.getProductId() +" : "+eachEntity.getProductId());
 					
 					if(filter.getUserId() !=0 && filter.getUserId() == eachEntity.getUserId()){
 						if(filter.getStatus() != null && filter.getStatus().equals(eachEntity.getStatus())){
@@ -252,7 +252,7 @@ public class AnalysisServiceImpl implements AnalysisService{
 			}
 			
 			else if(filter.getMedicalFieldId() == null && filter.getProductId() != 0 && filter.getProductId() == eachEntity.getProductId()){
-				log.info("SecondIf : "+filter.getMedicalFieldId()+" "+filter.getProductId()+" "+filter.getUserId()+" "+filter.getStatus());
+//				log.info("SecondIf : "+filter.getMedicalFieldId()+" "+filter.getProductId()+" "+filter.getUserId()+" "+filter.getStatus());
 				if(filter.getUserId() !=0 && filter.getUserId() == eachEntity.getUserId()){
 					if(filter.getStatus() != null && filter.getStatus().equals(eachEntity.getStatus())){
 						applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
@@ -270,7 +270,7 @@ public class AnalysisServiceImpl implements AnalysisService{
 			}
 			
 			else if(filter.getMedicalFieldId() == null && filter.getProductId() == 0 && filter.getUserId() !=0 && filter.getUserId() == eachEntity.getUserId()){
-				log.info("ThirdId: "+filter.getMedicalFieldId()+" "+filter.getProductId()+" "+filter.getUserId()+" "+filter.getStatus());
+//				log.info("ThirdId: "+filter.getMedicalFieldId()+" "+filter.getProductId()+" "+filter.getUserId()+" "+filter.getStatus());
 				if(filter.getStatus() != null && filter.getStatus().equals(eachEntity.getStatus())){
 					applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 				}
@@ -280,16 +280,16 @@ public class AnalysisServiceImpl implements AnalysisService{
 			}
 			
 			else if(filter.getMedicalFieldId() == null && filter.getProductId() == 0 &&  filter.getUserId() == 0 && filter.getStatus() != null && filter.getStatus().equals(eachEntity.getStatus())){
-				log.info("ForthIf : "+filter.getMedicalFieldId()+" "+filter.getProductId()+" "+filter.getUserId()+" "+filter.getStatus());
+//				log.info("ForthIf : "+filter.getMedicalFieldId()+" "+filter.getProductId()+" "+filter.getUserId()+" "+filter.getStatus());
 				applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 			}
 			
 			else if(filter.getMedicalFieldId() == null && filter.getProductId() == 0 && filter.getUserId() == 0 && filter.getStatus() == null){
-				log.info("Null filter : "+filter.getMedicalFieldId()+" "+filter.getProductId()+" "+filter.getUserId()+" "+filter.getStatus());
+//				log.info("Null filter : "+filter.getMedicalFieldId()+" "+filter.getProductId()+" "+filter.getUserId()+" "+filter.getStatus());
 				applyCount(countMatrix, eachEntity,countAllSREntries, countAllPhysEntries, countAll);
 			}
 		}
-		log.info("Total figure : "+countMatrix[1][6]+" "+countMatrix[0][6]+" "+countMatrix[2][6]);
+//		log.info("Total figure : "+countMatrix[1][6]+" "+countMatrix[0][6]+" "+countMatrix[2][6]);
 		for(int[] eachrow : countMatrix){
 			System.out.println();
 			for(int eachval : eachrow) System.out.print(eachval+" ");
@@ -310,7 +310,7 @@ public class AnalysisServiceImpl implements AnalysisService{
 		countMatrix[2][6]++;
 		if(entityToBeCounted.isSalesRepEntry()) countMatrix[1][6]++;
 		if(entityToBeCounted.isPhysicianEntry()) countMatrix[0][6]++;
-		log.info("Applying count to : "+entityToBeCounted);
+//		log.info("Applying count to : "+entityToBeCounted);
 		if(entityToBeCounted.isLikedTheProduct()){
 			countMatrix[2][0]++;
 			if(entityToBeCounted.isPhysicianEntry()){

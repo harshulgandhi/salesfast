@@ -104,6 +104,49 @@ $(document).on('change','select.search-filter-param',function(){
 				}
 			}
 		}
+	}else if($(this).hasClass('status-selector')){
+		var year = $('select.year-selector').val();
+		var month = $('select.month-selector').val();
+		var day = $('select.day-selector').val();
+		var status = $(this).val();
+		if(month == "0" && status != 'none'){
+			searchTerm = year+' '+status;
+			table.search(searchTerm).draw();
+		}else if(month != "0" && day == "0" && status != 'none'){
+			searchTerm = year+' '+month+' '+status;
+			table.search(searchTerm).draw();
+		}else if(month != "0" && day != "0" && status != 'none'){
+			searchTerm = year+' '+month+' '+day+' '+status;
+			table.search(searchTerm).draw();
+		}else if(month == "0" && status == 'none'){
+			searchTerm = year+' '+status;
+			table.search(searchTerm).draw();
+		}
+	}else if($(this).hasClass('phys-response')){
+		var year = $('select.year-selector').val();
+		var month = $('select.month-selector').val();
+		var day = $('select.day-selector').val();
+		var status = $('select.status-selector').val();
+		var physResponseCategory = $(this).val();
+		searchTerm = '';
+		if(month != '0' ){
+			searchTerm += year+' '+month;
+		}
+		if(month !='0' && day != '0' ){
+			searchTerm += ' '+month;
+		}
+		if(status != 'none') searchTerm += ' '+status;
+		if(physResponseCategory != 'none') {
+			if(physResponseCategory == 'presentation'){
+				searchTerm += ' '+'presentation problem';	
+			}else if(physResponseCategory == 'confidence'){
+				searchTerm += ' '+'confidence problem';
+			}else if(physResponseCategory == 'reputation'){
+				searchTerm += ' '+'maintain reputation problem';
+			}
+		}
+		table.search(searchTerm).draw();
+		
 	}
 	
 });
@@ -185,6 +228,16 @@ var populatePastAppTable = function(appointments){
 	for(var i = 0; i < appointments.length ; i++){
 		console.log(appointments[i]["meetingStatus"]);
 		if(appointments[i]["meetingStatus"] == "LOST"){
+			var physicianInput = "";
+			if(appointments[i]["reasonsByPhysician"].length > 0 && appointments[i]["reasonsByPhysician"][5].indexOf("You need to be more confident while pitching") >= 0){
+				physicianInput += 'confidence problem';
+			}
+			if(appointments[i]["reasonsByPhysician"].length > 0 && appointments[i]["reasonsByPhysician"][2].indexOf("Physician did not like the presentation") >= 0){
+				physicianInput += 'presentation problem';
+			}
+			if(appointments[i]["reasonsByPhysician"].length > 0 && appointments[i]["reasonsByPhysician"][3].indexOf("Physician was not impressed by company's reputation") >= 0){
+				physicianInput += 'maintain reputation problem';
+			}
 			$('table#past-appointments-table tbody').append(
 					'<tr class="lost-appointment-tr danger">'+
 						'<td style="display:none" class="physician-id">'+appointments[i]["physicianId"]+'</td>'+
@@ -200,11 +253,21 @@ var populatePastAppTable = function(appointments){
 									'<span class="further-detail-btn-span">View Further Details</span>'+
 								'</button>'+
 							'</div>'+
-						'</td>'+				
+						'</td>'+
+						'<td class="physician-input" style="display : none">'+physicianInput+'</td>'+
 					'</tr>'
 			);
 		}
 		else if(appointments[i]["meetingStatus"] == "PRESCRIBING"){
+			if(appointments[i]["reasonsByPhysician"].length > 0 && appointments[i]["reasonsByPhysician"][5].indexOf("You need to be more confident while pitching") >= 0){
+				physicianInput += 'confidence problem';
+			}
+			if(appointments[i]["reasonsByPhysician"].length > 0 && appointments[i]["reasonsByPhysician"][2].indexOf("Physician did not like the presentation") >= 0){
+				physicianInput += 'presentation problem';
+			}
+			if(appointments[i]["reasonsByPhysician"].length > 0 && appointments[i]["reasonsByPhysician"][3].indexOf("Physician was not impressed by company's reputation") >= 0){
+				physicianInput += 'maintain reputation problem';
+			}
 			$('table#past-appointments-table tbody').append(
 					'<tr class="prescribing-appointment-tr success">'+
 						'<td style="display:none" class="physician-id">'+appointments[i]["physicianId"]+'</td>'+
@@ -220,12 +283,23 @@ var populatePastAppTable = function(appointments){
 									'<span class="further-detail-btn-span">View Further Details</span>'+
 								'</button>'+
 							'</div>'+
-						'</td>'+				
+						'</td>'+
+						'<td class="physician-input" style="display : none">'+physicianInput+'</td>'+				
 					'</tr>'
 			);
 		}
 		else{
+			if(appointments[i]["reasonsByPhysician"].length > 0 && appointments[i]["reasonsByPhysician"][5].indexOf("You need to be more confident while pitching") >= 0){
+				physicianInput += 'confidence problem';
+			}
+			if(appointments[i]["reasonsByPhysician"].length > 0 && appointments[i]["reasonsByPhysician"][2].indexOf("Physician did not like the presentation") >= 0){
+				physicianInput += 'presentation problem';
+			}
+			if(appointments[i]["reasonsByPhysician"].length > 0 && appointments[i]["reasonsByPhysician"][3].indexOf("Physician was not impressed by company's reputation") >= 0){
+				physicianInput += 'maintain reputation problem';
+			}
 			$('table#past-appointments-table tbody').append(
+					
 					'<tr class="other-appointment-tr">'+
 						'<td style="display:none" class="physician-id">'+appointments[i]["physicianId"]+'</td>'+
 						'<td>'+appointments[i]["physicianName"]+'</td>'+
@@ -240,7 +314,8 @@ var populatePastAppTable = function(appointments){
 									'<span class="further-detail-btn-span">View Further Details</span>'+
 								'</button>'+
 							'</div>'+
-						'</td>'+				
+						'</td>'+
+						'<td class="physician-input" style="display : none">'+physicianInput+'</td>'+				
 					'</tr>'
 			);
 		}

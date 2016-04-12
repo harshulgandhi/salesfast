@@ -70,7 +70,7 @@ div.modal-body>ul>li:before {
 
 /*Filter styling*/
 .row.date-filter-row {
-    display: -webkit-inline-box;
+    /* display: -webkit-inline-box; */
     border: solid 2px;
     padding: 6px;
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
@@ -78,8 +78,17 @@ div.modal-body>ul>li:before {
 	margin-bottom: 2%;
 }
 .filter-label {
-    margin-right: 5%;
+    margin-right: 4%;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-weight: 800;
+    color: #AF0808;
+    padding-top: 6px;
+    padding-left: 15px;
 }
+.advanced-search-label{
+	padding-top: 0px;
+}
+
 span.date-selector-label {
     margin-right: 13%;
 }
@@ -113,4 +122,23 @@ span.day-label.date-selector-label {
     width: 64px;
 	margin-right: 5%;
 	/* margin-left: 10px; */
+}
+.basic-search-div {
+    display: -webkit-inline-box;
+}
+.advanced-search {
+    display: -webkit-box;
+    margin-top: 1%;
+    border-top: solid 1px #C7BEBE;
+    padding-top: 1%;
+}
+span.phys-response-label.phys-response-selector-label {
+    margin-left: 9%;
+    margin-right: 5%;
+}
+.phys-response-selector-div.advance-filter-div {
+    width: 330px;
+}
+.status-selector-div.date-div{
+	width: 140px;
 }

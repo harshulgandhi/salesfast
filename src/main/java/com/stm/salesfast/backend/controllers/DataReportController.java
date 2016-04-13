@@ -44,7 +44,12 @@ public class DataReportController {
 	
 	@RequestMapping(value="/datareport", method=RequestMethod.GET)
 	public String loginPage(){
-		return "allmeetingsdata";
+		if(SessionConstants.CURRENT_USER_ROLES.contains("DM")){
+			return "allmeetingsdata";
+		}else if(SessionConstants.CURRENT_USER_ROLES.contains("SalesRep")){
+			return "allmeetingsdatasr";
+		}
+		return "home";
 	}
 	
 	@RequestMapping(value="/getDataOverall", method=RequestMethod.GET, produces="application/json")

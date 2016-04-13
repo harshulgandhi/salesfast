@@ -34,4 +34,11 @@ public class HomeController {
 		return userDetails.getUserCompleteName(SessionConstants.USER_ID);
 	}
 	
+	@RequestMapping(value="/getloggedinuserid", method=RequestMethod.GET, produces="application/json")
+	@ResponseBody
+	public Integer getMeetingStatusAnalysis(){
+		int userId = SessionConstants.USER_ID;
+		return userId;
+	}
+	
 }

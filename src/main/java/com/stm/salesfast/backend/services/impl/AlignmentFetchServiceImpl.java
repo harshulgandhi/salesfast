@@ -132,6 +132,7 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 		for(AlignmentsDto eachAlignment : alignmentsByUserId){
 			ProductDto newProduct = productService.getProductById(eachAlignment.getProductId());
 			String combinedUpdateStatus="";
+			String productNote = "";
 			if(newProduct.getTypeOfProduct().equals("NEW PRODUCT")){
 				List<String> updateStatuses = meetingUpdateService.getStatusForAllAppointments(userId, eachAlignment.getPhysicianId());
 				List<String> dedupeUpdateStatuses = updateStatuses.stream().distinct().collect(Collectors.toList());
@@ -139,18 +140,26 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 //				String notInterestedConfirmationStatus = appointmentService.getNotInterestedAppointmentStatus(eachAlignment.getPhysicianId(), userId);
 //				combinedUpdateStatus = ( notInterestedConfirmationStatus == null ) ?
 //											combinedUpdateStatus : (combinedUpdateStatus + notInterestedConfirmationStatus);
+				productNote= "New Product";
+				
 			}
 			else if(newProduct.getTypeOfProduct().equals("IMPROVED PRODUCT")){
 				int prevProductId = newProduct.getImprovedOverProduct();
 				log.info("Fetching appointment for prev version improved product : "+eachAlignment.getPhysicianId()+" "+eachAlignment.getUserId()+" "+prevProductId);
 				AppointmentDto appointment = appointmentService.getAppointmentPhysIdUserIdProductId(eachAlignment.getPhysicianId(), eachAlignment.getUserId(), prevProductId);
 				log.info("Appointment is " + appointment);
+				ProductDto prevProduct = productService.getProductById(prevProductId);
 				if(appointment != null){	//Appointment exists for the previous version of medicine (that had problems)
 					MeetingUpdateDto meetingUpdate = meetingUpdateService.getMeetingUpdateByAppointmentId(appointment.getAppointmnetId());
 					if(meetingUpdate!=null){
 						combinedUpdateStatus = combinedUpdateStatus+" "+meetingUpdate.getStatus()+" ";
 						combinedUpdateStatus = (meetingUpdate.isExpensive() && newProduct.isAffordable()) ? combinedUpdateStatus + "MORE AFFORDABLE" : combinedUpdateStatus;
-						combinedUpdateStatus = (meetingUpdate.isHasSideEffects() && newProduct.isHasLessSideEffects()) ? combinedUpdateStatus + "LESS SIDE EFFECTS" : combinedUpdateStatus;	
+						combinedUpdateStatus = (meetingUpdate.isHasSideEffects() && newProduct.isHasLessSideEffects()) ? combinedUpdateStatus + " LESS SIDE EFFECTS" : combinedUpdateStatus;
+						productNote = "Prev. Product: "+prevProduct.getProductName()+"<br />Status: "+meetingUpdate.getStatus();
+						productNote = (meetingUpdate.isExpensive() && newProduct.isAffordable()) ? productNote + ", Not Affordable" : productNote;
+						productNote = (meetingUpdate.isHasSideEffects() && newProduct.isHasLessSideEffects()) ? productNote + ", Many side effects" : productNote;
+					}else if(meetingUpdate==null){
+						productNote = "Prev. Product: "+prevProduct.getProductName()+"<br />Status: Not detailed yet.";
 					}
 				}else if (appointment == null){ 					//DO NOT SHOW alignment of this user with this physician for older medicine - 
 																	//that is irrelevant now as version has been released
@@ -164,7 +173,7 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 			alignedPhysicians.add(new AlignedPhysicianEntity(physicianDto,
 					productService.getProductById(eachAlignment.getProductId()).getProductName(),
 					productService.getProductById(eachAlignment.getProductId()).getProductId(),
-					combinedUpdateStatus));
+					combinedUpdateStatus, productNote));
 		}
 		Collections.sort(alignedPhysicians);		//Ordering physicians in reverse order of importance metric
 		return alignedPhysicians;
@@ -180,7 +189,7 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 			}
 		}
 		alignmentsFetched.removeAll(toRemove);
-	}
+	}	
 	
 	/**
 	 * Method returns alignment specific details with fields that are to be
@@ -243,11 +252,11 @@ public class AlignmentFetchServiceImpl implements AlignmentFetchService {
 			List<String> updateStatuses = meetingUpdateService.getStatusForAllAppointments(userId, eachAlignment.getPhysicianId());
 			List<String> dedupeUpdateStatuses = updateStatuses.stream().distinct().collect(Collectors.toList());
 			String combinedUpdateStatus =  (dedupeUpdateStatuses.size() > 0) ? String.join(",", dedupeUpdateStatuses) : "";
-			
+			String productNote = "";
 			alignedPhysicians.add(new AlignedPhysicianEntity(physicianDto, 
 					productService.getProductById(eachAlignment.getProductId()).getProductName(),
 					productService.getProductById(eachAlignment.getProductId()).getProductId(),
-					combinedUpdateStatus
+					combinedUpdateStatus, productNote
 					));
 		}
 		return alignedPhysicians;

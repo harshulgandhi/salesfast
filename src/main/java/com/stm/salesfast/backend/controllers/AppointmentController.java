@@ -200,6 +200,15 @@ public class AppointmentController {
 		for(PastAppointmentEntity eachPastApp : pastAppointments) log.info("Past Appointments : "+eachPastApp);
 		return pastAppointments.toArray(new PastAppointmentEntity[pastAppointments.size()]);
 	}
+	
+	@RequestMapping(value="/getpastappointments", method=RequestMethod.GET,params = {"salesRepId"})
+	@ResponseBody
+	public PastAppointmentEntity[] getPastAppointments(@RequestParam(value="salesRepId") int salesRepId) throws ParseException{
+		log.info("Fetching past appointment for DM's view");
+		List<PastAppointmentEntity> pastAppointments = appointmentFetchService.getPastAppointmentToShow(salesRepId);
+//		for(PastAppointmentEntity eachPastApp : pastAppointments) log.info("Past Appointments : "+eachPastApp);
+		return pastAppointments.toArray(new PastAppointmentEntity[pastAppointments.size()]);
+	}
 }
 
 

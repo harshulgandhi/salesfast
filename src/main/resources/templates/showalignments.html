@@ -24,6 +24,27 @@
 				</ul>
 			</div>
 		</div>
+		
+		<div class="row date-filter-row">
+			<div class="filter-label">Choose filter</div>
+			<span class="status-label date-selector-label">Physician's previous status : </span>
+			<div class="status-selector-div date-div">
+				<select class="status-selector search-filter-param" name="status">
+					<option value="none" selected="selected">select status</option>
+					<option value="LOST">LOST</option>
+					<option value="PRESCRIBING">PRESCRIBING</option>
+				</select>
+			</div>
+			<span class="phys-response-label phys-response-selector-label">Physician's thought during previous meetings: </span>
+			<div class="phys-response-selector-div advance-filter-div">
+				<select class="phys-response search-filter-param" name="year">
+					<option value="none" selected="selected" style="font-style: italic;">remove this filter</option>
+					<option value="Not Affordable">Physician said medicine is too expensive</option>
+					<option value="Many side effects">Physician said medicine has too many side effects</option>
+					<option value="Not Affordable, Many side effects">Both comments cited</option>
+				</select>
+			</div>
+		</div>
 		<div class="row timeline-for-date">
 		</div>
 		<div class="row alignment-table-row">
@@ -51,6 +72,7 @@
 							<th>Notes</th>
 							<th>Past Meetings</th>
 							<th style="display:none">Past Statues</th>
+							<th class="product-note" style="display:none">Product Notes</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -87,7 +109,8 @@
 							<td style="display:none" th:text="${eachAlignment.state}"></td>
 							<td style="display:none" th:text="${eachAlignment.zip}"></td>
 							<td style="display:none" th:text="${eachAlignment.medicalField}"></td>
-							<td th:text="${eachAlignment.productName}"></td>
+							<td class="product-name"><span class="bottom product-name-span" th:text="${eachAlignment.productName}" th:title="${eachAlignment.productNote}"
+		   							th:data-original-title="${eachAlignment.productNote}"></span></td>
 							<td class="product-id" style="display:none" th:text="${eachAlignment.productId}"></td>
 							<td th:unless="${eachAlignment.isNew}" th:text="NO"></td>
 							<td th:if="${eachAlignment.isNew}" th:text="YES"></td>
@@ -117,6 +140,7 @@
 								</button>
 							</td>
 							<td style="display: none;" th:text="${eachAlignment.updateStatuses}"></td>
+							<td style="display: none;" class="product-note" th:text="${eachAlignment.productNote}"></td>
 						</tr>
 					</tbody>
 				</table>

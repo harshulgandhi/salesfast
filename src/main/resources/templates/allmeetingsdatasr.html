@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1"/>
+<div th:replace="fragments/header :: commonhead"></div>
+<link rel="stylesheet" type="text/css" href="resources/app/css/datareportsr.css"/>
+
+<title>Data Report</title>
+</head>
+<body>
+	<!-- Common header -->
+	<div th:replace="fragments/header :: header"></div>
+	<div class="outer-container">
+		<div class="left-nav" id='cssmenu'>
+			<ul class="left-menu-ul">
+				<li class='active meeting-analysis' ><a href='/datareport'><span>MEETING ANALYSIS</span></a></li>
+				<li class='last salesrep-performance'><a href='/salesrepperformance'><span>MY PERFORMANCE</span></a></li>
+			</ul>
+		</div>
+		<div class="filter-selector-div">
+			<div class="product-selection-div paramter-selection-div">
+				<div class="product-selector-label filter-selector-label">SELECT A PRODUCT</div>
+				<select class="product-selector filter-selectors validate-ele" name="product">
+					<option selected="selected" value="0">-- remove this filter --</option>
+					<option value="3">O_Med_1</option>
+					<option value="4">O_Med_2</option>
+					<option value="11">O_Med_3</option>
+				</select>
+			</div>
+			<div class="status-selection-div paramter-selection-div">
+				<div class="status-selector-label filter-selector-label">SELECT MEETING STATUS</div>
+				<select class="status-selector filter-selectors validate-ele" name="status">
+					<option selected="selected" value="none">-- remove this filter --</option>
+					<option value="LOST">LOST</option>
+					<option value="PRESCRIBING">PRESCRIBING</option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="container" id="layout">
+			<div class="row row-header page-header"><h1>Data report - breakup of probable factors effecting the detailing meetings!</h1></div>
+			<div class="row row-chart">	
+				<div id="container-overall"  class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+				<div id="container-phy-resp" class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+			</div>
+			<div class="row row-chart">
+				<div id="container-salesrep-resp" class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+				<div id="container-phy-lost" class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
+			</div>
+		</div>
+	</div>
+<!-- Common footer -->
+<div th:replace="fragments/footer :: footer"></div>
+<script  type="text/javascript" src="resources/app/js/allmeetingsdatasr.js"></script>
+</body>
+</html>

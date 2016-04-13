@@ -176,3 +176,48 @@ div.show-timeline {
     margin-left: -11%;
     margin-bottom: 4px;
 }
+
+.tooltip-inner {
+    white-space:pre-line;
+    max-width: none;
+    width: 200px;
+    text-align: left;
+    font-size: 13px;
+}
+
+/*Filter styling*/
+.row.date-filter-row {
+    display: -webkit-inline-box;
+    border: solid 2px;
+    padding: 6px;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    width: 104%;
+    margin-bottom: 2%;
+    margin-left: -13%;
+}
+.filter-label {
+    margin-right: 4%;
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    font-weight: 800;
+    color: #AF0808;
+    padding-top: 2px;
+    padding-left: 15px;
+}
+
+.select2-container {
+    width: 75px;
+}
+
+span.phys-response-label.phys-response-selector-label {
+    margin-left: 9%;
+    margin-right: 5%;
+}
+.phys-response-selector-div.advance-filter-div {
+    width: 330px;
+}
+.status-selector-div.date-div{
+	width: 140px;
+}
+span.status-label.date-selector-label {
+    margin-right: 12px;
+}

@@ -7,12 +7,13 @@ var selectedAlignments = [];
 var averageTravelTime = 30; //minutes
 var statusParam;
 var isFromNotificationsPage=false;
+var table = null;
 /**
  * Toggles between selected and de-selected rows of the table
  * Takes care of clicks done on the 'time' element 
  */
 $(document).ready(function() {
-   var table = $('#aligned-physician-table').DataTable({
+   table = $('#aligned-physician-table').DataTable({
 	   order: [[0, "desc"]],
 	   "searching": true
    });
@@ -46,13 +47,15 @@ $(document).ready(function() {
 	    placement: "right"
 	});
 	$(".bottom").tooltip({
-	    placement: "bottom"
+	    placement: "bottom",
+	    html: true
 	});
 	$(".left").tooltip({
 	    placement: "left"
 	});
 	
     $(".appointment-status-selector").select2();
+    $('select.search-filter-param').select2({ width: '100%' });
     
     /*Initialize table with row colors*/
     var myTable = $('#aligned-physician-table').dataTable();
@@ -82,6 +85,49 @@ $(document).ready(function() {
 	
 });	
 
+$('.product-name-span').hover(function(){
+$(".bottom").tooltip({
+	    placement: "bottom",
+	    html: true
+	});
+});
+
+$(document).on('change','select.search-filter-param',function(){
+	var searchTerm = "";
+	if($(this).hasClass('status-selector') && $(this).val() != "none"){
+		if($('.phys-response').val() == "none"){
+			searchTerm = $(this).val();
+			table.search(searchTerm).draw();
+		}else if($('.phys-response').val() != "none"){
+			searchTerm = $(this).val() + ' ' +$('.phys-selector').val();
+			table.search(searchTerm).draw();
+		}
+	}else if ($(this).hasClass('status-selector') && $(this).val() == "none"){
+		if($('.phys-response').val() == "none"){
+			searchTerm = ' ';
+			table.search(searchTerm).draw();
+		}else if($('.phys-response').val() != "none"){
+			searchTerm = $('.phys-response').val();
+			table.search(searchTerm).draw();
+		}
+	}else if($(this).hasClass('phys-response') && $(this).val() != "none"){
+		if($('.status-selector').val() == "none"){
+			searchTerm = $(this).val();
+			table.search(searchTerm).draw();
+		}else if($('.status-selector').val() != "none"){
+			searchTerm = $(this).val() + ' ' +$('.status-selector').val();
+			table.search(searchTerm).draw();
+		}
+	}else if($(this).hasClass('phys-response') && $(this).val() == "none"){
+		if($('.status-selector').val() == "none"){
+			searchTerm = ' ';
+			table.search(searchTerm).draw();
+		}else if($('.status-selector').val() != "none"){
+			searchTerm = $('.status-selector').val();
+			table.search(searchTerm).draw();
+		}
+	}
+});
 var drawChart = function (data, timelineData) {
 	if($('div.timeline-for-date').find('div#show-timeline-'+data[0]["date"]).length == 0){
 		$('div.timeline-for-date').append(

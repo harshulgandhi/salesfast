@@ -92,7 +92,8 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
 				new AntPathRequestMatcher("/getsideeffectanalysis"),
 				new AntPathRequestMatcher("/getdailymeetingcount"),
 				new AntPathRequestMatcher("/getallassignedsalesrep"),
-				new AntPathRequestMatcher("/getmeetingstatusanalysis")
+				new AntPathRequestMatcher("/getmeetingstatusanalysis"),
+				new AntPathRequestMatcher("/getloggedinuserid")
 				};
 
 		@Override

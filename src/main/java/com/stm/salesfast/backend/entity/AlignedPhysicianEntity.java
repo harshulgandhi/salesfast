@@ -32,9 +32,10 @@ public class AlignedPhysicianEntity implements Comparable<AlignedPhysicianEntity
 	private String productName;
 	private double importanceFactor;
 	private String updateStatuses;
+	private String productNote;
 	
 	public AlignedPhysicianEntity(PhysicianStgDto physicianDto,
-			String productName2, int productId, String updateStatuses ) {
+			String productName2, int productId, String updateStatuses, String productNote ) {
 		// TODO Auto-generated constructor stub
 		this.physicianId = physicianDto.getPhysicianId();
 		this.firstName = physicianDto.getFirstName();
@@ -53,7 +54,7 @@ public class AlignedPhysicianEntity implements Comparable<AlignedPhysicianEntity
 		this.productName = productName2;
 		this.productId = productId;
 		this.updateStatuses = updateStatuses;
-		
+		this.productNote = productNote;
 	}
 
 	@Override

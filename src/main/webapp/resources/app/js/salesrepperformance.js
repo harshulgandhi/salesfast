@@ -1,7 +1,12 @@
 /**
  * 
  */
-
+var numDays = {
+                '01': 31, '02': 28, '03': 31, '04': 30, '05': 31, '06': 30,
+                '07': 31, '08': 31, '09': 30, '10': 31, '11': 30, '12': 31
+              };
+var pastAppointmentDetail = null;
+var pastAppointments = [];
 $(document).ready(function(){
 	
 	$('li.left-menu-selected').removeClass('left-menu-selected');
@@ -13,9 +18,218 @@ $(document).ready(function(){
 		$('li#nav-data-report').addClass("navbar-menu-selected")
 	}
 	
-	$('.month-selector').select2();
+	$('.performance-month-selector').select2();
 	updateNotificationCounter();
 	getAssignedSalesRepList();
+	
+	
+});
+
+$(document).on('click','button.further-detail-btn', function(){
+	$('#pastappointment-details-modal').modal('show');
+	var $row = $(this).parent().parent(); 
+	var idx = $(this).attr('id');
+	console.log(" idx : "+idx);
+	
+	$('ul.salesrep-response').html("");
+	$('ul.physician-response').html("");
+	$('div.modal-body-3').html("");
+	
+	if(pastAppointments[idx]["reasonsBySalesRep"].length == 0){
+		$('ul.salesrep-response').append('<li class="meetingexp-salesrep-empty">SalesRep did not submit your experience about this meeting</li>');
+		$('li.meetingexp-salesrep-empty').parent().parent().css('background','#EABEBE');
+	}else{
+		for( var i = 0; i< pastAppointments[idx]["reasonsBySalesRep"].length; i++){
+			$('ul.salesrep-response').append(
+					'<li class="sales-rep-response-pointers meeting-exp-li">'+pastAppointments[idx]["reasonsBySalesRep"][i]+'</li>'
+			);
+			
+		}
+		$('li.sales-rep-response-pointers').parent().parent().css('background','aliceblue');
+	}
+	
+	if(pastAppointments[idx]["reasonsByPhysician"].length == 0){
+		$('ul.physician-response').append('<li class="meetingexp-phys-empty">Physician did not submit experience about this meeting</li>');
+		$('li.meetingexp-phys-empty').parent().parent().css('background','#EABEBE');
+	}else{
+		for( var i = 0; i< pastAppointments[idx]["reasonsByPhysician"].length; i++){
+			$('ul.physician-response').append(
+					'<li class="physician-response-pointers meeting-exp-li">'+pastAppointments[idx]["reasonsByPhysician"][i]+'</li>'
+			);
+		}
+		$('li.physician-response-pointers').parent().parent().css('background','aliceblue');
+	}
+	
+	if(pastAppointments[idx]["pitch"] == null) {
+		$('div.modal-body-3').append('<span>SalesRep did not upload any pitch for this meeting</span>');
+		$('div.modal-body-3').css('background','#EABEBE');
+	}else{
+		$('div.modal-body-3').append(
+				'<div class="pitch-doc-div" style="display: none;">'+
+					'<object class="pdf-doc-object pdf-doc-object-slidedown" data="'+pastAppointments[idx]["pitch"]["fileLocation"]+'" type="application/pdf"">'+
+						'<embed src="'+pastAppointments[idx]["pitch"]["fileLocation"]+'" alt="pdf" pluginspage="http://www.adobe.com/products/acrobat/readstep2.html">'+
+						'</embed>'+
+					'</object>'+
+				'</div>'
+			);
+		$('div.pitch-doc-div').slideToggle('fast');
+		$('div.modal-body-3').css('background','white');
+	}
+	
+});
+
+var getPastAppointments = function(salesRepId){
+	console.log("Fetching similar questions");
+	$.ajax({
+		type : 'GET',
+		url : "/getpastappointments?salesRepId="+salesRepId,
+		dataType : 'json',
+		success : function(data){
+	    	console.log("Data received (Past Appointments) : "+JSON.stringify(data));
+	    	pastAppointments = data;
+	    	populatePastAppTable(data);
+//	    	populatePastAppTable(data);
+//	    	pastAppointments =  data;
+		},
+		error : function(e){
+			console.log("Error : "+JSON.stringify(e));
+		}
+	}).done(function(){
+		console.log("ajax complete!");
+	});
+}
+
+$(document).on('click','button.past-appointment-detail-btn',function(){
+	/*var btnId = $(this).attr('id');
+	var salesRepId = btnId.split('-')[btnId.split('-').length - 1];
+	getPastAppointments(salesRepId);*/
+	$('.selected-btn').removeClass('selected-btn');
+	if(!$(this).hasClass('selected-btn')) $(this).addClass('selected-btn');
+	else $(this).removeClass('selected-btn')
+	if($('div.salesrep-appointment-details').css('display') == 'none' || 
+			($('div.salesrep-appointment-details').css('display') == 'block' && $(this).hasClass('selected-btn'))){
+		$('div.salesrep-appointment-details').slideToggle('fast');
+		$('div.table-row').slideToggle('fast');
+		$('.performance-detail-btn')[0].scrollIntoView( true );
+	}
+	if($(this).hasClass('lost-isto-prescribing')){
+		$('select.status-selector').select2('val','LOST');
+	}else if($(this).hasClass('phys-response')){
+		$('select.phys-response').select2('val','presentation');
+	}
+});
+
+var currentSelectedDate = '0';
+$(document).on('change','select.month-selector',function(){
+	var month = $(this).val();
+	var numOfDays = numDays[month];
+	if(month != '0'){
+		$('select.day-selector').attr('disabled',false);
+		if($('select.day-selector').val() != "0"){
+			currentSelectedDate = $('select.day-selector').val();
+		}
+		$('select.day-selector').html("");
+		$('select.day-selector').append('<option value="0">day</option>');
+		console.log('number of days '+numOfDays);
+		for(var i = 1 ; i <= numOfDays ; i++){
+			if(i<10){
+				$('select.day-selector').append('<option value="0'+i+'">'+i+'</option>');
+			}else{
+				$('select.day-selector').append('<option value="'+i+'">'+i+'</option>');
+			}
+		}
+	}
+	else if(month == "0"){
+		$('select.day-selector').attr('disabled',true);
+	}
+	
+});
+
+$(document).on('change','select.search-filter-param',function(){
+	if($(this).hasClass('day-selector')){
+		var year = $('select.year-selector').val();
+		var month = $('select.month-selector').val();
+		var day = $(this).val();
+		var searchTerm = year+'-'+month+'-'+day;
+		console.log("$('.status-selector').val() : "+$('.status-selector').val());
+		if($('.status-selector').val() != ' '){
+			searchTerm  = searchTerm +' '+$('.status-selector').val(); 
+			pastAppointmentDetail.search(searchTerm).draw();
+		}else{
+			pastAppointmentDetail.search(searchTerm).draw();
+		}
+	}
+	else if($(this).hasClass('month-selector')){
+		if(!$('select.day-selector').attr('disabled')){
+			var year = $('select.year-selector').val();
+			var month = $('select.month-selector').val();
+			$('select.day-selector').select2('val',currentSelectedDate);
+			var day = $('select.day-selector').val();
+			console.log('day : '+day)
+			console.log("$('.status-selector').val() : "+$('.status-selector').val());
+			if(day == '0'){
+				var searchTerm = year+'-'+month;
+				if($('.status-selector').val() != ' '){
+					searchTerm  = searchTerm +' '+$('.status-selector').val(); 
+					pastAppointmentDetail.search(searchTerm).draw();
+				}else{
+					pastAppointmentDetail.search(searchTerm).draw();
+				}
+			}
+			else{
+				var searchTerm = year+'-'+month+'-'+day;
+				if($('.status-selector').val() != ' '){
+					searchTerm  = searchTerm +' '+$('.status-selector').val(); 
+					pastAppointmentDetail.search(searchTerm).draw();
+				}else{
+					pastAppointmentDetail.search(searchTerm).draw();
+				}
+			}
+		}
+	}else if($(this).hasClass('status-selector')){
+		var year = $('select.year-selector').val();
+		var month = $('select.month-selector').val();
+		var day = $('select.day-selector').val();
+		var status = $(this).val();
+		if(month == "0" && status != ' '){
+			searchTerm = year+' '+status;
+			pastAppointmentDetail.search(searchTerm).draw();
+		}else if(month != "0" && day == "0" && status != ' '){ 
+			searchTerm = year+' '+month+' '+status;
+			pastAppointmentDetail.search(searchTerm).draw();
+		}else if(month != "0" && day != "0" && status != ' '){
+			searchTerm = year+' '+month+' '+day+' '+status;
+			pastAppointmentDetail.search(searchTerm).draw();
+		}else if(month == "0" && status == ' '){
+			searchTerm = year+' '+status;
+			pastAppointmentDetail.search(searchTerm).draw();
+		}
+	}else if($(this).hasClass('phys-response')){
+		var year = $('select.year-selector').val();
+		var month = $('select.month-selector').val();
+		var day = $('select.day-selector').val();
+		var status = $('select.status-selector').val();
+		var physResponseCategory = $(this).val();
+		searchTerm = '';
+		if(month != '0' ){
+			searchTerm += year+' '+month;
+		}
+		if(month !='0' && day != '0' ){
+			searchTerm += ' '+month;
+		}
+		if(status != ' ') searchTerm += ' '+status;
+		if(physResponseCategory != 'none') {
+			if(physResponseCategory == 'presentation'){
+				searchTerm += ' '+'presentation problem';	
+			}else if(physResponseCategory == 'confidence'){
+				searchTerm += ' '+'confidence problem';
+			}else if(physResponseCategory == 'reputation'){
+				searchTerm += ' '+'maintain reputation problem';
+			}
+		}
+		pastAppointmentDetail.search(searchTerm).draw();
+		
+	}
 	
 });
 
@@ -23,19 +237,10 @@ $(document).on('change','select.filter-selectors', function(){
 	updateNotificationCounter();
 	$('div#layout').html("");
 	$('div#layout').append(
-			'<div class="row row-header page-header"><h1>Sales Representative\'s performance</h1></div>'+
-			'<div class="row row-chart">'+
-				'<div id="container-daily-meeting"  class="col-md-12" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>'+
-			'</div>'+
-			'<div class="row row-chart">'+
-				'<div id="container-salesrep-meetingperformance" class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>'+
-				'<div id="container-salesrep-presentation" class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>'+
-			'</div>'+
-			'<div class="row row-table">'+
-			'</div>'
-				
+			getReportEnvironmentHtml($('.salesrep-selector').val())
 	);
-	getDailyMeetingCount($('.salesrep-selector').val(), $('.month-selector').val());
+	$('select.search-filter-param').select2({ width: '100%' });
+	getDailyMeetingCount($('.salesrep-selector').val(), $('.performance-month-selector').val());
 	getMeetingStatusAnalysis($('.salesrep-selector').val());
 	getPhysicianResponse();
 });
@@ -78,7 +283,7 @@ var getAssignedSalesRepList = function(){
 		url : '/getallassignedsalesrep',
 		dataType : 'json',
 		success : function(data){
-//	    	console.log("Data received : "+JSON.stringify(data));
+	    	console.log("Assigned sales rep: "+JSON.stringify(data));
 	    	populateSalesRepDropDown(data);
 //	    	if(data[0]["isMedicineEffective"] == "NaN") {
 //	    		for(var i = 0; i < data.length; i++){
@@ -124,19 +329,10 @@ var populateSalesRepDropDown = function(allSalesRep){
 	}
 	$('.salesrep-selector').select2();
 	$('div#layout').append(
-			'<div class="row row-header page-header"><h1>Sales Representative\'s performance</h1></div>'+
-			'<div class="row row-chart">'+
-				'<div id="container-daily-meeting"  class="col-md-12" style="min-width: 310px; height: 400px; margin: 0 auto"></div>'+
-			'</div>'+
-			'<div class="row row-chart">'+
-				'<div id="container-salesrep-meetingperformance" class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>'+
-				'<div id="container-salesrep-presentation" class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>'+
-			'</div>'+
-			'<div class="row row-table">'+
-			'</div>'
-				
+			getReportEnvironmentHtml($('.salesrep-selector').val())
 	);
-	getDailyMeetingCount($('.salesrep-selector').val(), $('.month-selector').val());
+	$('select.search-filter-param').select2({ width: '100%' });
+	getDailyMeetingCount($('.salesrep-selector').val(), $('.performance-month-selector').val());
 	getMeetingStatusAnalysis($('.salesrep-selector').val());
 	getPhysicianResponse();
 }
@@ -252,17 +448,25 @@ var createPhysicianResponseChart=function(containerId, data, salesRepName){
         }]
         
     });
+    
+    getPastAppointments($('select.salesrep-selector').val());
+    
 }
 
 
 var createMeetingStatusChart = function(containerId, data, salesRepName){
 	var analysisData = [];
+	var color = [];
 	$.each(data, function(k,v){
 		k.split('_').join(' ');
+		if(k == "prescribing") color.push('lightgreen');
+		else if(k == "lost") color.push('#D46565');
+		else if(k == "not interested") color.push('gray');
 		analysisData.push([k, v]);
 	});
 	
 	$(containerId).highcharts({
+		colors: color,
         chart: {
             plotBackgroundColor: null,
             plotBorderWidth: 0,
@@ -372,4 +576,219 @@ var createDailyAppointmentChart = function(containerId, data, salesRepName){
 	            data: listOfPrescribingNumbers
 	        }]
 	    });
+}
+
+var populatePastAppTable = function(appointments){
+	
+	for(var i = 0; i < appointments.length ; i++){
+		console.log(appointments[i]["meetingStatus"]);
+		if(appointments[i]["meetingStatus"] == "LOST"){
+			var physicianInput = "";
+			if(appointments[i]["reasonsByPhysician"].length > 0 && appointments[i]["reasonsByPhysician"][5].indexOf("You need to be more confident while pitching") >= 0){
+				physicianInput += 'confidence problem';
+			}
+			if(appointments[i]["reasonsByPhysician"].length > 0 && appointments[i]["reasonsByPhysician"][2].indexOf("Physician did not like the presentation") >= 0){
+				physicianInput += 'presentation problem';
+			}
+			if(appointments[i]["reasonsByPhysician"].length > 0 && appointments[i]["reasonsByPhysician"][3].indexOf("Physician was not impressed by company's reputation") >= 0){
+				physicianInput += 'maintain reputation problem';
+			}
+			$('table#past-appointments-table tbody').append(
+					'<tr class="lost-appointment-tr danger">'+
+						'<td style="display:none" class="physician-id">'+appointments[i]["physicianId"]+'</td>'+
+						'<td>'+appointments[i]["physicianName"]+'</td>'+
+						'<td style="display:none" class="product-id">'+appointments[i]["productId"]+'</td>'+
+						'<td>'+appointments[i]["productName"]+'</td>'+
+						'<td>'+appointments[i]["date"]+'</td>'+
+						'<td>'+appointments[i]["meetingStatus"]+'</td>'+
+						'<td class="further-detail-td">'+
+							'<div class="further-detail-click">'+
+								'<button type="button" id="'+i+'" class="btn btn-default btn-md further-detail-btn">'+
+									'<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>'+
+									'<span class="further-detail-btn-span">View Further Details</span>'+
+								'</button>'+
+							'</div>'+
+						'</td>'+
+						'<td class="physician-input" style="display : none">'+physicianInput+'</td>'+
+					'</tr>'
+			);
+		}
+		else if(appointments[i]["meetingStatus"] == "PRESCRIBING"){
+			if(appointments[i]["reasonsByPhysician"].length > 0 && appointments[i]["reasonsByPhysician"][5].indexOf("You need to be more confident while pitching") >= 0){
+				physicianInput += 'confidence problem';
+			}
+			if(appointments[i]["reasonsByPhysician"].length > 0 && appointments[i]["reasonsByPhysician"][2].indexOf("Physician did not like the presentation") >= 0){
+				physicianInput += 'presentation problem';
+			}
+			if(appointments[i]["reasonsByPhysician"].length > 0 && appointments[i]["reasonsByPhysician"][3].indexOf("Physician was not impressed by company's reputation") >= 0){
+				physicianInput += 'maintain reputation problem';
+			}
+			$('table#past-appointments-table tbody').append(
+					'<tr class="prescribing-appointment-tr success">'+
+						'<td style="display:none" class="physician-id">'+appointments[i]["physicianId"]+'</td>'+
+						'<td>'+appointments[i]["physicianName"]+'</td>'+
+						'<td style="display:none" class="product-id">'+appointments[i]["productId"]+'</td>'+
+						'<td>'+appointments[i]["productName"]+'</td>'+
+						'<td>'+appointments[i]["date"]+'</td>'+
+						'<td>'+appointments[i]["meetingStatus"]+'</td>'+
+						'<td class="further-detail-td">'+
+							'<div class="further-detail-click">'+
+								'<button type="button" id="'+i+'" class="btn btn-default btn-md further-detail-btn">'+
+									'<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>'+
+									'<span class="further-detail-btn-span">View Further Details</span>'+
+								'</button>'+
+							'</div>'+
+						'</td>'+
+						'<td class="physician-input" style="display : none">'+physicianInput+'</td>'+				
+					'</tr>'
+			);
+		}
+		else{
+			if(appointments[i]["reasonsByPhysician"].length > 0 && appointments[i]["reasonsByPhysician"][5].indexOf("You need to be more confident while pitching") >= 0){
+				physicianInput += 'confidence problem';
+			}
+			if(appointments[i]["reasonsByPhysician"].length > 0 && appointments[i]["reasonsByPhysician"][2].indexOf("Physician did not like the presentation") >= 0){
+				physicianInput += 'presentation problem';
+			}
+			if(appointments[i]["reasonsByPhysician"].length > 0 && appointments[i]["reasonsByPhysician"][3].indexOf("Physician was not impressed by company's reputation") >= 0){
+				physicianInput += 'maintain reputation problem';
+			}
+			$('table#past-appointments-table tbody').append(
+					
+					'<tr class="other-appointment-tr">'+
+						'<td style="display:none" class="physician-id">'+appointments[i]["physicianId"]+'</td>'+
+						'<td>'+appointments[i]["physicianName"]+'</td>'+
+						'<td style="display:none" class="product-id">'+appointments[i]["productId"]+'</td>'+
+						'<td>'+appointments[i]["productName"]+'</td>'+
+						'<td>'+appointments[i]["date"]+'</td>'+
+						'<td>'+appointments[i]["meetingStatus"]+'</td>'+
+						'<td class="further-detail-td">'+
+							'<div class="further-detail-click">'+
+								'<button type="button" id="'+i+'" class="btn btn-default btn-md further-detail-btn">'+
+									'<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>'+
+									'<span class="further-detail-btn-span">View Further Details</span>'+
+								'</button>'+
+							'</div>'+
+						'</td>'+
+						'<td class="physician-input" style="display : none">'+physicianInput+'</td>'+				
+					'</tr>'
+			);
+		}
+		
+	}
+	pastAppointmentDetail = $('table#past-appointments-table').DataTable({
+		   "searching": true
+	   });
+}
+
+var getReportEnvironmentHtml = function(salesRepId){
+	var envHtml = '<div class="row row-header page-header"><h1>Sales Representative\'s performance</h1></div>'+
+					'<div class="row row-chart">'+
+					'<div id="container-daily-meeting"  class="col-md-12" style="min-width: 310px; height: 400px; margin: 0 auto"></div>'+
+					'</div>'+
+					'<div class="row row-chart">'+
+						'<div id="container-salesrep-meetingperformance" class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>'+
+						
+						'<div id="container-salesrep-presentation" class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>'+
+						
+					'</div>'+
+					'<div class="row performance-detail-btn">'+
+						'<button type="button" id="lost-isto-prescribing-'+salesRepId+'" class="btn btn-default btn-md past-appointment-detail-btn lost-isto-prescribing">'+
+							'<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>'+
+							'<span class="further-detail-btn-span">View Further Details</span>'+
+						'</button>'+
+						'<button type="button" id="phys-response-'+salesRepId+'" class="btn btn-default btn-md past-appointment-detail-btn phys-response">'+
+							'<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>'+
+							'<span class="further-detail-btn-span">View Further Details</span>'+
+						'</button>'+
+					'</div>'+
+					'<div class="salesrep-appointment-details" style="display : none;">'+
+					'<div class="row row-header page-header"></div>'+
+					'<div class="row date-filter-row">'+
+						'<div class="basic-search-div">'+
+							'<div class="filter-label">Filter for basic search</div>'+
+							'<span class="year-label date-selector-label">Year : </span>'+
+							'<div class="year-selector-div date-div">'+
+								'<select class="year-selector search-filter-param" name="year">'+
+									'<option value="2016" selected="selected">2016</option>'+
+									'<option value="2015">2015</option>'+
+									'<option value="2014">2014</option>'+
+									'<option value="2013">2013</option>'+
+									'<option value="2012">2012</option>'+
+									'<option value="2011">2011</option>'+
+									'<option value="2010">2010</option>'+
+									'<option value="2009">2009</option>'+
+									'<option value="2008">2008</option>'+
+									'<option value="2007">2007</option>'+
+								'</select>'+
+							'</div>'+
+							'<span class="month-label date-selector-label">Month : </span>'+
+							'<div class="month-selector-div date-div">'+
+								'<select class="month-selector search-filter-param" name="day">'+
+									'<option value="0">month</option>'+
+									'<option value="01">Jan</option>'+
+									'<option value="02">Feb</option>'+
+									'<option value="03">March</option>'+
+									'<option value="04">April</option>'+
+									'<option value="05">May</option>'+
+									'<option value="06">June</option>'+
+									'<option value="07">July</option>'+
+									'<option value="08">August</option>'+
+									'<option value="09">September</option>'+
+									'<option value="10">October</option>'+
+									'<option value="11">November</option>'+
+									'<option value="12">December</option>'+
+								'</select>'+
+							'</div>'+
+							'<span class="day-label date-selector-label">Day : </span>'+
+							'<div class="day-selector-div date-div">'+
+								'<select class="day-selector search-filter-param" name="day" disabled="disabled">'+
+									'<option value="0">day</option>'+
+								'</select>'+
+							'</div>'+
+							'<span class="status-label date-selector-label">Status : </span>'+
+							'<div class="status-selector-div date-div">'+
+								'<select class="status-selector search-filter-param" name="status">'+
+									'<option value=" " selected="selected">select status</option>'+
+									'<option value="LOST">LOST</option>'+
+									'<option value="PRESCRIBING">PRESCRIBING</option>'+
+								'</select>'+
+							'</div>'+
+						'</div>'+
+						'<div class="advanced-search">'+
+							'<div class="filter-label advanced-search-label">Advanced Search</div>'+
+							'<span class="phys-response-label phys-response-selector-label">Physician responses : </span>'+
+							'<div class="phys-response-selector-div advance-filter-div">'+
+								'<select class="phys-response search-filter-param" name="year">'+
+									'<option value="none: selected="selected">remove this filter</option>'+
+									'<option value="presentation">Physician did not like presentation</option>'+
+									'<option value="confidence">SalesRep was not confident</option>'+
+									'<option value="reputation">Physician was not impressed with org\'s reputation</option>'+
+								'</select>'+
+							'</div>'+
+						'</div>'+
+					'</div>'+
+					
+					'</div>'+
+					'<div class="row table-row" style="display: none;">'+
+						'<div class="col-lg-12 col-sm-12">'+
+							'<table id="past-appointments-table" class="table table-bordered past-appointment-table-class">'+
+								'<thead>'+
+									'<tr>'+
+										'<th style="display:none" class="physician-id">Physician Id</th>'+
+										'<th>Physician Name</th>'+
+										'<th style="display:none" class="product-id">Product Id</th>'+
+										'<th>Product</th>'+
+										'<th>Date</th>'+
+										'<th>Status</th>'+
+										'<th>Further Details</th>'+	
+										'<th style="display: none" class="physician-input">Physician Input</th>'+			
+									'</tr>'+
+								'</thead>'+
+								'<tbody>'+
+								'</tbody>'+
+							'</table>'+
+						'</div>'+
+					'</div>';
+	return envHtml;
 }

@@ -114,7 +114,7 @@ $(document).on('click','button.past-appointment-detail-btn',function(){
 	}
 	if($(this).hasClass('lost-isto-prescribing')){
 		$('select.status-selector').select2('val','LOST');
-	}else if($(this).hasClass('phys-response')){
+	}else if($(this).hasClass('phys-response-detail')){
 		$('select.phys-response').select2('val','presentation');
 	}
 });
@@ -149,76 +149,15 @@ $(document).on('change','select.search-filter-param',function(){
 	if($(this).hasClass('day-selector')){
 		var year = $('select.year-selector').val();
 		var month = $('select.month-selector').val();
-		var day = $(this).val();
-		var searchTerm = year+'-'+month+'-'+day;
-		console.log("$('.status-selector').val() : "+$('.status-selector').val());
-		if($('.status-selector').val() != ' '){
-			searchTerm  = searchTerm +' '+$('.status-selector').val(); 
-			pastAppointmentDetail.search(searchTerm).draw();
-		}else{
-			pastAppointmentDetail.search(searchTerm).draw();
-		}
-	}
-	else if($(this).hasClass('month-selector')){
-		if(!$('select.day-selector').attr('disabled')){
-			var year = $('select.year-selector').val();
-			var month = $('select.month-selector').val();
-			$('select.day-selector').select2('val',currentSelectedDate);
-			var day = $('select.day-selector').val();
-			console.log('day : '+day)
-			console.log("$('.status-selector').val() : "+$('.status-selector').val());
-			if(day == '0'){
-				var searchTerm = year+'-'+month;
-				if($('.status-selector').val() != ' '){
-					searchTerm  = searchTerm +' '+$('.status-selector').val(); 
-					pastAppointmentDetail.search(searchTerm).draw();
-				}else{
-					pastAppointmentDetail.search(searchTerm).draw();
-				}
-			}
-			else{
-				var searchTerm = year+'-'+month+'-'+day;
-				if($('.status-selector').val() != ' '){
-					searchTerm  = searchTerm +' '+$('.status-selector').val(); 
-					pastAppointmentDetail.search(searchTerm).draw();
-				}else{
-					pastAppointmentDetail.search(searchTerm).draw();
-				}
-			}
-		}
-	}else if($(this).hasClass('status-selector')){
-		var year = $('select.year-selector').val();
-		var month = $('select.month-selector').val();
 		var day = $('select.day-selector').val();
-		var status = $(this).val();
-		if(month == "0" && status != ' '){
-			searchTerm = year+' '+status;
-			pastAppointmentDetail.search(searchTerm).draw();
-		}else if(month != "0" && day == "0" && status != ' '){ 
-			searchTerm = year+' '+month+' '+status;
-			pastAppointmentDetail.search(searchTerm).draw();
-		}else if(month != "0" && day != "0" && status != ' '){
-			searchTerm = year+' '+month+' '+day+' '+status;
-			pastAppointmentDetail.search(searchTerm).draw();
-		}else if(month == "0" && status == ' '){
-			searchTerm = year+' '+status;
-			pastAppointmentDetail.search(searchTerm).draw();
-		}
-	}else if($(this).hasClass('phys-response')){
-		var year = $('select.year-selector').val();
-		var month = $('select.month-selector').val();
-		var day = $('select.day-selector').val();
+		var physResponseCategory = $('.phys-response').val();
 		var status = $('select.status-selector').val();
-		var physResponseCategory = $(this).val();
+		console.log('year : '+year+"; month : "+month+"; day : "+day+"; physResponseCategory : "+physResponseCategory+"; status : "+status);
 		searchTerm = '';
-		if(month != '0' ){
-			searchTerm += year+' '+month;
-		}
-		if(month !='0' && day != '0' ){
-			searchTerm += ' '+month;
-		}
+		if(month != '0') searchTerm += year+' '+month;
+		if(day != '0') searchTerm += ' '+day;
 		if(status != ' ') searchTerm += ' '+status;
-		if(physResponseCategory != 'none') {
+		if(physResponseCategory != 'none'){
 			if(physResponseCategory == 'presentation'){
 				searchTerm += ' '+'presentation problem';	
 			}else if(physResponseCategory == 'confidence'){
@@ -228,6 +167,148 @@ $(document).on('change','select.search-filter-param',function(){
 			}
 		}
 		pastAppointmentDetail.search(searchTerm).draw();
+//		var year = $('select.year-selector').val();
+//		var month = $('select.month-selector').val();
+//		var day = $(this).val();
+//		var searchTerm = year+'-'+month+'-'+day;
+//		console.log("$('.status-selector').val() : "+$('.status-selector').val());
+//		if($('.status-selector').val() != ' '){
+//			searchTerm  = searchTerm +' '+$('.status-selector').val(); 
+//			pastAppointmentDetail.search(searchTerm).draw();
+//		}else{
+//			pastAppointmentDetail.search(searchTerm).draw();
+//		}
+	}
+	else if($(this).hasClass('month-selector')){
+		var year = $('select.year-selector').val();
+		var month = $('select.month-selector').val();
+		var day = $('select.day-selector').val();
+		var physResponseCategory = $('.phys-response').val();
+		var status = $('select.status-selector').val();
+		console.log('year : '+year+"; month : "+month+"; day : "+day+"; physResponseCategory : "+physResponseCategory+"; status : "+status);
+		searchTerm = '';
+		if(month != '0') searchTerm += year+' '+month;
+		if(day != '0') searchTerm += ' '+day;
+		if(status != ' ') searchTerm += ' '+status;
+		if(physResponseCategory != 'none'){
+			if(physResponseCategory == 'presentation'){
+				searchTerm += ' '+'presentation problem';	
+			}else if(physResponseCategory == 'confidence'){
+				searchTerm += ' '+'confidence problem';
+			}else if(physResponseCategory == 'reputation'){
+				searchTerm += ' '+'maintain reputation problem';
+			}
+		}
+		pastAppointmentDetail.search(searchTerm).draw();
+//		if(!$('select.day-selector').attr('disabled')){
+//			var year = $('select.year-selector').val();
+//			var month = $('select.month-selector').val();
+//			$('select.day-selector').select2('val',currentSelectedDate);
+//			var day = $('select.day-selector').val();
+//			console.log('day : '+day)
+//			console.log("$('.status-selector').val() : "+$('.status-selector').val());
+//			if(day == '0'){
+//				var searchTerm = year+'-'+month;
+//				if($('.status-selector').val() != ' '){
+//					searchTerm  = searchTerm +' '+$('.status-selector').val(); 
+//					pastAppointmentDetail.search(searchTerm).draw();
+//				}else{
+//					pastAppointmentDetail.search(searchTerm).draw();
+//				}
+//			}
+//			else{
+//				var searchTerm = year+'-'+month+'-'+day;
+//				if($('.status-selector').val() != ' '){
+//					searchTerm  = searchTerm +' '+$('.status-selector').val(); 
+//					pastAppointmentDetail.search(searchTerm).draw();
+//				}else{
+//					pastAppointmentDetail.search(searchTerm).draw();
+//				}
+//			}
+//		}
+	}else if($(this).hasClass('status-selector')){
+		var year = $('select.year-selector').val();
+		var month = $('select.month-selector').val();
+		var day = $('select.day-selector').val();
+		var physResponseCategory = $('.phys-response').val();
+		var status = $(this).val();
+		console.log('year : '+year+"; month : "+month+"; day : "+day+"; physResponseCategory : "+physResponseCategory+"; status : "+status);
+		searchTerm = '';
+		if(month != '0') searchTerm += year+' '+month;
+		if(day != '0') searchTerm += ' '+day;
+		if(status != ' ') searchTerm += ' '+status;
+		if(physResponseCategory != 'none'){
+			if(physResponseCategory == 'presentation'){
+				searchTerm += ' '+'presentation problem';	
+			}else if(physResponseCategory == 'confidence'){
+				searchTerm += ' '+'confidence problem';
+			}else if(physResponseCategory == 'reputation'){
+				searchTerm += ' '+'maintain reputation problem';
+			}
+		}
+		pastAppointmentDetail.search(searchTerm).draw();
+//		if(month == "0" && status != ' '){
+//			searchTerm = year+' '+status;
+//			pastAppointmentDetail.search(searchTerm).draw();
+//		}else if(month != "0" && day == "0" && status != ' '){ 
+//			searchTerm = year+' '+month+' '+status;
+//			pastAppointmentDetail.search(searchTerm).draw();
+//		}else if(month != "0" && day != "0" && status != ' '){
+//			searchTerm = year+' '+month+' '+day+' '+status;
+//			pastAppointmentDetail.search(searchTerm).draw();
+//		}else if(month == "0" && status == ' '){
+//			searchTerm = year+' '+status;
+//			pastAppointmentDetail.search(searchTerm).draw();
+//		}else if(status == ' '){
+//			searchTerm = '';
+//			if(month != '0') searchTerm += ' '+month;
+//			if(day != '0') searchTerm += ' '+day;
+//			pastAppointmentDetail.search(searchTerm).draw();
+//		}
+	}else if($(this).hasClass('phys-response')){
+		var year = $('select.year-selector').val();
+		var month = $('select.month-selector').val();
+		var day = $('select.day-selector').val();
+		var physResponseCategory = $('.phys-response').val();
+		var status = $('select.status-selector').val();
+		console.log('year : '+year+"; month : "+month+"; day : "+day+"; physResponseCategory : "+physResponseCategory+"; status : "+status);
+		searchTerm = '';
+		if(month != '0') searchTerm += year+' '+month;
+		if(day != '0') searchTerm += ' '+day;
+		if(status != ' ') searchTerm += ' '+status;
+		if(physResponseCategory != 'none'){
+			if(physResponseCategory == 'presentation'){
+				searchTerm += ' '+'presentation problem';	
+			}else if(physResponseCategory == 'confidence'){
+				searchTerm += ' '+'confidence problem';
+			}else if(physResponseCategory == 'reputation'){
+				searchTerm += ' '+'maintain reputation problem';
+			}
+		}
+		pastAppointmentDetail.search(searchTerm).draw();
+//		var year = $('select.year-selector').val();
+//		var month = $('select.month-selector').val();
+//		var day = $('select.day-selector').val();
+//		var status = $('select.status-selector').val();
+//		var physResponseCategory = $(this).val();
+//		searchTerm = '';
+//		if(month != '0' ){
+//			searchTerm += year+' '+month;
+//		}
+//		if(month !='0' && day != '0' ){
+//			searchTerm += ' '+month;
+//		}
+//		if(status != ' ') searchTerm += ' '+status;
+//		if(physResponseCategory != 'none') {
+//			if(physResponseCategory == 'presentation'){
+//				searchTerm += ' '+'presentation problem';	
+//			}else if(physResponseCategory == 'confidence'){
+//				searchTerm += ' '+'confidence problem';
+//			}else if(physResponseCategory == 'reputation'){
+//				searchTerm += ' '+'maintain reputation problem';
+//			}
+//		}
+//		pastAppointmentDetail.search(searchTerm).draw();
 		
 	}
 	
@@ -240,6 +321,7 @@ $(document).on('change','select.filter-selectors', function(){
 			getReportEnvironmentHtml($('.salesrep-selector').val())
 	);
 	$('select.search-filter-param').select2({ width: '100%' });
+	console.log("Month : "+$('.performance-month-selector').val());
 	getDailyMeetingCount($('.salesrep-selector').val(), $('.performance-month-selector').val());
 	getMeetingStatusAnalysis($('.salesrep-selector').val());
 	getPhysicianResponse();
@@ -366,17 +448,6 @@ var getDailyMeetingCount = function(salesRepId, month){
 		success : function(data){
 	    	console.log("Data received : "+JSON.stringify(data));
 	    	createDailyAppointmentChart("#container-daily-meeting",	data, $('.salesrep-selector').find('option[selected="selected"]').html());
-//	    	if(data[0]["isMedicineEffective"] == "NaN") {
-//	    		for(var i = 0; i < data.length; i++){
-//	    		    data[i]["isMedicineEffective"] = 0.0;
-//	    		    data[i]["hasSideEffects"] = 0.0;
-//	    		    data[i]["isAffordable"] = 0.0;
-//	    		}
-//	    		console.log("Data after updating to 0 : "+JSON.stringify(data));
-//	    		formatData(data,containerId, productName,productId);
-//	    	}else{
-//	    		formatData(data,containerId, productName,productId);
-//	    	}
 		},
 		error : function(e){
 			console.log("Error : "+JSON.stringify(e));
@@ -697,7 +768,7 @@ var getReportEnvironmentHtml = function(salesRepId){
 							'<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>'+
 							'<span class="further-detail-btn-span">View Further Details</span>'+
 						'</button>'+
-						'<button type="button" id="phys-response-'+salesRepId+'" class="btn btn-default btn-md past-appointment-detail-btn phys-response">'+
+						'<button type="button" id="phys-response-'+salesRepId+'" class="btn btn-default btn-md past-appointment-detail-btn phys-response-detail">'+
 							'<span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>'+
 							'<span class="further-detail-btn-span">View Further Details</span>'+
 						'</button>'+
@@ -760,7 +831,7 @@ var getReportEnvironmentHtml = function(salesRepId){
 							'<span class="phys-response-label phys-response-selector-label">Physician responses : </span>'+
 							'<div class="phys-response-selector-div advance-filter-div">'+
 								'<select class="phys-response search-filter-param" name="year">'+
-									'<option value="none: selected="selected">remove this filter</option>'+
+									'<option value="none" selected="selected">remove this filter</option>'+
 									'<option value="presentation">Physician did not like presentation</option>'+
 									'<option value="confidence">SalesRep was not confident</option>'+
 									'<option value="reputation">Physician was not impressed with org\'s reputation</option>'+

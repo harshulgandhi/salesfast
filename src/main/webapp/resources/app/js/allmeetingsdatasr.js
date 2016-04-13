@@ -34,6 +34,13 @@ $(function () {
     });
 });
 
+$(document).on('change','select.filter-selectors',function(){
+	updateNotificationCounter();
+	$('.filter-selectors').each(function(i, val){
+		console.log("filter "+i+" : "+$(this).val());
+	});
+	getAnalyzedData();
+});
 
 var getAnalyzedData = function(salesRepId){
 	var data = {};

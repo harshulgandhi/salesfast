@@ -52,7 +52,7 @@ public class PitchesDaoImpl implements PitchesDao{
 				return new PitchesDto(rs.getInt("pitchesId"), rs.getInt("appointmentId"), rs.getString("meetingStatus"), rs.getString("fileName"), rs.getInt("pitchScore"));
 			}, appointmentId);
 		}catch(DataAccessException e){
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return null;
 	}

@@ -32,6 +32,8 @@ public class SalesRepPerformanceServiceImpl implements SalesRepPerformanceServic
 	@Autowired
 	MeetingUpdateService meetingUpdate;
 	
+	List<SalesRepDailyPerformanceEntity> toRemovePrevMonth;
+	
 	@Override
 	public List<SalesRepDailyPerformanceEntity> getDailyPerformanceData(int userId, int month) {
 		log.info("Selected Month " +month);
@@ -73,13 +75,16 @@ public class SalesRepPerformanceServiceImpl implements SalesRepPerformanceServic
 	public List<SalesRepDailyPerformanceEntity> addRestOfDates(List<SalesRepDailyPerformanceEntity> dailyPerformaceList, int month){
 		YearMonth yearMonth = YearMonth.of( 2016, month );  // January of 2015.
 		LocalDate start = yearMonth.atDay( 1 );
+		LocalDate firstDate = start;
 		LocalDate lastDate = yearMonth.atEndOfMonth();
 		LocalDate end = LocalDate.now();
+		if(!start.isBefore(end)) end = lastDate;
 		if(start.getDayOfWeek() == DayOfWeek.SATURDAY) start = start.plusDays(2);
 		if(start.getDayOfWeek() == DayOfWeek.SUNDAY) start = start.plusDays(1);
+		log.info("Start :"+start.toString()+"; end : "+end.toString());
 		
 		while(start.isBefore(end.plusDays(1))){
-			if(!ifListContainsParticularDay(dailyPerformaceList, start)){
+			if(!ifListContainsParticularDay(dailyPerformaceList, start, firstDate)){
 				dailyPerformaceList.add(new SalesRepDailyPerformanceEntity(
 						Date.valueOf(start),0,0
 						));
@@ -88,14 +93,17 @@ public class SalesRepPerformanceServiceImpl implements SalesRepPerformanceServic
 				start = start.plusDays(3);
 			}else start = start.plusDays(1);
 		}
+		if(toRemovePrevMonth != null) dailyPerformaceList.removeAll(toRemovePrevMonth);
 		Collections.sort(dailyPerformaceList);
+		
 		return dailyPerformaceList;
 	}
 	
 	@Override
-	public boolean ifListContainsParticularDay(List<SalesRepDailyPerformanceEntity> dailyPerformaceList, LocalDate particularDate){
+	public boolean ifListContainsParticularDay(List<SalesRepDailyPerformanceEntity> dailyPerformaceList, LocalDate particularDate, LocalDate firstDate){
 		for(SalesRepDailyPerformanceEntity eachEntity : dailyPerformaceList){
 			if(eachEntity.getDate().getTime()== Date.valueOf(particularDate).getTime()) return true;
+			if(eachEntity.getDate().getTime() < Date.valueOf(firstDate).getTime()) toRemovePrevMonth.add(eachEntity);
 		}
 		return false;
 	}

@@ -3,7 +3,7 @@
 <head>
 <meta charset="ISO-8859-1"/>
 <div th:replace="fragments/header :: commonhead"></div>
-<link rel="stylesheet" type="text/css" href="resources/app/css/salesrepperformance.css"/>
+<link rel="stylesheet" type="text/css" href="resources/app/css/salesrepperformancesr.css"/>
 
 <title>Sales Rep Performance</title>
 </head>
@@ -14,19 +14,13 @@
 		<div class="left-nav" id='cssmenu'>
 			<ul class="left-menu-ul">
 				<li class='active meeting-analysis' ><a href='/datareport'><span>MEETING ANALYSIS</span></a></li>
-				<li class='last salesrep-performance'><a href='/salesrepperformance'><span>SALES REP PERFORMANCE</span></a></li>
+				<li class='last salesrep-performance'><a href='/salesrepperformance'><span>MY PERFORMANCE</span></a></li>
 			</ul>
 		</div>
 		<div class="filter-selector-div">
-			<div class="salesrep-selection-div paramter-selection-div">
-				<div class="salesrep-selector-label filter-selector-label">SELECT A SALES REP</div>
-				<select class="salesrep-selector filter-selectors validate-ele" name="salesrep">
-					<option value="0" disabled="disabled">-- select sales rep --</option>
-				</select>
-			</div>
 			<div class="month-selection-div paramter-selection-div">
 				<div class="month-selector-label filter-selector-label">SELECT A MONTH</div>
-					<select class="performance-month-selector search-filter-param" name="day">
+					<select class="performance-month-selector filter-selectors" name="day">
 						<option value="0" disabled="disabled">month</option>
 						<option value="1">Jan</option>
 						<option value="2">Feb</option>
@@ -128,6 +122,6 @@
 	<div th:replace="pastappointmentdetailmodal :: past-appointment-details-modal"></div>
 <!-- Common footer -->
 <div th:replace="fragments/footer :: footer"></div>
-<script  type="text/javascript" src="resources/app/js/salesrepperformance.js"></script>
+<script  type="text/javascript" src="resources/app/js/salesrepperformancesr.js"></script>
 </body>
 </html>

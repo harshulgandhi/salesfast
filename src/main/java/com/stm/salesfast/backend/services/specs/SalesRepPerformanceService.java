@@ -14,12 +14,11 @@ public interface SalesRepPerformanceService {
 	List<SalesRepDailyPerformanceEntity> getDailyPerformanceData(int userId,
 			int month);
 
-	boolean ifListContainsParticularDay(
-			List<SalesRepDailyPerformanceEntity> dailyPerformaceList,
-			LocalDate particularDate);
-
 	List<SalesRepDailyPerformanceEntity> addRestOfDates(
 			List<SalesRepDailyPerformanceEntity> dailyPerformaceList, int month);
 
 	SalesRepMeetingPerformanceEntity getMeetingStatuses(int userId);
+
+	boolean ifListContainsParticularDay(List<SalesRepDailyPerformanceEntity> dailyPerformaceList,
+			LocalDate particularDate, LocalDate firstDate);
 }

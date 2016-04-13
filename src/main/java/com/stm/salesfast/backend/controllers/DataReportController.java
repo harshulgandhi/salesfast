@@ -114,7 +114,12 @@ public class DataReportController {
 	
 	@RequestMapping(value="/salesrepperformance", method=RequestMethod.GET)
 	public String salesRepPerformance(){
-		return "salesrepperformance";
+		if(SessionConstants.CURRENT_USER_ROLES.contains("DM")){
+			return "salesrepperformance";
+		}else if(SessionConstants.CURRENT_USER_ROLES.contains("SalesRep")){
+			return "salesrepperformancesr";
+		}
+		return "home";
 	}
 	
 	@RequestMapping(value="/getdailymeetingcount", method=RequestMethod.GET, produces="application/json")

@@ -360,7 +360,7 @@ var formatData = function(rawData, containerId, productName,productId){
         y: rawData[0]["hasSideEffects"],
         drilldown: null
 	},{
-		name: 'Is it affordable?',
+		name: 'Some Metric',
         y: rawData[0]["isAffordable"],
         drilldown: null
 	}];

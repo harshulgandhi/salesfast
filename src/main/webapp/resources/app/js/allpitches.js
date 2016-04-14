@@ -149,12 +149,17 @@ $(document).on('click','div.arrow-up',function(){
 		$(this).addClass('upvoted');
 		var pitchId = $(this).closest('tr').find('td.pitch-id-td').html();
 		console.log("Clicked \n"+pitchId);
+		var currScore = $(this).closest('tr').find('.pitch-score').html();
+		currScore = getIncrementedPitchScore(currScore);
+		$(this).closest('tr').find('.pitch-score').html(currScore);
 		$.ajax({
 				type: 'POST',
 				url: '/upvotepitch?pitchId='+pitchId
 		}).done(function(){
 			console.log();
 		});
+		
+		
 	}
 });
 
@@ -164,7 +169,9 @@ $(document).on('click','div.arrow-down',function(){
 		$(this).addClass('downvoted');
 		var pitchId = $(this).closest('tr').find('td.pitch-id-td').html();
 		console.log("Clicked \n"+pitchId);
-	
+		var currScore = $(this).closest('tr').find('.pitch-score').html();
+		currScore = getDecrementedPitchScore(currScore);
+		$(this).closest('tr').find('.pitch-score').html(currScore);
 		$.ajax({
 				type: 'POST',
 				url: '/downvotepitch?pitchId='+pitchId
@@ -237,6 +244,7 @@ var createPitchEnvironment = function(pitchList){
 								  		'<div class="arrow-up"></div>'+
 								  		'<div class="arrow-down"></div>'+
 							  		'</div>'+
+							  		'<div class="pitch-score">'+getPitchScoreWithSign(pitchList[i]["pitchScore"])+'</div>'+
 							  '</div>'+
 						'</td>'+
 					'</tr>'
@@ -246,7 +254,34 @@ var createPitchEnvironment = function(pitchList){
 	}
 	var table = $('#view-pitch-table').DataTable({
 			retrieve: true,
-		   searching: true
+		   searching: true,
+		   ordering: false
 	   });
 	$('#0').trigger("click");
+}
+
+var getPitchScoreWithSign = function(pitchScore){
+	if(pitchScore > 0){
+		return "+"+pitchScore;
+	}else if(pitchScore < 0){
+		return pitchScore;
+	}else if(pitchScore == 0){
+		return pitchScore;
+	}
+}
+
+var getIncrementedPitchScore = function(currentVal){
+	if(currentVal.split('')[0] == "+"){
+	  return ("+"+ (parseInt(currentVal.split('')[1]) + 1));
+	}else if(currentVal.split('')[0] == "-"){
+	  return ("-"+(parseInt(currentVal.split('')[1]) - 1)) ;
+	}
+}
+
+var getDecrementedPitchScore = function(currentVal){
+	if(currentVal.split('')[0] == "+"){
+	  return ("+"+ (parseInt(currentVal.split('')[1]) - 1));
+	}else if(currentVal.split('')[0] == "-"){
+	  return ("-"+(parseInt(currentVal.split('')[1]) + 1));
+	}
 }

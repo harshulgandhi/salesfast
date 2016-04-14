@@ -185,6 +185,11 @@ div.show-timeline {
     font-size: 13px;
 }
 
+.google-visualization-tooltip{
+	z-index: 99 !important;
+	background: #fffbf2 !important;
+}
+
 /*Filter styling*/
 .row.date-filter-row {
     display: -webkit-inline-box;

@@ -13,9 +13,9 @@ import com.stm.salesfast.backend.dto.NotificationsDto;
 @Repository
 public class NotificationsDaoImpl implements NotificationsDao {
 
-	private static final String FETCH_BY_USERID = "SELECT * FROM notifications WHERE userId = ?";
+	private static final String FETCH_BY_USERID = "SELECT * FROM notifications WHERE userId = ? ORDER BY notificationId DESC";
 	private static final String FETCH_BY_NOTIFICATIONID = "SELECT * FROM notifications WHERE notificationId = ?";
-	private static final String FETCH_BY_HASREAD = "SELECT * FROM notifications WHERE userId = ? AND hasRead = 0";
+	private static final String FETCH_BY_HASREAD = "SELECT * FROM notifications WHERE userId = ? AND hasRead = 0 ORDER BY notificationId DESC";
 	private static final String DELETE_BY = "DELETE FROM notifications WHERE notificationId = ?";
 	private static final String UPDATE_NOTIFICATION = "UPDATE notifications SET notification=? WHERE notificationId = ?";
 	private static final String INSERT = "INSERT INTO notifications (notification, hasRead, userId, notificationCategory) VALUES (?,?,?,?)";

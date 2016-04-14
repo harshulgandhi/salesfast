@@ -43,6 +43,7 @@ public class NotificationController {
 		
 		List<NotificationEntity> notificationEntities = notificationService.getAlreadyReadNotifications(
 				(userAccountService.getUserAccountByUserName(CURRENTUSERNAME)).getUserId());
+		for(NotificationEntity eachEntity : notificationEntities) log.info(""+eachEntity);
 		model.addAttribute("listOfNotifications", notificationEntities);
 		return "notifications";
 	}

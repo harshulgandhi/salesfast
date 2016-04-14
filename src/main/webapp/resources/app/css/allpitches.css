@@ -108,3 +108,10 @@ button.btn.btn-default.btn-md.show-pitch-doc.form-control{
 .arrow-down.downvoted {
 	border-top: 24px solid #9292F3;
 }
+.pitch-score{
+	margin-top: 9%;
+    margin-left: 12%;
+    font-size: 18px;
+    color: #127737;
+    font-weight: 600;
+}

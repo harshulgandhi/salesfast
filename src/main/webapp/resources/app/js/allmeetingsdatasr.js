@@ -76,8 +76,8 @@ var seggregateAnalyzedData = function(data){
 				'<div id="container-according-to-physicians"  class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>'+
 				'<div id="container-according-to-salesreps" class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>'+
 			'</div>'+
-			'<div class="row row-chart">'+
-				'<div id="container-aggregated" class="col-md-6" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>'+
+			'<div class="row row-chart aggregated-report">'+
+				'<div id="container-aggregated" class="col-md-6" style="min-width: 310px; height: 400px; width: 680px; margin: 0 auto"></div>'+
 			'</div>'
 	);
 	for(var i = 0; i<data.length;i++){

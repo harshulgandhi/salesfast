@@ -35,7 +35,7 @@
 		            <li><a class="navbar-menu-items" href="./addproductspage">Add Products</a></li>
 		          </ul>
 		        </li> -->
-		        <li id="nav-data-report" class="menu-item"><a class="navbar-menu-items" href="./datareport" th:if="${session.roles.contains('DM')} or ${session.roles.contains('SalesRep')}">Data Report</a></li>
+		        <li id="nav-data-report" class="menu-item"><a class="navbar-menu-items" href="./datareport" th:if="${session.roles.contains('DM')} or ${session.roles.contains('SalesRep')}">Analysis Report</a></li>
 		        <li id="nav-quick-assist" class="menu-item"><a class="navbar-menu-items" href="./livemeetingquestions" th:if="${session.roles.contains('DM')} or ${session.roles.contains('NH')} or ${session.roles.contains('SalesRep')}">Quick Assistance</a></li>
 		        <!-- <li class="dropdown">
 		          <a class="dropdown-toggle navbar-menu-items" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:if="${session.roles.contains('DM')} or ${session.roles.contains('NH')} or ${session.roles.contains('SalesRep')}">Quick Assistance</a>

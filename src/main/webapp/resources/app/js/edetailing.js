@@ -3,6 +3,7 @@
  */
 var virtualLearningData = [];
 var isFromNotificationsPage=false;
+var startTime = null;
 $(document).ready(function () {
 	
 	$('button.edetail-button-clicked').removeClass('edetail-button-clicked');
@@ -33,6 +34,8 @@ $(document).ready(function () {
 });
 
 $(document).on('click','button.show-doc-edetail',function(){
+	
+	
 	$('button.edetail-button-clicked').removeClass('edetail-button-clicked');
 	$(this).addClass('edetail-button-clicked');
 });

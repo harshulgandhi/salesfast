@@ -38,8 +38,9 @@ $(function () {
 		}*/
 	    	
 		updateNotificationCounter();
-		$('.filter-selectors').select2();
-		getAnalyzedData();
+//		$('.filter-selectors').select2();
+		getAssignedSalesRepList();
+//		getAnalyzedData();
     });
 });
 
@@ -50,6 +51,64 @@ $(document).on('change','select.filter-selectors',function(){
 	});
 	getAnalyzedData();
 });
+
+var getAssignedSalesRepList = function(){
+	$.ajax({
+		type: 'GET',
+		url : '/getallassignedsalesrep',
+		dataType : 'json',
+		success : function(data){
+	    	console.log("Assigned sales rep: "+JSON.stringify(data));
+	    	populateFilterDropDown(data);
+		},
+		error : function(e){
+			console.log("Error : "+JSON.stringify(e));
+		}
+	}).done(function(){
+		console.log("ajax complete!");
+	});
+}
+
+
+var populateFilterDropDown = function(allSalesRep){
+	//Sales Rep filter
+	var salesRepName = [];
+	var salesRepId = [];
+	for(var i = 0 ; i < allSalesRep.length; i++){
+		var fullName = allSalesRep[i]["firstName"]+" "+allSalesRep[i]["lastName"];
+		if(salesRepName.indexOf(fullName) < 0){
+			salesRepName.push(fullName);
+			salesRepId.push(allSalesRep[i]["userId"]);
+		}
+	}
+	
+	for(var i = 0; i< salesRepName.length; i++){
+		$('select.salesrep-selector').append(
+				'<option value="'+salesRepId[i]+'">'+salesRepName[i]+'</option>'
+			);
+	}
+	$('.salesrep-selector').select2();
+	
+	var productNames = [];
+	var productId = [];
+	for(var j = 0 ; j < allSalesRep.length; j++){
+		var productName = allSalesRep[j]["productName"];
+		if(productNames.indexOf(productName) < 0){
+			productNames.push(productName);
+			productId.push(allSalesRep[j]["productId"]);
+		}
+	}
+	
+	for(var j = 0; j< productNames.length; j++){
+		$('select.product-selector').append(
+				'<option value="'+productId[j]+'">'+productNames[j]+'</option>'
+			);
+	}
+	$('.product-selector').select2();
+	
+	$('.filter-selectors').select2();
+	getAnalyzedData();
+}
 
 var getAnalyzedData = function(){
 	var data = {};

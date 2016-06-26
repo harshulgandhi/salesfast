@@ -17,7 +17,9 @@ public class SalesFastApplicationBoot extends SpringBootServletInitializer{
 		return application.sources(SalesFastApplicationBoot.class);
 	}
 	
+	
 	public static void main(String[] args) {
+		
 		SpringApplication.run(SalesFastApplicationBoot.class);
 	}
 }

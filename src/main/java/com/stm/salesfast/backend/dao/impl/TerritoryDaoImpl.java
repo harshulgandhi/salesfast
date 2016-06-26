@@ -80,6 +80,7 @@ public class TerritoryDaoImpl implements TerritoryDao{
 	
 	@Override
 	public List<AssignedSalesRepInfoEntity> getSalesRepsByDM(int userId){
+		log.info("Getting sales for DM with Id "+userId);
 		try{
 			return jdbcTemplate.query(
 					FETCH_SALESREPS_FOR_DM, (rs, rownum) -> {
